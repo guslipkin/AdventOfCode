@@ -1,0 +1,52 @@
+# 2018-06: Chronal Coordinates
+
+```{r}
+library(data.table)
+library(dbscan)
+library(factoextra)
+```
+
+```{r}
+dt <- fread("input.txt")
+colnames(dt) <- c("x", "y")
+dt$x <- dt$x + 1
+dt$y <- dt$y + 1
+dt$id <- 1:nrow(dt)
+head(dt)
+```
+
+## Part 1
+
+```{r}
+size <- max(max(dt$x), max(dt$y))
+mat <- matrix(NA, size, size)
+mat[as.matrix(dt[, 1:2])] <- dt$id
+
+for(x in 1:ncol(mat)) {
+  for(y in 1:nrow(mat)) {
+    distX <- abs(x - dt$x)
+    distY <- abs(y - dt$y)
+    dist <- (distX + distY) / 2
+    closest <- dist[dist == min(dist)]
+    mat[x,y] <- ifelse(length(closest) == 1, which.min(dist), NA)
+  }
+}
+
+edges <- unique(c(mat[1, ], mat[,1], mat[nrow(mat), ], mat[, ncol(mat)]))
+mat[mat %in% edges] <- NA
+max(table(mat))
+```
+
+## Part 2
+
+```{r}
+grid <- expand.grid(1:size, 1:size)
+sapply(1:nrow(grid), function(i) {
+  dist <- abs(dt$x - grid$Var1[i]) + abs(dt$y - grid$Var2[i])
+  if(sum(dist) < 10000) { return(i) }
+  else { return(NA) }
+}) |> 
+  na.exclude() |>
+  length()
+```
+

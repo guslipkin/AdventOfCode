@@ -1,0 +1,30 @@
+# 2018-02: Inventory Management System
+
+```{r}
+library(data.table)
+dt <- fread("input.txt", header = FALSE)
+head(dt)
+```
+
+## Part 1
+
+```{r}
+sapply(strsplit(dt$V1, ""), function(x) {
+  x <- table(x)
+  x <- unique(x[x %in% 2:3])
+}) |>
+  unlist() |>
+  unname() |>
+  table() |>
+  prod()
+```
+
+## Part 2
+
+```{r}
+mat <- adist(dt$V1)
+mat <- as.character(expand.grid(dt$V1, dt$V1)[which(mat == 1),][,1])
+mat <- strsplit(mat, "")
+paste0(mat[[1]][mat[[1]] == mat[[2]]], collapse = "")
+```
+

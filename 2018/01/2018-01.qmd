@@ -1,0 +1,35 @@
+# 2018-01: Chronal Calibration
+
+[https://adventofcode.com/2018/day/1](https://adventofcode.com/2018/day/1)
+
+```{r}
+library(data.table)
+dt <- fread("input.txt")
+head(dt)
+```
+
+## Part 1
+
+```{r}
+sum(dt$V1)
+```
+
+## Part 2
+
+```{r}
+breakFlag <- FALSE
+re_pete <- 1
+while (!breakFlag) {
+  vec <- cumsum(rep(dt$V1, re_pete))
+  
+  twice <- vec[duplicated(vec)]
+  
+  if (length(twice >= 1)) {
+    print(twice[1])
+    breakFlag <- TRUE
+  } else {
+    re_pete <- re_pete + 1
+  }
+}
+```
+

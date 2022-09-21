@@ -1,0 +1,24 @@
+project:
+  type: book
+  output-dir: docs
+
+book:
+  title: "AdventOfCode"
+  author: "Gus Lipkin"
+  chapters:
+    - index.qmd
+    - part: 2018/2018.qmd
+      - 2018-01.qmd
+      - 2018-02.qmd
+      - 2018-03.qmd
+      - 2018-04.qmd
+      - 2018-05.qmd
+      - 2018-06.qmd
+
+format:
+  html:
+    theme:
+      light: flatly
+      dark: darkly
+  pdf:
+    documentclass: scrreprt

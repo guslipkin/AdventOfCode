@@ -1,0 +1,57 @@
+# 2018-05: Alchemical Reduction
+
+```{r}
+library(stringi)
+library(tidyverse)
+library(data.table)
+```
+
+```{r}
+dt <- readLines("input.txt")
+dt <- unlist(strsplit(dt, ""))
+```
+
+## Part 1
+
+```{r}
+reduced <- TRUE
+while(reduced) {
+  old <- length(dt)
+  for (x in 1:(old - 1)) {
+    if (dt[x] != dt[x + 1] & toupper(dt[x]) == toupper(dt[x + 1])) {
+      dt[c(x, x + 1)] <- ""
+      reduced <- TRUE
+    }
+  }
+  dt <- dt[dt != ""]
+  if(old == length(dt)) {
+    reduced <- FALSE
+  }
+}
+length(dt)
+```
+
+## Part 2
+
+```{r}
+sapply(1:26, function(l) {
+  tmp <- stri_replace_all_regex(dt, paste0(letters[l], "|", LETTERS[l]), "")
+  reduced <- TRUE
+  while (reduced) {
+    old <- length(tmp)
+    for (x in 1:(old - 1)) {
+      if (tmp[x] != tmp[x + 1] & toupper(tmp[x]) == toupper(tmp[x + 1])) {
+        tmp[c(x, x + 1)] <- ""
+        reduced <- TRUE
+      }
+    }
+    tmp <- tmp[tmp != ""]
+    if (old == length(tmp)) {
+      reduced <- FALSE
+    }
+  }
+  length(tmp)
+}) |>
+  min()
+```
+

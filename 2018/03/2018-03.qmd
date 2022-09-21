@@ -1,0 +1,38 @@
+# 2018-03: No Matter How You Slice It
+
+```{r}
+library(data.table)
+library(stringi)
+dt <- readLines("input.txt")
+dt <- data.table(do.call(rbind, stri_match_all_regex(dt, "#([0-9]{1,4}) @ ([0-9]{0,4}),([0-9]{0,4}): ([0-9]{0,4})x([0-9]{0,4})")))
+colnames(dt) <- c("input", "id", "xPos", "yPos", "xSize", "ySize")
+dt <- data.table(apply(dt[, 2:6], 2, as.numeric))
+head(dt)
+```
+
+## Part 1
+
+```{r}
+mat <- matrix(0, 1000, 1000)
+for(x in 1:nrow(dt)) {
+  xPos <- dt$xPos[x] + 1
+  xSize <- dt$xSize[x] - 1
+  yPos <- dt$yPos[x] + 1
+  ySize <- dt$ySize[x] - 1
+  mat[xPos:(xPos + xSize), yPos:(yPos + ySize)] <- mat[xPos:(xPos + xSize), yPos:(yPos + ySize)] + 1
+}
+length(mat[mat >= 2])
+```
+
+## Part 2
+
+```{r}
+for(x in 1:nrow(dt)) {
+  xPos <- dt$xPos[x] + 1
+  xSize <- dt$xSize[x] - 1
+  yPos <- dt$yPos[x] + 1
+  ySize <- dt$ySize[x] - 1
+  if (all(mat[xPos:(xPos + xSize), yPos:(yPos + ySize)] == 1)) { print(x) }
+}
+```
+
