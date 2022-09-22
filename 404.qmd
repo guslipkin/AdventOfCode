@@ -1,0 +1,8 @@
+---
+title: "404: Page Not Found"
+format: html
+---
+
+This is embarrassing! I don't seem to have the page you were looking for.
+
+Please [contact me](https://guslipkin.github.io/contact.html) or [submit an issue](https://github.com/guslipkin/guslipkin.github.io/issues) and let me know what page you were looking for and I'll try and fix it right away!
