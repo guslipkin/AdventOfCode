@@ -1,8 +1,6 @@
 ---
 title: "2018-04: Repose Record"
-format: 
-  html: 
-    toc: true
+format: html
 ---
 
 ```{r}

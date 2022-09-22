@@ -1,8 +1,6 @@
 ---
 title: "2018-05: Alchemical Reduction"
-format: 
-  html: 
-    toc: true
+format: html
 ---
 
 ```{r}

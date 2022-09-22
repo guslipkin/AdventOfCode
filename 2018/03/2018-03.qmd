@@ -1,8 +1,6 @@
 ---
 title: "2018-03: No Matter How You Slice It"
-format: 
-  html: 
-    toc: true
+format: html
 ---
 
 ```{r}

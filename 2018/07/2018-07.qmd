@@ -1,8 +1,6 @@
 ---
 title: "2018-07: The Sum of Its Parts"
-format: 
-  html: 
-    toc: true
+format: html
 ---
 
 ```{r}

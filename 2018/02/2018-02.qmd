@@ -1,8 +1,6 @@
 ---
 title: "2018-02: Inventory Management System"
-format: 
-  html: 
-    toc: true
+format: html
 ---
 
 ```{r}
