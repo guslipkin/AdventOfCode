@@ -1,0 +1,43 @@
+---
+title: "Advent of Code 2021 - Day 7"
+author: "Gus Lipkin ~ github.com/guslipkin/AdventOfCode2021"
+output: html_notebook
+---
+
+```{r}
+library(stringr)
+library(tidyverse)
+library(data.table)
+
+# dt <- fread("input.txt", header = FALSE)
+dt <- as.numeric(data.table::fread("input.txt", header = FALSE)[1])
+```
+
+
+```{r}
+# part 1
+dt2 <- data.table("start" = dt)
+s <- c()
+for(i in -max(dt):max(dt)) {
+  dt2 <- data.table("start" = dt)
+  dt2[, mean := floor(mean(start))][, diff := abs(start - mean + i)]
+  s <- append(s, sum(dt2$diff))
+}
+min(s)
+```
+
+```{r}
+# part 2
+dt2 <- data.table("start" = dt)
+s <- c()
+
+for(i in -max(dt):max(dt)) {
+  dt2 <- data.table("start" = dt)
+  dt2[, mean := floor(mean(start))]
+  for(r in 1:nrow(dt2))
+    dt2$diff[r] <- sum(1:(abs(dt2$start[r] - dt2$mean[r] - i)))
+  s <- append(s, sum(dt2$diff))
+}
+min(s)
+```
+

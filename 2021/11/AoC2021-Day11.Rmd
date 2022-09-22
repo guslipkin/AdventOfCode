@@ -1,0 +1,74 @@
+---
+title: "Advent of Code 2021 - Day 11"
+author: "Gus Lipkin ~ github.com/guslipkin/AdventOfCode2021"
+output: html_notebook
+---
+
+```{r}
+library(stringr)
+library(data.table)
+
+dt <- data.table::fread("input2.txt", header = FALSE, colClasses = "numeric")
+dt <- data.frame(str_split(dt$V1, "", simplify = TRUE))
+dtPadTop <- dt[1,]
+dtPadTop[!is.na(dtPadTop)] <- NA
+dt <- rbind(rbind(dtPadTop, dt), dtPadTop)
+dtPadSides <- dt[,1]
+dtPadSides[!is.na(dtPadSides)] <- NA
+dt <- cbind(cbind(dtPadSides, dt), dtPadSides)
+dt <- data.frame(apply(dt, 2, as.numeric))
+dt
+```
+
+```{r}
+# part 1
+dt2 <- dt
+
+coordX <- c()
+coordY <- c()
+rLow <- c()
+for(r in 2:(nrow(dt2) - 1)) {
+  for(c in 2:(ncol(dt2) - 1)) {
+    if(!is.na(dt2[r,c])) {
+      rLow <- append(rLow, dt2[r,c])
+      coordX <- append(coordX, c)
+      coordY <- append(coordY, r)
+    }
+  }
+}
+
+dt3 <- data.frame("x" = coordX, "y" = coordY, "d" = rLow)
+
+flash <- function(x) {
+  x <- dt3
+  r <- 1
+  for(r in 1:nrow(x)) {
+    x$d[x$x > x$x[r] - 1 & 
+            x$x < x$x[r] + 1 &
+            x$y > x$y[r] - 1 &
+            x$y < x$y[r] + 1] <- x$d[x$x > x$x[r] - 1 & 
+                                          x$x < x$x[r] + 1 &
+                                          x$y > x$y[r] - 1 & 
+                                          x$y < x$y[r] + 1] + 1
+    if(x$d[r] > 9) {
+      x$d[r] <- -1
+      # print(x)
+    }
+  }
+  if(length(x$d[x$d > 9]) > 0)
+    return(flash(x))
+  return(x)
+}
+
+flash(dt3)
+# which(dt2[(r-1):(r+1), (c-1):(c+1)] == 9)
+```
+
+
+```{r}
+# part 2
+dt2 <- dt
+
+
+```
+

@@ -1,0 +1,52 @@
+---
+title: "Advent of Code 2021 - Day 16"
+author: "Gus Lipkin ~ github.com/guslipkin/AdventOfCode2021"
+output: html_notebook
+---
+
+```{r}
+library(tidyverse)
+library(stringr)
+library(data.table)
+
+dt <- readLines("input2.txt")
+dt <- str_split(dt, "", simplify = TRUE)[1,]
+```
+
+
+```{r}
+# part 1
+dtB <- case_when(
+  dt == "0" ~ "0000",
+  dt == "1" ~ "0001",
+  dt == "2" ~ "0010",
+  dt == "3" ~ "0011",
+  dt == "4" ~ "0100",
+  dt == "5" ~ "0101",
+  dt == "6" ~ "0110",
+  dt == "7" ~ "0111",
+  dt == "8" ~ "1000",
+  dt == "9" ~ "1001",
+  dt == "A" ~ "1010",
+  dt == "B" ~ "1011",
+  dt == "C" ~ "1100",
+  dt == "D" ~ "1101",
+  dt == "E" ~ "1110",
+  dt == "F" ~ "1111"
+)
+
+dtBString <- paste0(dtB, collapse = "")
+
+version <- substr(dtBString, 1, 3)
+type <- substr(dtBString, 4, 6)
+
+dtBString <- substr(dtBString, 7, nchar(dtBString))
+
+
+```
+
+
+```{r}
+# part 2
+```
+

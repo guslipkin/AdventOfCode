@@ -1,0 +1,89 @@
+---
+title: "Advent of Code 2021 - Day 13"
+author: "Gus Lipkin ~ github.com/guslipkin/AdventOfCode2021"
+output: html_notebook
+---
+
+```{r}
+library(stringr)
+library(data.table)
+library(tidyverse)
+
+dt <- readLines("input.txt")
+
+coords <- dt[grepl("[0-9]{1,4},[0-9]{1,4}", dt)]
+coords <- data.frame(str_split(coords, ",", simplify = TRUE))
+coords <- data.frame(sapply(coords, as.numeric))
+coords <- coords + 1
+
+folds <- str_remove_all(dt[grepl("fold along", dt)], "fold along ")
+folds <- data.frame(str_split(folds, "=", simplify = TRUE))
+folds$X2 <- as.numeric(folds$X2)
+
+paper <- matrix(data = FALSE,
+                nrow = (max(folds$X2[folds$X1 == "y"]) * 2) + 1,
+                ncol = (max(folds$X2[folds$X1 == "x"]) * 2) + 1)
+for(r in 1:nrow(coords)) { paper[coords$X2[r], coords$X1[r]] <- TRUE }
+```
+
+```{r}
+# part 1
+fold <- function(dir, n, paper) {
+  if (dir == "x") {
+    paper1 <- paper[,1:(n)]
+    paper2 <- paper[,(n+2):ncol(paper)]
+    paper2 <- t(apply(paper2, 1, rev))
+  } else if (dir == "y") {
+    paper1 <- paper[1:(n),]
+    paper2 <- paper[(n+2):nrow(paper), ]
+    paper2 <- apply(paper2, 2, rev)
+  }
+
+  return(ifelse(paper1 | paper2, TRUE, FALSE))
+}
+
+folded <- fold(folds$X1[1], folds$X2[1], paper)
+length(which(folded))
+```
+
+
+```{r}
+# part 2
+fold <- function(dir, n, paper) {
+  if (dir == "x") {
+    paper1 <- paper[,1:(n)]
+    paper2 <- paper[,(n+2):ncol(paper)]
+    paper2 <- t(apply(paper2, 1, rev))
+  } else if (dir == "y") {
+    paper1 <- paper[1:(n),]
+    paper2 <- paper[(n+2):nrow(paper), ]
+    paper2 <- apply(paper2, 2, rev)
+  }
+  
+  return(ifelse(paper1 | paper2, TRUE, FALSE))
+}
+
+for(i in 1:nrow(folds)) {
+  paper <- fold(folds$X1[i], folds$X2[i], paper)
+  
+  coordX <- c()
+  coordY <- c()
+  for(r in 1:nrow(paper)) {
+    for(c in 1:ncol(paper)) {
+      if(paper[r,c]) {
+        coordX <- append(coordX, r)
+        coordY <- append(coordY, c)
+      }
+    }
+  }
+  
+  points <- data.frame(cbind(coordX, coordY)) %>%
+    ggplot() +
+    geom_point(aes(x = coordY, y = -coordX)) +
+    xlim(0, max(c(coordX, coordY))) +
+    ylim(-max(c(coordX, coordY)), 0)
+  if(i == nrow(folds))
+    print(points)
+}
+```
+

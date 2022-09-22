@@ -1,0 +1,112 @@
+---
+title: "Advent of Code 2021 - Day 14"
+author: "Gus Lipkin ~ github.com/guslipkin/AdventOfCode2021"
+output: html_notebook
+---
+
+```{r}
+library(tidyverse)
+library(stringr)
+library(data.table)
+
+dt <- readLines("input2.txt")
+polymer <- dt[!grepl(" -> ", dt)][1]
+polymer <- str_split(polymer, "", simplify = TRUE)[1,]
+pairs <- data.frame(str_split(dt[grepl(" -> ", dt)], " -> ", simplify = TRUE))
+```
+
+
+```{r}
+# part 1
+dt <- readLines("input2.txt")
+polymer <- dt[!grepl(" -> ", dt)][1]
+polymer <- str_split(polymer, "", simplify = TRUE)[1,]
+pairs <- data.frame(str_split(dt[grepl(" -> ", dt)], " -> ", simplify = TRUE))
+
+for(d in 1:40) {
+  pos <- data.frame("let" = NA, "pos" = NA)
+  for (i in 1:(length(polymer) - 1)) {
+    pos <- rbind(pos, data.frame("let" =
+                                   pairs$X2[pairs$X1 == paste0(polymer[i:(i + 1)],
+                                                               collapse = "")],
+                                 "pos" = i))
+  }
+  pos <- pos[-1, ]
+  
+  for (r in 1:nrow(pos)) {
+    polymer <-
+      R.utils::insert(x = polymer,
+                      values = pos$let[r],
+                      ats = r + pos$pos[r])
+  }
+  # print((table(polymer)))
+}
+length(polymer)
+t <- sort(table(polymer))
+rev(t)[1] - t[1]
+```
+
+
+```{r}
+# part 2
+dt <- readLines("input2.txt")
+polymer <- dt[!grepl(" -> ", dt)][1]
+polymer <- str_split(polymer, "", simplify = TRUE)[1,]
+pairs <- str_split(dt[grepl(" -> ", dt)], " -> ", simplify = TRUE)
+pairsV <- pairs[,2]
+names(pairsV) <- pairs[,1]
+
+pairsList <- c()
+for(i in 1:(length(polymer) - 1)) {
+  pairsList <- append(pairsList, paste0(polymer[i:(i + 1)], collapse = ""))
+}
+pairsList <- table(pairsList)
+
+ohNo <- function(x, n) {
+  if(n == 1) { return(x) }
+  
+  pairsNames <- names(x)
+  temp <- c()
+  for (i in pairsNames) {
+    mid <- pairsV[i]
+    str <- str_split(i, "", simplify = TRUE)[1, ]
+    temp <- append(temp,
+                   paste0(str[1], mid, str[2], collapse = ""))
+  }
+  temp <- table(temp)
+  print(temp)
+
+  newPairs <- c()
+  for (i in 1:length(temp)) {
+    val1 <- x[i]
+    names(val1) <- paste0(substr(names(temp[i]), 1, 2))
+    newPairs <- append(newPairs, val1)
+    
+    val2 <- x[i]
+    names(val2) <- paste0(substr(names(temp[i]), 2, 3))
+    newPairs <- append(newPairs, val2)
+  }
+
+  x <- data.table("pairs" = names(newPairs), "vals" = as.double(newPairs))
+  x <- x[, sum(.SD), by = "pairs"]
+  
+  newPairs <- x$V1
+  names(newPairs) <- x$pairs
+  
+  print(newPairs)
+
+  return(ohNo(newPairs, n-1))
+}
+options(scipen=999)
+temp <- ohNo(pairsList, 10)
+# print(temp)
+letters <- str_split(names(temp), "", simplify = TRUE)
+dt <- data.table("let1" = letters[,1], "let2" = letters[,2], "vals" = temp)
+dt <- rbind(dt[,.(let1, vals)], dt[,.(let2, vals)], use.names = FALSE) %>%
+  .[, sum(.SD), by = "let1"] %>%
+  arrange(desc(V1))
+dt
+head(dt, 1)$V1 - tail(dt, 1)$V1
+# 6415466473169 too high
+```
+

@@ -1,0 +1,96 @@
+---
+title: "Advent of Code 2021 - Day 2 Speed Edition"
+author: "Gus Lipkin ~ github.com/guslipkin/AdventOfCode2021"
+output:
+  pdf_document: default
+  html_document:
+    df_print: paged
+  html_notebook: default
+---
+
+> Base R once again beats out data.table by just a little bit. The big difference here was moving from `colSums` to `sum`, although `readLines` instead of `fread` does play a part.
+
+# Fastest solution
+
+```{r}
+dtM <- data.frame("V1" = readLines("input.txt"))
+dtM <- tidyr::separate(dtM, "V1", c("d", "n"), sep = " ", convert = TRUE)
+
+# part 1
+dt <- dtM
+dt$n <- ifelse(dt$d == "down", dt$n * -1, dt$n)
+abs(sum(dt$n[dt$d == "forward"]) * sum(dt$n[dt$d != "forward"]))
+
+# part 2
+dt <- dtM
+dt$aim <- cumsum(ifelse(dt$d == "up", dt$n * -1, 
+                        ifelse(dt$d == "forward", 0, dt$n)))
+sum(ifelse(dt$d == "forward", dt$n, 0), na.rm = TRUE) *
+  sum(ifelse(dt$d == "forward", dt$aim * dt$n, 0), na.rm = TRUE)
+```
+
+# Benchmark
+
+```{r message=FALSE, warning=FALSE}
+rbenchmark::benchmark(
+  "First try" = {
+    library(data.table)
+    # part 1
+    dt <- data.table(read.table("input.txt", sep = "\n"))
+    dt <- tidyr::separate(dt, "V1", c("d", "n"), sep = " ", convert = TRUE)
+    dt$n <- ifelse(dt$d == "down", dt$n * -1, dt$n)
+
+    abs(dt[d == "forward", .(sum = sum(n))] * 
+          as.numeric(dt[d != "forward", .(sum = sum(n))]))
+    
+    # part 2
+    dt <- data.table(read.table("input.txt", sep = "\n"))
+    dt <- tidyr::separate(dt, "V1", c("d", "n"), sep = " ", convert = TRUE)
+
+    dt$aim <- ifelse(dt$d == "up" & dt$d != "forward", dt$n * -1, dt$n)
+    dt$aim <- ifelse(dt$d == "forward", 0, dt$aim)
+    dt$aim <- cumsum(dt$aim)
+
+    dt$h <- ifelse(dt$d == "forward", dt$n, 0)
+    dt$depth <- ifelse(dt$d == "forward", dt$aim * dt$n, 0)
+    
+    sum(dt$h, na.rm = TRUE) * sum(dt$depth, na.rm = TRUE)
+    },
+  "Base R" = {
+    dtM <- data.frame("V1" = readLines("input.txt"))
+    dtM$n <- na.omit(as.numeric(unlist(strsplit(dtM$V1, " "))))
+    dtM$d <- as.character(unlist(strsplit(dtM$V1, " ")))[
+      is.na(as.numeric(unlist(strsplit(dtM$V1, " "))))]
+    
+    # part 1
+    dt <- dtM
+    dt$n <- ifelse(dt$d == "down", dt$n * -1, dt$n)
+    abs(sum(dt$n[dt$d == "forward"]) * sum(dt$n[dt$d != "forward"]))
+    
+    # part 2
+    dt <- dtM
+    dt$aim <- cumsum(ifelse(dt$d == "up", dt$n * -1, 
+                            ifelse(dt$d == "forward", 0, dt$n)))
+    sum(ifelse(dt$d == "forward", dt$n, 0), na.rm = TRUE) * 
+      sum(ifelse(dt$d == "forward", dt$aim * dt$n, 0), na.rm = TRUE)
+    },
+  "data.table" = {
+    library(data.table)
+    dtM <- fread("input.txt", sep = "\n", header = FALSE)
+    dtM <- tidyr::separate(dtM, "V1", c("d", "n"), sep = " ", convert = TRUE)
+
+    # part 1
+    dt <- dtM
+    dt$n <- ifelse(dt$d == "down", dt$n * -1, dt$n)
+    abs(colSums(dt[d == "forward", .(n)]) * colSums(dt[d != "forward", .(n)]))
+    
+    # part 2
+    dt <- dtM
+    dt$aim <- cumsum(ifelse(dt$d == "up", dt$n * -1, 
+                            ifelse(dt$d == "forward", 0, dt$n)))
+    sum(ifelse(dt$d == "forward", dt$n, 0), na.rm = TRUE) * 
+      sum(ifelse(dt$d == "forward", dt$aim * dt$n, 0), na.rm = TRUE)
+    },
+  replications = 1000, columns = c(1:5), order = "user.self")
+```
+

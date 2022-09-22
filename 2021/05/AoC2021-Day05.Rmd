@@ -1,0 +1,56 @@
+---
+title: "Advent of Code 2021 - Day 5"
+author: "Gus Lipkin ~ github.com/guslipkin/AdventOfCode2021"
+output: html_notebook
+---
+
+```{r}
+library(tidyverse)
+library(data.table)
+library(stringr)
+```
+
+```{r}
+# part 1
+dt <- data.frame(fread("input.txt"))
+dt <- data.table("x1" = dt[, "V1"] + 1,
+                 "y1" = as.numeric(str_split(dt$V2, " -> ", 
+                                             simplify = TRUE)[,1]) + 1,
+                 "x2" = as.numeric(str_split(dt$V2, " -> ", 
+                                             simplify = TRUE)[,2]) + 1,
+                 "y2" = dt[, "V3"] + 1)[x1 == x2 | y1 == y2,]
+mx <- data.frame(matrix(data = 0, nrow = max(dt), ncol = max(dt)))
+
+for(r in 1:nrow(dt)) {
+  mx[dt$x1[r]:dt$x2[r], dt$y1[r]:dt$y2[r]] <- 
+    mx[dt$x1[r]:dt$x2[r], dt$y1[r]:dt$y2[r]] + 1
+}
+
+length(mx[mx > 1])
+```
+
+```{r}
+# part 2
+dt <- data.frame(fread("input.txt"))
+dt <- data.table("x1" = dt[, "V1"] + 1,
+                 "y1" = as.numeric(str_split(dt$V2, " -> ", 
+                                             simplify = TRUE)[,1]) + 1,
+                 "x2" = as.numeric(str_split(dt$V2, " -> ", 
+                                             simplify = TRUE)[,2]) + 1,
+                 "y2" = dt[, "V3"] + 1) %>%
+  .[, at :=  (x1 == y2 & x2 == y1) |
+             (x1 == y1 & x2 == y2) | 
+             (abs(x2 - x1) == abs(y2 - y1))] 
+mx <- matrix(data = 0, nrow = max(dt), ncol = max(dt))
+
+for(r in 1:nrow(dt)) {
+  ifelse(dt$at[r],
+    diag(mx[dt$x1[r]:dt$x2[r], dt$y1[r]:dt$y2[r]]) <- 
+      diag(mx[dt$x1[r]:dt$x2[r], dt$y1[r]:dt$y2[r]]) + 1,
+    mx[dt$x1[r]:dt$x2[r], dt$y1[r]:dt$y2[r]] <- 
+      mx[dt$x1[r]:dt$x2[r], dt$y1[r]:dt$y2[r]] + 1)
+}
+
+length(mx[mx > 1])
+```
+

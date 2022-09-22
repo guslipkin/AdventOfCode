@@ -1,0 +1,23 @@
+---
+title: "Advent of Code 2015 - Day 1"
+author: "Gus Lipkin"
+output: html_notebook
+---
+
+```{r}
+library(stringr)
+```
+
+```{r}
+# part 1
+dt <- readLines("input.txt")
+str_count(dt, "\\(") - str_count(dt, "\\)")
+```
+
+```{r}
+# part 2
+dt <- data.frame("paren" = t(str_split_fixed(dt, "", nchar(dt))))
+dt$val <- ifelse(dt$paren == "(", 1, -1)
+which(cumsum(dt$val) == -1)[1]
+```
+

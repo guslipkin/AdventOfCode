@@ -48,3 +48,6 @@ rsconnect/
 /.quarto/
 *.DS_Store
 .DS_Store
+2021/.aocdlconfig
+.DS_Store
+.DS_Store

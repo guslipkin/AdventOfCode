@@ -1,0 +1,26 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+df <- read.csv("../Day 5/input2.csv")
+df
+```
+
+```{r}
+df <- df[order(df$seatid),]
+df
+```
+
+```{r}
+for(i in 804:1) {
+  if(df$seatid[i + 1] - df$seatid[i] != 1) {
+    myseat <- df$seatid[i + 1] - 1
+    break
+  }
+}
+
+myseat
+```
+

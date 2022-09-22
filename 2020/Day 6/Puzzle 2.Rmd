@@ -1,0 +1,51 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+library(sets)
+df <- read_xls("../Day 6/input.xls")
+df
+```
+
+```{r}
+testDF <- df[1,]
+dfRow <- 1
+dfColumn <- 1
+for(r in 1:2001) {
+  if(!is.na(df[r,1])) {
+    testDF[dfRow, dfColumn] <- df[r,1]
+    dfColumn <- dfColumn + 1
+  }
+  else {
+    dfRow <- dfRow + 1
+    dfColumn <- 1
+  }
+}
+df <- testDF
+df
+```
+
+Credit to [Matthew McMillan](https://github.com/UnsolvedCypher) for the idea of using sets
+```{r}
+for(r in 1:456)
+  for(c in 2:5)
+    if(is.na(df[r,c]))
+      df[r,c] <- df[r,1]
+
+for(r in 1:456) {
+  df$matthew[r] <- length(unique(set_intersection(unique(unlist(strsplit(as.character(df[r,1]), ""))), 
+                                                  unique(unlist(strsplit(as.character(df[r,2]), ""))), 
+                                                  unique(unlist(strsplit(as.character(df[r,3]), ""))), 
+                                                  unique(unlist(strsplit(as.character(df[r,4]), ""))), 
+                                                  unique(unlist(strsplit(as.character(df[r,5]), ""))))))
+}
+
+df
+```
+
+```{r}
+sum(df$matthew)
+```
+

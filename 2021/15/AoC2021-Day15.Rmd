@@ -1,0 +1,68 @@
+---
+title: "Advent of Code 2021 - Day 15"
+author: "Gus Lipkin ~ github.com/guslipkin/AdventOfCode2021"
+output: html_notebook
+---
+
+```{r}
+library(tidyverse)
+library(stringr)
+library(data.table)
+
+dt <- readLines("input.txt")
+dt <- str_split(dt, "", simplify = TRUE)
+dt <- data.frame(apply(dt, 2, as.numeric))
+```
+
+
+```{r warning=FALSE}
+# part 1
+n <- nrow(dt)
+m <- ncol(dt)
+
+sols <- data.frame(matrix(data = -1, nrow = n, ncol = n))
+pathX <- c()
+pathY <- c()
+
+sols[1, 1] <- 0
+
+for (i in 2:n) {
+  sols[i, 1] <- sols[i - 1, 1] + dt[i, 1]
+}
+for (j in 2:m) {
+  sols[1, j] <- sols[1, j - 1] + dt[1, j]
+}
+
+for (i in 2:n) {
+  for (j in 2:m) {
+    if (sols[i - 1, j] < sols[i, j - 1]) {
+      sols[i, j] <- sols[i - 1, j] + dt[i, j]
+      pathX <- append(pathX, i-1)
+      pathY <- append(pathY, j)
+    } else {
+      sols[i, j] <- sols[i, j - 1] + dt[i, j]
+      pathX <- append(pathX, i)
+      pathY <- append(pathY, j-1)
+    }
+  }
+}
+sols
+data.frame("x" = pathX, "y" = pathY) %>%
+  ggplot() +
+  geom_point(aes(x = x, y = y))
+
+sols[n,m]
+# 447
+# 440
+# 454
+# 520
+# 513
+# 514
+# 518
+```
+
+
+```{r}
+# part 2
+```
+

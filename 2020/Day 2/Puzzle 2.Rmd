@@ -1,0 +1,24 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+library(tidyverse)
+
+df <- read.csv("../Day 2/input.csv")
+head(df)
+```
+
+```{r}
+count <- 0
+
+for(i in 1:nrow(df)) {
+  sub <- paste(substr(df$password[i], df$min[i], df$min[i]), substr(df$password[i], df$max[i], df$max[i]))
+  if(str_count(sub, as.character(df$letter[i])) == 1)
+    count <- count + 1
+}
+
+count
+```
+

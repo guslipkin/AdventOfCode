@@ -1,0 +1,30 @@
+---
+title: "Advent of Code 2021 - Day 12"
+author: "Gus Lipkin ~ github.com/guslipkin/AdventOfCode2021"
+output: html_notebook
+---
+
+```{r}
+library(stringr)
+library(data.table)
+
+dt <- readLines("input2.txt")
+```
+
+```{r}
+# part 1
+dt2 <- dt
+paste0("graph LR", dt2, collapse = "\n")
+
+library(webshot)
+DiagrammeR::mermaid(paste0("graph LR", dt2))
+```
+
+
+```{r}
+# part 2
+dt2 <- dt
+
+
+```
+

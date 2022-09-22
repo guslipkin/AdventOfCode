@@ -1,0 +1,44 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+library(readxl)
+df <- read_xls("../Day 6/input.xls")
+df
+```
+
+Recyling this from D4P2
+
+```{r}
+testDF <- df[1,]
+dfRow <- 1
+dfColumn <- 1
+for(r in 1:2001) {
+  if(!is.na(df[r,1])) {
+    testDF[dfRow, dfColumn] <- df[r,1]
+    dfColumn <- dfColumn + 1
+  }
+  else {
+    dfRow <- dfRow + 1
+    dfColumn <- 1
+  }
+}
+df <- testDF
+df
+```
+
+```{r}
+df[is.na(df)] <- ""
+for(r in 1:456) {
+  df[r,6] <- paste(df[r,1], df[r,2], df[r,3], df[r,4], df[r,5], sep = "")
+  df$count[r] <- length(unique(unlist(strsplit(df$all[r], ""))))
+}
+df
+```
+
+```{r}
+sum(df$count)
+```
+

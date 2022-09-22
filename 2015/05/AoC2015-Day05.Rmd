@@ -1,0 +1,23 @@
+---
+title: "Advent of Code 2015 - Day 5"
+author: "Gus Lipkin"
+output: html_notebook
+---
+
+```{r}
+# part 1
+dt <- readLines("input.txt")
+dt <- dt[!grepl("(ab)|(cd)|(pq)|(xy)", dt)]
+dt <- dt[grepl("(\\w*[aeuio]\\w*){3,}", dt)]
+dt <- dt[grepl("(.)\\1+", dt)]
+length(dt)
+```
+
+```{r}
+# part 2
+dt <- readLines("input.txt")
+dt <- dt[grepl("(..).*(\\1)", dt, perl = TRUE)]
+dt <- dt[grepl("(.)(.)(\\1)", dt, perl = TRUE)]
+length(dt)
+```
+

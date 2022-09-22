@@ -1,0 +1,31 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+df <- read.csv("../Day 9/input.csv")
+df
+```
+
+```{r}
+goodNum <- FALSE
+for(i in 26:1000) {
+  for(r1 in (i-25):(i-1)) {
+    if(df[r1,1] < df[i,1])
+      for(r2 in (i-25):(i-1))
+        if(df[i,1] - df[r1,1] == df[r2,1]) {
+          goodNum <- TRUE
+          break
+        }
+    if(goodNum)
+      break
+  }
+  if(!goodNum) {
+    print(df[i,1])
+    break
+  }
+  goodNum <- FALSE
+}
+```
+

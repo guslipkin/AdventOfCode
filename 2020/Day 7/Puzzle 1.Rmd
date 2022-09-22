@@ -1,0 +1,29 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+library(tidyverse)
+
+df <- read.csv("../Day 7/input.csv")
+
+df$child2C[as.character(df$child2C) == " "] <- NA
+df$child3C[as.character(df$child3C) == " "] <- NA
+df$child4C[as.character(df$child4C) == " "] <- NA
+
+df
+```
+
+```{r}
+level <- c("shiny gold")
+oldRows <- 0
+
+while(oldRows != nrow(shinygoldDF)) {
+  oldRows <- nrow(shinygoldDF)
+  level <- unlist(shinygoldDF$parent)
+  shinygoldDF <- df %>% filter(as.character(parent) %in% level | as.character(child1C) %in% level | as.character(child2C)%in% level | 
+                                 as.character(child3C) %in% level | as.character(child4C) %in% level)
+}
+nrow(shinygoldDF)
+```
