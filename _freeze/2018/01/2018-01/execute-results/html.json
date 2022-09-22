@@ -1,0 +1,14 @@
+{
+  "hash": "25d623875241233a0f0132e7478b9833",
+  "result": {
+    "markdown": "---\ntitle: \"2018-01: Chronal Calibration\"\nformat: \n  html: \n    toc: true\n---\n\n\n[https://adventofcode.com/2018/day/1](https://adventofcode.com/2018/day/1)\n\n\n::: {.cell hash='2018-01_cache/html/unnamed-chunk-1_e83048d58b5f9a9ea40d3d125aa5b67b'}\n\n```{.r .cell-code}\nlibrary(data.table)\ndt <- fread(\"input.txt\")\nhead(dt)\n```\n\n::: {.cell-output .cell-output-stdout}\n```\n    V1\n1: -14\n2:  15\n3:   9\n4:  19\n5:  18\n6:  14\n```\n:::\n:::\n\n\n## Part 1\n\n\n::: {.cell hash='2018-01_cache/html/unnamed-chunk-2_153ae362528fb98dbbf4e205bb626860'}\n\n```{.r .cell-code}\nsum(dt$V1)\n```\n\n::: {.cell-output .cell-output-stdout}\n```\n[1] 425\n```\n:::\n:::\n\n\n## Part 2\n\n\n::: {.cell hash='2018-01_cache/html/unnamed-chunk-3_a30d9789056c46932811a3b6d95b5231'}\n\n```{.r .cell-code}\nbreakFlag <- FALSE\nre_pete <- 1\nwhile (!breakFlag) {\n  vec <- cumsum(rep(dt$V1, re_pete))\n  \n  twice <- vec[duplicated(vec)]\n  \n  if (length(twice >= 1)) {\n    print(twice[1])\n    breakFlag <- TRUE\n  } else {\n    re_pete <- re_pete + 1\n  }\n}\n```\n\n::: {.cell-output .cell-output-stdout}\n```\n[1] 57538\n```\n:::\n:::\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

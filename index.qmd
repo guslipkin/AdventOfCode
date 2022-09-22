@@ -1,9 +1,17 @@
-# Preface {.unnumbered}
+---
+title: "Welcome!"
+format: html
+---
 
-This is a Quarto book.
+Welcome to my Advent of Code book! All of my solutions are in R with varying degrees of complexity and documentation.
 
-To learn more about Quarto books visit <https://quarto.org/docs/books>.
+## Star Chart
 
-```{r}
-1 + 1
-```
+- 2015: ⭐️⭐️⭐️⭐️⭐️ ⭐️⭐️⭐️⭐️⭐️ ⭐️⭐️
+- 2016: 
+- 2017: 
+- 2018: ⭐️⭐️⭐️⭐️⭐️ ⭐️⭐️⭐️⭐️⭐️ ⭐️⭐️
+- 2019: 
+- 2020: ⭐️⭐️⭐️⭐️⭐️ ⭐️⭐️⭐️⭐️⭐️ ⭐️⭐️⭐️⭐️⭐️ ⭐️⭐️⭐️⭐️⭐️
+- 2021: ⭐️⭐️⭐️⭐️⭐️ ⭐️⭐️⭐️⭐️⭐️ ⭐️⭐️⭐️⭐️⭐️ ⭐️⭐️⭐️⭐️⭐️ ⭐️⭐️⭐️
+- 2022: 

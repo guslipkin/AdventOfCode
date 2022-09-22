@@ -1,9 +1,13 @@
-# 2018-06: Chronal Coordinates
+---
+title: "2018-06: Chronal Coordinates"
+format: 
+  html: 
+    toc: true
+---
 
 ```{r}
 library(data.table)
 library(dbscan)
-library(factoextra)
 ```
 
 ```{r}

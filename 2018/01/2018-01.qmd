@@ -1,4 +1,9 @@
-# 2018-01: Chronal Calibration
+---
+title: "2018-01: Chronal Calibration"
+format: 
+  html: 
+    toc: true
+---
 
 [https://adventofcode.com/2018/day/1](https://adventofcode.com/2018/day/1)
 

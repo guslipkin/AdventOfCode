@@ -1,4 +1,9 @@
-# 2018-05: Alchemical Reduction
+---
+title: "2018-05: Alchemical Reduction"
+format: 
+  html: 
+    toc: true
+---
 
 ```{r}
 library(stringi)

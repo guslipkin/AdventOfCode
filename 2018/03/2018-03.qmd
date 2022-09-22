@@ -1,10 +1,18 @@
-# 2018-03: No Matter How You Slice It
+---
+title: "2018-03: No Matter How You Slice It"
+format: 
+  html: 
+    toc: true
+---
 
 ```{r}
 library(data.table)
 library(stringi)
 dt <- readLines("input.txt")
-dt <- data.table(do.call(rbind, stri_match_all_regex(dt, "#([0-9]{1,4}) @ ([0-9]{0,4}),([0-9]{0,4}): ([0-9]{0,4})x([0-9]{0,4})")))
+pattern <- 
+  "#([0-9]{1,4}) @ ([0-9]{0,4}),([0-9]{0,4}): ([0-9]{0,4})x([0-9]{0,4})"
+dt <- 
+  data.table(do.call(rbind, stri_match_all_regex(dt, pattern)))
 colnames(dt) <- c("input", "id", "xPos", "yPos", "xSize", "ySize")
 dt <- data.table(apply(dt[, 2:6], 2, as.numeric))
 head(dt)
@@ -19,7 +27,8 @@ for(x in 1:nrow(dt)) {
   xSize <- dt$xSize[x] - 1
   yPos <- dt$yPos[x] + 1
   ySize <- dt$ySize[x] - 1
-  mat[xPos:(xPos + xSize), yPos:(yPos + ySize)] <- mat[xPos:(xPos + xSize), yPos:(yPos + ySize)] + 1
+  mat[xPos:(xPos + xSize), yPos:(yPos + ySize)] <- 
+    mat[xPos:(xPos + xSize), yPos:(yPos + ySize)] + 1
 }
 length(mat[mat >= 2])
 ```
