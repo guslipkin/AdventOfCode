@@ -1,0 +1,14 @@
+{
+  "hash": "c56edb9f63ab75c0003b580b80030f11",
+  "result": {
+    "markdown": "---\ntitle: \"2015-01: Not Quite Lisp\"\nformat: html\n---\n\n::: {.cell hash='2015-01_cache/html/unnamed-chunk-1_2765540aa19f21efa7fbd428f3c7996f'}\n\n```{.r .cell-code}\nlibrary(stringr)\n```\n:::\n\n::: {.cell hash='2015-01_cache/html/unnamed-chunk-2_864b562ae603b059a2659204b5db649d'}\n\n```{.r .cell-code}\ndt <- readLines(\"input.txt\")\n```\n\n::: {.cell-output .cell-output-stderr}\n```\nWarning in readLines(\"input.txt\"): incomplete final line found on 'input.txt'\n```\n:::\n:::\n\n\n## Part 1\n\n\n::: {.cell hash='2015-01_cache/html/unnamed-chunk-3_2257fa26dd2ea347fda926656fc9fbde'}\n\n```{.r .cell-code}\nstr_count(dt, \"\\\\(\") - str_count(dt, \"\\\\)\")\n```\n\n::: {.cell-output .cell-output-stdout}\n```\n[1] 138\n```\n:::\n:::\n\n\n## Part 2\n\n\n::: {.cell hash='2015-01_cache/html/unnamed-chunk-4_cd88886107e3f84a3f51cd4c1224d6b3'}\n\n```{.r .cell-code}\ndt <- data.frame(\"paren\" = t(str_split_fixed(dt, \"\", nchar(dt))))\ndt$val <- ifelse(dt$paren == \"(\", 1, -1)\nwhich(cumsum(dt$val) == -1)[1]\n```\n\n::: {.cell-output .cell-output-stdout}\n```\n[1] 1771\n```\n:::\n:::\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

@@ -1,0 +1,28 @@
+---
+title: "2015-05: Doesn't He Have Intern-Elves For This?"
+format: html
+---
+
+```{r}
+df <- readLines("input.txt")
+```
+
+## Part 1
+
+```{r}
+dt <- df
+dt <- dt[!grepl("(ab)|(cd)|(pq)|(xy)", dt)]
+dt <- dt[grepl("(\\w*[aeuio]\\w*){3,}", dt)]
+dt <- dt[grepl("(.)\\1+", dt)]
+length(dt)
+```
+
+## Part 2
+
+```{r}
+dt <- df
+dt <- dt[grepl("(..).*(\\1)", dt, perl = TRUE)]
+dt <- dt[grepl("(.)(.)(\\1)", dt, perl = TRUE)]
+length(dt)
+```
+

@@ -1,0 +1,40 @@
+---
+title: "2020-02: Password Philosophy"
+format: html
+---
+
+```{r}
+library(tidyverse)
+
+df <- read.csv("input.csv")
+head(df)
+```
+
+## Part 1
+
+```{r}
+count <- 0
+
+for(i in 1:nrow(df)) {
+  if(str_count(df$password[i], as.character(df$letter[i])) >= df$min[i] & 
+     str_count(df$password[i], as.character(df$letter[i])) <= df$max[i])
+    count <- count + 1
+}
+
+count
+```
+
+## Part 2
+
+```{r}
+count <- 0
+
+for(i in 1:nrow(df)) {
+  sub <- paste(substr(df$password[i], df$min[i], df$min[i]), 
+               substr(df$password[i], df$max[i], df$max[i]))
+  if(str_count(sub, as.character(df$letter[i])) == 1)
+    count <- count + 1
+}
+
+count
+```

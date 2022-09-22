@@ -1,0 +1,14 @@
+{
+  "hash": "1c0ea4bd3668c1fba385f828d75cfc04",
+  "result": {
+    "markdown": "---\ntitle: \"2015-02: I Was Told There Would Be No Math\"\nformat: html\n---\n\n::: {.cell hash='2015-02_cache/html/unnamed-chunk-1_ea2ef449b92933beae540a5220835a64'}\n\n```{.r .cell-code}\nlibrary(tidyverse)\n```\n\n::: {.cell-output .cell-output-stderr}\n```\n── Attaching packages ─────────────────────────────────────── tidyverse 1.3.2 ──\n✔ ggplot2 3.3.6      ✔ purrr   0.3.4 \n✔ tibble  3.1.8      ✔ dplyr   1.0.10\n✔ tidyr   1.2.0      ✔ stringr 1.4.1 \n✔ readr   2.1.2      ✔ forcats 0.5.2 \n── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──\n✖ dplyr::filter() masks stats::filter()\n✖ dplyr::lag()    masks stats::lag()\n```\n:::\n\n```{.r .cell-code}\nlibrary(stringr)\n```\n:::\n\n::: {.cell hash='2015-02_cache/html/unnamed-chunk-2_76665387fa04d6de5200d438a19c1a14'}\n\n```{.r .cell-code}\ndt <- data.table::fread(\"input.txt\", sep = \"x\")\n```\n:::\n\n\n## Part 1\n\n\n::: {.cell hash='2015-02_cache/html/unnamed-chunk-3_6707766a5276b541b2c46cb84e409472'}\n\n```{.r .cell-code}\n# part 1\ntmp <- dt %>%\n  .[, c(\"l\", \"w\", \"h\") := .(V1 * V2, V2 * V3, V1 * V3)] %>%\n  .[, min := ifelse(l <= w & l <= h, l, \n                    ifelse(w <= l & w <= h, w, h))] %>%\n  .[, sq := 2*l + 2*w + 2*h + min]\nsum(tmp$sq, na.rm = TRUE)\n```\n\n::: {.cell-output .cell-output-stdout}\n```\n[1] 1598415\n```\n:::\n:::\n\n\n## Part 2\n\n\n::: {.cell hash='2015-02_cache/html/unnamed-chunk-4_75328c4b226f4e1cf3d9b749fa18a3d5'}\n\n```{.r .cell-code}\ntmp <- dt %>%\n  .[, c(\"l\", \"w\", \"h\") := .(V1 * V2, V2 * V3, V1 * V3)]\ntmp <- tmp[, c(\"l\", \"w\", \"h\") := .(V1, V2, V3)] %>%\n  .[, max := apply(dt[, .(l, w, h)], 1, max)] %>%\n  rowwise() %>%\n  mutate(test = list(c(l, w, h)))\ntmp$min1 <- t(data.frame(sapply(tmp$test, sort)))[,1]\ntmp$min2 <- t(data.frame(sapply(tmp$test, sort)))[,2]\n\ntmp <- data.table::data.table(tmp)[,rib := ((2*min1 + 2*min2) + (V1 * V2 * V3))]\nsum(tmp$rib, na.rm = TRUE)\n```\n\n::: {.cell-output .cell-output-stdout}\n```\n[1] 3812909\n```\n:::\n:::\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

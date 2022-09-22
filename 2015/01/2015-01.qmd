@@ -1,0 +1,27 @@
+---
+title: "2015-01: Not Quite Lisp"
+format: html
+---
+
+```{r}
+library(stringr)
+```
+
+```{r}
+dt <- readLines("input.txt")
+```
+
+## Part 1
+
+```{r}
+str_count(dt, "\\(") - str_count(dt, "\\)")
+```
+
+## Part 2
+
+```{r}
+dt <- data.frame("paren" = t(str_split_fixed(dt, "", nchar(dt))))
+dt$val <- ifelse(dt$paren == "(", 1, -1)
+which(cumsum(dt$val) == -1)[1]
+```
+

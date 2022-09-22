@@ -1,0 +1,108 @@
+---
+title: "2020-07: Handy Haversacks"
+format: html
+---
+
+```{r}
+library(tidyverse)
+
+df <- read.csv("input.csv")
+
+df$child2C[as.character(df$child2C) == " "] <- NA
+df$child3C[as.character(df$child3C) == " "] <- NA
+df$child4C[as.character(df$child4C) == " "] <- NA
+
+df
+```
+
+## Part 1
+
+```{r}
+longerDF <- data.frame(parent = "", nChild = 0, cChild = "")
+
+for(col in seq(3, 9, by = 2)) {
+  for(r in 1:nrow(df)) {
+    if(!is.na(df[r,col-1]))
+      for(i in 1:df[r,col-1]) {
+        longerDF <- rbind(longerDF, data.frame(parent = df[r,1], 
+                                               nChild = df[r,col-1], 
+                                               cChild = df[r,col]))
+    }
+  }
+}
+longerDF <- longerDF[-1,]
+```
+
+```{r}
+shinygoldDF <- 
+  longerDF[longerDF$cChild == "shiny gold" | longerDF$parent == "shiny gold",]
+```
+
+```{r}
+level <- c("shiny gold")
+oldRows <- 0
+
+while(oldRows != nrow(shinygoldDF)) {
+  oldRows <- nrow(shinygoldDF)
+  level <- unlist(shinygoldDF$parent)
+  shinygoldDF <-
+    df[as.character(df$parent) %in% level |
+         as.character(df$child1C) %in% level |
+         as.character(df$child2C) %in% level |
+         as.character(df$child3C) %in% level |
+         as.character(df$child4C) %in% level, ]
+}
+nrow(shinygoldDF) - 1
+```
+
+## Part 2
+
+::: {.callout-caution}
+
+This solution is still under construction.
+
+:::
+
+```{r}
+library(data.table)
+```
+
+
+```{r}
+#| eval: false
+df <- readLines("input3.txt")
+dt <- data.table("parent" = "", "child" = "")
+# str_split(df, " bags contain | bags, | bags\\.")
+str_extract_all(df, "(no other|\\d) (\\w* \\w*)|(\\w* \\w*) bags") |>
+  lapply(function(x) {
+    c(
+      str_replace_all(x[1], " bags", ""),
+      sapply(x[-1], function(y) {
+        str_extract_all(y, "(\\d|no other)| (\\w* \\w*)")
+      }) |> unlist() |> unname()
+    )
+  }) |>
+  lapply(function(x) {
+    str_remove_all(x, " ")
+  }) |>
+  lapply(function(x) {
+    len <- (length(x) - 1) / 2
+    counts <- x[2*(1:len)]
+    counts <- as.numeric(ifelse(counts == "no other", NA, counts))
+    children <- x[2*(1:len) + 1]
+    children <- sapply(1:length(counts), function(y) {
+      if(!is.na(counts[y])) {
+        t(t(rep(children[y], times = counts[y])))
+      } else { return(NA) }
+    })
+    return(children)
+    parent <- rep(x[1], length(children))
+    
+    (rbind(parent, children))
+  })
+```
+
+```{r}
+rep("c", 5)
+```
+

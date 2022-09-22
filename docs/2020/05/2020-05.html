@@ -1,0 +1,1456 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.148">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Gus Lipkin’s Awesome Code - 2020-05: Binary Boarding</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-sidebar floating nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Gus Lipkin’s Awesome Code</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="https://guslipkin.github.io/">Main Site</a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="https://guslipkin.github.io/contact.html">Contact Me</a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="https://adventofcode.com/about">About AoC</a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/in/guslipkin/"><i class="bi bi-linkedin" role="img">
+</i> 
+ </a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://www.github.com/guslipkin"><i class="bi bi-github" role="img">
+</i> 
+ </a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://www.twitter.com/GusLipkin"><i class="bi bi-twitter" role="img">
+</i> 
+ </a>
+  </li>  
+</ul>
+              <div class="quarto-toggle-container">
+                  <a href="" class="quarto-color-scheme-toggle nav-link" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+              </div>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+    <div class="container-fluid d-flex justify-content-between">
+      <h1 class="quarto-secondary-nav-title">2020-05: Binary Boarding</h1>
+      <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
+        <i class="bi bi-chevron-right"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto">
+      <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+      </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../index.html" class="sidebar-item-text sidebar-link">Welcome!</a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="false">2015</a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="false">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../2015/01/2015-01.html" class="sidebar-item-text sidebar-link">2015-01: Not Quite Lisp</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../2015/02/2015-02.html" class="sidebar-item-text sidebar-link">2015-02: I Was Told There Would Be No Math</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../2015/03/2015-03.html" class="sidebar-item-text sidebar-link">2015-03: Perfectly Spherical Houses in a Vacuum</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../2015/04/2015-04.html" class="sidebar-item-text sidebar-link">2015-04: The Ideal Stocking Stuffer</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../2015/05/2015-05.html" class="sidebar-item-text sidebar-link">2015-05: Doesn’t He Have Intern-Elves For This?</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../2015/06/2015-06.html" class="sidebar-item-text sidebar-link">2015-06: Probably a Fire Hazard</a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="false">2018</a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="false">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../2018/01/2018-01.html" class="sidebar-item-text sidebar-link">2018-01: Chronal Calibration</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../2018/02/2018-02.html" class="sidebar-item-text sidebar-link">2018-02: Inventory Management System</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../2018/03/2018-03.html" class="sidebar-item-text sidebar-link">2018-03: No Matter How You Slice It</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../2018/04/2018-04.html" class="sidebar-item-text sidebar-link">2018-04: Repose Record</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../2018/05/2018-05.html" class="sidebar-item-text sidebar-link">2018-05: Alchemical Reduction</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../2018/06/2018-06.html" class="sidebar-item-text sidebar-link">2018-06: Chronal Coordinates</a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">2020</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../2020/01/2020-01.html" class="sidebar-item-text sidebar-link">2020-01: Report Repair</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../2020/02/2020-02.html" class="sidebar-item-text sidebar-link">2020-02: Password Philosophy</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../2020/03/2020-03.html" class="sidebar-item-text sidebar-link">2020-03: Toboggan Trajectory</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../2020/04/2020-04.html" class="sidebar-item-text sidebar-link">2020-04: Passport Processing</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../2020/05/2020-05.html" class="sidebar-item-text sidebar-link active">2020-05: Binary Boarding</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../2020/06/2020-06.html" class="sidebar-item-text sidebar-link">2020-06: Custom Customs</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../2020/07/2020-07.html" class="sidebar-item-text sidebar-link">2020-07: Handy Haversacks</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../2020/08/2020-08.html" class="sidebar-item-text sidebar-link">2020-08: Handheld Halting</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../2020/09/2020-09.html" class="sidebar-item-text sidebar-link">2020-09: Encoding Error</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../2020/10/2020-10.html" class="sidebar-item-text sidebar-link">2020-10: Adapter Array</a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#part-1" id="toc-part-1" class="nav-link active" data-scroll-target="#part-1">Part 1</a></li>
+  <li><a href="#part-2" id="toc-part-2" class="nav-link" data-scroll-target="#part-2">Part 2</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title d-none d-lg-block">2020-05: Binary Boarding</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+    
+  </div>
+  
+
+</header>
+
+<div class="cell" data-hash="2020-05_cache/html/unnamed-chunk-1_eba1f5064da020123d8e38ecc795bbac">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stringr)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(DescTools)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"input.csv"</span>)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>df</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>         X1  X2
+1   FBFBBFB RRL
+2   BBFFBFF RLR
+3   FBBFFBB LLL
+4   FBFBFBF RRR
+5   FBBBFFF LLL
+6   FFBFBBF LLR
+7   BFBBBFB LRR
+8   BFBBBFF RLL
+9   FBFFBFF LLL
+10  BFBFBFF RLR
+11  FBFBFFB LLL
+12  FBFFBBF LLR
+13  FBFBBBB LRR
+14  BFFBBBF LLL
+15  BFBBFBB LLL
+16  FBFFFFB LRL
+17  BFBFFFF LRR
+18  BFBBFFB RRL
+19  FBFFFFB LLL
+20  FBBBBFF RLR
+21  BFBBBFB LRL
+22  BBFFBFB RRL
+23  FBBFFFB RRL
+24  FFBFBBF RRL
+25  FFFFBBF LLR
+26  FBFFFBB RLR
+27  FFBBFBB RRR
+28  FFBFBFF RLL
+29  BFFFFFB LRL
+30  FFBBBFB LLR
+31  FBBFFBB LRR
+32  FBBFFBB RRL
+33  FFBBBFF RRL
+34  FFBFFBB RLL
+35  FBBFFBF LLL
+36  BFBBFBB RRL
+37  FFFFFBB RLR
+38  FBBBFFF LRL
+39  BFBBFBB RRR
+40  BFBFFBF LLL
+41  BFFBFBB LRL
+42  FBFBFFF LRR
+43  FBFBBBB LLR
+44  FFFFBFF RLR
+45  BFFBFBB LRR
+46  BBFFBBB LRL
+47  FBBFFFF LLL
+48  FBFBFFF RLL
+49  FFFBFBF RLL
+50  BBFFFBF LRR
+51  BFFBBBB LRL
+52  BBFFBBF LLL
+53  FBBBBBF LLR
+54  BFFFFBB RRR
+55  FFBBFBB RLR
+56  FBFBFFF RRL
+57  BFFBFBF RLL
+58  FBFBFBB LRR
+59  BBFFBBB RLL
+60  FFBBFFF LRL
+61  FFFBFBB LLR
+62  BFFFBFF LLL
+63  BFFFBFF LRL
+64  BFFBFFB LLR
+65  BFBBFBB LRL
+66  FFFBFFF RRL
+67  BFFFBBF LRR
+68  FFBBBFF RRR
+69  FBBFBBB RLR
+70  FFBFBFF LRL
+71  BBFFBFB RRR
+72  FBBFFFB LLL
+73  FBFFBBF RRR
+74  BFBFFFB LLL
+75  FFFFBFF LLR
+76  FBFBFBF LRR
+77  BFFFBBF RLL
+78  BFBBBFF LRR
+79  FFBBFBB LRR
+80  BFFFFBB RLR
+81  BFBFBBB LLR
+82  BFFFFBB LLL
+83  FBBFFBB RLL
+84  FBFFBFB RRR
+85  BFBFBFF LRR
+86  FFFFBBB RRL
+87  FBBBFFB RRR
+88  FFFFBFF LLL
+89  BFBFBFB RRR
+90  FBBBBBF RRR
+91  BFBBBBB RLL
+92  BFBFFBB RRL
+93  BFFFFFF RLL
+94  BFBBBBF RLL
+95  FBFFFFF LLR
+96  FFFBBFB RRL
+97  BFBBFBF RRL
+98  FFFFBBF RLL
+99  FFFFFBB RRL
+100 FFBFFBF RRR
+101 FFBBFBB RRL
+102 BFBBFFF RLR
+103 BBFFFFB RLL
+104 FBFFBFB LRL
+105 FBFBBBF RLR
+106 BFBFBFF LRL
+107 BFFFFFB LRR
+108 FBFFBBF RLR
+109 FBBFFBB LLR
+110 BFFFBFF LLR
+111 BFBFFBF RLR
+112 BFBFFBB RLR
+113 FBBBBFB LLL
+114 BFBFBBF LLL
+115 FBBFBBB LRR
+116 FBBFBFB RLR
+117 BFBBFBF LRR
+118 BFFFFFF LLR
+119 BFBFBBF LLR
+120 FFBBBFB LRR
+121 FFBBBBB RLR
+122 FFFBBFF RRR
+123 FFFFBFB LRL
+124 BBFFBFB RLR
+125 BBFFBFF LRL
+126 BBFFFFB RRR
+127 BFBBFFB RLR
+128 FBBBBBB LLL
+129 FFBFFFB RRL
+130 FBFFBBB LRL
+131 FBBFBBF RRL
+132 FBBBBFB RRR
+133 BFFFFFF LRR
+134 BFBBBFB LLL
+135 FFBBFBF LRR
+136 FFFFBBF LRL
+137 FBFBBFF LRL
+138 FBFBBFF LLL
+139 FFFBBFF LLR
+140 BFBBFBF LLR
+141 FFFFFBB LRR
+142 FFBFFFF RLL
+143 BFBFFFF LRL
+144 BFFBBBB LRR
+145 FBBFFFB RRR
+146 FFFBBBB RLL
+147 BFBFBBB RRL
+148 BBFFFBF LLR
+149 FBBBFBB LRR
+150 FFBBBFB RRR
+151 BBFFBFF RLL
+152 FFFBBBF RLR
+153 BBFFFBF RLR
+154 FBFBBFB RRR
+155 BFBFBFB LRL
+156 FFFBFBF RRR
+157 FFBFFFF LRR
+158 FFFFBFF LRL
+159 FFBBBBF RLL
+160 FFFFBBB LRR
+161 FBBBBBB LRL
+162 BFFBBBF LLR
+163 FFBBFBB LLL
+164 FFFBBBB LLR
+165 BFFBBBB RLL
+166 FBBFBFF RRR
+167 BBFFBFF RRL
+168 FFBFBFF LLL
+169 BFFBBFB LLR
+170 FFFFBFB RRL
+171 FFBFBBF LRL
+172 FBBFFFF LRL
+173 FBBBFFF LRR
+174 BFBBBBF RRR
+175 FBFBFBB RRL
+176 BFFFFBF RLR
+177 BFBFFBB LRR
+178 FFFBBBF LRR
+179 FBBBFBF RRR
+180 FFFFBBB RLR
+181 FFFFBFB LLR
+182 BFFFBBF LLR
+183 FFFBFFF LLL
+184 BBFFFBF RRR
+185 FFBFBBB LRR
+186 FFFFBFF LRR
+187 FBFFBBB LRR
+188 BBFFFBB LRL
+189 FBBBFBF LRR
+190 BFFBBFB RRR
+191 FBFFBFF RLL
+192 FBFBFBB LLL
+193 BBFFBFF RRR
+194 BFFBFBB LLR
+195 FBFBFFF RRR
+196 BFBFFBB LRL
+197 FFBBBFB LRL
+198 BFFBBFF RLR
+199 BFFFBBB LLL
+200 BFFFFFF RRR
+201 FBBBBFB LRL
+202 BFFFFFF RRL
+203 FFFBFFF LRR
+204 FFBBFFF RRL
+205 BFFBFBF LRL
+206 FBBBFBB RLL
+207 BFFBFBF RRR
+208 FFBFFFF LRL
+209 FBBFBFF LRL
+210 FFFFBFF RRR
+211 BBFFBBF LRR
+212 FBBBFFF RRR
+213 FFFBFFB LLL
+214 FBBBFFF LLR
+215 FFBFFFB LLR
+216 FFBBFFB RRR
+217 BBFFFBB RRL
+218 FFFFBBF RLR
+219 BFFBFBB LLL
+220 FFFBBFF LRR
+221 FBBBFFF RLL
+222 FFBBBBB RRR
+223 BFBBFBF LRL
+224 BFBBBBB RRL
+225 FBFBFBB LLR
+226 FFBFFFB RLL
+227 FFFFBBF LLL
+228 FFFBBFB LLR
+229 FFFBBBB LRL
+230 BFFBFFF LLL
+231 FFBFFBF RRL
+232 FBBFFFB LLR
+233 BBFFFFB LRL
+234 BFFFBBB RLR
+235 BFFBFFB LRL
+236 BBFFBFB LLL
+237 FBFBFBB RLL
+238 FFFBBFB RLL
+239 BBFFFBF RRL
+240 FBBBFFF RRL
+241 BFBFBFB RLL
+242 BFBBFFF LRR
+243 FFFFBFB RLL
+244 FFBBBFB RLL
+245 BFBBFFF LLL
+246 BFBFFFB RRL
+247 FBFBFBF RLR
+248 FBFFBBB RLL
+249 BBFFBFB LRL
+250 BFBBBBB LLL
+251 FBBFBFF RLR
+252 FFFBFBF RRL
+253 BFBBFBF LLL
+254 BFFFFBF LLR
+255 FBFBFFB LRL
+256 FBFBFFB RRR
+257 BFBFFFF LLR
+258 BFFFFBF RRL
+259 BFFFFBF LRR
+260 BBFFFFF RRL
+261 FFFBFFB RRR
+262 BBFFBFF LLL
+263 FBFFFBB LLL
+264 FBBFBBF LRR
+265 BFBBBBF RRL
+266 BFBBBFB RLR
+267 BFFFFFB RLR
+268 FFBFBBB RRL
+269 FBFBFFB RLL
+270 BFFFBFB LRL
+271 FFBFBFF RLR
+272 FBFFFBB RRR
+273 BFFBFFB LRR
+274 BFBFBFB LRR
+275 FBFFBFB LLL
+276 BFBBBFB RRL
+277 FBBFFBF RLL
+278 FFBFBFB RLR
+279 BBFFFFF LLL
+280 BFBBBFB RRR
+281 FFBBFBF RRR
+282 BFFBFBF LRR
+283 FBBBFBF RLL
+284 FBBBBBB RLL
+285 FBFBFBB RLR
+286 BFBBBFF RLR
+287 FBFBBFF LLR
+288 BBFFBBB LLL
+289 BFFFBFB LLR
+290 FFBBBBF LLR
+291 BFFBBFB RLR
+292 FBFBBBF LLL
+293 FFBFBFF LLR
+294 FFBFFFF LLR
+295 FBBFBFF RLL
+296 BFFBBBF LRL
+297 FFFBFFB RRL
+298 FFFBFBB RRL
+299 FFBFBBF RLL
+300 BBFFBFB LRR
+301 BBFFFBB RRR
+302 FBFFFFB LRR
+303 BFBFBFB RLR
+304 BFBBFFB LLL
+305 BFBFBFF RRL
+306 BFBFFBB RRR
+307 FBBFBBF RLR
+308 BFBBFFF RLL
+309 BFBFFFB LRR
+310 FBBFFBB RLR
+311 FFBFFBB RLR
+312 FFBBBBF LRL
+313 BFFFBFB RRL
+314 BBFFBBB LLR
+315 BFBFBFB LLR
+316 FFFBFFF RLR
+317 BFFBBBB LLR
+318 BFBBFFB RRR
+319 BFFFBFB LRR
+320 BFBFBBB RRR
+321 FBBFBBF LLR
+322 FBFFFBF RLL
+323 FBBBBFF LRL
+324 FFBBFBF LLL
+325 BFBFFBF LRR
+326 FFFFBBB RLL
+327 FBFFBBF LRL
+328 FFBFFFF RRR
+329 BFBBFBB LLR
+330 FFBBFBB LRL
+331 FFBBFBF RLR
+332 FFFFBBB LLR
+333 BFFBBFB RRL
+334 FBFFBFF RRL
+335 FBBFBBB RRL
+336 FFBFFFB RLR
+337 BBFFFBB LRR
+338 BFFBBFF RRR
+339 FBFFFBF RRR
+340 FBBFBBF RLL
+341 FFBFBFB LLR
+342 BBFFBFF LRR
+343 FBBFFBB LRL
+344 FBFFFFF LRR
+345 FFBBFBB RLL
+346 FFBBBBB LRL
+347 FFFBBFB RRR
+348 BFBFFFB RRR
+349 FFBFFFF RRL
+350 BBFFFFB RLR
+351 FFBFFBB LLL
+352 BFBFFFF RLR
+353 FBBFBBB RRR
+354 FFFBFFF LRL
+355 BFBFBFF LLR
+356 BBFFFFF RLL
+357 BFBFBFF RLL
+358 BFFFBBB RLL
+359 BFBFBFF RRR
+360 BFFFBFF RLR
+361 FFBBFFB RRL
+362 FFBFFFB RRR
+363 FBFFBBF LLL
+364 BFBBFFF LLR
+365 BFBBBFF RRR
+366 FFBFBBF RRR
+367 FFFBBBB RLR
+368 FBFFFBB LLR
+369 FBBBFBF RLR
+370 FBFBBFF RLR
+371 FFFBFFB LRR
+372 FFBBBBF LLL
+373 FBFBFBF LLL
+374 BFBFFBF LLR
+375 FFFBBFF LLL
+376 FBFBFBF LLR
+377 BFBFBBF LRR
+378 FBFFBBB RRL
+379 BFFBBBF RLR
+380 BBFFFBF LLL
+381 BFFBFFB RRL
+382 BFFFFFF RLR
+383 FBFFBFF RRR
+384 FFFFBFF RLL
+385 FFFBBFB LRL
+386 BFFBBBF LRR
+387 BFFFBBF LRL
+388 FFBFFFF LLL
+389 BFFBFFF RRL
+390 BFFFFFF LLL
+391 FFFBFBB LLL
+392 FBBBBBB RRL
+393 BFFBFBF RRL
+394 BFBFFFF RLL
+395 BFFFBFB LLL
+396 BFBFFFB RLL
+397 FFFBBBB LRR
+398 BFFBFFF LRR
+399 BFFBBFB RLL
+400 FBFFBBB RLR
+401 FBBBFFB RRL
+402 FBBBBFF LRR
+403 FFFFFBB RRR
+404 BFBBBFF LLL
+405 FFBFBFB RLL
+406 FBFBBBF LLR
+407 BBFFFFF LLR
+408 FFBFFBF RLL
+409 FFFBBBF RRL
+410 FFFBBFB RLR
+411 FFBFBFB RRR
+412 BFFBFBF LLR
+413 BFFFFBF RLL
+414 BFFBBBF RRR
+415 BFFBFBB RRR
+416 BFFBBBB RLR
+417 FFBFFBF LLR
+418 FFBBFFB RLR
+419 FFBFBBB RRR
+420 FFBBFFB LLL
+421 FFFFBFB LRR
+422 BFBFFBF RRR
+423 FFBFFBF LRL
+424 FFBBBFF LRR
+425 FFBFBBF LLL
+426 FBFBBFB LRL
+427 FFBBFFF RRR
+428 FFBFFFB LRR
+429 BFFBFFB RLL
+430 FBFBBBB RRR
+431 BFFFBFF LRR
+432 FBBBBFF RRR
+433 FFBFFFB LLL
+434 BFBFBBF RLR
+435 FFBFFFB LRL
+436 BBFFFBB RLR
+437 BFFBBBF RRL
+438 FFFBFBB RRR
+439 FFBBFFF RLL
+440 FBFFBBF LRR
+441 BFFBBBB LLL
+442 FBFFFFB RRR
+443 FBBFFFB RLR
+444 FFFBBBF RRR
+445 FBBBBBB LRR
+446 FFBBBFF RLR
+447 FBBBFFB RLR
+448 FBBFBFB LRL
+449 FBBBFBF LLR
+450 FBBFFBF RLR
+451 FBFFFFB RLR
+452 BFBFFFF RRL
+453 BFBFBFB RRL
+454 BFFFFBF RRR
+455 FFFBBFF RLL
+456 BBFFBBF RLR
+457 FFFBFBF LLL
+458 FBBBFBF LRL
+459 FBFBBFB RLL
+460 BFFBFFF LLR
+461 BFFBBBF RLL
+462 BFBBBFB LLR
+463 FBFBFFF LRL
+464 FFBFFFF RLR
+465 FFBFBBB RLR
+466 BFBBBFF LLR
+467 BFFFFFB LLR
+468 FBBFBFF RRL
+469 BFFBFBF RLR
+470 FBFFBBF RRL
+471 BBFFBBF RLL
+472 FBFFBFB LRR
+473 FBFBFBF RLL
+474 FFFBBBF LLR
+475 FBFBFBB RRR
+476 FBFBBFB LRR
+477 FFBFBBB LRL
+478 FFBFBFB LLL
+479 FFFBBBB RRL
+480 FBBBBBB RLR
+481 BBFFFFB LLL
+482 FFBBBBB RLL
+483 BFFFBBF RRR
+484 BBFFFFB LRR
+485 FBFFFFF LRL
+486 BFBFFFB LRL
+487 FBBBFBB RRR
+488 BFFBBBB RRL
+489 FBFFFBF RRL
+490 BBFFBBF LRL
+491 FBBFFBF LLR
+492 FBFBFBB LRL
+493 FBFBFFF LLR
+494 BFFFBBF RRL
+495 BFBFBBB RLR
+496 BFFBFBB RLR
+497 BFFFBFF RRR
+498 BBFFFFB RRL
+499 FFBFBBF LRR
+500 BFFFBBB LRL
+501 FBBBFBB LRL
+502 FFBBBBF LRR
+503 BFFFBFB RRR
+504 BFFBBFF LRR
+505 FBFFFBF LLL
+506 BFFBFFF LRL
+507 FFFFBBB LRL
+508 FFBBBBB RRL
+509 FBBBFFB LLR
+510 BBFFFBB RLL
+511 FBFFBFB RLL
+512 BFFFBFB RLL
+513 FBFFBFF LRL
+514 FFFFFBB LRL
+515 FBFBFFB LLR
+516 FFFBFBB LRL
+517 FBFFBBB RRR
+518 FFFBBFF RRL
+519 FBFBBFF LRR
+520 FBBFBFF LLL
+521 BFFFBFF RRL
+522 FFBFFBB RRR
+523 BFBBBBF LLL
+524 BFFFBFF RLL
+525 FBFFBFF LLR
+526 BFFBBFB LLL
+527 BBFFFBB LLL
+528 FBFBBBB LRL
+529 BBFFBFB LLR
+530 BBFFBBF RRR
+531 BFFBFFF RRR
+532 FBBFBBF LRL
+533 FFBFBFB RRL
+534 FFFBFFF LLR
+535 BFBFBFF LLL
+536 FFFBFBB RLL
+537 FFBFBFF LRR
+538 BFFFFFF LRL
+539 FBBFFFB RLL
+540 FBBFBBB LLR
+541 FBBBFFB LLL
+542 BBFFBBF LLR
+543 FFFFFBB LLR
+544 FBBBFFF RLR
+545 FBBFFFF RRR
+546 BFBFFBF LRL
+547 FFFBFFF RRR
+548 FBFFFFF LLL
+549 FFBFBBB LLL
+550 FFBBFFB LRR
+551 FFFFBBF RRL
+552 FBFFBBB LLL
+553 FFFBBFF RLR
+554 BFBFBBB LRL
+555 FBFFBBF RLL
+556 FBFBFFF RLR
+557 FFBBBFF LLL
+558 FBBFFBF LRR
+559 BFBFBBB RLL
+560 BFFBBFF LLL
+561 BFFBBFF RLL
+562 FFFBFFF RLL
+563 FBFBBBF RLL
+564 FBBBFBB LLL
+565 FBFBFFB RRL
+566 FBFBBBF LRR
+567 FBBBBBF LRL
+568 FBBFFFB LRL
+569 BFFFBBB LLR
+570 FBFBBFB LLL
+571 BFBBBBB LRL
+572 BFBBBBB LLR
+573 FFBFFBF RLR
+574 BFBBBBF LLR
+575 FFBBFFF LLL
+576 FFBFBFB LRL
+577 FFBBFFF LRR
+578 FBFBBFB LLR
+579 FBBFFBF RRR
+580 FBBFBBF RRR
+581 BFFBFBF LLL
+582 FBBFBBB RLL
+583 BFFFFBB LRR
+584 BBFFFFF LRL
+585 FFFBBFB LRR
+586 BFBFBFB LLL
+587 FFBBFFB RLL
+588 FFBBFBF RRL
+589 FFFBFFB RLL
+590 FBBBFBF LLL
+591 BFFBBFF RRL
+592 FBFFBFF LRR
+593 FFFFBFB LLL
+594 BFFFBBF LLL
+595 FFBBBFB RRL
+596 BFFBFFF RLR
+597 FBBBFFB LRL
+598 FFBBFBF RLL
+599 FFFBBFB LLL
+600 FFBBBFB RLR
+601 FFFBFBF LRL
+602 FBBFBBB LLL
+603 FFBFBFB LRR
+604 BFFFBFB RLR
+605 BFFBFFB RLR
+606 BFFFBBB RRL
+607 FFFFBFB RRR
+608 BFFBBFF LLR
+609 FFFBFFB RLR
+610 FBBFBFF LRR
+611 FFFFFBB LLL
+612 BFFFBBB RRR
+613 BFBFBBB LRR
+614 FBBFFFB LRR
+615 BFFFFBB LLR
+616 FFFBBFF LRL
+617 BFBBFBF RRR
+618 FFFBFBF LRR
+619 FFBFBBF RLR
+620 FFBFFBF LRR
+621 FFFBBBB LLL
+622 BFFBBFB LRL
+623 FFFBBBF RLL
+624 FFBBBBF RRL
+625 FFFFBFB RLR
+626 FBFFFBB LRL
+627 FBBBBBB LLR
+628 BFFFFFB RRR
+629 FBFFFFF RRR
+630 FBBBFBB LLR
+631 FFFBFFB LRL
+632 FBBFBFB RLL
+633 FBFFBFB LLR
+634 FBFFFBF LLR
+635 FBFBBFF RLL
+636 FBFFFFB RRL
+637 BFBFFFF LLL
+638 FFBFFBB LRR
+639 FBBFFFF RRL
+640 FFBFFBB LRL
+641 FFBBFBF LLR
+642 FFBBBFB LLL
+643 FFFBBBF LRL
+644 FBFFFFF RLR
+645 FBBFBBF LLL
+646 FBBBBFB LLR
+647 FFFBFFB LLR
+648 FBBBBFF LLL
+649 FBBFBBB LRL
+650 FFBBFBB LLR
+651 FBFBBFB RLR
+652 FFFFBBF LRR
+653 FBBBBBF RRL
+654 FBFBBBB RRL
+655 FBFFBFB RLR
+656 BFBFBBF RRL
+657 FBFBBBF RRR
+658 BFBFFBB LLR
+659 BFBFFFB RLR
+660 FFBFFBB LLR
+661 BBFFFBF LRL
+662 FBBBBBB RRR
+663 BFFFFBF LLL
+664 FFBBBFF RLL
+665 FBBFBFB RRL
+666 FBBFFFF LLR
+667 FBFFFBF LRR
+668 BFBFBBF LRL
+669 FBFFFFB LLR
+670 BBFFFFF RRR
+671 BFFFFFB RLL
+672 FFFFFBB RLL
+673 FBFBBBB LLL
+674 BFBFFBB LLL
+675 FBFFFBB RRL
+676 FBBFBFB LRR
+677 BFBBFFF RRL
+678 FBFBBBF LRL
+679 FBBFFBB RRR
+680 FBBBFFB LRR
+681 BFBFBBF RRR
+682 FBBBBFB LRR
+683 FBFFFBF RLR
+684 FBBFBFB RRR
+685 FFFFBBF RRR
+686 BBFFFBF RLL
+687 FFBBBFF LRL
+688 BBFFFBB LLR
+689 FBBBFBB RLR
+690 FBFBFBF RRL
+691 FBFBFFB RLR
+692 BFBBBBB RRR
+693 FBBBBBF LLL
+694 FBFFBFF RLR
+695 FBBFFFF RLR
+696 FBFBBBB RLR
+697 FFBBBBB LLR
+698 BFBBFFF RRR
+699 BFBBBBF LRL
+700 FBFFFBB LRR
+701 BFBFFBF RLL
+702 FBFBBFF RRR
+703 FFBFFBB RRL
+704 BFBFFBB RLL
+705 BFBBFFB LLR
+706 BFBBFBB RLL
+707 BFBBBBF RLR
+708 FFBBFBF LRL
+709 BFFBFFF RLL
+710 FBBBFBB RRL
+711 BBFFBBF RRL
+712 FBBFBFF LLR
+713 BFFFFBF LRL
+714 FBBBBFF RRL
+715 FBBBBFF LLR
+716 FFBBFFF RLR
+717 FBFFFBB RLL
+718 BFBFFFF RRR
+719 BFBBFFB LRL
+720 BFBBFFB LRR
+721 BBFFBFB RLL
+722 FBBFFFF RLL
+723 BBFFFFB LLR
+724 FFFFBFF RRL
+725 FFBFBFF RRR
+726 FBFBBBF RRL
+727 BFFFFBB RLL
+728 BFFFFBB RRL
+729 FBFBFFB LRR
+730 FFFBBBF LLL
+731 FFBBBBF RRR
+732 FBBBBBF RLL
+733 BBFFBBB LRR
+734 FBBBBFB RRL
+735 FBBBBFB RLR
+736 FFBFBFF RRL
+737 FBFBFBF LRL
+738 BFFBFFB RRR
+739 BFFBBFB LRR
+740 FBBFFFF LRR
+741 BFBFFBF RRL
+742 FFBBBBB LRR
+743 FBFFBBB LLR
+744 BFBBFBB LRR
+745 BFBFBBF RLL
+746 FFBFBBB LLR
+747 FFFBFBB RLR
+748 FFBBFFB LLR
+749 FFBFFBF LLL
+750 FBBBFBF RRL
+751 BFBBBFF LRL
+752 BFBBFFF LRL
+753 FBFBBFF RRL
+754 FFFBFBF RLR
+755 FBBBFFB RLL
+756 FBBBBFB RLL
+757 FBBBBBF LRR
+758 BFBBFBF RLL
+759 BFBBBBB LRR
+760 FFFBBBB RRR
+761 FBBFFBF LRL
+762 FFBFBBB RLL
+763 BFFBFBB RLL
+764 BBFFFFF RLR
+765 FFFBFBF LLR
+766 FBFFBFB RRL
+767 BFFFBBB LRR
+768 BFBBFBB RLR
+769 FBBBBBF RLR
+770 FBFFFBF LRL
+771 FFBBBBF RLR
+772 BFFFFFB RRL
+773 BFFFFFB LLL
+774 BFBFBBB LLL
+775 BBFFFFF LRR
+776 FBBFBFB LLR
+777 BFBFFFB LLR
+778 FBFFFFF RRL
+779 FFFFBBB RRR
+780 BFBBFBF RLR
+781 BFBBBFB RLL
+782 BFFFFBB LRL
+783 FFFFFBF RRR
+784 FFBBFFB LRL
+785 BFBBBFF RRL
+786 BBFFBFF LLR
+787 FFBBBBB LLL
+788 FFFBFBB LRR
+789 FBFBFFF LLL
+790 FFFFBBB LLL
+791 BFFBBBB RRR
+792 FBFFFFF RLL
+793 FBFBBBB RLL
+794 BFBBBBB RLR
+795 BFFBFFB LLL
+796 BFFBBFF LRL
+797 FBFFFFB RLL
+798 FFBBFFF LLR
+799 BFFBFBB RRL
+800 FBBFFBF RRL
+801 FBBFBFB LLL
+802 BFBBFFB RLL
+803 BFBBBBF LRR
+804 FFBBBFF LLR
+805 FBBBBFF RLL</code></pre>
+</div>
+</div>
+<section id="part-1" class="level2">
+<h2 class="anchored" data-anchor-id="part-1">Part 1</h2>
+<div class="cell" data-hash="2020-05_cache/html/unnamed-chunk-2_11b5d2d97da4ce910200df0d9ab13544">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>df<span class="sc">$</span>rowbin <span class="ot">&lt;-</span> df<span class="sc">$</span>X1</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>df<span class="sc">$</span>rowbin <span class="ot">&lt;-</span> <span class="fu">str_replace_all</span>(df<span class="sc">$</span>rowbin, <span class="st">"F"</span>, <span class="st">"0"</span>)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>df<span class="sc">$</span>rowbin <span class="ot">&lt;-</span> <span class="fu">str_replace_all</span>(df<span class="sc">$</span>rowbin, <span class="st">"B"</span>, <span class="st">"1"</span>)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>df<span class="sc">$</span>rownum <span class="ot">&lt;-</span> <span class="fu">BinToDec</span>(df<span class="sc">$</span>rowbin)</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>df<span class="sc">$</span>colbin <span class="ot">&lt;-</span> df<span class="sc">$</span>X2</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>df<span class="sc">$</span>colbin <span class="ot">&lt;-</span> <span class="fu">str_replace_all</span>(df<span class="sc">$</span>colbin, <span class="st">"L"</span>, <span class="st">"0"</span>)</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>df<span class="sc">$</span>colbin <span class="ot">&lt;-</span> <span class="fu">str_replace_all</span>(df<span class="sc">$</span>colbin, <span class="st">"R"</span>, <span class="st">"1"</span>)</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>df<span class="sc">$</span>colnum <span class="ot">&lt;-</span> <span class="fu">BinToDec</span>(df<span class="sc">$</span>colbin)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-hash="2020-05_cache/html/unnamed-chunk-3_cbc81b8b768bea70d7a5dfcce51335da">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>df<span class="sc">$</span>seatid <span class="ot">&lt;-</span> (df<span class="sc">$</span>rownum <span class="sc">*</span> <span class="dv">8</span>) <span class="sc">+</span> df<span class="sc">$</span>colnum</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">max</span>(df<span class="sc">$</span>seatid)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 828</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(df, <span class="st">"input2.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="part-2" class="level2">
+<h2 class="anchored" data-anchor-id="part-2">Part 2</h2>
+<div class="cell" data-hash="2020-05_cache/html/unnamed-chunk-4_85806495bc9270af2b966ab787ffac0f">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> df[<span class="fu">order</span>(df<span class="sc">$</span>seatid),]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-hash="2020-05_cache/html/unnamed-chunk-5_7010603a3bb55a6eb918b433427a490d">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">804</span><span class="sc">:</span><span class="dv">1</span>) {</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(df<span class="sc">$</span>seatid[i <span class="sc">+</span> <span class="dv">1</span>] <span class="sc">-</span> df<span class="sc">$</span>seatid[i] <span class="sc">!=</span> <span class="dv">1</span>) {</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    myseat <span class="ot">&lt;-</span> df<span class="sc">$</span>seatid[i <span class="sc">+</span> <span class="dv">1</span>] <span class="sc">-</span> <span class="dv">1</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">break</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>myseat</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 565</code></pre>
+</div>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  let localAlternateSentinel = 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

@@ -1,0 +1,70 @@
+---
+title: "2015-03: Perfectly Spherical Houses in a Vacuum"
+format: html
+---
+
+```{r}
+library(tidyverse)
+library(stringr)
+```
+
+```{r}
+dt <- readLines("input.txt")
+```
+
+## Part 1
+
+```{r}
+dirX <- function(x) {
+  case_when(
+    x == "^" ~ 0,
+    x == ">" ~ 1,
+    x == "<" ~ -1,
+    x == "v" ~ 0
+  )
+}
+dirY <- function(x) {
+  case_when(
+    x == "^" ~ 1,
+    x == ">" ~ 0,
+    x == "<" ~ 0,
+    x == "v" ~ -1
+  )
+}
+
+df <- data.frame("x" = 0, "y" = 0)
+for(i in 1:nchar(dt))
+  df <- rbind(df, data.frame("x" = dirX(substr(dt, i, i)),
+                             "y" = dirY(substr(dt, i, i))))
+df <- data.table::data.table(df)
+df$cumX <- cumsum(df$x)
+df$cumY <- cumsum(df$y)
+df <- df[, .(cumX, cumY)]
+nrow(unique(df))
+```
+
+## Part 2
+
+```{r}
+dfR <- data.frame("x" = 0, "y" = 0)
+dfS <- data.frame("x" = 0, "y" = 0)
+for(i in seq(1, nchar(dt), 2))
+  dfS <- rbind(dfS, data.frame("x" = dirX(substr(dt, i, i)),
+                               "y" = dirY(substr(dt, i, i))))
+for(i in seq(2, nchar(dt), 2))
+  dfR <- rbind(dfR, data.frame("x" = dirX(substr(dt, i, i)),
+                               "y" = dirY(substr(dt, i, i))))
+
+dts <- data.table::data.table(dfS)
+dts$cumX <- cumsum(dts$x)
+dts$cumY <- cumsum(dts$y)
+dtr <- data.table::data.table(dfR)
+dtr$cumX <- cumsum(dtr$x)
+dtr$cumY <- cumsum(dtr$y)
+
+df <- data.table::data.table(rbind(dts, dtr))
+
+df <- df[, .(cumX, cumY)]
+nrow(unique(df))
+```
+

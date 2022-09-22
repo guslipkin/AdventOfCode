@@ -1,0 +1,34 @@
+---
+title: "2015-04: The Ideal Stocking Stuffer"
+format: html
+---
+
+```{r}
+library(tidyverse)
+library(stringr)
+library(digest)
+```
+
+```{r}
+dt <- "bgvyzdsv"
+```
+
+## Part 1
+```{r}
+i <- 0
+while(substr(digest(paste0(dt, i), algo = "md5", serialize = FALSE), 1, 5) != "00000")
+  i <- i + 1
+digest(paste0(dt, i), algo = "md5", serialize = FALSE)
+i
+```
+
+## Part 2
+
+```{r}
+i <- 0
+while(substr(digest(paste0(dt, i), algo = "md5", serialize = FALSE), 1, 6) != "000000")
+  i <- i + 1
+digest(paste0(dt, i), algo = "md5", serialize = FALSE)
+i
+```
+

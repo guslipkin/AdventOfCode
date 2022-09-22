@@ -1,0 +1,49 @@
+---
+title: "2020-01: Report Repair"
+format: html
+---
+
+```{r}
+library(tidyverse)
+
+df <- read.csv("Input.csv")
+head(df)
+```
+
+## Part 1
+
+```{r}
+key <- NA
+
+for(x in 1:200) {
+  for(y in 1:200) {
+    if((df$values[x] + df$values[y]) == 2020) {
+      print(paste(df$values[x], df$values[y]))
+      key <- df$values[x] * df$values[y]
+      print(key)
+    }
+    if(!is.na(key))
+      break
+  }
+}
+```
+
+## Part 2
+
+```{r}
+key <- NA
+
+for(x in 1:200) {
+  for(y in 1:200) {
+    for(z in 1:200) {
+      if((df$values[x] + df$values[y]) + df$values[z] == 2020) {
+        print(paste(df$values[x], df$values[y], df$values[z]))
+        key <- df$values[x] * df$values[y] * df$values[z]
+        print(key)
+      }
+      if(!is.na(key))
+        break
+    }
+  }
+}
+```

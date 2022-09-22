@@ -1,0 +1,49 @@
+---
+title: "2020-05: Binary Boarding"
+---
+
+```{r}
+library(stringr)
+library(DescTools)
+
+df <- read.csv("input.csv")
+df
+```
+
+## Part 1
+
+```{r}
+df$rowbin <- df$X1
+df$rowbin <- str_replace_all(df$rowbin, "F", "0")
+df$rowbin <- str_replace_all(df$rowbin, "B", "1")
+df$rownum <- BinToDec(df$rowbin)
+
+df$colbin <- df$X2
+df$colbin <- str_replace_all(df$colbin, "L", "0")
+df$colbin <- str_replace_all(df$colbin, "R", "1")
+df$colnum <- BinToDec(df$colbin)
+```
+
+```{r}
+df$seatid <- (df$rownum * 8) + df$colnum
+max(df$seatid)
+
+write.csv(df, "input2.csv")
+```
+
+## Part 2
+
+```{r}
+df <- df[order(df$seatid),]
+```
+
+```{r}
+for(i in 804:1) {
+  if(df$seatid[i + 1] - df$seatid[i] != 1) {
+    myseat <- df$seatid[i + 1] - 1
+    break
+  }
+}
+
+myseat
+```

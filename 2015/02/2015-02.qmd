@@ -1,0 +1,42 @@
+---
+title: "2015-02: I Was Told There Would Be No Math"
+format: html
+---
+
+```{r}
+library(tidyverse)
+library(stringr)
+```
+
+```{r}
+dt <- data.table::fread("input.txt", sep = "x")
+```
+
+## Part 1
+
+```{r}
+# part 1
+tmp <- dt %>%
+  .[, c("l", "w", "h") := .(V1 * V2, V2 * V3, V1 * V3)] %>%
+  .[, min := ifelse(l <= w & l <= h, l, 
+                    ifelse(w <= l & w <= h, w, h))] %>%
+  .[, sq := 2*l + 2*w + 2*h + min]
+sum(tmp$sq, na.rm = TRUE)
+```
+
+## Part 2
+
+```{r}
+tmp <- dt %>%
+  .[, c("l", "w", "h") := .(V1 * V2, V2 * V3, V1 * V3)]
+tmp <- tmp[, c("l", "w", "h") := .(V1, V2, V3)] %>%
+  .[, max := apply(dt[, .(l, w, h)], 1, max)] %>%
+  rowwise() %>%
+  mutate(test = list(c(l, w, h)))
+tmp$min1 <- t(data.frame(sapply(tmp$test, sort)))[,1]
+tmp$min2 <- t(data.frame(sapply(tmp$test, sort)))[,2]
+
+tmp <- data.table::data.table(tmp)[,rib := ((2*min1 + 2*min2) + (V1 * V2 * V3))]
+sum(tmp$rib, na.rm = TRUE)
+```
+
