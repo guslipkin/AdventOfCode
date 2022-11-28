@@ -51,3 +51,5 @@ rsconnect/
 2021/.aocdlconfig
 .DS_Store
 .DS_Store
+2022/.aocdlconfig
+*/.DS_Store
