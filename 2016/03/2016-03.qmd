@@ -1,0 +1,37 @@
+---
+title: "2016-03: Squares With Three Sides"
+format: html
+---
+
+```{r}
+library(data.table)
+```
+
+```{r}
+dtM <- fread("input.txt", header = FALSE) |>
+  `colnames<-`(c(letters[1:3]))
+```
+
+## Part 1
+
+```{r}
+dt <- dtM
+dt$valid <- ifelse(dt$a + dt$b > dt$c &
+                     dt$a + dt$c > dt$b &
+                     dt$b + dt$c > dt$a, TRUE, FALSE)
+table(dt$valid)["TRUE"]
+```
+
+## Part 2
+
+```{r}
+dt <- dtM
+dt <- data.table(t(matrix(c(dt$a, dt$b, dt$c), 3, nrow(dt)))) |>
+  `colnames<-`(c(letters[1:3]))
+
+dt$valid <- ifelse(dt$a + dt$b > dt$c & 
+                     dt$a + dt$c > dt$b &
+                     dt$b + dt$c > dt$a, TRUE, FALSE)
+table(dt$valid)["TRUE"]
+```
+

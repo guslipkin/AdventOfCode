@@ -6,7 +6,6 @@ format: html
 ```{r}
 library(stringr)
 df <- read.csv("input2.csv")
-df
 ```
 
 ## Part 1

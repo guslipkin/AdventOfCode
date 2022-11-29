@@ -1,0 +1,21 @@
+---
+title: "2017-07: Some Assembly Required"
+format: html
+---
+
+```{r}
+library(data.table)
+library(stringi)
+```
+
+```{r}
+dt <- readLines("test.txt")
+dt[1:6]
+```
+
+## Part 1
+
+```{r}
+
+```
+

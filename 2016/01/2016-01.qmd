@@ -1,0 +1,83 @@
+---
+title: "2016-01: No Time for a Taxicab"
+format: html
+---
+
+```{r}
+library(tidyverse)
+library(data.table)
+library(stringr)
+```
+
+```{r}
+dt <- readLines("input.txt") |> 
+  str_split(", ", simplify = FALSE) |> 
+  unlist() |>
+  str_match_all("([RL])([0-9]*)") |> 
+  list() |> 
+  rbindlist() |>
+  t() |>
+  data.table() |>
+  `colnames<-`(c("input", "dir", "dis")) |>
+  mutate(dis = as.integer(dis))
+head(dt)
+```
+
+## Part 1
+
+```{r}
+dt$deg <- 0
+for(i in 2:nrow(dt)) {
+  if(dt$dir[i] == "R") { dt$deg[i] <- dt$deg[i-1] + 90 }
+  else {dt$deg[i] <- dt$deg[i-1] - 90}
+}
+dt |>
+  mutate(deg = deg %% 360, 
+         dis = ifelse(deg %in% c(180, 270), -dis, dis)) |>
+  group_by(deg) |>
+  summarise(n = sum(dis)) |>
+  pull(n) |>
+  sum()
+```
+
+## Part 2
+
+```{r}
+points <- matrix(c(ifelse(dt$dir[1] == "R", dt$dis[1], -dt$dis[1]), 0), 1, 2)
+for (j in 2:nrow(dt)) {
+  tmp <- dt[1:j,]
+  tmp$deg <- 0
+  for (i in 2:j) {
+    if (tmp$dir[i] == "R") { tmp$deg[i] <- tmp$deg[i - 1] + 90 }
+    else {  tmp$deg[i] <- tmp$deg[i - 1] - 90 }
+  }
+  tmp |>
+    mutate(deg = deg %% 360,
+           dis = ifelse(deg %in% c(180, 270), -dis, dis)) |>
+    group_by(deg) |>
+      summarise(n = sum(dis)) |>
+      ungroup() |>
+    mutate(deg = ifelse(deg %% 360 %in% c(0, 180), TRUE, FALSE)) |>
+    group_by(deg) |>
+      summarise(n = sum(n)) |>
+      ungroup() |>
+    pull(n) -> point
+  points <- rbind(points, unname(point))
+}
+points <- rbind(t(c(0, 0)), points)
+
+tmp <- t(c(NA, NA))
+
+for(i in 1:(nrow(points) - 1)) {
+  tmp <- 
+    rbind(tmp, cbind(points[i,1]:points[i+1,1], points[i,2]:points[i+1,2]))
+}
+tmp <- tmp[-1,]
+for(i in 1:(nrow(tmp) - 1)) {
+  if(all(tmp[i,] == tmp[i+1,])) {
+    tmp[i,] <- t(c(NA, NA))
+  }
+}
+tmp <- na.omit(tmp)
+sum(tmp[duplicated(tmp),][1,])
+```

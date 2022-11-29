@@ -5,13 +5,28 @@ format: html
 
 Welcome to my Advent of Code book! All of my solutions are in R with varying degrees of complexity and documentation.
 
+::: {.callout-caution}
+
+## Under Construction
+
+I'm still working on getting the 2021 and earlier puzzles converted to Quarto. The star chart below is accurate, even if I don't have the solutions posted here just yet.
+
+:::
+
 ## Star Chart
 
 - 2015: ⭐️⭐️⭐️⭐️⭐️ ⭐️⭐️⭐️⭐️⭐️ ⭐️⭐️
-- 2016: 
+- 2016: ⭐️⭐️⭐️⭐️⭐️ ⭐️️⭐️
 - 2017: 
 - 2018: ⭐️⭐️⭐️⭐️⭐️ ⭐️⭐️⭐️⭐️⭐️ ⭐️⭐️
 - 2019: 
 - 2020: ⭐️⭐️⭐️⭐️⭐️ ⭐️⭐️⭐️⭐️⭐️ ⭐️⭐️⭐️⭐️⭐️ ⭐️⭐️⭐️⭐️⭐️
 - 2021: ⭐️⭐️⭐️⭐️⭐️ ⭐️⭐️⭐️⭐️⭐️ ⭐️⭐️⭐️⭐️⭐️ ⭐️⭐️⭐️⭐️⭐️ ⭐️⭐️⭐️
 - 2022: 
+
+Total Stars: 69/350
+
+```{r}
+#| include: false
+source("post-packages.R")
+```

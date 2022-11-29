@@ -65,6 +65,7 @@ This solution is still under construction.
 
 ```{r}
 library(data.table)
+library(stringr)
 ```
 
 
@@ -92,13 +93,12 @@ str_extract_all(df, "(no other|\\d) (\\w* \\w*)|(\\w* \\w*) bags") |>
     children <- x[2*(1:len) + 1]
     children <- sapply(1:length(counts), function(y) {
       if(!is.na(counts[y])) {
-        t(t(rep(children[y], times = counts[y])))
+       t(t(rep(children[y], times = counts[y])))
       } else { return(NA) }
-    })
-    return(children)
-    parent <- rep(x[1], length(children))
-    
-    (rbind(parent, children))
+    }) |> unlist()
+    sumCount <- ifelse(is.na(counts), 0, counts)
+    parent <- rep(x[1], sum(sumCount))
+    cbind(parent, children)
   })
 ```
 

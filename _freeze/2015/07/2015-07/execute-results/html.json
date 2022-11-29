@@ -1,0 +1,14 @@
+{
+  "hash": "38cd5dac7e637f2a8d6ae8b33015f0ca",
+  "result": {
+    "markdown": "---\ntitle: \"2017-07: Some Assembly Required\"\nformat: html\n---\n\n::: {.cell hash='2015-07_cache/html/unnamed-chunk-1_ac31b9f252cc500104203645a5795fa4'}\n\n```{.r .cell-code}\nlibrary(data.table)\nlibrary(stringi)\n```\n:::\n\n::: {.cell hash='2015-07_cache/html/unnamed-chunk-2_b4a9683e8340f3377b7713bed6f62cea'}\n\n```{.r .cell-code}\ndt <- readLines(\"test.txt\")\ndt[1:6]\n```\n\n::: {.cell-output .cell-output-stdout}\n```\n[1] \"123 -> x\"        \"456 -> y\"        \"x AND y -> d\"    \"x OR y -> e\"    \n[5] \"x LSHIFT 2 -> f\" \"y RSHIFT 2 -> g\"\n```\n:::\n:::\n\n\n## Part 1\n\n\n::: {.cell hash='2015-07_cache/html/unnamed-chunk-3_3c414dc509ccb283f33d5fd6abded154'}\n\n:::\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

@@ -42,6 +42,6 @@ rbenchmark::benchmark(
                       sep = "\n")[, .(diff1 = sum(diff(V1, lag = 1) > 0),
                                       diff3 = sum(diff(V1, lag = 3) > 0))]
   },
-  replications = 1000, columns = c(1:5), order = "user.self")
+  replications = 100, columns = c(1:5), order = "user.self")
 ```
 

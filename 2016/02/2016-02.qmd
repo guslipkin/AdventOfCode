@@ -1,0 +1,77 @@
+---
+title: "2016-02: Bathroom Security"
+format: html
+---
+
+```{r}
+library(data.table)
+library(stringi)
+```
+
+```{r}
+dt <- fread("input.txt", header = FALSE)
+```
+
+## Part 1
+
+```{r}
+mat <- matrix(1:9, 3, 3)
+
+startX <<- 2
+startY <<- 2
+apply(dt, 1, function(x) {
+  sapply(unlist(stri_match_all_regex(x, "[ULRD]")), function(y) {
+    if (y == "U") { startY <<- startY - 1 }
+    else if (y == "D") { startY <<- startY + 1 }
+    else if (y == "L") { startX <<- startX - 1 }
+    else { startX <<- startX + 1 }
+    
+    if(startX == 0) { startX <<- 1 }
+    else if (startX == 4) {startX <<- 3}
+    
+    if(startY == 0) { startY <<- 1 }
+    else if (startY == 4) {startY <<- 3}
+  })
+  return(rbind(startX, startY))
+}) |> 
+  t() |>
+  apply(1, function(x) {
+    return(mat[x[1], x[2]])
+  }) |>
+  paste0(collapse = "")
+```
+
+## Part 2
+
+```{r}
+mat <- as.matrix(fread("grid2.csv", header = FALSE, na.strings = ""))
+
+startX <<- 3
+startY <<- 1
+
+apply(dt, 1, function(x) {
+  sapply(unlist(stri_match_all_regex(x, "[ULRD]")), function(y) {
+    if (y == "L") { 
+      startY <<- startY - 1
+      if (startY == 0 || is.na(mat[startX,startY])) { startY <<- startY + 1 }
+    } else if (y == "R") { 
+      startY <<- startY + 1 
+      if (startY == 6 || is.na(mat[startX,startY])) { startY <<- startY - 1 }
+    } else if (y == "U") { 
+      startX <<- startX - 1 
+      if (startX == 0 || is.na(mat[startX,startY])) { startX <<- startX + 1 }
+    } else { 
+      startX <<- startX + 1 
+      if (startX == 6 || is.na(mat[startX,startY])) { startX <<- startX - 1 }
+    }
+  })
+  return(rbind(startX, startY))
+}) |> 
+  t() |>
+  apply(1, function(x) {
+    return(mat[x[1], x[2]])
+  }) |>
+  paste0(collapse = "") |>
+  stri_replace_all_regex(" ", "")
+```
+

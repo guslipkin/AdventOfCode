@@ -1,7 +1,6 @@
 ---
-title: "Advent of Code 2021 - Day 4"
-author: "Gus Lipkin ~ github.com/guslipkin/AdventOfCode2021"
-output: html_notebook
+title: "2021-04: Giant Squid"
+format: html
 ---
 
 ```{r}
@@ -9,6 +8,8 @@ library(tidyverse)
 library(data.table)
 library(stringr)
 ```
+
+## Part 1
 
 ```{r}
 # part 1
@@ -44,6 +45,8 @@ for(i in 1:length(call)) {
 }
 sum(dt[R:(R+4),], na.rm = TRUE) * call[i]
 ```
+
+## Part 2
 
 ```{r}
 # part 2

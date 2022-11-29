@@ -1,0 +1,78 @@
+---
+title: "2021-01: Sonar Sweep"
+format: html
+---
+
+```{r}
+library(tidyverse)
+library(data.table)
+```
+
+```{r}
+dt <- data.table(read.table("input.txt", sep = "\n"))
+head(dt)
+```
+
+## Part 1
+
+```{r}
+dt$diff <- c(0, diff(dt$V1))
+dt %>%
+  filter(diff > 0) %>%
+  nrow()
+```
+
+## Part 2
+
+```{r}
+dt$diff <- c(0, 0, 0, diff(dt$V1, lag = 3))
+dt %>%
+  filter(diff > 0) %>%
+  nrow()
+```
+
+## Speed Edition
+
+### Fastest Solution
+
+```{r}
+# fastest solution
+# data.table was faster until I turned on warn=FALSE in readLines for Base R
+dt <- as.numeric(readLines("input.txt", warn = FALSE))
+# part 1
+sum(diff(dt, lag = 1) > 0)
+# part 2
+sum(diff(dt, lag = 3) > 0)
+```
+
+### Benchmarks
+
+```{r}
+#| message: false
+rbenchmark::benchmark(
+  "First try" = {
+    library(tidyverse)
+    library(data.table)
+    dt <- data.table(read.table("input.txt", sep = "\n"))
+    # part 1
+    dt$diff <- c(0, diff(dt$V1))
+    dt %>% filter(diff > 0) %>% nrow()
+    # part 2
+    dt$diff <- c(0, 0, 0, diff(dt$V1, lag = 3))
+    dt %>% filter(diff > 0) %>% nrow()
+    },
+  "Base R" = {
+    dt <- as.numeric(readLines("input.txt", warn = FALSE))
+    # part 1
+    sum(diff(dt, lag = 1) > 0)
+    # part 2
+    sum(diff(dt, lag = 3) > 0)
+    },
+  "data.table" = {
+    # part 1 and 2
+    data.table::fread("input.txt", 
+                      sep = "\n")[, .(diff1 = sum(diff(V1, lag = 1) > 0),
+                                      diff3 = sum(diff(V1, lag = 3) > 0))]
+  },
+  replications = 100, columns = c(1:5), order = "user.self")
+```
