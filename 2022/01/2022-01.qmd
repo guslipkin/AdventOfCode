@@ -25,15 +25,14 @@ for (x in dt) {
   x <- as.numeric(x)
   if (!is.na(x)) {
     sm <<- sm + x
-  }
-  else if (sm > maxsm) {
-      maxsm <<- sm
-      sm <<- 0
-  }
-  else {
+  } else if (sm > maxsm) {
+    maxsm <<- sm
+    sm <<- 0
+  } else {
     sm <<- 0
   }
 }
+maxsm
 ```
 
 ## Part 2
@@ -47,10 +46,9 @@ for (x in dt) {
   x <- as.numeric(x)
   if (!is.na(x)) {
     sm <<- sm + x
-  }
-  else  {
-      maxsm <<- c(maxsm, sm)
-      sm <<- 0
+  } else  {
+    maxsm <<- c(maxsm, sm)
+    sm <<- 0
   }
 }
 sum(sort(maxsm, decreasing = TRUE)[1:3])

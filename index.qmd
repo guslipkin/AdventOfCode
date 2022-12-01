@@ -27,6 +27,9 @@ I'm still working on getting the 2021 and earlier puzzles converted to Quarto. T
 Total Stars: 82/400
 
 ```{r}
-#| include: false
+#| echo: false
+#| output: false
 source("post-packages.R")
+
+cat("adventofcode.guslipkin.me", file = "docs/CNAME")
 ```
