@@ -1,0 +1,58 @@
+---
+title: "2022-01"
+format: html
+---
+
+```{r}
+library(tidyverse)
+library(data.table)
+```
+
+My initial thought was to use `data.table::fread` but that skipped the spaces in the input by default. `readLines` keeps the spaces so I switched to that right away.
+
+```{r}
+dt <- readLines("input.txt")
+```
+
+## Part 1
+
+This was just a matter of getting a loop with a maximum value counter going. I knew from the get-go that I would need to use the global assignment operator inside the loop. For reasons I thought that naming my variable `sum` would work but got an error since that's a reserved word in R (duh!). Find+replace helped get that sorted but my inner loop logic was still wrong. I realized that I was missing an `else` case to catch any time the maximum hadn't changed, but the sum needed to be reset.
+
+```{r}
+sm <- 0
+maxsm <- 0
+for (x in dt) {
+  x <- as.numeric(x)
+  if (!is.na(x)) {
+    sm <<- sm + x
+  }
+  else if (sm > maxsm) {
+      maxsm <<- sm
+      sm <<- 0
+  }
+  else {
+    sm <<- 0
+  }
+}
+```
+
+## Part 2
+
+Coming out of Part 1 was really strong, especially on Day 1. Instead of saving just the max sum, I made it a vector to record all sums. Then I just need to sort it, get the top three values, and sum those.
+
+```{r}
+sm <- 0
+maxsm <- c()
+for (x in dt) {
+  x <- as.numeric(x)
+  if (!is.na(x)) {
+    sm <<- sm + x
+  }
+  else  {
+      maxsm <<- c(maxsm, sm)
+      sm <<- 0
+  }
+}
+sum(sort(maxsm, decreasing = TRUE)[1:3])
+```
+

@@ -1,0 +1,50 @@
+---
+title: "2017-03: Spiral Memory"
+format: html
+---
+
+```{r}
+library(tidyverse)
+input <- 265149
+```
+
+## Part 1
+
+```{r}
+grid_dim <- ceiling(sqrt(input))
+
+diff <- (grid_dim ^ 2) - input
+
+side <- case_when(
+  diff < grid_dim ~ "bottom",
+  diff >= grid_dim & diff < grid_dim * 2 ~ "left",
+  diff >= grid_dim * 2 & diff < grid_dim * 3 ~ "top",
+  diff >= grid_dim * 3 & diff < grid_dim * 4 ~ "right",
+)
+
+mid <- ((grid_dim - 1) / 2)
+abs((grid_dim - diff) - mid) + mid - 1
+```
+
+## Part 2
+
+```{r}
+data.frame(x = 1:23,
+           y = c(1, 1, 2, 4, 5, 10, 11, 23, 25, 26, 54, 57, 59, 
+                 122, 133, 142, 147, 304, 330, 351, 362, 747, 806))
+
+mat <- matrix(NA, 5, 5)
+
+x <- 1
+r <- ceiling(5 / 2)
+c <- ceiling(5 / 2)
+target <- 1
+place <- 0
+mat[r,c] <- x
+
+# while (x < input) {
+#   mat[r,c] <- sum(mat[(r-1):(r+1), (c-1):(c+1)], na.rm = TRUE)
+#   if (is.na(mat[r-1,c])) {}
+# }
+```
+

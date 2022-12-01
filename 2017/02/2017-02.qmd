@@ -1,0 +1,40 @@
+---
+title: "2017-02: Corruption Checksum"
+format: html
+---
+
+```{r}
+library(tidyverse)
+```
+
+```{r}
+dt <- data.table::fread("input.txt")
+```
+
+## Part 1
+
+```{r}
+dt %>%
+  rowwise() %>%
+  mutate(
+    "min" = min(across()),
+    "max" = max(across())
+  ) %>%
+  mutate("diff" = max - min) %>%
+  pull(diff) %>%
+  sum()
+```
+
+## Part 2
+
+```{r}
+apply(dt, 1, function(x) {
+  expand.grid(x, x) %>%
+    filter(Var1 != Var2) %>%
+    mutate("valid" = ifelse(Var1 %% Var2 == 0, TRUE, FALSE)) %>%
+    filter(valid) %>%
+    mutate("val" = Var1 / Var2) %>%
+    pull(val)
+}) %>%
+  sum()
+```

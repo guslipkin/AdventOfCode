@@ -69,6 +69,9 @@ website:
           - 2021/02/2021-02.qmd
           - 2021/03/2021-03.qmd
           - 2021/04/2021-04.qmd
+      - section: "2022"
+        contents: 
+          - 2022/01/2022-01.qmd
 
 format:
   html:

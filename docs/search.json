@@ -224,6 +224,69 @@
     "text": "Part 2\n\nx <- lapply(dt[tmp], function(x) {\n  x <- unlist(stri_match_all(x , regex = \"(.*)-([0-9]*)\"))\n  y <- as.numeric(x[3])\n  x <- unlist(strsplit(x[2], \"-\"))\n  x <- cipheR::caesar(x[-length(x)], n = y, preset = \"lowercase\")\n  return(paste(x, collapse = \" \"))\n}) |>\n  unlist()\n\nas.numeric(stri_extract(dt[tmp][which(x == \"northpole object\")], \n                        regex = \"([0-9]{3})\"))\n\n[1] 482"
   },
   {
+    "objectID": "2017/01/2017-01.html",
+    "href": "2017/01/2017-01.html",
+    "title": "2017-01: Inverse Captcha",
+    "section": "",
+    "text": "library(data.table)\nlibrary(magrittr)\n\ndt <- readLines(\"input.txt\") |>\n  strsplit(\"\") |>\n  unlist() |>\n  as.numeric()"
+  },
+  {
+    "objectID": "2017/01/2017-01.html#part-1",
+    "href": "2017/01/2017-01.html#part-1",
+    "title": "2017-01: Inverse Captcha",
+    "section": "Part 1",
+    "text": "Part 1\n\ndata.table(\n  \"input\" = c(dt),\n  \"test\" = c(dt[-1], dt[1])\n) %>%\n  .[, \"valid\" := ifelse(input == test, TRUE, FALSE)] %>%\n  .[valid == TRUE, test] %>%\n  sum()\n\n[1] 1031"
+  },
+  {
+    "objectID": "2017/01/2017-01.html#part-2",
+    "href": "2017/01/2017-01.html#part-2",
+    "title": "2017-01: Inverse Captcha",
+    "section": "Part 2",
+    "text": "Part 2\n\nlen <- length(dt) / 2\ndata.table(\n  \"input\" = c(dt),\n  \"test\" = c(dt[(len + 1):length(dt)], dt[1:len])\n) %>%\n  .[, \"valid\" := ifelse(input == test, TRUE, FALSE)] %>%\n  .[valid == TRUE, test] %>%\n  sum()\n\n[1] 1080"
+  },
+  {
+    "objectID": "2017/02/2017-02.html",
+    "href": "2017/02/2017-02.html",
+    "title": "2017-02: Corruption Checksum",
+    "section": "",
+    "text": "library(tidyverse)\n\n── Attaching packages ─────────────────────────────────────── tidyverse 1.3.2 ──\n✔ ggplot2 3.4.0      ✔ purrr   0.3.5 \n✔ tibble  3.1.8      ✔ dplyr   1.0.10\n✔ tidyr   1.2.1      ✔ stringr 1.4.1 \n✔ readr   2.1.3      ✔ forcats 0.5.2 \n── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──\n✖ dplyr::filter() masks stats::filter()\n✖ dplyr::lag()    masks stats::lag()"
+  },
+  {
+    "objectID": "2017/02/2017-02.html#part-1",
+    "href": "2017/02/2017-02.html#part-1",
+    "title": "2017-02: Corruption Checksum",
+    "section": "Part 1",
+    "text": "Part 1\n\ndt %>%\n  rowwise() %>%\n  mutate(\n    \"min\" = min(across()),\n    \"max\" = max(across())\n  ) %>%\n  mutate(\"diff\" = max - min) %>%\n  pull(diff) %>%\n  sum()\n\n[1] 36174"
+  },
+  {
+    "objectID": "2017/02/2017-02.html#part-2",
+    "href": "2017/02/2017-02.html#part-2",
+    "title": "2017-02: Corruption Checksum",
+    "section": "Part 2",
+    "text": "Part 2\n\napply(dt, 1, function(x) {\n  expand.grid(x, x) %>%\n    filter(Var1 != Var2) %>%\n    mutate(\"valid\" = ifelse(Var1 %% Var2 == 0, TRUE, FALSE)) %>%\n    filter(valid) %>%\n    mutate(\"val\" = Var1 / Var2) %>%\n    pull(val)\n}) %>%\n  sum()\n\n[1] 244"
+  },
+  {
+    "objectID": "2017/03/2017-03.html",
+    "href": "2017/03/2017-03.html",
+    "title": "2017-03: Spiral Memory",
+    "section": "",
+    "text": "library(tidyverse)\n\n── Attaching packages ─────────────────────────────────────── tidyverse 1.3.2 ──\n✔ ggplot2 3.4.0      ✔ purrr   0.3.5 \n✔ tibble  3.1.8      ✔ dplyr   1.0.10\n✔ tidyr   1.2.1      ✔ stringr 1.4.1 \n✔ readr   2.1.3      ✔ forcats 0.5.2 \n── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──\n✖ dplyr::filter() masks stats::filter()\n✖ dplyr::lag()    masks stats::lag()\n\ninput <- 265149"
+  },
+  {
+    "objectID": "2017/03/2017-03.html#part-1",
+    "href": "2017/03/2017-03.html#part-1",
+    "title": "2017-03: Spiral Memory",
+    "section": "Part 1",
+    "text": "Part 1\n\ngrid_dim <- ceiling(sqrt(input))\n\ndiff <- (grid_dim ^ 2) - input\n\nside <- case_when(\n  diff < grid_dim ~ \"bottom\",\n  diff >= grid_dim & diff < grid_dim * 2 ~ \"left\",\n  diff >= grid_dim * 2 & diff < grid_dim * 3 ~ \"top\",\n  diff >= grid_dim * 3 & diff < grid_dim * 4 ~ \"right\",\n)\n\nmid <- ((grid_dim - 1) / 2)\nabs((grid_dim - diff) - mid) + mid - 1\n\n[1] 438"
+  },
+  {
+    "objectID": "2017/03/2017-03.html#part-2",
+    "href": "2017/03/2017-03.html#part-2",
+    "title": "2017-03: Spiral Memory",
+    "section": "Part 2",
+    "text": "Part 2\n\ndata.frame(x = 1:23,\n           y = c(1, 1, 2, 4, 5, 10, 11, 23, 25, 26, 54, 57, 59, \n                 122, 133, 142, 147, 304, 330, 351, 362, 747, 806))\n\n    x   y\n1   1   1\n2   2   1\n3   3   2\n4   4   4\n5   5   5\n6   6  10\n7   7  11\n8   8  23\n9   9  25\n10 10  26\n11 11  54\n12 12  57\n13 13  59\n14 14 122\n15 15 133\n16 16 142\n17 17 147\n18 18 304\n19 19 330\n20 20 351\n21 21 362\n22 22 747\n23 23 806\n\nmat <- matrix(NA, 5, 5)\n\nx <- 1\nr <- ceiling(5 / 2)\nc <- ceiling(5 / 2)\ntarget <- 1\nplace <- 0\nmat[r,c] <- x\n\n# while (x < input) {\n#   mat[r,c] <- sum(mat[(r-1):(r+1), (c-1):(c+1)], na.rm = TRUE)\n#   if (is.na(mat[r-1,c])) {}\n# }"
+  },
+  {
     "objectID": "2018/01/2018-01.html",
     "href": "2018/01/2018-01.html",
     "title": "2018-01: Chronal Calibration",
@@ -677,6 +740,27 @@
     "title": "2021-04: Giant Squid",
     "section": "Part 2",
     "text": "Part 2\n\n# part 2\ndt <- data.frame(fread(\"input2.txt\"))\ncall <- c(84,28,29,75,58,71,26,6,73,74,41,39,87,37,16,79,55,60,62,80,64,95,46,15,5,47,2,35,32,78,89,90,96,33,4,69,42,30,54,85,65,83,44,63,20,17,66,81,67,77,36,68,82,93,10,25,9,34,24,72,91,88,11,38,3,45,14,56,22,61,97,27,12,48,18,1,31,98,86,19,99,92,8,43,52,23,21,0,7,50,57,70,49,13,51,40,76,94,53,59)\nbingo <- 0\nbingoTF <- FALSE\nboards <- nrow(dt) / 5\n\nfor(i in 1:length(call)) {\n  dt$V1[dt$V1 == call[i]] <- NA\n  dt$V2[dt$V2 == call[i]] <- NA\n  dt$V3[dt$V3 == call[i]] <- NA\n  dt$V4[dt$V4 == call[i]] <- NA\n  dt$V5[dt$V5 == call[i]] <- NA\n  \n  for (R in seq(1, nrow(dt), 5)) {\n    if (sum(is.na(dt[R:(R + 4), 1:5])) != 25) {\n      for (r in R:(R + 4)) {\n        if (sum(is.na(dt[r, ])) == 5) {\n          dt[r, ] <- NA\n          bingo <- append(bingo, i)\n          bingoTF <- TRUE\n          break\n        }\n      }\n      for (c in 1:5) {\n        if (sum(is.na(dt[R:(R + 4), c])) == 5) {\n          dt[R:(R + 4), c] <- NA\n          bingo <- append(bingo, i)\n          bingoTF <- TRUE\n          break\n        }\n      }\n      \n      if (bingoTF) {\n        dt[R:(R + 4),] <- NA\n        bingo <- append(bingo, i)\n        bingoTF <- FALSE\n      }\n    }\n  }\n}\n\ndt <- data.frame(fread(\"input2.txt\"))\nbingoTF <- FALSE\n\nfor(i in 1:(bingo[length(bingo)]-1)) {\n  dt$V1[dt$V1 == call[i]] <- NA\n  dt$V2[dt$V2 == call[i]] <- NA\n  dt$V3[dt$V3 == call[i]] <- NA\n  dt$V4[dt$V4 == call[i]] <- NA\n  dt$V5[dt$V5 == call[i]] <- NA\n  \n  for (R in seq(1, nrow(dt), 5)) {\n    if (sum(is.na(dt[R:(R + 4), 1:5])) != 25) {\n      for (r in R:(R + 4)) {\n        if (sum(is.na(dt[r, ])) == 5) {\n          dt[r, ] <- NA\n          bingoTF <- TRUE\n          break\n        }\n      }\n      for (c in 1:5) {\n        if (sum(is.na(dt[R:(R + 4), c])) == 5) {\n          dt[R:(R + 4), c] <- NA\n          bingoTF <- TRUE\n          break\n        }\n      }\n      \n      if (bingoTF) {\n        dt[R:(R + 4),] <- NA\n        bingoTF <- FALSE\n      }\n    }\n  }\n}\n\ndt <- tail(dt[rowSums(dt, na.rm = TRUE) != 0,], 5)\ni <- i + 1\ndt$V1[dt$V1 == call[i]] <- NA\ndt$V2[dt$V2 == call[i]] <- NA\ndt$V3[dt$V3 == call[i]] <- NA\ndt$V4[dt$V4 == call[i]] <- NA\ndt$V5[dt$V5 == call[i]] <- NA\nsum(dt, na.rm = TRUE) * call[i]\n\n[1] 13884"
+  },
+  {
+    "objectID": "2022/01/2022-01.html",
+    "href": "2022/01/2022-01.html",
+    "title": "2022-01",
+    "section": "",
+    "text": "library(tidyverse)\n\n── Attaching packages ─────────────────────────────────────── tidyverse 1.3.2 ──\n✔ ggplot2 3.4.0      ✔ purrr   0.3.5 \n✔ tibble  3.1.8      ✔ dplyr   1.0.10\n✔ tidyr   1.2.1      ✔ stringr 1.4.1 \n✔ readr   2.1.3      ✔ forcats 0.5.2 \n── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──\n✖ dplyr::filter() masks stats::filter()\n✖ dplyr::lag()    masks stats::lag()\n\nlibrary(data.table)\n\n\nAttaching package: 'data.table'\n\nThe following objects are masked from 'package:dplyr':\n\n    between, first, last\n\nThe following object is masked from 'package:purrr':\n\n    transpose\nMy initial thought was to use data.table::fread but that skipped the spaces in the input by default. readLines keeps the spaces so I switched to that right away."
+  },
+  {
+    "objectID": "2022/01/2022-01.html#part-1",
+    "href": "2022/01/2022-01.html#part-1",
+    "title": "2022-01",
+    "section": "Part 1",
+    "text": "Part 1\nThis was just a matter of getting a loop with a maximum value counter going. I knew from the get-go that I would need to use the global assignment operator inside the loop. For reasons I thought that naming my variable sum would work but got an error since that’s a reserved word in R (duh!). Find+replace helped get that sorted but my inner loop logic was still wrong. I realized that I was missing an else case to catch any time the maximum hadn’t changed, but the sum needed to be reset.\n\nsm <- 0\nmaxsm <- 0\nfor (x in dt) {\n  x <- as.numeric(x)\n  if (!is.na(x)) {\n    sm <<- sm + x\n  }\n  else if (sm > maxsm) {\n      maxsm <<- sm\n      sm <<- 0\n  }\n  else {\n    sm <<- 0\n  }\n}"
+  },
+  {
+    "objectID": "2022/01/2022-01.html#part-2",
+    "href": "2022/01/2022-01.html#part-2",
+    "title": "2022-01",
+    "section": "Part 2",
+    "text": "Part 2\nComing out of Part 1 was really strong, especially on Day 1. Instead of saving just the max sum, I made it a vector to record all sums. Then I just need to sort it, get the top three values, and sum those.\n\nsm <- 0\nmaxsm <- c()\nfor (x in dt) {\n  x <- as.numeric(x)\n  if (!is.na(x)) {\n    sm <<- sm + x\n  }\n  else  {\n      maxsm <<- c(maxsm, sm)\n      sm <<- 0\n  }\n}\nsum(sort(maxsm, decreasing = TRUE)[1:3])\n\n[1] 200044"
   },
   {
     "objectID": "index.html",

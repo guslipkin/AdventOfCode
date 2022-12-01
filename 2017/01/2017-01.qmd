@@ -1,0 +1,39 @@
+---
+title: "2017-01: Inverse Captcha"
+format: html
+---
+
+```{r}
+library(data.table)
+library(magrittr)
+
+dt <- readLines("input.txt") |>
+  strsplit("") |>
+  unlist() |>
+  as.numeric()
+```
+
+## Part 1
+
+```{r}
+data.table(
+  "input" = c(dt),
+  "test" = c(dt[-1], dt[1])
+) %>%
+  .[, "valid" := ifelse(input == test, TRUE, FALSE)] %>%
+  .[valid == TRUE, test] %>%
+  sum()
+```
+
+## Part 2
+
+```{r}
+len <- length(dt) / 2
+data.table(
+  "input" = c(dt),
+  "test" = c(dt[(len + 1):length(dt)], dt[1:len])
+) %>%
+  .[, "valid" := ifelse(input == test, TRUE, FALSE)] %>%
+  .[valid == TRUE, test] %>%
+  sum()
+```
