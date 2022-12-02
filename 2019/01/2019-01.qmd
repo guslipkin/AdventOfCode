@@ -1,0 +1,31 @@
+---
+title: "2019-01: The Tyranny of the Rocket Equation"
+format: html
+---
+
+```{r}
+dt <- as.numeric(readLines("input.txt"))
+```
+
+## Part 1
+
+```{r}
+sum(floor(dt / 3) - 2)
+```
+
+## Part 2
+
+```{r}
+x <- 1
+total <- 0
+sapply(dt, function(x) {
+  total <- 0
+  val <- x
+  while (floor(val / 3) - 2 >= 0) {
+    val <- floor(val / 3) - 2
+    total <- total + val
+  }
+  return(total)
+}) |>
+  sum()
+```

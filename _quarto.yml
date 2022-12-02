@@ -32,6 +32,7 @@ website:
       - section: "2022"
         contents: 
           - 2022/01/2022-01.qmd
+          - 2022/02/2022-02.qmd
       - section: "2021"
         contents: 
           - 2021/01/2021-01.qmd
@@ -50,6 +51,9 @@ website:
           - 2020/08/2020-08.qmd
           - 2020/09/2020-09.qmd
           - 2020/10/2020-10.qmd
+      - section: "2019"
+        contents: 
+          - 2019/01/2019-01.qmd
       - section: "2018"
         contents: 
           - 2018/01/2018-01.qmd

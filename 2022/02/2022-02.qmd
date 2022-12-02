@@ -1,0 +1,78 @@
+---
+title: "2022-02"
+format: html
+---
+
+```{r}
+library(tidyverse)
+library(data.table)
+```
+
+```{r}
+dt <- fread("input.txt", header = FALSE)
+# dt <- readLines("input.txt")
+```
+
+This isn't so bad, just rock, paper, scissors.
+
+## Part 1
+
+I initially did `V1 == V2` but that doesn't work with `ABC` and `XYZ`, but a quick fix put me at 549 on the leaderboard so I'm really pleased.
+
+```{r}
+dt %>%
+  mutate("my_score" = case_when(
+    V2 == "X" ~ 1,
+    V2 == "Y" ~ 2,
+    V2 == "Z" ~ 3
+  )) %>%
+  mutate("win_score" = case_when(
+    (V1 == "A" & V2 == "X") | (V1 == "B" & V2 == "Y") | (V1 == "C" & V2 == "Z") ~ 3,
+    V1 == "A" & V2 == "Y" ~ 6,
+    V1 == "A" & V2 == "Z" ~ 0,
+    V1 == "B" & V2 == "X" ~ 0,
+    V1 == "B" & V2 == "Z" ~ 6,
+    V1 == "C" & V2 == "X" ~ 6,
+    V1 == "C" & V2 == "Y" ~ 0
+  )) %>%
+  mutate("score" = my_score + win_score) %>%
+  pull("score") %>%
+  sum()
+```
+
+## Part 2
+
+I had this one pretty quick, just a bit of logic to get the `play` column right. Of course, I then had to remember to change all the right `V2` references which took me a minute to figure out when I missed the second mutate.
+
+```{r}
+dt %>%
+  mutate("play" = case_when(
+    V2 == "X" & V1 == "A" ~ "Z",
+    V2 == "X" & V1 == "B" ~ "X",
+    V2 == "X" & V1 == "C" ~ "Y",
+    V2 == "Y" & V1 == "A" ~ "X",
+    V2 == "Y" & V1 == "B" ~ "Y",
+    V2 == "Y" & V1 == "C" ~ "Z",
+    V2 == "Z" & V1 == "A" ~ "Y",
+    V2 == "Z" & V1 == "B" ~ "Z",
+    V2 == "Z" & V1 == "C" ~ "X",
+  )) %>%
+  mutate("my_score" = case_when(
+    play == "X" ~ 1,
+    play == "Y" ~ 2,
+    play == "Z" ~ 3
+  )) %>%
+  mutate("win_score" = case_when(
+    (V1 == "A" & play == "X") | (V1 == "B" & play == "Y") | (V1 == "C" & play == "Z") ~ 3,
+    V1 == "A" & play == "Y" ~ 6,
+    V1 == "A" & play == "Z" ~ 0,
+    V1 == "B" & play == "X" ~ 0,
+    V1 == "B" & play == "Z" ~ 6,
+    V1 == "C" & play == "X" ~ 6,
+    V1 == "C" & play == "Y" ~ 0
+  )) %>%
+  mutate("score" = my_score + win_score) %>%
+  pull("score") %>%
+  sum()
+```
+

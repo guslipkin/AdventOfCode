@@ -1,0 +1,14 @@
+{
+  "hash": "eb5eb055cfed10e8739b85d84a47913b",
+  "result": {
+    "markdown": "---\ntitle: \"2019-01: The Tyranny of the Rocket Equation\"\nformat: html\n---\n\n::: {.cell hash='2019-01_cache/html/unnamed-chunk-1_36256fe3e0a5f45f72b0c0d2d0263077'}\n\n```{.r .cell-code}\ndt <- as.numeric(readLines(\"input.txt\"))\n```\n:::\n\n\n## Part 1\n\n\n::: {.cell hash='2019-01_cache/html/unnamed-chunk-2_7f060be13ea8f29cb028754737ba6c2e'}\n\n```{.r .cell-code}\nsum(floor(dt / 3) - 2)\n```\n\n::: {.cell-output .cell-output-stdout}\n```\n[1] 3512133\n```\n:::\n:::\n\n\n## Part 2\n\n\n::: {.cell hash='2019-01_cache/html/unnamed-chunk-3_ea266c8cb4d548d3421f7044e352f8b8'}\n\n```{.r .cell-code}\nx <- 1\ntotal <- 0\nsapply(dt, function(x) {\n  total <- 0\n  val <- x\n  while (floor(val / 3) - 2 >= 0) {\n    val <- floor(val / 3) - 2\n    total <- total + val\n  }\n  return(total)\n}) |>\n  sum()\n```\n\n::: {.cell-output .cell-output-stdout}\n```\n[1] 5265294\n```\n:::\n:::\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}
