@@ -805,6 +805,27 @@
     "text": "Part 2\nI had this one pretty quick, just a bit of logic to get the play column right. Of course, I then had to remember to change all the right V2 references which took me a minute to figure out when I missed the second mutate.\n\ndt %>%\n  mutate(\"play\" = case_when(\n    V2 == \"X\" & V1 == \"A\" ~ \"Z\",\n    V2 == \"X\" & V1 == \"B\" ~ \"X\",\n    V2 == \"X\" & V1 == \"C\" ~ \"Y\",\n    V2 == \"Y\" & V1 == \"A\" ~ \"X\",\n    V2 == \"Y\" & V1 == \"B\" ~ \"Y\",\n    V2 == \"Y\" & V1 == \"C\" ~ \"Z\",\n    V2 == \"Z\" & V1 == \"A\" ~ \"Y\",\n    V2 == \"Z\" & V1 == \"B\" ~ \"Z\",\n    V2 == \"Z\" & V1 == \"C\" ~ \"X\",\n  )) %>%\n  mutate(\"my_score\" = case_when(\n    play == \"X\" ~ 1,\n    play == \"Y\" ~ 2,\n    play == \"Z\" ~ 3\n  )) %>%\n  mutate(\"win_score\" = case_when(\n    (V1 == \"A\" & play == \"X\") | (V1 == \"B\" & play == \"Y\") | (V1 == \"C\" & play == \"Z\") ~ 3,\n    V1 == \"A\" & play == \"Y\" ~ 6,\n    V1 == \"A\" & play == \"Z\" ~ 0,\n    V1 == \"B\" & play == \"X\" ~ 0,\n    V1 == \"B\" & play == \"Z\" ~ 6,\n    V1 == \"C\" & play == \"X\" ~ 6,\n    V1 == \"C\" & play == \"Y\" ~ 0\n  )) %>%\n  mutate(\"score\" = my_score + win_score) %>%\n  pull(\"score\") %>%\n  sum()\n\n[1] 12091"
   },
   {
+    "objectID": "2022/03/2022-03.html",
+    "href": "2022/03/2022-03.html",
+    "title": "2022-03: Rucksack Reorganization",
+    "section": "",
+    "text": "library(tidyverse)\n\n── Attaching packages ─────────────────────────────────────── tidyverse 1.3.2 ──\n✔ ggplot2 3.4.0      ✔ purrr   0.3.5 \n✔ tibble  3.1.8      ✔ dplyr   1.0.10\n✔ tidyr   1.2.1      ✔ stringr 1.4.1 \n✔ readr   2.1.3      ✔ forcats 0.5.2 \n── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──\n✖ dplyr::filter() masks stats::filter()\n✖ dplyr::lag()    masks stats::lag()\n\nlibrary(data.table)\n\n\nAttaching package: 'data.table'\n\nThe following objects are masked from 'package:dplyr':\n\n    between, first, last\n\nThe following object is masked from 'package:purrr':\n\n    transpose\nThis already looks rough. readLines because it’s strings."
+  },
+  {
+    "objectID": "2022/03/2022-03.html#part-1",
+    "href": "2022/03/2022-03.html#part-1",
+    "title": "2022-03: Rucksack Reorganization",
+    "section": "Part 1",
+    "text": "Part 1\nUltimately not too bad. I got to make use of \\(x) for an anonymous function. I messed up the second half of the string and had it started at the end of the first half. I got docked a minute for the bad answer but then was able to fix it in time for resubmission.\n\ndata.frame(\"input\" = dt) %>%\n  mutate(V1 = substr(input, 1, nchar(input) / 2),\n         V2 = substr(input, nchar(input) / 2 + 1, nchar(input))) %>%\n  apply(1, \\(x) {\n    v1 <- unlist(strsplit(x[\"V1\"], \"\"))\n    v2 <- unlist(strsplit(x[\"V2\"], \"\"))\n    \n    return(v1[v1 %in% v2])\n  }) %>%\n  sapply(\\(x) {\n    x <- unique(x)\n    sum(which(letters == x), (which(LETTERS == x) + 26), na.rm = TRUE)\n  }) %>%\n  sum()\n\n[1] 7811"
+  },
+  {
+    "objectID": "2022/03/2022-03.html#part-2",
+    "href": "2022/03/2022-03.html#part-2",
+    "title": "2022-03: Rucksack Reorganization",
+    "section": "Part 2",
+    "text": "Part 2\nI struggled with creating the groups for some reason. Once I had that going, the rest was pretty easy.\n\ndata.frame(\"input\" = dt) %>%\n  mutate(\"group\" = rep(1:(nrow(.) / 3), each = 3)) -> dt2\n\nd2 <- c()\nfor(g in unique(dt2$group)) {\n  d <- dt2$input[dt2$group == g]\n  \n  v1 <- unlist(strsplit(d[1], \"\"))\n  v2 <- unlist(strsplit(d[2], \"\"))\n  v3 <- unlist(strsplit(d[3], \"\"))\n    \n  d2 <<- c(d2, unique(v3[v3 %in% v1[v1 %in% v2]]))\n}\n\nsapply(d2, \\(x) {\n    x <- unique(x)\n    sum(which(letters == x), (which(LETTERS == x) + 26), na.rm = TRUE)\n  }) %>%\n  sum()\n\n[1] 2639"
+  },
+  {
     "objectID": "index.html",
     "href": "index.html",
     "title": "Welcome!",
@@ -816,6 +837,6 @@
     "href": "index.html#star-chart",
     "title": "Welcome!",
     "section": "Star Chart",
-    "text": "Star Chart\n\n2022: ⭐️⭐️\n2021: ⭐️⭐️⭐️⭐️⭐️ ⭐️⭐️⭐️⭐️⭐️ ⭐️⭐️⭐️⭐️⭐️ ⭐️⭐️⭐️⭐️⭐️ ⭐️⭐️⭐️\n2020: ⭐️⭐️⭐️⭐️⭐️ ⭐️⭐️⭐️⭐️⭐️ ⭐️⭐️⭐️⭐️⭐️ ⭐️⭐️⭐️⭐️⭐️\n2019: ⭐️⭐️\n2018: ⭐️⭐️⭐️⭐️⭐️ ⭐️⭐️⭐️⭐️⭐️ ⭐️⭐️\n2017: ⭐️⭐️⭐️⭐️⭐\n2016: ⭐️⭐️⭐️⭐️⭐️ ⭐️️⭐⭐\n2015: ⭐️⭐️⭐️⭐️⭐️ ⭐️⭐️⭐️⭐️⭐️ ⭐️⭐️\n\nTotal Stars: 84/400"
+    "text": "Star Chart\n\n2022: ⭐️⭐️⭐️⭐️️⭐️ ️⭐️\n2021: ⭐️⭐️⭐️⭐️⭐️ ⭐️⭐️⭐️⭐️⭐️ ⭐️⭐️⭐️⭐️⭐️ ⭐️⭐️⭐️⭐️⭐️ ⭐️⭐️⭐️\n2020: ⭐️⭐️⭐️⭐️⭐️ ⭐️⭐️⭐️⭐️⭐️ ⭐️⭐️⭐️⭐️⭐️ ⭐️⭐️⭐️⭐️⭐️\n2019: ⭐️⭐️\n2018: ⭐️⭐️⭐️⭐️⭐️ ⭐️⭐️⭐️⭐️⭐️ ⭐️⭐️\n2017: ⭐️⭐️⭐️⭐️⭐\n2016: ⭐️⭐️⭐️⭐️⭐️ ⭐️️⭐⭐\n2015: ⭐️⭐️⭐️⭐️⭐️ ⭐️⭐️⭐️⭐️⭐️ ⭐️⭐️\n\nTotal Stars: 86/400"
   }
 ]

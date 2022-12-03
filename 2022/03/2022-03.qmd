@@ -1,0 +1,64 @@
+---
+title: "2022-03: Rucksack Reorganization"
+format: html
+---
+
+```{r}
+library(tidyverse)
+library(data.table)
+```
+
+```{r}
+# dt <- fread("input.txt", header = FALSE)
+dt <- readLines("input.txt")
+```
+
+This already looks rough. `readLines` because it's strings.
+
+## Part 1
+
+Ultimately not too bad. I got to make use of `\(x)` for an anonymous function. I messed up the second half of the string and had it started at the end of the first half. I got docked a minute for the bad answer but then was able to fix it in time for resubmission.
+
+```{r}
+data.frame("input" = dt) %>%
+  mutate(V1 = substr(input, 1, nchar(input) / 2),
+         V2 = substr(input, nchar(input) / 2 + 1, nchar(input))) %>%
+  apply(1, \(x) {
+    v1 <- unlist(strsplit(x["V1"], ""))
+    v2 <- unlist(strsplit(x["V2"], ""))
+    
+    return(v1[v1 %in% v2])
+  }) %>%
+  sapply(\(x) {
+    x <- unique(x)
+    sum(which(letters == x), (which(LETTERS == x) + 26), na.rm = TRUE)
+  }) %>%
+  sum()
+```
+
+## Part 2
+
+I struggled with creating the groups for some reason. Once I had that going, the rest was pretty easy.
+
+```{r}
+data.frame("input" = dt) %>%
+  mutate("group" = rep(1:(nrow(.) / 3), each = 3)) -> dt2
+
+d2 <- c()
+for(g in unique(dt2$group)) {
+  d <- dt2$input[dt2$group == g]
+  
+  v1 <- unlist(strsplit(d[1], ""))
+  v2 <- unlist(strsplit(d[2], ""))
+  v3 <- unlist(strsplit(d[3], ""))
+    
+  d2 <<- c(d2, unique(v3[v3 %in% v1[v1 %in% v2]]))
+}
+
+sapply(d2, \(x) {
+    x <- unique(x)
+    sum(which(letters == x), (which(LETTERS == x) + 26), na.rm = TRUE)
+  }) %>%
+  sum()
+```
+

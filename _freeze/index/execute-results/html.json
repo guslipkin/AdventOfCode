@@ -1,7 +1,7 @@
 {
-  "hash": "de58a318004122cf754acbc3510474f4",
+  "hash": "2c8f2a89ad1232b23bd8786b81924e74",
   "result": {
-    "markdown": "---\ntitle: \"Welcome!\"\nformat: html\ncache: false\n---\n\n\nWelcome to my Advent of Code book! All of my solutions are in R with varying degrees of complexity and documentation.\n\n::: {.callout-caution}\n\n## Under Construction\n\nI'm still working on getting the 2021 and earlier puzzles converted to Quarto. The star chart below is accurate, even if I don't have the solutions posted here just yet.\n\n:::\n\n## Star Chart\n\n- 2022: ⭐️⭐️\n- 2021: ⭐️⭐️⭐️⭐️⭐️ ⭐️⭐️⭐️⭐️⭐️ ⭐️⭐️⭐️⭐️⭐️ ⭐️⭐️⭐️⭐️⭐️ ⭐️⭐️⭐️\n- 2020: ⭐️⭐️⭐️⭐️⭐️ ⭐️⭐️⭐️⭐️⭐️ ⭐️⭐️⭐️⭐️⭐️ ⭐️⭐️⭐️⭐️⭐️\n- 2019: ⭐️⭐️\n- 2018: ⭐️⭐️⭐️⭐️⭐️ ⭐️⭐️⭐️⭐️⭐️ ⭐️⭐️\n- 2017: ⭐️⭐️⭐️⭐️⭐\n- 2016: ⭐️⭐️⭐️⭐️⭐️ ⭐️️⭐⭐\n- 2015: ⭐️⭐️⭐️⭐️⭐️ ⭐️⭐️⭐️⭐️⭐️ ⭐️⭐️\n\nTotal Stars: 84/400\n\n\n::: {.cell hash='index_cache/html/unnamed-chunk-1_d1fc66c9f897b87510d9e2f3d6c5de7b'}\n\n:::",
+    "markdown": "---\ntitle: \"Welcome!\"\nformat: html\ncache: false\n---\n\n\nWelcome to my Advent of Code book! All of my solutions are in R with varying degrees of complexity and documentation.\n\n::: {.callout-caution}\n\n## Under Construction\n\nI'm still working on getting the 2021 and earlier puzzles converted to Quarto. The star chart below is accurate, even if I don't have the solutions posted here just yet.\n\n:::\n\n## Star Chart\n\n- 2022: ⭐️⭐️⭐️⭐️️⭐️ ️⭐️\n- 2021: ⭐️⭐️⭐️⭐️⭐️ ⭐️⭐️⭐️⭐️⭐️ ⭐️⭐️⭐️⭐️⭐️ ⭐️⭐️⭐️⭐️⭐️ ⭐️⭐️⭐️\n- 2020: ⭐️⭐️⭐️⭐️⭐️ ⭐️⭐️⭐️⭐️⭐️ ⭐️⭐️⭐️⭐️⭐️ ⭐️⭐️⭐️⭐️⭐️\n- 2019: ⭐️⭐️\n- 2018: ⭐️⭐️⭐️⭐️⭐️ ⭐️⭐️⭐️⭐️⭐️ ⭐️⭐️\n- 2017: ⭐️⭐️⭐️⭐️⭐\n- 2016: ⭐️⭐️⭐️⭐️⭐️ ⭐️️⭐⭐\n- 2015: ⭐️⭐️⭐️⭐️⭐️ ⭐️⭐️⭐️⭐️⭐️ ⭐️⭐️\n\nTotal Stars: 86/400\n\n\n::: {.cell}\n\n:::",
     "supporting": [],
     "filters": [
       "rmarkdown/pagebreak.lua"
