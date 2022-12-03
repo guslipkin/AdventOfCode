@@ -33,6 +33,7 @@ website:
         contents: 
           - 2022/01/2022-01.qmd
           - 2022/02/2022-02.qmd
+          - 2022/03/2022-03.qmd
       - section: "2021"
         contents: 
           - 2021/01/2021-01.qmd
