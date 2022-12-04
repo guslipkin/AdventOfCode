@@ -231,7 +231,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../2022/04/2022-04.html" class="sidebar-item-text sidebar-link">dt &lt;- readLines(“input.txt”)</a>
+  <a href="../../2022/04/2022-04.html" class="sidebar-item-text sidebar-link">2022-04: Camp Cleanup</a>
   </div>
 </li>
       </ul>
@@ -506,30 +506,30 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </header>
 
 <div class="cell" data-hash="2020-06_cache/html/unnamed-chunk-1_adf71c2f6a519dd734df5f1a459cb6d5">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readxl)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sets)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>dt <span class="ot">&lt;-</span> <span class="fu">read_xls</span>(<span class="st">"input.xls"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">library</span>(readxl)</span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="fu">library</span>(sets)</span>
+<span id="cb1-3"><a href="#cb1-3"></a>dt <span class="ot">&lt;-</span> <span class="fu">read_xls</span>(<span class="st">"input.xls"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <section id="part-1" class="level2">
 <h2 class="anchored" data-anchor-id="part-1">Part 1</h2>
 <p>Recycling this from D4P2</p>
 <div class="cell" data-hash="2020-06_cache/html/unnamed-chunk-2_593a9812de1964869156fac2f9b37c63">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> dt</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>testDF <span class="ot">&lt;-</span> df[<span class="dv">1</span>,]</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>dfRow <span class="ot">&lt;-</span> <span class="dv">1</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>dfColumn <span class="ot">&lt;-</span> <span class="dv">1</span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(r <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">2001</span>) {</span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(<span class="sc">!</span><span class="fu">is.na</span>(df[r,<span class="dv">1</span>])) {</span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    testDF[dfRow, dfColumn] <span class="ot">&lt;-</span> df[r,<span class="dv">1</span>]</span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    dfColumn <span class="ot">&lt;-</span> dfColumn <span class="sc">+</span> <span class="dv">1</span></span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>  <span class="cf">else</span> {</span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>    dfRow <span class="ot">&lt;-</span> dfRow <span class="sc">+</span> <span class="dv">1</span></span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>    dfColumn <span class="ot">&lt;-</span> <span class="dv">1</span></span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> testDF</span>
-<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>df</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a>df <span class="ot">&lt;-</span> dt</span>
+<span id="cb2-2"><a href="#cb2-2"></a>testDF <span class="ot">&lt;-</span> df[<span class="dv">1</span>,]</span>
+<span id="cb2-3"><a href="#cb2-3"></a>dfRow <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb2-4"><a href="#cb2-4"></a>dfColumn <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb2-5"><a href="#cb2-5"></a><span class="cf">for</span>(r <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">2001</span>) {</span>
+<span id="cb2-6"><a href="#cb2-6"></a>  <span class="cf">if</span>(<span class="sc">!</span><span class="fu">is.na</span>(df[r,<span class="dv">1</span>])) {</span>
+<span id="cb2-7"><a href="#cb2-7"></a>    testDF[dfRow, dfColumn] <span class="ot">&lt;-</span> df[r,<span class="dv">1</span>]</span>
+<span id="cb2-8"><a href="#cb2-8"></a>    dfColumn <span class="ot">&lt;-</span> dfColumn <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb2-9"><a href="#cb2-9"></a>  }</span>
+<span id="cb2-10"><a href="#cb2-10"></a>  <span class="cf">else</span> {</span>
+<span id="cb2-11"><a href="#cb2-11"></a>    dfRow <span class="ot">&lt;-</span> dfRow <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb2-12"><a href="#cb2-12"></a>    dfColumn <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb2-13"><a href="#cb2-13"></a>  }</span>
+<span id="cb2-14"><a href="#cb2-14"></a>}</span>
+<span id="cb2-15"><a href="#cb2-15"></a>df <span class="ot">&lt;-</span> testDF</span>
+<span id="cb2-16"><a href="#cb2-16"></a>df</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 456 × 5
    X1                X1                 X1                 X1              X1   
@@ -548,16 +548,16 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 </div>
 <div class="cell" data-hash="2020-06_cache/html/unnamed-chunk-3_95cf64a9137dd052bfe7dffbee2c5f44">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>df[<span class="fu">is.na</span>(df)] <span class="ot">&lt;-</span> <span class="st">""</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>df<span class="sc">$</span>all <span class="ot">&lt;-</span> <span class="st">""</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(r <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">456</span>) {</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  df<span class="sc">$</span>all[r] <span class="ot">&lt;-</span> <span class="fu">paste</span>(df[r,<span class="dv">1</span>], df[r,<span class="dv">2</span>], df[r,<span class="dv">3</span>], df[r,<span class="dv">4</span>], df[r,<span class="dv">5</span>], <span class="at">sep =</span> <span class="st">""</span>)</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  df<span class="sc">$</span>count[r] <span class="ot">&lt;-</span> <span class="fu">length</span>(<span class="fu">unique</span>(<span class="fu">unlist</span>(<span class="fu">strsplit</span>(df<span class="sc">$</span>all[r], <span class="st">""</span>))))</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>df[<span class="fu">is.na</span>(df)] <span class="ot">&lt;-</span> <span class="st">""</span></span>
+<span id="cb4-2"><a href="#cb4-2"></a>df<span class="sc">$</span>all <span class="ot">&lt;-</span> <span class="st">""</span></span>
+<span id="cb4-3"><a href="#cb4-3"></a><span class="cf">for</span>(r <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">456</span>) {</span>
+<span id="cb4-4"><a href="#cb4-4"></a>  df<span class="sc">$</span>all[r] <span class="ot">&lt;-</span> <span class="fu">paste</span>(df[r,<span class="dv">1</span>], df[r,<span class="dv">2</span>], df[r,<span class="dv">3</span>], df[r,<span class="dv">4</span>], df[r,<span class="dv">5</span>], <span class="at">sep =</span> <span class="st">""</span>)</span>
+<span id="cb4-5"><a href="#cb4-5"></a>  df<span class="sc">$</span>count[r] <span class="ot">&lt;-</span> <span class="fu">length</span>(<span class="fu">unique</span>(<span class="fu">unlist</span>(<span class="fu">strsplit</span>(df<span class="sc">$</span>all[r], <span class="st">""</span>))))</span>
+<span id="cb4-6"><a href="#cb4-6"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Warning: Unknown or uninitialised column: `count`.</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>df</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a>df</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 456 × 7
    X1                X1                 X1               X1    X1    all   count
@@ -576,7 +576,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 </div>
 <div class="cell" data-hash="2020-06_cache/html/unnamed-chunk-4_90827e5fb189a55125e63040156fa327">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(df<span class="sc">$</span>count)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a><span class="fu">sum</span>(df<span class="sc">$</span>count)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 6310</code></pre>
 </div>
@@ -585,22 +585,22 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <section id="part-2" class="level2">
 <h2 class="anchored" data-anchor-id="part-2">Part 2</h2>
 <div class="cell" data-hash="2020-06_cache/html/unnamed-chunk-5_7ddb25e0cee40a74092a30aa0b63fa31">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> dt</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>testDF <span class="ot">&lt;-</span> df[<span class="dv">1</span>,]</span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>dfRow <span class="ot">&lt;-</span> <span class="dv">1</span></span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>dfColumn <span class="ot">&lt;-</span> <span class="dv">1</span></span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(r <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">2001</span>) {</span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(<span class="sc">!</span><span class="fu">is.na</span>(df[r,<span class="dv">1</span>])) {</span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>    testDF[dfRow, dfColumn] <span class="ot">&lt;-</span> df[r,<span class="dv">1</span>]</span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>    dfColumn <span class="ot">&lt;-</span> dfColumn <span class="sc">+</span> <span class="dv">1</span></span>
-<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>  <span class="cf">else</span> {</span>
-<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>    dfRow <span class="ot">&lt;-</span> dfRow <span class="sc">+</span> <span class="dv">1</span></span>
-<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>    dfColumn <span class="ot">&lt;-</span> <span class="dv">1</span></span>
-<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> testDF</span>
-<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>df</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a>df <span class="ot">&lt;-</span> dt</span>
+<span id="cb10-2"><a href="#cb10-2"></a>testDF <span class="ot">&lt;-</span> df[<span class="dv">1</span>,]</span>
+<span id="cb10-3"><a href="#cb10-3"></a>dfRow <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb10-4"><a href="#cb10-4"></a>dfColumn <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb10-5"><a href="#cb10-5"></a><span class="cf">for</span>(r <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">2001</span>) {</span>
+<span id="cb10-6"><a href="#cb10-6"></a>  <span class="cf">if</span>(<span class="sc">!</span><span class="fu">is.na</span>(df[r,<span class="dv">1</span>])) {</span>
+<span id="cb10-7"><a href="#cb10-7"></a>    testDF[dfRow, dfColumn] <span class="ot">&lt;-</span> df[r,<span class="dv">1</span>]</span>
+<span id="cb10-8"><a href="#cb10-8"></a>    dfColumn <span class="ot">&lt;-</span> dfColumn <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb10-9"><a href="#cb10-9"></a>  }</span>
+<span id="cb10-10"><a href="#cb10-10"></a>  <span class="cf">else</span> {</span>
+<span id="cb10-11"><a href="#cb10-11"></a>    dfRow <span class="ot">&lt;-</span> dfRow <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb10-12"><a href="#cb10-12"></a>    dfColumn <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb10-13"><a href="#cb10-13"></a>  }</span>
+<span id="cb10-14"><a href="#cb10-14"></a>}</span>
+<span id="cb10-15"><a href="#cb10-15"></a>df <span class="ot">&lt;-</span> testDF</span>
+<span id="cb10-16"><a href="#cb10-16"></a>df</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 456 × 5
    X1                X1                 X1                 X1              X1   
@@ -620,35 +620,35 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <p>Credit to <a href="https://github.com/UnsolvedCypher">Matthew McMillan</a> for the idea of using sets</p>
 <div class="cell" data-hash="2020-06_cache/html/unnamed-chunk-6_5ca67eac136bf04c2867accfbd54c15f">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(r <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">456</span>)</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span>(c <span class="cf">in</span> <span class="dv">2</span><span class="sc">:</span><span class="dv">5</span>)</span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span>(<span class="fu">is.na</span>(df[r,c]))</span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>      df[r,c] <span class="ot">&lt;-</span> df[r,<span class="dv">1</span>]</span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>df<span class="sc">$</span>matthew <span class="ot">&lt;-</span> <span class="cn">NA_integer_</span></span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(r <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">456</span>) {</span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>  df<span class="sc">$</span>matthew[r] <span class="ot">&lt;-</span></span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">length</span>(<span class="fu">unique</span>(</span>
-<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>      <span class="fu">set_intersection</span>(</span>
-<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>        <span class="fu">unique</span>(<span class="fu">unlist</span>(<span class="fu">strsplit</span>(</span>
-<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>          <span class="fu">as.character</span>(df[r, <span class="dv">1</span>]), <span class="st">""</span></span>
-<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>        ))),</span>
-<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>        <span class="fu">unique</span>(<span class="fu">unlist</span>(<span class="fu">strsplit</span>(</span>
-<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>          <span class="fu">as.character</span>(df[r, <span class="dv">2</span>]), <span class="st">""</span></span>
-<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>        ))),</span>
-<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>        <span class="fu">unique</span>(<span class="fu">unlist</span>(<span class="fu">strsplit</span>(</span>
-<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>          <span class="fu">as.character</span>(df[r, <span class="dv">3</span>]), <span class="st">""</span></span>
-<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>        ))),</span>
-<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a>        <span class="fu">unique</span>(<span class="fu">unlist</span>(<span class="fu">strsplit</span>(</span>
-<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a>          <span class="fu">as.character</span>(df[r, <span class="dv">4</span>]), <span class="st">""</span></span>
-<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a>        ))),</span>
-<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a>        <span class="fu">unique</span>(<span class="fu">unlist</span>(<span class="fu">strsplit</span>(</span>
-<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a>          <span class="fu">as.character</span>(df[r, <span class="dv">5</span>]), <span class="st">""</span></span>
-<span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a>        )))</span>
-<span id="cb12-25"><a href="#cb12-25" aria-hidden="true" tabindex="-1"></a>      )</span>
-<span id="cb12-26"><a href="#cb12-26" aria-hidden="true" tabindex="-1"></a>    ))</span>
-<span id="cb12-27"><a href="#cb12-27" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb12-28"><a href="#cb12-28" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-29"><a href="#cb12-29" aria-hidden="true" tabindex="-1"></a>df</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a><span class="cf">for</span>(r <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">456</span>)</span>
+<span id="cb12-2"><a href="#cb12-2"></a>  <span class="cf">for</span>(c <span class="cf">in</span> <span class="dv">2</span><span class="sc">:</span><span class="dv">5</span>)</span>
+<span id="cb12-3"><a href="#cb12-3"></a>    <span class="cf">if</span>(<span class="fu">is.na</span>(df[r,c]))</span>
+<span id="cb12-4"><a href="#cb12-4"></a>      df[r,c] <span class="ot">&lt;-</span> df[r,<span class="dv">1</span>]</span>
+<span id="cb12-5"><a href="#cb12-5"></a>df<span class="sc">$</span>matthew <span class="ot">&lt;-</span> <span class="cn">NA_integer_</span></span>
+<span id="cb12-6"><a href="#cb12-6"></a><span class="cf">for</span>(r <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">456</span>) {</span>
+<span id="cb12-7"><a href="#cb12-7"></a>  df<span class="sc">$</span>matthew[r] <span class="ot">&lt;-</span></span>
+<span id="cb12-8"><a href="#cb12-8"></a>    <span class="fu">length</span>(<span class="fu">unique</span>(</span>
+<span id="cb12-9"><a href="#cb12-9"></a>      <span class="fu">set_intersection</span>(</span>
+<span id="cb12-10"><a href="#cb12-10"></a>        <span class="fu">unique</span>(<span class="fu">unlist</span>(<span class="fu">strsplit</span>(</span>
+<span id="cb12-11"><a href="#cb12-11"></a>          <span class="fu">as.character</span>(df[r, <span class="dv">1</span>]), <span class="st">""</span></span>
+<span id="cb12-12"><a href="#cb12-12"></a>        ))),</span>
+<span id="cb12-13"><a href="#cb12-13"></a>        <span class="fu">unique</span>(<span class="fu">unlist</span>(<span class="fu">strsplit</span>(</span>
+<span id="cb12-14"><a href="#cb12-14"></a>          <span class="fu">as.character</span>(df[r, <span class="dv">2</span>]), <span class="st">""</span></span>
+<span id="cb12-15"><a href="#cb12-15"></a>        ))),</span>
+<span id="cb12-16"><a href="#cb12-16"></a>        <span class="fu">unique</span>(<span class="fu">unlist</span>(<span class="fu">strsplit</span>(</span>
+<span id="cb12-17"><a href="#cb12-17"></a>          <span class="fu">as.character</span>(df[r, <span class="dv">3</span>]), <span class="st">""</span></span>
+<span id="cb12-18"><a href="#cb12-18"></a>        ))),</span>
+<span id="cb12-19"><a href="#cb12-19"></a>        <span class="fu">unique</span>(<span class="fu">unlist</span>(<span class="fu">strsplit</span>(</span>
+<span id="cb12-20"><a href="#cb12-20"></a>          <span class="fu">as.character</span>(df[r, <span class="dv">4</span>]), <span class="st">""</span></span>
+<span id="cb12-21"><a href="#cb12-21"></a>        ))),</span>
+<span id="cb12-22"><a href="#cb12-22"></a>        <span class="fu">unique</span>(<span class="fu">unlist</span>(<span class="fu">strsplit</span>(</span>
+<span id="cb12-23"><a href="#cb12-23"></a>          <span class="fu">as.character</span>(df[r, <span class="dv">5</span>]), <span class="st">""</span></span>
+<span id="cb12-24"><a href="#cb12-24"></a>        )))</span>
+<span id="cb12-25"><a href="#cb12-25"></a>      )</span>
+<span id="cb12-26"><a href="#cb12-26"></a>    ))</span>
+<span id="cb12-27"><a href="#cb12-27"></a>}</span>
+<span id="cb12-28"><a href="#cb12-28"></a></span>
+<span id="cb12-29"><a href="#cb12-29"></a>df</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 456 × 6
    X1                X1                 X1                 X1      X1    matthew
@@ -667,7 +667,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 </div>
 <div class="cell" data-hash="2020-06_cache/html/unnamed-chunk-7_cf6f0be88ee1c8b56e170d471c8e71e8">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(df<span class="sc">$</span>matthew)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a><span class="fu">sum</span>(df<span class="sc">$</span>matthew)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 3193</code></pre>
 </div>

@@ -231,7 +231,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../2022/04/2022-04.html" class="sidebar-item-text sidebar-link">dt &lt;- readLines(“input.txt”)</a>
+  <a href="../../2022/04/2022-04.html" class="sidebar-item-text sidebar-link">2022-04: Camp Cleanup</a>
   </div>
 </li>
       </ul>
@@ -506,7 +506,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </header>
 
 <div class="cell" data-hash="2022-02_cache/html/unnamed-chunk-1_1b5d7d23c651ee51a0efe25d7ce9a99c">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>── Attaching packages ─────────────────────────────────────── tidyverse 1.3.2 ──
 ✔ ggplot2 3.4.0      ✔ purrr   0.3.5 
@@ -517,7 +517,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ✖ dplyr::filter() masks stats::filter()
 ✖ dplyr::lag()    masks stats::lag()</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(data.table)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="fu">library</span>(data.table)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>
 Attaching package: 'data.table'
@@ -532,32 +532,32 @@ The following object is masked from 'package:purrr':
 </div>
 </div>
 <div class="cell" data-hash="2022-02_cache/html/unnamed-chunk-2_9452efa0af485ecba2182d37d60029bf">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>dt <span class="ot">&lt;-</span> <span class="fu">fread</span>(<span class="st">"input.txt"</span>, <span class="at">header =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co"># dt &lt;- readLines("input.txt")</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>dt <span class="ot">&lt;-</span> <span class="fu">fread</span>(<span class="st">"input.txt"</span>, <span class="at">header =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb5-2"><a href="#cb5-2"></a><span class="co"># dt &lt;- readLines("input.txt")</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>This isn’t so bad, just rock, paper, scissors.</p>
 <section id="part-1" class="level2">
 <h2 class="anchored" data-anchor-id="part-1">Part 1</h2>
 <p>I initially did <code>V1 == V2</code> but that doesn’t work with <code>ABC</code> and <code>XYZ</code>, but a quick fix put me at 549 on the leaderboard so I’m really pleased.</p>
 <div class="cell" data-hash="2022-02_cache/html/unnamed-chunk-3_311f486f2cf96b6aa5e27da55ccc2fc2">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>dt <span class="sc">%&gt;%</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="st">"my_score"</span> <span class="ot">=</span> <span class="fu">case_when</span>(</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    V2 <span class="sc">==</span> <span class="st">"X"</span> <span class="sc">~</span> <span class="dv">1</span>,</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    V2 <span class="sc">==</span> <span class="st">"Y"</span> <span class="sc">~</span> <span class="dv">2</span>,</span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    V2 <span class="sc">==</span> <span class="st">"Z"</span> <span class="sc">~</span> <span class="dv">3</span></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  )) <span class="sc">%&gt;%</span></span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="st">"win_score"</span> <span class="ot">=</span> <span class="fu">case_when</span>(</span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>    (V1 <span class="sc">==</span> <span class="st">"A"</span> <span class="sc">&amp;</span> V2 <span class="sc">==</span> <span class="st">"X"</span>) <span class="sc">|</span> (V1 <span class="sc">==</span> <span class="st">"B"</span> <span class="sc">&amp;</span> V2 <span class="sc">==</span> <span class="st">"Y"</span>) <span class="sc">|</span> (V1 <span class="sc">==</span> <span class="st">"C"</span> <span class="sc">&amp;</span> V2 <span class="sc">==</span> <span class="st">"Z"</span>) <span class="sc">~</span> <span class="dv">3</span>,</span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>    V1 <span class="sc">==</span> <span class="st">"A"</span> <span class="sc">&amp;</span> V2 <span class="sc">==</span> <span class="st">"Y"</span> <span class="sc">~</span> <span class="dv">6</span>,</span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>    V1 <span class="sc">==</span> <span class="st">"A"</span> <span class="sc">&amp;</span> V2 <span class="sc">==</span> <span class="st">"Z"</span> <span class="sc">~</span> <span class="dv">0</span>,</span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>    V1 <span class="sc">==</span> <span class="st">"B"</span> <span class="sc">&amp;</span> V2 <span class="sc">==</span> <span class="st">"X"</span> <span class="sc">~</span> <span class="dv">0</span>,</span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>    V1 <span class="sc">==</span> <span class="st">"B"</span> <span class="sc">&amp;</span> V2 <span class="sc">==</span> <span class="st">"Z"</span> <span class="sc">~</span> <span class="dv">6</span>,</span>
-<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>    V1 <span class="sc">==</span> <span class="st">"C"</span> <span class="sc">&amp;</span> V2 <span class="sc">==</span> <span class="st">"X"</span> <span class="sc">~</span> <span class="dv">6</span>,</span>
-<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>    V1 <span class="sc">==</span> <span class="st">"C"</span> <span class="sc">&amp;</span> V2 <span class="sc">==</span> <span class="st">"Y"</span> <span class="sc">~</span> <span class="dv">0</span></span>
-<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>  )) <span class="sc">%&gt;%</span></span>
-<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="st">"score"</span> <span class="ot">=</span> my_score <span class="sc">+</span> win_score) <span class="sc">%&gt;%</span></span>
-<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pull</span>(<span class="st">"score"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sum</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a>dt <span class="sc">%&gt;%</span></span>
+<span id="cb6-2"><a href="#cb6-2"></a>  <span class="fu">mutate</span>(<span class="st">"my_score"</span> <span class="ot">=</span> <span class="fu">case_when</span>(</span>
+<span id="cb6-3"><a href="#cb6-3"></a>    V2 <span class="sc">==</span> <span class="st">"X"</span> <span class="sc">~</span> <span class="dv">1</span>,</span>
+<span id="cb6-4"><a href="#cb6-4"></a>    V2 <span class="sc">==</span> <span class="st">"Y"</span> <span class="sc">~</span> <span class="dv">2</span>,</span>
+<span id="cb6-5"><a href="#cb6-5"></a>    V2 <span class="sc">==</span> <span class="st">"Z"</span> <span class="sc">~</span> <span class="dv">3</span></span>
+<span id="cb6-6"><a href="#cb6-6"></a>  )) <span class="sc">%&gt;%</span></span>
+<span id="cb6-7"><a href="#cb6-7"></a>  <span class="fu">mutate</span>(<span class="st">"win_score"</span> <span class="ot">=</span> <span class="fu">case_when</span>(</span>
+<span id="cb6-8"><a href="#cb6-8"></a>    (V1 <span class="sc">==</span> <span class="st">"A"</span> <span class="sc">&amp;</span> V2 <span class="sc">==</span> <span class="st">"X"</span>) <span class="sc">|</span> (V1 <span class="sc">==</span> <span class="st">"B"</span> <span class="sc">&amp;</span> V2 <span class="sc">==</span> <span class="st">"Y"</span>) <span class="sc">|</span> (V1 <span class="sc">==</span> <span class="st">"C"</span> <span class="sc">&amp;</span> V2 <span class="sc">==</span> <span class="st">"Z"</span>) <span class="sc">~</span> <span class="dv">3</span>,</span>
+<span id="cb6-9"><a href="#cb6-9"></a>    V1 <span class="sc">==</span> <span class="st">"A"</span> <span class="sc">&amp;</span> V2 <span class="sc">==</span> <span class="st">"Y"</span> <span class="sc">~</span> <span class="dv">6</span>,</span>
+<span id="cb6-10"><a href="#cb6-10"></a>    V1 <span class="sc">==</span> <span class="st">"A"</span> <span class="sc">&amp;</span> V2 <span class="sc">==</span> <span class="st">"Z"</span> <span class="sc">~</span> <span class="dv">0</span>,</span>
+<span id="cb6-11"><a href="#cb6-11"></a>    V1 <span class="sc">==</span> <span class="st">"B"</span> <span class="sc">&amp;</span> V2 <span class="sc">==</span> <span class="st">"X"</span> <span class="sc">~</span> <span class="dv">0</span>,</span>
+<span id="cb6-12"><a href="#cb6-12"></a>    V1 <span class="sc">==</span> <span class="st">"B"</span> <span class="sc">&amp;</span> V2 <span class="sc">==</span> <span class="st">"Z"</span> <span class="sc">~</span> <span class="dv">6</span>,</span>
+<span id="cb6-13"><a href="#cb6-13"></a>    V1 <span class="sc">==</span> <span class="st">"C"</span> <span class="sc">&amp;</span> V2 <span class="sc">==</span> <span class="st">"X"</span> <span class="sc">~</span> <span class="dv">6</span>,</span>
+<span id="cb6-14"><a href="#cb6-14"></a>    V1 <span class="sc">==</span> <span class="st">"C"</span> <span class="sc">&amp;</span> V2 <span class="sc">==</span> <span class="st">"Y"</span> <span class="sc">~</span> <span class="dv">0</span></span>
+<span id="cb6-15"><a href="#cb6-15"></a>  )) <span class="sc">%&gt;%</span></span>
+<span id="cb6-16"><a href="#cb6-16"></a>  <span class="fu">mutate</span>(<span class="st">"score"</span> <span class="ot">=</span> my_score <span class="sc">+</span> win_score) <span class="sc">%&gt;%</span></span>
+<span id="cb6-17"><a href="#cb6-17"></a>  <span class="fu">pull</span>(<span class="st">"score"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb6-18"><a href="#cb6-18"></a>  <span class="fu">sum</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 14163</code></pre>
 </div>
@@ -567,35 +567,35 @@ The following object is masked from 'package:purrr':
 <h2 class="anchored" data-anchor-id="part-2">Part 2</h2>
 <p>I had this one pretty quick, just a bit of logic to get the <code>play</code> column right. Of course, I then had to remember to change all the right <code>V2</code> references which took me a minute to figure out when I missed the second mutate.</p>
 <div class="cell" data-hash="2022-02_cache/html/unnamed-chunk-4_7d9426bfe270d07c7ae0e20e7938772e">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>dt <span class="sc">%&gt;%</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="st">"play"</span> <span class="ot">=</span> <span class="fu">case_when</span>(</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    V2 <span class="sc">==</span> <span class="st">"X"</span> <span class="sc">&amp;</span> V1 <span class="sc">==</span> <span class="st">"A"</span> <span class="sc">~</span> <span class="st">"Z"</span>,</span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    V2 <span class="sc">==</span> <span class="st">"X"</span> <span class="sc">&amp;</span> V1 <span class="sc">==</span> <span class="st">"B"</span> <span class="sc">~</span> <span class="st">"X"</span>,</span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    V2 <span class="sc">==</span> <span class="st">"X"</span> <span class="sc">&amp;</span> V1 <span class="sc">==</span> <span class="st">"C"</span> <span class="sc">~</span> <span class="st">"Y"</span>,</span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    V2 <span class="sc">==</span> <span class="st">"Y"</span> <span class="sc">&amp;</span> V1 <span class="sc">==</span> <span class="st">"A"</span> <span class="sc">~</span> <span class="st">"X"</span>,</span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>    V2 <span class="sc">==</span> <span class="st">"Y"</span> <span class="sc">&amp;</span> V1 <span class="sc">==</span> <span class="st">"B"</span> <span class="sc">~</span> <span class="st">"Y"</span>,</span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>    V2 <span class="sc">==</span> <span class="st">"Y"</span> <span class="sc">&amp;</span> V1 <span class="sc">==</span> <span class="st">"C"</span> <span class="sc">~</span> <span class="st">"Z"</span>,</span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>    V2 <span class="sc">==</span> <span class="st">"Z"</span> <span class="sc">&amp;</span> V1 <span class="sc">==</span> <span class="st">"A"</span> <span class="sc">~</span> <span class="st">"Y"</span>,</span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>    V2 <span class="sc">==</span> <span class="st">"Z"</span> <span class="sc">&amp;</span> V1 <span class="sc">==</span> <span class="st">"B"</span> <span class="sc">~</span> <span class="st">"Z"</span>,</span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>    V2 <span class="sc">==</span> <span class="st">"Z"</span> <span class="sc">&amp;</span> V1 <span class="sc">==</span> <span class="st">"C"</span> <span class="sc">~</span> <span class="st">"X"</span>,</span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>  )) <span class="sc">%&gt;%</span></span>
-<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="st">"my_score"</span> <span class="ot">=</span> <span class="fu">case_when</span>(</span>
-<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>    play <span class="sc">==</span> <span class="st">"X"</span> <span class="sc">~</span> <span class="dv">1</span>,</span>
-<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>    play <span class="sc">==</span> <span class="st">"Y"</span> <span class="sc">~</span> <span class="dv">2</span>,</span>
-<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>    play <span class="sc">==</span> <span class="st">"Z"</span> <span class="sc">~</span> <span class="dv">3</span></span>
-<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>  )) <span class="sc">%&gt;%</span></span>
-<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="st">"win_score"</span> <span class="ot">=</span> <span class="fu">case_when</span>(</span>
-<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>    (V1 <span class="sc">==</span> <span class="st">"A"</span> <span class="sc">&amp;</span> play <span class="sc">==</span> <span class="st">"X"</span>) <span class="sc">|</span> (V1 <span class="sc">==</span> <span class="st">"B"</span> <span class="sc">&amp;</span> play <span class="sc">==</span> <span class="st">"Y"</span>) <span class="sc">|</span> (V1 <span class="sc">==</span> <span class="st">"C"</span> <span class="sc">&amp;</span> play <span class="sc">==</span> <span class="st">"Z"</span>) <span class="sc">~</span> <span class="dv">3</span>,</span>
-<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>    V1 <span class="sc">==</span> <span class="st">"A"</span> <span class="sc">&amp;</span> play <span class="sc">==</span> <span class="st">"Y"</span> <span class="sc">~</span> <span class="dv">6</span>,</span>
-<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>    V1 <span class="sc">==</span> <span class="st">"A"</span> <span class="sc">&amp;</span> play <span class="sc">==</span> <span class="st">"Z"</span> <span class="sc">~</span> <span class="dv">0</span>,</span>
-<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>    V1 <span class="sc">==</span> <span class="st">"B"</span> <span class="sc">&amp;</span> play <span class="sc">==</span> <span class="st">"X"</span> <span class="sc">~</span> <span class="dv">0</span>,</span>
-<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>    V1 <span class="sc">==</span> <span class="st">"B"</span> <span class="sc">&amp;</span> play <span class="sc">==</span> <span class="st">"Z"</span> <span class="sc">~</span> <span class="dv">6</span>,</span>
-<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>    V1 <span class="sc">==</span> <span class="st">"C"</span> <span class="sc">&amp;</span> play <span class="sc">==</span> <span class="st">"X"</span> <span class="sc">~</span> <span class="dv">6</span>,</span>
-<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a>    V1 <span class="sc">==</span> <span class="st">"C"</span> <span class="sc">&amp;</span> play <span class="sc">==</span> <span class="st">"Y"</span> <span class="sc">~</span> <span class="dv">0</span></span>
-<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a>  )) <span class="sc">%&gt;%</span></span>
-<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="st">"score"</span> <span class="ot">=</span> my_score <span class="sc">+</span> win_score) <span class="sc">%&gt;%</span></span>
-<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pull</span>(<span class="st">"score"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sum</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a>dt <span class="sc">%&gt;%</span></span>
+<span id="cb8-2"><a href="#cb8-2"></a>  <span class="fu">mutate</span>(<span class="st">"play"</span> <span class="ot">=</span> <span class="fu">case_when</span>(</span>
+<span id="cb8-3"><a href="#cb8-3"></a>    V2 <span class="sc">==</span> <span class="st">"X"</span> <span class="sc">&amp;</span> V1 <span class="sc">==</span> <span class="st">"A"</span> <span class="sc">~</span> <span class="st">"Z"</span>,</span>
+<span id="cb8-4"><a href="#cb8-4"></a>    V2 <span class="sc">==</span> <span class="st">"X"</span> <span class="sc">&amp;</span> V1 <span class="sc">==</span> <span class="st">"B"</span> <span class="sc">~</span> <span class="st">"X"</span>,</span>
+<span id="cb8-5"><a href="#cb8-5"></a>    V2 <span class="sc">==</span> <span class="st">"X"</span> <span class="sc">&amp;</span> V1 <span class="sc">==</span> <span class="st">"C"</span> <span class="sc">~</span> <span class="st">"Y"</span>,</span>
+<span id="cb8-6"><a href="#cb8-6"></a>    V2 <span class="sc">==</span> <span class="st">"Y"</span> <span class="sc">&amp;</span> V1 <span class="sc">==</span> <span class="st">"A"</span> <span class="sc">~</span> <span class="st">"X"</span>,</span>
+<span id="cb8-7"><a href="#cb8-7"></a>    V2 <span class="sc">==</span> <span class="st">"Y"</span> <span class="sc">&amp;</span> V1 <span class="sc">==</span> <span class="st">"B"</span> <span class="sc">~</span> <span class="st">"Y"</span>,</span>
+<span id="cb8-8"><a href="#cb8-8"></a>    V2 <span class="sc">==</span> <span class="st">"Y"</span> <span class="sc">&amp;</span> V1 <span class="sc">==</span> <span class="st">"C"</span> <span class="sc">~</span> <span class="st">"Z"</span>,</span>
+<span id="cb8-9"><a href="#cb8-9"></a>    V2 <span class="sc">==</span> <span class="st">"Z"</span> <span class="sc">&amp;</span> V1 <span class="sc">==</span> <span class="st">"A"</span> <span class="sc">~</span> <span class="st">"Y"</span>,</span>
+<span id="cb8-10"><a href="#cb8-10"></a>    V2 <span class="sc">==</span> <span class="st">"Z"</span> <span class="sc">&amp;</span> V1 <span class="sc">==</span> <span class="st">"B"</span> <span class="sc">~</span> <span class="st">"Z"</span>,</span>
+<span id="cb8-11"><a href="#cb8-11"></a>    V2 <span class="sc">==</span> <span class="st">"Z"</span> <span class="sc">&amp;</span> V1 <span class="sc">==</span> <span class="st">"C"</span> <span class="sc">~</span> <span class="st">"X"</span>,</span>
+<span id="cb8-12"><a href="#cb8-12"></a>  )) <span class="sc">%&gt;%</span></span>
+<span id="cb8-13"><a href="#cb8-13"></a>  <span class="fu">mutate</span>(<span class="st">"my_score"</span> <span class="ot">=</span> <span class="fu">case_when</span>(</span>
+<span id="cb8-14"><a href="#cb8-14"></a>    play <span class="sc">==</span> <span class="st">"X"</span> <span class="sc">~</span> <span class="dv">1</span>,</span>
+<span id="cb8-15"><a href="#cb8-15"></a>    play <span class="sc">==</span> <span class="st">"Y"</span> <span class="sc">~</span> <span class="dv">2</span>,</span>
+<span id="cb8-16"><a href="#cb8-16"></a>    play <span class="sc">==</span> <span class="st">"Z"</span> <span class="sc">~</span> <span class="dv">3</span></span>
+<span id="cb8-17"><a href="#cb8-17"></a>  )) <span class="sc">%&gt;%</span></span>
+<span id="cb8-18"><a href="#cb8-18"></a>  <span class="fu">mutate</span>(<span class="st">"win_score"</span> <span class="ot">=</span> <span class="fu">case_when</span>(</span>
+<span id="cb8-19"><a href="#cb8-19"></a>    (V1 <span class="sc">==</span> <span class="st">"A"</span> <span class="sc">&amp;</span> play <span class="sc">==</span> <span class="st">"X"</span>) <span class="sc">|</span> (V1 <span class="sc">==</span> <span class="st">"B"</span> <span class="sc">&amp;</span> play <span class="sc">==</span> <span class="st">"Y"</span>) <span class="sc">|</span> (V1 <span class="sc">==</span> <span class="st">"C"</span> <span class="sc">&amp;</span> play <span class="sc">==</span> <span class="st">"Z"</span>) <span class="sc">~</span> <span class="dv">3</span>,</span>
+<span id="cb8-20"><a href="#cb8-20"></a>    V1 <span class="sc">==</span> <span class="st">"A"</span> <span class="sc">&amp;</span> play <span class="sc">==</span> <span class="st">"Y"</span> <span class="sc">~</span> <span class="dv">6</span>,</span>
+<span id="cb8-21"><a href="#cb8-21"></a>    V1 <span class="sc">==</span> <span class="st">"A"</span> <span class="sc">&amp;</span> play <span class="sc">==</span> <span class="st">"Z"</span> <span class="sc">~</span> <span class="dv">0</span>,</span>
+<span id="cb8-22"><a href="#cb8-22"></a>    V1 <span class="sc">==</span> <span class="st">"B"</span> <span class="sc">&amp;</span> play <span class="sc">==</span> <span class="st">"X"</span> <span class="sc">~</span> <span class="dv">0</span>,</span>
+<span id="cb8-23"><a href="#cb8-23"></a>    V1 <span class="sc">==</span> <span class="st">"B"</span> <span class="sc">&amp;</span> play <span class="sc">==</span> <span class="st">"Z"</span> <span class="sc">~</span> <span class="dv">6</span>,</span>
+<span id="cb8-24"><a href="#cb8-24"></a>    V1 <span class="sc">==</span> <span class="st">"C"</span> <span class="sc">&amp;</span> play <span class="sc">==</span> <span class="st">"X"</span> <span class="sc">~</span> <span class="dv">6</span>,</span>
+<span id="cb8-25"><a href="#cb8-25"></a>    V1 <span class="sc">==</span> <span class="st">"C"</span> <span class="sc">&amp;</span> play <span class="sc">==</span> <span class="st">"Y"</span> <span class="sc">~</span> <span class="dv">0</span></span>
+<span id="cb8-26"><a href="#cb8-26"></a>  )) <span class="sc">%&gt;%</span></span>
+<span id="cb8-27"><a href="#cb8-27"></a>  <span class="fu">mutate</span>(<span class="st">"score"</span> <span class="ot">=</span> my_score <span class="sc">+</span> win_score) <span class="sc">%&gt;%</span></span>
+<span id="cb8-28"><a href="#cb8-28"></a>  <span class="fu">pull</span>(<span class="st">"score"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb8-29"><a href="#cb8-29"></a>  <span class="fu">sum</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 12091</code></pre>
 </div>

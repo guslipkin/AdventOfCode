@@ -231,7 +231,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../2022/04/2022-04.html" class="sidebar-item-text sidebar-link">dt &lt;- readLines(“input.txt”)</a>
+  <a href="../../2022/04/2022-04.html" class="sidebar-item-text sidebar-link">2022-04: Camp Cleanup</a>
   </div>
 </li>
       </ul>
@@ -506,10 +506,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </header>
 
 <div class="cell" data-hash="2016-01_cache/html/unnamed-chunk-1_242dacb6d0404b71a2ec068a482f2826">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>── Attaching packages ─────────────────────────────────────── tidyverse 1.3.2 ──
-✔ ggplot2 3.3.6      ✔ purrr   0.3.4 
+✔ ggplot2 3.4.0      ✔ purrr   0.3.5 
 ✔ tibble  3.1.8      ✔ dplyr   1.0.10
 ✔ tidyr   1.2.1      ✔ stringr 1.4.1 
 ✔ readr   2.1.3      ✔ forcats 0.5.2 
@@ -517,7 +517,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ✖ dplyr::filter() masks stats::filter()
 ✖ dplyr::lag()    masks stats::lag()</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(data.table)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="fu">library</span>(data.table)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>
 Attaching package: 'data.table'
@@ -530,20 +530,20 @@ The following object is masked from 'package:purrr':
 
     transpose</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stringr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="fu">library</span>(stringr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell" data-hash="2016-01_cache/html/unnamed-chunk-2_df1d17bf51143f27ad763f0ecde16e8c">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>dt <span class="ot">&lt;-</span> <span class="fu">readLines</span>(<span class="st">"input.txt"</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">str_split</span>(<span class="st">", "</span>, <span class="at">simplify =</span> <span class="cn">FALSE</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unlist</span>() <span class="sc">|&gt;</span></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">str_match_all</span>(<span class="st">"([RL])([0-9]*)"</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">list</span>() <span class="sc">|&gt;</span> </span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rbindlist</span>() <span class="sc">|&gt;</span></span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">t</span>() <span class="sc">|&gt;</span></span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">data.table</span>() <span class="sc">|&gt;</span></span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>  <span class="st">`</span><span class="at">colnames&lt;-</span><span class="st">`</span>(<span class="fu">c</span>(<span class="st">"input"</span>, <span class="st">"dir"</span>, <span class="st">"dis"</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">dis =</span> <span class="fu">as.integer</span>(dis))</span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(dt)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a>dt <span class="ot">&lt;-</span> <span class="fu">readLines</span>(<span class="st">"input.txt"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb6-2"><a href="#cb6-2"></a>  <span class="fu">str_split</span>(<span class="st">", "</span>, <span class="at">simplify =</span> <span class="cn">FALSE</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb6-3"><a href="#cb6-3"></a>  <span class="fu">unlist</span>() <span class="sc">|&gt;</span></span>
+<span id="cb6-4"><a href="#cb6-4"></a>  <span class="fu">str_match_all</span>(<span class="st">"([RL])([0-9]*)"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb6-5"><a href="#cb6-5"></a>  <span class="fu">list</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb6-6"><a href="#cb6-6"></a>  <span class="fu">rbindlist</span>() <span class="sc">|&gt;</span></span>
+<span id="cb6-7"><a href="#cb6-7"></a>  <span class="fu">t</span>() <span class="sc">|&gt;</span></span>
+<span id="cb6-8"><a href="#cb6-8"></a>  <span class="fu">data.table</span>() <span class="sc">|&gt;</span></span>
+<span id="cb6-9"><a href="#cb6-9"></a>  <span class="st">`</span><span class="at">colnames&lt;-</span><span class="st">`</span>(<span class="fu">c</span>(<span class="st">"input"</span>, <span class="st">"dir"</span>, <span class="st">"dis"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb6-10"><a href="#cb6-10"></a>  <span class="fu">mutate</span>(<span class="at">dis =</span> <span class="fu">as.integer</span>(dis))</span>
+<span id="cb6-11"><a href="#cb6-11"></a><span class="fu">head</span>(dt)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>   input dir dis
 1:    R4   R   4
@@ -557,18 +557,18 @@ The following object is masked from 'package:purrr':
 <section id="part-1" class="level2">
 <h2 class="anchored" data-anchor-id="part-1">Part 1</h2>
 <div class="cell" data-hash="2016-01_cache/html/unnamed-chunk-3_a21ad2421a62627f46683ab1784bc58f">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>dt<span class="sc">$</span>deg <span class="ot">&lt;-</span> <span class="dv">0</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">2</span><span class="sc">:</span><span class="fu">nrow</span>(dt)) {</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(dt<span class="sc">$</span>dir[i] <span class="sc">==</span> <span class="st">"R"</span>) { dt<span class="sc">$</span>deg[i] <span class="ot">&lt;-</span> dt<span class="sc">$</span>deg[i<span class="dv">-1</span>] <span class="sc">+</span> <span class="dv">90</span> }</span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="cf">else</span> {dt<span class="sc">$</span>deg[i] <span class="ot">&lt;-</span> dt<span class="sc">$</span>deg[i<span class="dv">-1</span>] <span class="sc">-</span> <span class="dv">90</span>}</span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>dt <span class="sc">|&gt;</span></span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">deg =</span> deg <span class="sc">%%</span> <span class="dv">360</span>, </span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>         <span class="at">dis =</span> <span class="fu">ifelse</span>(deg <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">180</span>, <span class="dv">270</span>), <span class="sc">-</span>dis, dis)) <span class="sc">|&gt;</span></span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(deg) <span class="sc">|&gt;</span></span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">n =</span> <span class="fu">sum</span>(dis)) <span class="sc">|&gt;</span></span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pull</span>(n) <span class="sc">|&gt;</span></span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sum</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a>dt<span class="sc">$</span>deg <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb8-2"><a href="#cb8-2"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">2</span><span class="sc">:</span><span class="fu">nrow</span>(dt)) {</span>
+<span id="cb8-3"><a href="#cb8-3"></a>  <span class="cf">if</span>(dt<span class="sc">$</span>dir[i] <span class="sc">==</span> <span class="st">"R"</span>) { dt<span class="sc">$</span>deg[i] <span class="ot">&lt;-</span> dt<span class="sc">$</span>deg[i<span class="dv">-1</span>] <span class="sc">+</span> <span class="dv">90</span> }</span>
+<span id="cb8-4"><a href="#cb8-4"></a>  <span class="cf">else</span> {dt<span class="sc">$</span>deg[i] <span class="ot">&lt;-</span> dt<span class="sc">$</span>deg[i<span class="dv">-1</span>] <span class="sc">-</span> <span class="dv">90</span>}</span>
+<span id="cb8-5"><a href="#cb8-5"></a>}</span>
+<span id="cb8-6"><a href="#cb8-6"></a>dt <span class="sc">|&gt;</span></span>
+<span id="cb8-7"><a href="#cb8-7"></a>  <span class="fu">mutate</span>(<span class="at">deg =</span> deg <span class="sc">%%</span> <span class="dv">360</span>, </span>
+<span id="cb8-8"><a href="#cb8-8"></a>         <span class="at">dis =</span> <span class="fu">ifelse</span>(deg <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">180</span>, <span class="dv">270</span>), <span class="sc">-</span>dis, dis)) <span class="sc">|&gt;</span></span>
+<span id="cb8-9"><a href="#cb8-9"></a>  <span class="fu">group_by</span>(deg) <span class="sc">|&gt;</span></span>
+<span id="cb8-10"><a href="#cb8-10"></a>  <span class="fu">summarise</span>(<span class="at">n =</span> <span class="fu">sum</span>(dis)) <span class="sc">|&gt;</span></span>
+<span id="cb8-11"><a href="#cb8-11"></a>  <span class="fu">pull</span>(n) <span class="sc">|&gt;</span></span>
+<span id="cb8-12"><a href="#cb8-12"></a>  <span class="fu">sum</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 250</code></pre>
 </div>
@@ -577,47 +577,47 @@ The following object is masked from 'package:purrr':
 <section id="part-2" class="level2">
 <h2 class="anchored" data-anchor-id="part-2">Part 2</h2>
 <div class="cell" data-hash="2016-01_cache/html/unnamed-chunk-4_5982c1b99fb1777a961d185c7396fb60">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>points <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="fu">ifelse</span>(dt<span class="sc">$</span>dir[<span class="dv">1</span>] <span class="sc">==</span> <span class="st">"R"</span>, dt<span class="sc">$</span>dis[<span class="dv">1</span>], <span class="sc">-</span>dt<span class="sc">$</span>dis[<span class="dv">1</span>]), <span class="dv">0</span>), <span class="dv">1</span>, <span class="dv">2</span>)</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (j <span class="cf">in</span> <span class="dv">2</span><span class="sc">:</span><span class="fu">nrow</span>(dt)) {</span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  tmp <span class="ot">&lt;-</span> dt[<span class="dv">1</span><span class="sc">:</span>j,]</span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  tmp<span class="sc">$</span>deg <span class="ot">&lt;-</span> <span class="dv">0</span></span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">2</span><span class="sc">:</span>j) {</span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (tmp<span class="sc">$</span>dir[i] <span class="sc">==</span> <span class="st">"R"</span>) { tmp<span class="sc">$</span>deg[i] <span class="ot">&lt;-</span> tmp<span class="sc">$</span>deg[i <span class="sc">-</span> <span class="dv">1</span>] <span class="sc">+</span> <span class="dv">90</span> }</span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span> {  tmp<span class="sc">$</span>deg[i] <span class="ot">&lt;-</span> tmp<span class="sc">$</span>deg[i <span class="sc">-</span> <span class="dv">1</span>] <span class="sc">-</span> <span class="dv">90</span> }</span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>  tmp <span class="sc">|&gt;</span></span>
-<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">deg =</span> deg <span class="sc">%%</span> <span class="dv">360</span>,</span>
-<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>           <span class="at">dis =</span> <span class="fu">ifelse</span>(deg <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">180</span>, <span class="dv">270</span>), <span class="sc">-</span>dis, dis)) <span class="sc">|&gt;</span></span>
-<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_by</span>(deg) <span class="sc">|&gt;</span></span>
-<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>      <span class="fu">summarise</span>(<span class="at">n =</span> <span class="fu">sum</span>(dis)) <span class="sc">|&gt;</span></span>
-<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>      <span class="fu">ungroup</span>() <span class="sc">|&gt;</span></span>
-<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">deg =</span> <span class="fu">ifelse</span>(deg <span class="sc">%%</span> <span class="dv">360</span> <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">180</span>), <span class="cn">TRUE</span>, <span class="cn">FALSE</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_by</span>(deg) <span class="sc">|&gt;</span></span>
-<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>      <span class="fu">summarise</span>(<span class="at">n =</span> <span class="fu">sum</span>(n)) <span class="sc">|&gt;</span></span>
-<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>      <span class="fu">ungroup</span>() <span class="sc">|&gt;</span></span>
-<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>    <span class="fu">pull</span>(n) <span class="ot">-&gt;</span> point</span>
-<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>  points <span class="ot">&lt;-</span> <span class="fu">rbind</span>(points, <span class="fu">unname</span>(point))</span>
-<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a>points <span class="ot">&lt;-</span> <span class="fu">rbind</span>(<span class="fu">t</span>(<span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>)), points)</span>
-<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a>tmp <span class="ot">&lt;-</span> <span class="fu">t</span>(<span class="fu">c</span>(<span class="cn">NA</span>, <span class="cn">NA</span>))</span>
-<span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-26"><a href="#cb10-26" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>(<span class="fu">nrow</span>(points) <span class="sc">-</span> <span class="dv">1</span>)) {</span>
-<span id="cb10-27"><a href="#cb10-27" aria-hidden="true" tabindex="-1"></a>  tmp <span class="ot">&lt;-</span> </span>
-<span id="cb10-28"><a href="#cb10-28" aria-hidden="true" tabindex="-1"></a>    <span class="fu">rbind</span>(tmp, <span class="fu">cbind</span>(points[i,<span class="dv">1</span>]<span class="sc">:</span>points[i<span class="sc">+</span><span class="dv">1</span>,<span class="dv">1</span>], points[i,<span class="dv">2</span>]<span class="sc">:</span>points[i<span class="sc">+</span><span class="dv">1</span>,<span class="dv">2</span>]))</span>
-<span id="cb10-29"><a href="#cb10-29" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a>points <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="fu">ifelse</span>(dt<span class="sc">$</span>dir[<span class="dv">1</span>] <span class="sc">==</span> <span class="st">"R"</span>, dt<span class="sc">$</span>dis[<span class="dv">1</span>], <span class="sc">-</span>dt<span class="sc">$</span>dis[<span class="dv">1</span>]), <span class="dv">0</span>), <span class="dv">1</span>, <span class="dv">2</span>)</span>
+<span id="cb10-2"><a href="#cb10-2"></a><span class="cf">for</span> (j <span class="cf">in</span> <span class="dv">2</span><span class="sc">:</span><span class="fu">nrow</span>(dt)) {</span>
+<span id="cb10-3"><a href="#cb10-3"></a>  tmp <span class="ot">&lt;-</span> dt[<span class="dv">1</span><span class="sc">:</span>j,]</span>
+<span id="cb10-4"><a href="#cb10-4"></a>  tmp<span class="sc">$</span>deg <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb10-5"><a href="#cb10-5"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">2</span><span class="sc">:</span>j) {</span>
+<span id="cb10-6"><a href="#cb10-6"></a>    <span class="cf">if</span> (tmp<span class="sc">$</span>dir[i] <span class="sc">==</span> <span class="st">"R"</span>) { tmp<span class="sc">$</span>deg[i] <span class="ot">&lt;-</span> tmp<span class="sc">$</span>deg[i <span class="sc">-</span> <span class="dv">1</span>] <span class="sc">+</span> <span class="dv">90</span> }</span>
+<span id="cb10-7"><a href="#cb10-7"></a>    <span class="cf">else</span> {  tmp<span class="sc">$</span>deg[i] <span class="ot">&lt;-</span> tmp<span class="sc">$</span>deg[i <span class="sc">-</span> <span class="dv">1</span>] <span class="sc">-</span> <span class="dv">90</span> }</span>
+<span id="cb10-8"><a href="#cb10-8"></a>  }</span>
+<span id="cb10-9"><a href="#cb10-9"></a>  tmp <span class="sc">|&gt;</span></span>
+<span id="cb10-10"><a href="#cb10-10"></a>    <span class="fu">mutate</span>(<span class="at">deg =</span> deg <span class="sc">%%</span> <span class="dv">360</span>,</span>
+<span id="cb10-11"><a href="#cb10-11"></a>           <span class="at">dis =</span> <span class="fu">ifelse</span>(deg <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">180</span>, <span class="dv">270</span>), <span class="sc">-</span>dis, dis)) <span class="sc">|&gt;</span></span>
+<span id="cb10-12"><a href="#cb10-12"></a>    <span class="fu">group_by</span>(deg) <span class="sc">|&gt;</span></span>
+<span id="cb10-13"><a href="#cb10-13"></a>      <span class="fu">summarise</span>(<span class="at">n =</span> <span class="fu">sum</span>(dis)) <span class="sc">|&gt;</span></span>
+<span id="cb10-14"><a href="#cb10-14"></a>      <span class="fu">ungroup</span>() <span class="sc">|&gt;</span></span>
+<span id="cb10-15"><a href="#cb10-15"></a>    <span class="fu">mutate</span>(<span class="at">deg =</span> <span class="fu">ifelse</span>(deg <span class="sc">%%</span> <span class="dv">360</span> <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">180</span>), <span class="cn">TRUE</span>, <span class="cn">FALSE</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb10-16"><a href="#cb10-16"></a>    <span class="fu">group_by</span>(deg) <span class="sc">|&gt;</span></span>
+<span id="cb10-17"><a href="#cb10-17"></a>      <span class="fu">summarise</span>(<span class="at">n =</span> <span class="fu">sum</span>(n)) <span class="sc">|&gt;</span></span>
+<span id="cb10-18"><a href="#cb10-18"></a>      <span class="fu">ungroup</span>() <span class="sc">|&gt;</span></span>
+<span id="cb10-19"><a href="#cb10-19"></a>    <span class="fu">pull</span>(n) <span class="ot">-&gt;</span> point</span>
+<span id="cb10-20"><a href="#cb10-20"></a>  points <span class="ot">&lt;-</span> <span class="fu">rbind</span>(points, <span class="fu">unname</span>(point))</span>
+<span id="cb10-21"><a href="#cb10-21"></a>}</span>
+<span id="cb10-22"><a href="#cb10-22"></a>points <span class="ot">&lt;-</span> <span class="fu">rbind</span>(<span class="fu">t</span>(<span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>)), points)</span>
+<span id="cb10-23"><a href="#cb10-23"></a></span>
+<span id="cb10-24"><a href="#cb10-24"></a>tmp <span class="ot">&lt;-</span> <span class="fu">t</span>(<span class="fu">c</span>(<span class="cn">NA</span>, <span class="cn">NA</span>))</span>
+<span id="cb10-25"><a href="#cb10-25"></a></span>
+<span id="cb10-26"><a href="#cb10-26"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>(<span class="fu">nrow</span>(points) <span class="sc">-</span> <span class="dv">1</span>)) {</span>
+<span id="cb10-27"><a href="#cb10-27"></a>  tmp <span class="ot">&lt;-</span> </span>
+<span id="cb10-28"><a href="#cb10-28"></a>    <span class="fu">rbind</span>(tmp, <span class="fu">cbind</span>(points[i,<span class="dv">1</span>]<span class="sc">:</span>points[i<span class="sc">+</span><span class="dv">1</span>,<span class="dv">1</span>], points[i,<span class="dv">2</span>]<span class="sc">:</span>points[i<span class="sc">+</span><span class="dv">1</span>,<span class="dv">2</span>]))</span>
+<span id="cb10-29"><a href="#cb10-29"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Warning in cbind(points[i, 1]:points[i + 1, 1], points[i, 2]:points[i + : number
 of rows of result is not a multiple of vector length (arg 1)</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>tmp <span class="ot">&lt;-</span> tmp[<span class="sc">-</span><span class="dv">1</span>,]</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>(<span class="fu">nrow</span>(tmp) <span class="sc">-</span> <span class="dv">1</span>)) {</span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(<span class="fu">all</span>(tmp[i,] <span class="sc">==</span> tmp[i<span class="sc">+</span><span class="dv">1</span>,])) {</span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>    tmp[i,] <span class="ot">&lt;-</span> <span class="fu">t</span>(<span class="fu">c</span>(<span class="cn">NA</span>, <span class="cn">NA</span>))</span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>tmp <span class="ot">&lt;-</span> <span class="fu">na.omit</span>(tmp)</span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(tmp[<span class="fu">duplicated</span>(tmp),][<span class="dv">1</span>,])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a>tmp <span class="ot">&lt;-</span> tmp[<span class="sc">-</span><span class="dv">1</span>,]</span>
+<span id="cb12-2"><a href="#cb12-2"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>(<span class="fu">nrow</span>(tmp) <span class="sc">-</span> <span class="dv">1</span>)) {</span>
+<span id="cb12-3"><a href="#cb12-3"></a>  <span class="cf">if</span>(<span class="fu">all</span>(tmp[i,] <span class="sc">==</span> tmp[i<span class="sc">+</span><span class="dv">1</span>,])) {</span>
+<span id="cb12-4"><a href="#cb12-4"></a>    tmp[i,] <span class="ot">&lt;-</span> <span class="fu">t</span>(<span class="fu">c</span>(<span class="cn">NA</span>, <span class="cn">NA</span>))</span>
+<span id="cb12-5"><a href="#cb12-5"></a>  }</span>
+<span id="cb12-6"><a href="#cb12-6"></a>}</span>
+<span id="cb12-7"><a href="#cb12-7"></a>tmp <span class="ot">&lt;-</span> <span class="fu">na.omit</span>(tmp)</span>
+<span id="cb12-8"><a href="#cb12-8"></a><span class="fu">sum</span>(tmp[<span class="fu">duplicated</span>(tmp),][<span class="dv">1</span>,])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 151</code></pre>
 </div>

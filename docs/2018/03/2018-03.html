@@ -231,7 +231,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../2022/04/2022-04.html" class="sidebar-item-text sidebar-link">dt &lt;- readLines(“input.txt”)</a>
+  <a href="../../2022/04/2022-04.html" class="sidebar-item-text sidebar-link">2022-04: Camp Cleanup</a>
   </div>
 </li>
       </ul>
@@ -506,16 +506,16 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </header>
 
 <div class="cell" data-hash="2018-03_cache/html/unnamed-chunk-1_956cb64a6b8f84d698081d8ac08929e5">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(data.table)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stringi)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>dt <span class="ot">&lt;-</span> <span class="fu">readLines</span>(<span class="st">"input.txt"</span>)</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>pattern <span class="ot">&lt;-</span> </span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">"#([0-9]{1,4}) @ ([0-9]{0,4}),([0-9]{0,4}): ([0-9]{0,4})x([0-9]{0,4})"</span></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>dt <span class="ot">&lt;-</span> </span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">data.table</span>(<span class="fu">do.call</span>(rbind, <span class="fu">stri_match_all_regex</span>(dt, pattern)))</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(dt) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"input"</span>, <span class="st">"id"</span>, <span class="st">"xPos"</span>, <span class="st">"yPos"</span>, <span class="st">"xSize"</span>, <span class="st">"ySize"</span>)</span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>dt <span class="ot">&lt;-</span> <span class="fu">data.table</span>(<span class="fu">apply</span>(dt[, <span class="dv">2</span><span class="sc">:</span><span class="dv">6</span>], <span class="dv">2</span>, as.numeric))</span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(dt)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">library</span>(data.table)</span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="fu">library</span>(stringi)</span>
+<span id="cb1-3"><a href="#cb1-3"></a>dt <span class="ot">&lt;-</span> <span class="fu">readLines</span>(<span class="st">"input.txt"</span>)</span>
+<span id="cb1-4"><a href="#cb1-4"></a>pattern <span class="ot">&lt;-</span> </span>
+<span id="cb1-5"><a href="#cb1-5"></a>  <span class="st">"#([0-9]{1,4}) @ ([0-9]{0,4}),([0-9]{0,4}): ([0-9]{0,4})x([0-9]{0,4})"</span></span>
+<span id="cb1-6"><a href="#cb1-6"></a>dt <span class="ot">&lt;-</span> </span>
+<span id="cb1-7"><a href="#cb1-7"></a>  <span class="fu">data.table</span>(<span class="fu">do.call</span>(rbind, <span class="fu">stri_match_all_regex</span>(dt, pattern)))</span>
+<span id="cb1-8"><a href="#cb1-8"></a><span class="fu">colnames</span>(dt) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"input"</span>, <span class="st">"id"</span>, <span class="st">"xPos"</span>, <span class="st">"yPos"</span>, <span class="st">"xSize"</span>, <span class="st">"ySize"</span>)</span>
+<span id="cb1-9"><a href="#cb1-9"></a>dt <span class="ot">&lt;-</span> <span class="fu">data.table</span>(<span class="fu">apply</span>(dt[, <span class="dv">2</span><span class="sc">:</span><span class="dv">6</span>], <span class="dv">2</span>, as.numeric))</span>
+<span id="cb1-10"><a href="#cb1-10"></a><span class="fu">head</span>(dt)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>   id xPos yPos xSize ySize
 1:  1  393  863    11    29
@@ -529,16 +529,16 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <section id="part-1" class="level2">
 <h2 class="anchored" data-anchor-id="part-1">Part 1</h2>
 <div class="cell" data-hash="2018-03_cache/html/unnamed-chunk-2_02b36beba2882b4010e427bfc193037a">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>mat <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">0</span>, <span class="dv">1000</span>, <span class="dv">1000</span>)</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(x <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(dt)) {</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  xPos <span class="ot">&lt;-</span> dt<span class="sc">$</span>xPos[x] <span class="sc">+</span> <span class="dv">1</span></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  xSize <span class="ot">&lt;-</span> dt<span class="sc">$</span>xSize[x] <span class="sc">-</span> <span class="dv">1</span></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  yPos <span class="ot">&lt;-</span> dt<span class="sc">$</span>yPos[x] <span class="sc">+</span> <span class="dv">1</span></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  ySize <span class="ot">&lt;-</span> dt<span class="sc">$</span>ySize[x] <span class="sc">-</span> <span class="dv">1</span></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  mat[xPos<span class="sc">:</span>(xPos <span class="sc">+</span> xSize), yPos<span class="sc">:</span>(yPos <span class="sc">+</span> ySize)] <span class="ot">&lt;-</span> </span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    mat[xPos<span class="sc">:</span>(xPos <span class="sc">+</span> xSize), yPos<span class="sc">:</span>(yPos <span class="sc">+</span> ySize)] <span class="sc">+</span> <span class="dv">1</span></span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(mat[mat <span class="sc">&gt;=</span> <span class="dv">2</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>mat <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">0</span>, <span class="dv">1000</span>, <span class="dv">1000</span>)</span>
+<span id="cb3-2"><a href="#cb3-2"></a><span class="cf">for</span>(x <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(dt)) {</span>
+<span id="cb3-3"><a href="#cb3-3"></a>  xPos <span class="ot">&lt;-</span> dt<span class="sc">$</span>xPos[x] <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb3-4"><a href="#cb3-4"></a>  xSize <span class="ot">&lt;-</span> dt<span class="sc">$</span>xSize[x] <span class="sc">-</span> <span class="dv">1</span></span>
+<span id="cb3-5"><a href="#cb3-5"></a>  yPos <span class="ot">&lt;-</span> dt<span class="sc">$</span>yPos[x] <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb3-6"><a href="#cb3-6"></a>  ySize <span class="ot">&lt;-</span> dt<span class="sc">$</span>ySize[x] <span class="sc">-</span> <span class="dv">1</span></span>
+<span id="cb3-7"><a href="#cb3-7"></a>  mat[xPos<span class="sc">:</span>(xPos <span class="sc">+</span> xSize), yPos<span class="sc">:</span>(yPos <span class="sc">+</span> ySize)] <span class="ot">&lt;-</span> </span>
+<span id="cb3-8"><a href="#cb3-8"></a>    mat[xPos<span class="sc">:</span>(xPos <span class="sc">+</span> xSize), yPos<span class="sc">:</span>(yPos <span class="sc">+</span> ySize)] <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb3-9"><a href="#cb3-9"></a>}</span>
+<span id="cb3-10"><a href="#cb3-10"></a><span class="fu">length</span>(mat[mat <span class="sc">&gt;=</span> <span class="dv">2</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 98005</code></pre>
 </div>
@@ -547,13 +547,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <section id="part-2" class="level2">
 <h2 class="anchored" data-anchor-id="part-2">Part 2</h2>
 <div class="cell" data-hash="2018-03_cache/html/unnamed-chunk-3_5f4264e97e4586ae60f903c416b2432d">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(x <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(dt)) {</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  xPos <span class="ot">&lt;-</span> dt<span class="sc">$</span>xPos[x] <span class="sc">+</span> <span class="dv">1</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  xSize <span class="ot">&lt;-</span> dt<span class="sc">$</span>xSize[x] <span class="sc">-</span> <span class="dv">1</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  yPos <span class="ot">&lt;-</span> dt<span class="sc">$</span>yPos[x] <span class="sc">+</span> <span class="dv">1</span></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  ySize <span class="ot">&lt;-</span> dt<span class="sc">$</span>ySize[x] <span class="sc">-</span> <span class="dv">1</span></span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">all</span>(mat[xPos<span class="sc">:</span>(xPos <span class="sc">+</span> xSize), yPos<span class="sc">:</span>(yPos <span class="sc">+</span> ySize)] <span class="sc">==</span> <span class="dv">1</span>)) { <span class="fu">print</span>(x) }</span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="cf">for</span>(x <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(dt)) {</span>
+<span id="cb5-2"><a href="#cb5-2"></a>  xPos <span class="ot">&lt;-</span> dt<span class="sc">$</span>xPos[x] <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb5-3"><a href="#cb5-3"></a>  xSize <span class="ot">&lt;-</span> dt<span class="sc">$</span>xSize[x] <span class="sc">-</span> <span class="dv">1</span></span>
+<span id="cb5-4"><a href="#cb5-4"></a>  yPos <span class="ot">&lt;-</span> dt<span class="sc">$</span>yPos[x] <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb5-5"><a href="#cb5-5"></a>  ySize <span class="ot">&lt;-</span> dt<span class="sc">$</span>ySize[x] <span class="sc">-</span> <span class="dv">1</span></span>
+<span id="cb5-6"><a href="#cb5-6"></a>  <span class="cf">if</span> (<span class="fu">all</span>(mat[xPos<span class="sc">:</span>(xPos <span class="sc">+</span> xSize), yPos<span class="sc">:</span>(yPos <span class="sc">+</span> ySize)] <span class="sc">==</span> <span class="dv">1</span>)) { <span class="fu">print</span>(x) }</span>
+<span id="cb5-7"><a href="#cb5-7"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 331</code></pre>
 </div>

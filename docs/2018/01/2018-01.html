@@ -231,7 +231,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../2022/04/2022-04.html" class="sidebar-item-text sidebar-link">dt &lt;- readLines(“input.txt”)</a>
+  <a href="../../2022/04/2022-04.html" class="sidebar-item-text sidebar-link">2022-04: Camp Cleanup</a>
   </div>
 </li>
       </ul>
@@ -507,9 +507,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <p><a href="https://adventofcode.com/2018/day/1">https://adventofcode.com/2018/day/1</a></p>
 <div class="cell" data-hash="2018-01_cache/html/unnamed-chunk-1_e83048d58b5f9a9ea40d3d125aa5b67b">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(data.table)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>dt <span class="ot">&lt;-</span> <span class="fu">fread</span>(<span class="st">"input.txt"</span>)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(dt)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">library</span>(data.table)</span>
+<span id="cb1-2"><a href="#cb1-2"></a>dt <span class="ot">&lt;-</span> <span class="fu">fread</span>(<span class="st">"input.txt"</span>)</span>
+<span id="cb1-3"><a href="#cb1-3"></a><span class="fu">head</span>(dt)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>    V1
 1: -14
@@ -523,7 +523,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <section id="part-1" class="level2">
 <h2 class="anchored" data-anchor-id="part-1">Part 1</h2>
 <div class="cell" data-hash="2018-01_cache/html/unnamed-chunk-2_153ae362528fb98dbbf4e205bb626860">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(dt<span class="sc">$</span>V1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="fu">sum</span>(dt<span class="sc">$</span>V1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 425</code></pre>
 </div>
@@ -532,20 +532,20 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <section id="part-2" class="level2">
 <h2 class="anchored" data-anchor-id="part-2">Part 2</h2>
 <div class="cell" data-hash="2018-01_cache/html/unnamed-chunk-3_a30d9789056c46932811a3b6d95b5231">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>breakFlag <span class="ot">&lt;-</span> <span class="cn">FALSE</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>re_pete <span class="ot">&lt;-</span> <span class="dv">1</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> (<span class="sc">!</span>breakFlag) {</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  vec <span class="ot">&lt;-</span> <span class="fu">cumsum</span>(<span class="fu">rep</span>(dt<span class="sc">$</span>V1, re_pete))</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  twice <span class="ot">&lt;-</span> vec[<span class="fu">duplicated</span>(vec)]</span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">length</span>(twice <span class="sc">&gt;=</span> <span class="dv">1</span>)) {</span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">print</span>(twice[<span class="dv">1</span>])</span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>    breakFlag <span class="ot">&lt;-</span> <span class="cn">TRUE</span></span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>    re_pete <span class="ot">&lt;-</span> re_pete <span class="sc">+</span> <span class="dv">1</span></span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>breakFlag <span class="ot">&lt;-</span> <span class="cn">FALSE</span></span>
+<span id="cb5-2"><a href="#cb5-2"></a>re_pete <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb5-3"><a href="#cb5-3"></a><span class="cf">while</span> (<span class="sc">!</span>breakFlag) {</span>
+<span id="cb5-4"><a href="#cb5-4"></a>  vec <span class="ot">&lt;-</span> <span class="fu">cumsum</span>(<span class="fu">rep</span>(dt<span class="sc">$</span>V1, re_pete))</span>
+<span id="cb5-5"><a href="#cb5-5"></a>  </span>
+<span id="cb5-6"><a href="#cb5-6"></a>  twice <span class="ot">&lt;-</span> vec[<span class="fu">duplicated</span>(vec)]</span>
+<span id="cb5-7"><a href="#cb5-7"></a>  </span>
+<span id="cb5-8"><a href="#cb5-8"></a>  <span class="cf">if</span> (<span class="fu">length</span>(twice <span class="sc">&gt;=</span> <span class="dv">1</span>)) {</span>
+<span id="cb5-9"><a href="#cb5-9"></a>    <span class="fu">print</span>(twice[<span class="dv">1</span>])</span>
+<span id="cb5-10"><a href="#cb5-10"></a>    breakFlag <span class="ot">&lt;-</span> <span class="cn">TRUE</span></span>
+<span id="cb5-11"><a href="#cb5-11"></a>  } <span class="cf">else</span> {</span>
+<span id="cb5-12"><a href="#cb5-12"></a>    re_pete <span class="ot">&lt;-</span> re_pete <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb5-13"><a href="#cb5-13"></a>  }</span>
+<span id="cb5-14"><a href="#cb5-14"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 57538</code></pre>
 </div>

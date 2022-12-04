@@ -231,7 +231,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../2022/04/2022-04.html" class="sidebar-item-text sidebar-link">dt &lt;- readLines(“input.txt”)</a>
+  <a href="../../2022/04/2022-04.html" class="sidebar-item-text sidebar-link">2022-04: Camp Cleanup</a>
   </div>
 </li>
       </ul>
@@ -506,39 +506,39 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </header>
 
 <div class="cell" data-hash="2016-02_cache/html/unnamed-chunk-1_0469d7910195f6de67d0bd0cda54e313">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(data.table)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stringi)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">library</span>(data.table)</span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="fu">library</span>(stringi)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell" data-hash="2016-02_cache/html/unnamed-chunk-2_31e5e22be37abfeafac7667729a59b39">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>dt <span class="ot">&lt;-</span> <span class="fu">fread</span>(<span class="st">"input.txt"</span>, <span class="at">header =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a>dt <span class="ot">&lt;-</span> <span class="fu">fread</span>(<span class="st">"input.txt"</span>, <span class="at">header =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <section id="part-1" class="level2">
 <h2 class="anchored" data-anchor-id="part-1">Part 1</h2>
 <div class="cell" data-hash="2016-02_cache/html/unnamed-chunk-3_56f5804d9523075ab5d57737614e6807">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>mat <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">9</span>, <span class="dv">3</span>, <span class="dv">3</span>)</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>startX <span class="ot">&lt;&lt;-</span> <span class="dv">2</span></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>startY <span class="ot">&lt;&lt;-</span> <span class="dv">2</span></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="fu">apply</span>(dt, <span class="dv">1</span>, <span class="cf">function</span>(x) {</span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sapply</span>(<span class="fu">unlist</span>(<span class="fu">stri_match_all_regex</span>(x, <span class="st">"[ULRD]"</span>)), <span class="cf">function</span>(y) {</span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (y <span class="sc">==</span> <span class="st">"U"</span>) { startY <span class="ot">&lt;&lt;-</span> startY <span class="sc">-</span> <span class="dv">1</span> }</span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span> <span class="cf">if</span> (y <span class="sc">==</span> <span class="st">"D"</span>) { startY <span class="ot">&lt;&lt;-</span> startY <span class="sc">+</span> <span class="dv">1</span> }</span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span> <span class="cf">if</span> (y <span class="sc">==</span> <span class="st">"L"</span>) { startX <span class="ot">&lt;&lt;-</span> startX <span class="sc">-</span> <span class="dv">1</span> }</span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span> { startX <span class="ot">&lt;&lt;-</span> startX <span class="sc">+</span> <span class="dv">1</span> }</span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span>(startX <span class="sc">==</span> <span class="dv">0</span>) { startX <span class="ot">&lt;&lt;-</span> <span class="dv">1</span> }</span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span> <span class="cf">if</span> (startX <span class="sc">==</span> <span class="dv">4</span>) {startX <span class="ot">&lt;&lt;-</span> <span class="dv">3</span>}</span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span>(startY <span class="sc">==</span> <span class="dv">0</span>) { startY <span class="ot">&lt;&lt;-</span> <span class="dv">1</span> }</span>
-<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span> <span class="cf">if</span> (startY <span class="sc">==</span> <span class="dv">4</span>) {startY <span class="ot">&lt;&lt;-</span> <span class="dv">3</span>}</span>
-<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>  })</span>
-<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">rbind</span>(startX, startY))</span>
-<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>}) <span class="sc">|&gt;</span> </span>
-<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">t</span>() <span class="sc">|&gt;</span></span>
-<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">apply</span>(<span class="dv">1</span>, <span class="cf">function</span>(x) {</span>
-<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(mat[x[<span class="dv">1</span>], x[<span class="dv">2</span>]])</span>
-<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>  }) <span class="sc">|&gt;</span></span>
-<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">paste0</span>(<span class="at">collapse =</span> <span class="st">""</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>mat <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">9</span>, <span class="dv">3</span>, <span class="dv">3</span>)</span>
+<span id="cb3-2"><a href="#cb3-2"></a></span>
+<span id="cb3-3"><a href="#cb3-3"></a>startX <span class="ot">&lt;&lt;-</span> <span class="dv">2</span></span>
+<span id="cb3-4"><a href="#cb3-4"></a>startY <span class="ot">&lt;&lt;-</span> <span class="dv">2</span></span>
+<span id="cb3-5"><a href="#cb3-5"></a><span class="fu">apply</span>(dt, <span class="dv">1</span>, <span class="cf">function</span>(x) {</span>
+<span id="cb3-6"><a href="#cb3-6"></a>  <span class="fu">sapply</span>(<span class="fu">unlist</span>(<span class="fu">stri_match_all_regex</span>(x, <span class="st">"[ULRD]"</span>)), <span class="cf">function</span>(y) {</span>
+<span id="cb3-7"><a href="#cb3-7"></a>    <span class="cf">if</span> (y <span class="sc">==</span> <span class="st">"U"</span>) { startY <span class="ot">&lt;&lt;-</span> startY <span class="sc">-</span> <span class="dv">1</span> }</span>
+<span id="cb3-8"><a href="#cb3-8"></a>    <span class="cf">else</span> <span class="cf">if</span> (y <span class="sc">==</span> <span class="st">"D"</span>) { startY <span class="ot">&lt;&lt;-</span> startY <span class="sc">+</span> <span class="dv">1</span> }</span>
+<span id="cb3-9"><a href="#cb3-9"></a>    <span class="cf">else</span> <span class="cf">if</span> (y <span class="sc">==</span> <span class="st">"L"</span>) { startX <span class="ot">&lt;&lt;-</span> startX <span class="sc">-</span> <span class="dv">1</span> }</span>
+<span id="cb3-10"><a href="#cb3-10"></a>    <span class="cf">else</span> { startX <span class="ot">&lt;&lt;-</span> startX <span class="sc">+</span> <span class="dv">1</span> }</span>
+<span id="cb3-11"><a href="#cb3-11"></a>    </span>
+<span id="cb3-12"><a href="#cb3-12"></a>    <span class="cf">if</span>(startX <span class="sc">==</span> <span class="dv">0</span>) { startX <span class="ot">&lt;&lt;-</span> <span class="dv">1</span> }</span>
+<span id="cb3-13"><a href="#cb3-13"></a>    <span class="cf">else</span> <span class="cf">if</span> (startX <span class="sc">==</span> <span class="dv">4</span>) {startX <span class="ot">&lt;&lt;-</span> <span class="dv">3</span>}</span>
+<span id="cb3-14"><a href="#cb3-14"></a>    </span>
+<span id="cb3-15"><a href="#cb3-15"></a>    <span class="cf">if</span>(startY <span class="sc">==</span> <span class="dv">0</span>) { startY <span class="ot">&lt;&lt;-</span> <span class="dv">1</span> }</span>
+<span id="cb3-16"><a href="#cb3-16"></a>    <span class="cf">else</span> <span class="cf">if</span> (startY <span class="sc">==</span> <span class="dv">4</span>) {startY <span class="ot">&lt;&lt;-</span> <span class="dv">3</span>}</span>
+<span id="cb3-17"><a href="#cb3-17"></a>  })</span>
+<span id="cb3-18"><a href="#cb3-18"></a>  <span class="fu">return</span>(<span class="fu">rbind</span>(startX, startY))</span>
+<span id="cb3-19"><a href="#cb3-19"></a>}) <span class="sc">|&gt;</span> </span>
+<span id="cb3-20"><a href="#cb3-20"></a>  <span class="fu">t</span>() <span class="sc">|&gt;</span></span>
+<span id="cb3-21"><a href="#cb3-21"></a>  <span class="fu">apply</span>(<span class="dv">1</span>, <span class="cf">function</span>(x) {</span>
+<span id="cb3-22"><a href="#cb3-22"></a>    <span class="fu">return</span>(mat[x[<span class="dv">1</span>], x[<span class="dv">2</span>]])</span>
+<span id="cb3-23"><a href="#cb3-23"></a>  }) <span class="sc">|&gt;</span></span>
+<span id="cb3-24"><a href="#cb3-24"></a>  <span class="fu">paste0</span>(<span class="at">collapse =</span> <span class="st">""</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "82958"</code></pre>
 </div>
@@ -547,35 +547,35 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <section id="part-2" class="level2">
 <h2 class="anchored" data-anchor-id="part-2">Part 2</h2>
 <div class="cell" data-hash="2016-02_cache/html/unnamed-chunk-4_bbf731a0c25b3e571703cd7e41c22bda">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>mat <span class="ot">&lt;-</span> <span class="fu">as.matrix</span>(<span class="fu">fread</span>(<span class="st">"grid2.csv"</span>, <span class="at">header =</span> <span class="cn">FALSE</span>, <span class="at">na.strings =</span> <span class="st">""</span>))</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>startX <span class="ot">&lt;&lt;-</span> <span class="dv">3</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>startY <span class="ot">&lt;&lt;-</span> <span class="dv">1</span></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="fu">apply</span>(dt, <span class="dv">1</span>, <span class="cf">function</span>(x) {</span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sapply</span>(<span class="fu">unlist</span>(<span class="fu">stri_match_all_regex</span>(x, <span class="st">"[ULRD]"</span>)), <span class="cf">function</span>(y) {</span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (y <span class="sc">==</span> <span class="st">"L"</span>) { </span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>      startY <span class="ot">&lt;&lt;-</span> startY <span class="sc">-</span> <span class="dv">1</span></span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> (startY <span class="sc">==</span> <span class="dv">0</span> <span class="sc">||</span> <span class="fu">is.na</span>(mat[startX,startY])) { startY <span class="ot">&lt;&lt;-</span> startY <span class="sc">+</span> <span class="dv">1</span> }</span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>    } <span class="cf">else</span> <span class="cf">if</span> (y <span class="sc">==</span> <span class="st">"R"</span>) { </span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>      startY <span class="ot">&lt;&lt;-</span> startY <span class="sc">+</span> <span class="dv">1</span> </span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> (startY <span class="sc">==</span> <span class="dv">6</span> <span class="sc">||</span> <span class="fu">is.na</span>(mat[startX,startY])) { startY <span class="ot">&lt;&lt;-</span> startY <span class="sc">-</span> <span class="dv">1</span> }</span>
-<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>    } <span class="cf">else</span> <span class="cf">if</span> (y <span class="sc">==</span> <span class="st">"U"</span>) { </span>
-<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>      startX <span class="ot">&lt;&lt;-</span> startX <span class="sc">-</span> <span class="dv">1</span> </span>
-<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> (startX <span class="sc">==</span> <span class="dv">0</span> <span class="sc">||</span> <span class="fu">is.na</span>(mat[startX,startY])) { startX <span class="ot">&lt;&lt;-</span> startX <span class="sc">+</span> <span class="dv">1</span> }</span>
-<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>    } <span class="cf">else</span> { </span>
-<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>      startX <span class="ot">&lt;&lt;-</span> startX <span class="sc">+</span> <span class="dv">1</span> </span>
-<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> (startX <span class="sc">==</span> <span class="dv">6</span> <span class="sc">||</span> <span class="fu">is.na</span>(mat[startX,startY])) { startX <span class="ot">&lt;&lt;-</span> startX <span class="sc">-</span> <span class="dv">1</span> }</span>
-<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>  })</span>
-<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">rbind</span>(startX, startY))</span>
-<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>}) <span class="sc">|&gt;</span> </span>
-<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">t</span>() <span class="sc">|&gt;</span></span>
-<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">apply</span>(<span class="dv">1</span>, <span class="cf">function</span>(x) {</span>
-<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(mat[x[<span class="dv">1</span>], x[<span class="dv">2</span>]])</span>
-<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>  }) <span class="sc">|&gt;</span></span>
-<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">paste0</span>(<span class="at">collapse =</span> <span class="st">""</span>) <span class="sc">|&gt;</span></span>
-<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stri_replace_all_regex</span>(<span class="st">" "</span>, <span class="st">""</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>mat <span class="ot">&lt;-</span> <span class="fu">as.matrix</span>(<span class="fu">fread</span>(<span class="st">"grid2.csv"</span>, <span class="at">header =</span> <span class="cn">FALSE</span>, <span class="at">na.strings =</span> <span class="st">""</span>))</span>
+<span id="cb5-2"><a href="#cb5-2"></a></span>
+<span id="cb5-3"><a href="#cb5-3"></a>startX <span class="ot">&lt;&lt;-</span> <span class="dv">3</span></span>
+<span id="cb5-4"><a href="#cb5-4"></a>startY <span class="ot">&lt;&lt;-</span> <span class="dv">1</span></span>
+<span id="cb5-5"><a href="#cb5-5"></a></span>
+<span id="cb5-6"><a href="#cb5-6"></a><span class="fu">apply</span>(dt, <span class="dv">1</span>, <span class="cf">function</span>(x) {</span>
+<span id="cb5-7"><a href="#cb5-7"></a>  <span class="fu">sapply</span>(<span class="fu">unlist</span>(<span class="fu">stri_match_all_regex</span>(x, <span class="st">"[ULRD]"</span>)), <span class="cf">function</span>(y) {</span>
+<span id="cb5-8"><a href="#cb5-8"></a>    <span class="cf">if</span> (y <span class="sc">==</span> <span class="st">"L"</span>) { </span>
+<span id="cb5-9"><a href="#cb5-9"></a>      startY <span class="ot">&lt;&lt;-</span> startY <span class="sc">-</span> <span class="dv">1</span></span>
+<span id="cb5-10"><a href="#cb5-10"></a>      <span class="cf">if</span> (startY <span class="sc">==</span> <span class="dv">0</span> <span class="sc">||</span> <span class="fu">is.na</span>(mat[startX,startY])) { startY <span class="ot">&lt;&lt;-</span> startY <span class="sc">+</span> <span class="dv">1</span> }</span>
+<span id="cb5-11"><a href="#cb5-11"></a>    } <span class="cf">else</span> <span class="cf">if</span> (y <span class="sc">==</span> <span class="st">"R"</span>) { </span>
+<span id="cb5-12"><a href="#cb5-12"></a>      startY <span class="ot">&lt;&lt;-</span> startY <span class="sc">+</span> <span class="dv">1</span> </span>
+<span id="cb5-13"><a href="#cb5-13"></a>      <span class="cf">if</span> (startY <span class="sc">==</span> <span class="dv">6</span> <span class="sc">||</span> <span class="fu">is.na</span>(mat[startX,startY])) { startY <span class="ot">&lt;&lt;-</span> startY <span class="sc">-</span> <span class="dv">1</span> }</span>
+<span id="cb5-14"><a href="#cb5-14"></a>    } <span class="cf">else</span> <span class="cf">if</span> (y <span class="sc">==</span> <span class="st">"U"</span>) { </span>
+<span id="cb5-15"><a href="#cb5-15"></a>      startX <span class="ot">&lt;&lt;-</span> startX <span class="sc">-</span> <span class="dv">1</span> </span>
+<span id="cb5-16"><a href="#cb5-16"></a>      <span class="cf">if</span> (startX <span class="sc">==</span> <span class="dv">0</span> <span class="sc">||</span> <span class="fu">is.na</span>(mat[startX,startY])) { startX <span class="ot">&lt;&lt;-</span> startX <span class="sc">+</span> <span class="dv">1</span> }</span>
+<span id="cb5-17"><a href="#cb5-17"></a>    } <span class="cf">else</span> { </span>
+<span id="cb5-18"><a href="#cb5-18"></a>      startX <span class="ot">&lt;&lt;-</span> startX <span class="sc">+</span> <span class="dv">1</span> </span>
+<span id="cb5-19"><a href="#cb5-19"></a>      <span class="cf">if</span> (startX <span class="sc">==</span> <span class="dv">6</span> <span class="sc">||</span> <span class="fu">is.na</span>(mat[startX,startY])) { startX <span class="ot">&lt;&lt;-</span> startX <span class="sc">-</span> <span class="dv">1</span> }</span>
+<span id="cb5-20"><a href="#cb5-20"></a>    }</span>
+<span id="cb5-21"><a href="#cb5-21"></a>  })</span>
+<span id="cb5-22"><a href="#cb5-22"></a>  <span class="fu">return</span>(<span class="fu">rbind</span>(startX, startY))</span>
+<span id="cb5-23"><a href="#cb5-23"></a>}) <span class="sc">|&gt;</span> </span>
+<span id="cb5-24"><a href="#cb5-24"></a>  <span class="fu">t</span>() <span class="sc">|&gt;</span></span>
+<span id="cb5-25"><a href="#cb5-25"></a>  <span class="fu">apply</span>(<span class="dv">1</span>, <span class="cf">function</span>(x) {</span>
+<span id="cb5-26"><a href="#cb5-26"></a>    <span class="fu">return</span>(mat[x[<span class="dv">1</span>], x[<span class="dv">2</span>]])</span>
+<span id="cb5-27"><a href="#cb5-27"></a>  }) <span class="sc">|&gt;</span></span>
+<span id="cb5-28"><a href="#cb5-28"></a>  <span class="fu">paste0</span>(<span class="at">collapse =</span> <span class="st">""</span>) <span class="sc">|&gt;</span></span>
+<span id="cb5-29"><a href="#cb5-29"></a>  <span class="fu">stri_replace_all_regex</span>(<span class="st">" "</span>, <span class="st">""</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "B3DB8"</code></pre>
 </div>

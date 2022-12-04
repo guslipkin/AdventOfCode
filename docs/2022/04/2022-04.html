@@ -506,7 +506,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </header>
 
 <div class="cell" data-hash="2022-04_cache/html/unnamed-chunk-1_dcfcac463a7b556315ef5d80e6811929">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>── Attaching packages ─────────────────────────────────────── tidyverse 1.3.2 ──
 ✔ ggplot2 3.4.0      ✔ purrr   0.3.5 
@@ -517,7 +517,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ✖ dplyr::filter() masks stats::filter()
 ✖ dplyr::lag()    masks stats::lag()</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(data.table)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="fu">library</span>(data.table)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>
 Attaching package: 'data.table'
@@ -532,23 +532,23 @@ The following object is masked from 'package:purrr':
 </div>
 </div>
 <div class="cell" data-hash="2022-04_cache/html/unnamed-chunk-2_1e19cf48b1647a86201dc5109581a84d">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>dt <span class="ot">&lt;-</span> <span class="fu">fread</span>(<span class="st">"input.txt"</span>, <span class="at">header =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co"># dt &lt;- readLines("input.txt")</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>dt <span class="ot">&lt;-</span> <span class="fu">fread</span>(<span class="st">"input.txt"</span>, <span class="at">header =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb5-2"><a href="#cb5-2"></a><span class="co"># dt &lt;- readLines("input.txt")</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>This looks bad at first, but it’s not.</p>
 <section id="part-1" class="level2">
 <h2 class="anchored" data-anchor-id="part-1">Part 1</h2>
 <p>It took me a minute to figure out how I wanted to work with the data ranges. I started with <code>mutate</code> then <code>lapply</code> then quickly switched to <code>mapply</code>. From there it wrote itself. I then second-guessed my answer and divided by two because I thought I was double reporting the ranges. I cost myself a minute :(</p>
 <div class="cell" data-hash="2022-04_cache/html/unnamed-chunk-3_62a8d5a390fae0e2acb8311b307541a9">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mapply</span>(\(x, y) {</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  x <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(<span class="fu">unlist</span>(<span class="fu">strsplit</span>(x, <span class="st">"-"</span>)))</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  y <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(<span class="fu">unlist</span>(<span class="fu">strsplit</span>(y, <span class="st">"-"</span>)))</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">all</span>(x[<span class="dv">1</span>]<span class="sc">:</span>x[<span class="dv">2</span>] <span class="sc">%in%</span> y[<span class="dv">1</span>]<span class="sc">:</span>y[<span class="dv">2</span>]) <span class="sc">|</span> <span class="fu">all</span>(y[<span class="dv">1</span>]<span class="sc">:</span>y[<span class="dv">2</span>] <span class="sc">%in%</span> x[<span class="dv">1</span>]<span class="sc">:</span>x[<span class="dv">2</span>])</span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>}, dt<span class="sc">$</span>V1, dt<span class="sc">$</span>V2) <span class="sc">|&gt;</span></span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unlist</span>() <span class="sc">|&gt;</span></span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">table</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>  .[<span class="st">"TRUE"</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="fu">mapply</span>(\(x, y) {</span>
+<span id="cb6-2"><a href="#cb6-2"></a>  x <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(<span class="fu">unlist</span>(<span class="fu">strsplit</span>(x, <span class="st">"-"</span>)))</span>
+<span id="cb6-3"><a href="#cb6-3"></a>  y <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(<span class="fu">unlist</span>(<span class="fu">strsplit</span>(y, <span class="st">"-"</span>)))</span>
+<span id="cb6-4"><a href="#cb6-4"></a>  </span>
+<span id="cb6-5"><a href="#cb6-5"></a>  <span class="fu">all</span>(x[<span class="dv">1</span>]<span class="sc">:</span>x[<span class="dv">2</span>] <span class="sc">%in%</span> y[<span class="dv">1</span>]<span class="sc">:</span>y[<span class="dv">2</span>]) <span class="sc">|</span> <span class="fu">all</span>(y[<span class="dv">1</span>]<span class="sc">:</span>y[<span class="dv">2</span>] <span class="sc">%in%</span> x[<span class="dv">1</span>]<span class="sc">:</span>x[<span class="dv">2</span>])</span>
+<span id="cb6-6"><a href="#cb6-6"></a>}, dt<span class="sc">$</span>V1, dt<span class="sc">$</span>V2) <span class="sc">|&gt;</span></span>
+<span id="cb6-7"><a href="#cb6-7"></a>  <span class="fu">unlist</span>() <span class="sc">|&gt;</span></span>
+<span id="cb6-8"><a href="#cb6-8"></a>  <span class="fu">table</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb6-9"><a href="#cb6-9"></a>  .[<span class="st">"TRUE"</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>TRUE 
  532 </code></pre>
@@ -559,15 +559,15 @@ The following object is masked from 'package:purrr':
 <h2 class="anchored" data-anchor-id="part-2">Part 2</h2>
 <p>38 seconds for part 2! I just had to change <code>all</code> to <code>any</code>.</p>
 <div class="cell" data-hash="2022-04_cache/html/unnamed-chunk-4_02d6730fa05535939698161fcb6fdef1">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mapply</span>(\(x, y) {</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  x <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(<span class="fu">unlist</span>(<span class="fu">strsplit</span>(x, <span class="st">"-"</span>)))</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  y <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(<span class="fu">unlist</span>(<span class="fu">strsplit</span>(y, <span class="st">"-"</span>)))</span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">any</span>(x[<span class="dv">1</span>]<span class="sc">:</span>x[<span class="dv">2</span>] <span class="sc">%in%</span> y[<span class="dv">1</span>]<span class="sc">:</span>y[<span class="dv">2</span>]) <span class="sc">|</span> <span class="fu">any</span>(y[<span class="dv">1</span>]<span class="sc">:</span>y[<span class="dv">2</span>] <span class="sc">%in%</span> x[<span class="dv">1</span>]<span class="sc">:</span>x[<span class="dv">2</span>])</span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>}, dt<span class="sc">$</span>V1, dt<span class="sc">$</span>V2) <span class="sc">|&gt;</span></span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unlist</span>() <span class="sc">|&gt;</span></span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">table</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>  .[<span class="st">"TRUE"</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a><span class="fu">mapply</span>(\(x, y) {</span>
+<span id="cb8-2"><a href="#cb8-2"></a>  x <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(<span class="fu">unlist</span>(<span class="fu">strsplit</span>(x, <span class="st">"-"</span>)))</span>
+<span id="cb8-3"><a href="#cb8-3"></a>  y <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(<span class="fu">unlist</span>(<span class="fu">strsplit</span>(y, <span class="st">"-"</span>)))</span>
+<span id="cb8-4"><a href="#cb8-4"></a>  </span>
+<span id="cb8-5"><a href="#cb8-5"></a>  <span class="fu">any</span>(x[<span class="dv">1</span>]<span class="sc">:</span>x[<span class="dv">2</span>] <span class="sc">%in%</span> y[<span class="dv">1</span>]<span class="sc">:</span>y[<span class="dv">2</span>]) <span class="sc">|</span> <span class="fu">any</span>(y[<span class="dv">1</span>]<span class="sc">:</span>y[<span class="dv">2</span>] <span class="sc">%in%</span> x[<span class="dv">1</span>]<span class="sc">:</span>x[<span class="dv">2</span>])</span>
+<span id="cb8-6"><a href="#cb8-6"></a>}, dt<span class="sc">$</span>V1, dt<span class="sc">$</span>V2) <span class="sc">|&gt;</span></span>
+<span id="cb8-7"><a href="#cb8-7"></a>  <span class="fu">unlist</span>() <span class="sc">|&gt;</span></span>
+<span id="cb8-8"><a href="#cb8-8"></a>  <span class="fu">table</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb8-9"><a href="#cb8-9"></a>  .[<span class="st">"TRUE"</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>TRUE 
  854 </code></pre>

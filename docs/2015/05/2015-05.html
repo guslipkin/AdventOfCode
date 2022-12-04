@@ -231,7 +231,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../2022/04/2022-04.html" class="sidebar-item-text sidebar-link">dt &lt;- readLines(“input.txt”)</a>
+  <a href="../../2022/04/2022-04.html" class="sidebar-item-text sidebar-link">2022-04: Camp Cleanup</a>
   </div>
 </li>
       </ul>
@@ -506,7 +506,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </header>
 
 <div class="cell" data-hash="2015-05_cache/html/unnamed-chunk-1_d84c11a79f46d93cf7b093ebbee2d474">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">readLines</span>(<span class="st">"input.txt"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a>df <span class="ot">&lt;-</span> <span class="fu">readLines</span>(<span class="st">"input.txt"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Warning in readLines("input.txt"): incomplete final line found on 'input.txt'</code></pre>
 </div>
@@ -514,11 +514,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <section id="part-1" class="level2">
 <h2 class="anchored" data-anchor-id="part-1">Part 1</h2>
 <div class="cell" data-hash="2015-05_cache/html/unnamed-chunk-2_8627ffbf8272f381b86e87d1161553e1">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>dt <span class="ot">&lt;-</span> df</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>dt <span class="ot">&lt;-</span> dt[<span class="sc">!</span><span class="fu">grepl</span>(<span class="st">"(ab)|(cd)|(pq)|(xy)"</span>, dt)]</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>dt <span class="ot">&lt;-</span> dt[<span class="fu">grepl</span>(<span class="st">"(</span><span class="sc">\\</span><span class="st">w*[aeuio]</span><span class="sc">\\</span><span class="st">w*){3,}"</span>, dt)]</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>dt <span class="ot">&lt;-</span> dt[<span class="fu">grepl</span>(<span class="st">"(.)</span><span class="sc">\\</span><span class="st">1+"</span>, dt)]</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(dt)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>dt <span class="ot">&lt;-</span> df</span>
+<span id="cb3-2"><a href="#cb3-2"></a>dt <span class="ot">&lt;-</span> dt[<span class="sc">!</span><span class="fu">grepl</span>(<span class="st">"(ab)|(cd)|(pq)|(xy)"</span>, dt)]</span>
+<span id="cb3-3"><a href="#cb3-3"></a>dt <span class="ot">&lt;-</span> dt[<span class="fu">grepl</span>(<span class="st">"(</span><span class="sc">\\</span><span class="st">w*[aeuio]</span><span class="sc">\\</span><span class="st">w*){3,}"</span>, dt)]</span>
+<span id="cb3-4"><a href="#cb3-4"></a>dt <span class="ot">&lt;-</span> dt[<span class="fu">grepl</span>(<span class="st">"(.)</span><span class="sc">\\</span><span class="st">1+"</span>, dt)]</span>
+<span id="cb3-5"><a href="#cb3-5"></a><span class="fu">length</span>(dt)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 255</code></pre>
 </div>
@@ -527,10 +527,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <section id="part-2" class="level2">
 <h2 class="anchored" data-anchor-id="part-2">Part 2</h2>
 <div class="cell" data-hash="2015-05_cache/html/unnamed-chunk-3_9197b519f5e4468a0847fbf89d7d2593">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>dt <span class="ot">&lt;-</span> df</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>dt <span class="ot">&lt;-</span> dt[<span class="fu">grepl</span>(<span class="st">"(..).*(</span><span class="sc">\\</span><span class="st">1)"</span>, dt, <span class="at">perl =</span> <span class="cn">TRUE</span>)]</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>dt <span class="ot">&lt;-</span> dt[<span class="fu">grepl</span>(<span class="st">"(.)(.)(</span><span class="sc">\\</span><span class="st">1)"</span>, dt, <span class="at">perl =</span> <span class="cn">TRUE</span>)]</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(dt)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>dt <span class="ot">&lt;-</span> df</span>
+<span id="cb5-2"><a href="#cb5-2"></a>dt <span class="ot">&lt;-</span> dt[<span class="fu">grepl</span>(<span class="st">"(..).*(</span><span class="sc">\\</span><span class="st">1)"</span>, dt, <span class="at">perl =</span> <span class="cn">TRUE</span>)]</span>
+<span id="cb5-3"><a href="#cb5-3"></a>dt <span class="ot">&lt;-</span> dt[<span class="fu">grepl</span>(<span class="st">"(.)(.)(</span><span class="sc">\\</span><span class="st">1)"</span>, dt, <span class="at">perl =</span> <span class="cn">TRUE</span>)]</span>
+<span id="cb5-4"><a href="#cb5-4"></a><span class="fu">length</span>(dt)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 55</code></pre>
 </div>

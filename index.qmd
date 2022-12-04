@@ -1,7 +1,10 @@
 ---
 title: "Welcome!"
 format: html
-cache: false
+execute: 
+  enabled: true
+  cache: false
+  freeze: false
 ---
 
 Welcome to my Advent of Code book! All of my solutions are in R with varying degrees of complexity and documentation.

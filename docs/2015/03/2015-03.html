@@ -231,7 +231,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../2022/04/2022-04.html" class="sidebar-item-text sidebar-link">dt &lt;- readLines(“input.txt”)</a>
+  <a href="../../2022/04/2022-04.html" class="sidebar-item-text sidebar-link">2022-04: Camp Cleanup</a>
   </div>
 </li>
       </ul>
@@ -506,21 +506,21 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </header>
 
 <div class="cell" data-hash="2015-03_cache/html/unnamed-chunk-1_4591e09e616125fa0c8567f118d84641">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>── Attaching packages ─────────────────────────────────────── tidyverse 1.3.2 ──
-✔ ggplot2 3.3.6      ✔ purrr   0.3.4 
+✔ ggplot2 3.4.0      ✔ purrr   0.3.5 
 ✔ tibble  3.1.8      ✔ dplyr   1.0.10
-✔ tidyr   1.2.0      ✔ stringr 1.4.1 
-✔ readr   2.1.2      ✔ forcats 0.5.2 
+✔ tidyr   1.2.1      ✔ stringr 1.4.1 
+✔ readr   2.1.3      ✔ forcats 0.5.2 
 ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
 ✖ dplyr::filter() masks stats::filter()
 ✖ dplyr::lag()    masks stats::lag()</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stringr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="fu">library</span>(stringr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell" data-hash="2015-03_cache/html/unnamed-chunk-2_097ed8165ca4ecde12399ad19136b635">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>dt <span class="ot">&lt;-</span> <span class="fu">readLines</span>(<span class="st">"input.txt"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>dt <span class="ot">&lt;-</span> <span class="fu">readLines</span>(<span class="st">"input.txt"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Warning in readLines("input.txt"): incomplete final line found on 'input.txt'</code></pre>
 </div>
@@ -528,32 +528,32 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <section id="part-1" class="level2">
 <h2 class="anchored" data-anchor-id="part-1">Part 1</h2>
 <div class="cell" data-hash="2015-03_cache/html/unnamed-chunk-3_0dc42865b4e2d96a7591937653c5cef7">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>dirX <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">case_when</span>(</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    x <span class="sc">==</span> <span class="st">"^"</span> <span class="sc">~</span> <span class="dv">0</span>,</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    x <span class="sc">==</span> <span class="st">"&gt;"</span> <span class="sc">~</span> <span class="dv">1</span>,</span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    x <span class="sc">==</span> <span class="st">"&lt;"</span> <span class="sc">~</span> <span class="sc">-</span><span class="dv">1</span>,</span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    x <span class="sc">==</span> <span class="st">"v"</span> <span class="sc">~</span> <span class="dv">0</span></span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>dirY <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">case_when</span>(</span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>    x <span class="sc">==</span> <span class="st">"^"</span> <span class="sc">~</span> <span class="dv">1</span>,</span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>    x <span class="sc">==</span> <span class="st">"&gt;"</span> <span class="sc">~</span> <span class="dv">0</span>,</span>
-<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>    x <span class="sc">==</span> <span class="st">"&lt;"</span> <span class="sc">~</span> <span class="dv">0</span>,</span>
-<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>    x <span class="sc">==</span> <span class="st">"v"</span> <span class="sc">~</span> <span class="sc">-</span><span class="dv">1</span></span>
-<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="st">"x"</span> <span class="ot">=</span> <span class="dv">0</span>, <span class="st">"y"</span> <span class="ot">=</span> <span class="dv">0</span>)</span>
-<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">nchar</span>(dt))</span>
-<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>  df <span class="ot">&lt;-</span> <span class="fu">rbind</span>(df, <span class="fu">data.frame</span>(<span class="st">"x"</span> <span class="ot">=</span> <span class="fu">dirX</span>(<span class="fu">substr</span>(dt, i, i)),</span>
-<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>                             <span class="st">"y"</span> <span class="ot">=</span> <span class="fu">dirY</span>(<span class="fu">substr</span>(dt, i, i))))</span>
-<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> data.table<span class="sc">::</span><span class="fu">data.table</span>(df)</span>
-<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>df<span class="sc">$</span>cumX <span class="ot">&lt;-</span> <span class="fu">cumsum</span>(df<span class="sc">$</span>x)</span>
-<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>df<span class="sc">$</span>cumY <span class="ot">&lt;-</span> <span class="fu">cumsum</span>(df<span class="sc">$</span>y)</span>
-<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> df[, .(cumX, cumY)]</span>
-<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(<span class="fu">unique</span>(df))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a>dirX <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb6-2"><a href="#cb6-2"></a>  <span class="fu">case_when</span>(</span>
+<span id="cb6-3"><a href="#cb6-3"></a>    x <span class="sc">==</span> <span class="st">"^"</span> <span class="sc">~</span> <span class="dv">0</span>,</span>
+<span id="cb6-4"><a href="#cb6-4"></a>    x <span class="sc">==</span> <span class="st">"&gt;"</span> <span class="sc">~</span> <span class="dv">1</span>,</span>
+<span id="cb6-5"><a href="#cb6-5"></a>    x <span class="sc">==</span> <span class="st">"&lt;"</span> <span class="sc">~</span> <span class="sc">-</span><span class="dv">1</span>,</span>
+<span id="cb6-6"><a href="#cb6-6"></a>    x <span class="sc">==</span> <span class="st">"v"</span> <span class="sc">~</span> <span class="dv">0</span></span>
+<span id="cb6-7"><a href="#cb6-7"></a>  )</span>
+<span id="cb6-8"><a href="#cb6-8"></a>}</span>
+<span id="cb6-9"><a href="#cb6-9"></a>dirY <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb6-10"><a href="#cb6-10"></a>  <span class="fu">case_when</span>(</span>
+<span id="cb6-11"><a href="#cb6-11"></a>    x <span class="sc">==</span> <span class="st">"^"</span> <span class="sc">~</span> <span class="dv">1</span>,</span>
+<span id="cb6-12"><a href="#cb6-12"></a>    x <span class="sc">==</span> <span class="st">"&gt;"</span> <span class="sc">~</span> <span class="dv">0</span>,</span>
+<span id="cb6-13"><a href="#cb6-13"></a>    x <span class="sc">==</span> <span class="st">"&lt;"</span> <span class="sc">~</span> <span class="dv">0</span>,</span>
+<span id="cb6-14"><a href="#cb6-14"></a>    x <span class="sc">==</span> <span class="st">"v"</span> <span class="sc">~</span> <span class="sc">-</span><span class="dv">1</span></span>
+<span id="cb6-15"><a href="#cb6-15"></a>  )</span>
+<span id="cb6-16"><a href="#cb6-16"></a>}</span>
+<span id="cb6-17"><a href="#cb6-17"></a></span>
+<span id="cb6-18"><a href="#cb6-18"></a>df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="st">"x"</span> <span class="ot">=</span> <span class="dv">0</span>, <span class="st">"y"</span> <span class="ot">=</span> <span class="dv">0</span>)</span>
+<span id="cb6-19"><a href="#cb6-19"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">nchar</span>(dt))</span>
+<span id="cb6-20"><a href="#cb6-20"></a>  df <span class="ot">&lt;-</span> <span class="fu">rbind</span>(df, <span class="fu">data.frame</span>(<span class="st">"x"</span> <span class="ot">=</span> <span class="fu">dirX</span>(<span class="fu">substr</span>(dt, i, i)),</span>
+<span id="cb6-21"><a href="#cb6-21"></a>                             <span class="st">"y"</span> <span class="ot">=</span> <span class="fu">dirY</span>(<span class="fu">substr</span>(dt, i, i))))</span>
+<span id="cb6-22"><a href="#cb6-22"></a>df <span class="ot">&lt;-</span> data.table<span class="sc">::</span><span class="fu">data.table</span>(df)</span>
+<span id="cb6-23"><a href="#cb6-23"></a>df<span class="sc">$</span>cumX <span class="ot">&lt;-</span> <span class="fu">cumsum</span>(df<span class="sc">$</span>x)</span>
+<span id="cb6-24"><a href="#cb6-24"></a>df<span class="sc">$</span>cumY <span class="ot">&lt;-</span> <span class="fu">cumsum</span>(df<span class="sc">$</span>y)</span>
+<span id="cb6-25"><a href="#cb6-25"></a>df <span class="ot">&lt;-</span> df[, .(cumX, cumY)]</span>
+<span id="cb6-26"><a href="#cb6-26"></a><span class="fu">nrow</span>(<span class="fu">unique</span>(df))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 2565</code></pre>
 </div>
@@ -562,26 +562,26 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <section id="part-2" class="level2">
 <h2 class="anchored" data-anchor-id="part-2">Part 2</h2>
 <div class="cell" data-hash="2015-03_cache/html/unnamed-chunk-4_bb4b14e41374ffd82627e4ec1f0b74ce">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>dfR <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="st">"x"</span> <span class="ot">=</span> <span class="dv">0</span>, <span class="st">"y"</span> <span class="ot">=</span> <span class="dv">0</span>)</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>dfS <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="st">"x"</span> <span class="ot">=</span> <span class="dv">0</span>, <span class="st">"y"</span> <span class="ot">=</span> <span class="dv">0</span>)</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="fu">seq</span>(<span class="dv">1</span>, <span class="fu">nchar</span>(dt), <span class="dv">2</span>))</span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  dfS <span class="ot">&lt;-</span> <span class="fu">rbind</span>(dfS, <span class="fu">data.frame</span>(<span class="st">"x"</span> <span class="ot">=</span> <span class="fu">dirX</span>(<span class="fu">substr</span>(dt, i, i)),</span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>                               <span class="st">"y"</span> <span class="ot">=</span> <span class="fu">dirY</span>(<span class="fu">substr</span>(dt, i, i))))</span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="fu">seq</span>(<span class="dv">2</span>, <span class="fu">nchar</span>(dt), <span class="dv">2</span>))</span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  dfR <span class="ot">&lt;-</span> <span class="fu">rbind</span>(dfR, <span class="fu">data.frame</span>(<span class="st">"x"</span> <span class="ot">=</span> <span class="fu">dirX</span>(<span class="fu">substr</span>(dt, i, i)),</span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>                               <span class="st">"y"</span> <span class="ot">=</span> <span class="fu">dirY</span>(<span class="fu">substr</span>(dt, i, i))))</span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>dts <span class="ot">&lt;-</span> data.table<span class="sc">::</span><span class="fu">data.table</span>(dfS)</span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>dts<span class="sc">$</span>cumX <span class="ot">&lt;-</span> <span class="fu">cumsum</span>(dts<span class="sc">$</span>x)</span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>dts<span class="sc">$</span>cumY <span class="ot">&lt;-</span> <span class="fu">cumsum</span>(dts<span class="sc">$</span>y)</span>
-<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>dtr <span class="ot">&lt;-</span> data.table<span class="sc">::</span><span class="fu">data.table</span>(dfR)</span>
-<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>dtr<span class="sc">$</span>cumX <span class="ot">&lt;-</span> <span class="fu">cumsum</span>(dtr<span class="sc">$</span>x)</span>
-<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>dtr<span class="sc">$</span>cumY <span class="ot">&lt;-</span> <span class="fu">cumsum</span>(dtr<span class="sc">$</span>y)</span>
-<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> data.table<span class="sc">::</span><span class="fu">data.table</span>(<span class="fu">rbind</span>(dts, dtr))</span>
-<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> df[, .(cumX, cumY)]</span>
-<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(<span class="fu">unique</span>(df))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a>dfR <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="st">"x"</span> <span class="ot">=</span> <span class="dv">0</span>, <span class="st">"y"</span> <span class="ot">=</span> <span class="dv">0</span>)</span>
+<span id="cb8-2"><a href="#cb8-2"></a>dfS <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="st">"x"</span> <span class="ot">=</span> <span class="dv">0</span>, <span class="st">"y"</span> <span class="ot">=</span> <span class="dv">0</span>)</span>
+<span id="cb8-3"><a href="#cb8-3"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="fu">seq</span>(<span class="dv">1</span>, <span class="fu">nchar</span>(dt), <span class="dv">2</span>))</span>
+<span id="cb8-4"><a href="#cb8-4"></a>  dfS <span class="ot">&lt;-</span> <span class="fu">rbind</span>(dfS, <span class="fu">data.frame</span>(<span class="st">"x"</span> <span class="ot">=</span> <span class="fu">dirX</span>(<span class="fu">substr</span>(dt, i, i)),</span>
+<span id="cb8-5"><a href="#cb8-5"></a>                               <span class="st">"y"</span> <span class="ot">=</span> <span class="fu">dirY</span>(<span class="fu">substr</span>(dt, i, i))))</span>
+<span id="cb8-6"><a href="#cb8-6"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="fu">seq</span>(<span class="dv">2</span>, <span class="fu">nchar</span>(dt), <span class="dv">2</span>))</span>
+<span id="cb8-7"><a href="#cb8-7"></a>  dfR <span class="ot">&lt;-</span> <span class="fu">rbind</span>(dfR, <span class="fu">data.frame</span>(<span class="st">"x"</span> <span class="ot">=</span> <span class="fu">dirX</span>(<span class="fu">substr</span>(dt, i, i)),</span>
+<span id="cb8-8"><a href="#cb8-8"></a>                               <span class="st">"y"</span> <span class="ot">=</span> <span class="fu">dirY</span>(<span class="fu">substr</span>(dt, i, i))))</span>
+<span id="cb8-9"><a href="#cb8-9"></a></span>
+<span id="cb8-10"><a href="#cb8-10"></a>dts <span class="ot">&lt;-</span> data.table<span class="sc">::</span><span class="fu">data.table</span>(dfS)</span>
+<span id="cb8-11"><a href="#cb8-11"></a>dts<span class="sc">$</span>cumX <span class="ot">&lt;-</span> <span class="fu">cumsum</span>(dts<span class="sc">$</span>x)</span>
+<span id="cb8-12"><a href="#cb8-12"></a>dts<span class="sc">$</span>cumY <span class="ot">&lt;-</span> <span class="fu">cumsum</span>(dts<span class="sc">$</span>y)</span>
+<span id="cb8-13"><a href="#cb8-13"></a>dtr <span class="ot">&lt;-</span> data.table<span class="sc">::</span><span class="fu">data.table</span>(dfR)</span>
+<span id="cb8-14"><a href="#cb8-14"></a>dtr<span class="sc">$</span>cumX <span class="ot">&lt;-</span> <span class="fu">cumsum</span>(dtr<span class="sc">$</span>x)</span>
+<span id="cb8-15"><a href="#cb8-15"></a>dtr<span class="sc">$</span>cumY <span class="ot">&lt;-</span> <span class="fu">cumsum</span>(dtr<span class="sc">$</span>y)</span>
+<span id="cb8-16"><a href="#cb8-16"></a></span>
+<span id="cb8-17"><a href="#cb8-17"></a>df <span class="ot">&lt;-</span> data.table<span class="sc">::</span><span class="fu">data.table</span>(<span class="fu">rbind</span>(dts, dtr))</span>
+<span id="cb8-18"><a href="#cb8-18"></a></span>
+<span id="cb8-19"><a href="#cb8-19"></a>df <span class="ot">&lt;-</span> df[, .(cumX, cumY)]</span>
+<span id="cb8-20"><a href="#cb8-20"></a><span class="fu">nrow</span>(<span class="fu">unique</span>(df))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 2639</code></pre>
 </div>

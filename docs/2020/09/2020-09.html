@@ -231,7 +231,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../2022/04/2022-04.html" class="sidebar-item-text sidebar-link">dt &lt;- readLines(“input.txt”)</a>
+  <a href="../../2022/04/2022-04.html" class="sidebar-item-text sidebar-link">2022-04: Camp Cleanup</a>
   </div>
 </li>
       </ul>
@@ -506,29 +506,29 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </header>
 
 <div class="cell" data-hash="2020-09_cache/html/unnamed-chunk-1_fc2d2e341d80f0d94ddbb4c207d354f5">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"input.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a>df <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"input.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <section id="part-1" class="level2">
 <h2 class="anchored" data-anchor-id="part-1">Part 1</h2>
 <div class="cell" data-hash="2020-09_cache/html/unnamed-chunk-2_c812b3e7386b6585c42da1767dcc393f">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>goodNum <span class="ot">&lt;-</span> <span class="cn">FALSE</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">26</span><span class="sc">:</span><span class="dv">1000</span>) {</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span>(r1 <span class="cf">in</span> (i<span class="dv">-25</span>)<span class="sc">:</span>(i<span class="dv">-1</span>)) {</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span>(df[r1,<span class="dv">1</span>] <span class="sc">&lt;</span> df[i,<span class="dv">1</span>])</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>      <span class="cf">for</span>(r2 <span class="cf">in</span> (i<span class="dv">-25</span>)<span class="sc">:</span>(i<span class="dv">-1</span>))</span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span>(df[i,<span class="dv">1</span>] <span class="sc">-</span> df[r1,<span class="dv">1</span>] <span class="sc">==</span> df[r2,<span class="dv">1</span>]) {</span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>          goodNum <span class="ot">&lt;-</span> <span class="cn">TRUE</span></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>          <span class="cf">break</span></span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>        }</span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span>(goodNum)</span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>      <span class="cf">break</span></span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(<span class="sc">!</span>goodNum) {</span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">print</span>(df[i,<span class="dv">1</span>])</span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">break</span></span>
-<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>  goodNum <span class="ot">&lt;-</span> <span class="cn">FALSE</span></span>
-<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a>goodNum <span class="ot">&lt;-</span> <span class="cn">FALSE</span></span>
+<span id="cb2-2"><a href="#cb2-2"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">26</span><span class="sc">:</span><span class="dv">1000</span>) {</span>
+<span id="cb2-3"><a href="#cb2-3"></a>  <span class="cf">for</span>(r1 <span class="cf">in</span> (i<span class="dv">-25</span>)<span class="sc">:</span>(i<span class="dv">-1</span>)) {</span>
+<span id="cb2-4"><a href="#cb2-4"></a>    <span class="cf">if</span>(df[r1,<span class="dv">1</span>] <span class="sc">&lt;</span> df[i,<span class="dv">1</span>])</span>
+<span id="cb2-5"><a href="#cb2-5"></a>      <span class="cf">for</span>(r2 <span class="cf">in</span> (i<span class="dv">-25</span>)<span class="sc">:</span>(i<span class="dv">-1</span>))</span>
+<span id="cb2-6"><a href="#cb2-6"></a>        <span class="cf">if</span>(df[i,<span class="dv">1</span>] <span class="sc">-</span> df[r1,<span class="dv">1</span>] <span class="sc">==</span> df[r2,<span class="dv">1</span>]) {</span>
+<span id="cb2-7"><a href="#cb2-7"></a>          goodNum <span class="ot">&lt;-</span> <span class="cn">TRUE</span></span>
+<span id="cb2-8"><a href="#cb2-8"></a>          <span class="cf">break</span></span>
+<span id="cb2-9"><a href="#cb2-9"></a>        }</span>
+<span id="cb2-10"><a href="#cb2-10"></a>    <span class="cf">if</span>(goodNum)</span>
+<span id="cb2-11"><a href="#cb2-11"></a>      <span class="cf">break</span></span>
+<span id="cb2-12"><a href="#cb2-12"></a>  }</span>
+<span id="cb2-13"><a href="#cb2-13"></a>  <span class="cf">if</span>(<span class="sc">!</span>goodNum) {</span>
+<span id="cb2-14"><a href="#cb2-14"></a>    <span class="fu">print</span>(df[i,<span class="dv">1</span>])</span>
+<span id="cb2-15"><a href="#cb2-15"></a>    <span class="cf">break</span></span>
+<span id="cb2-16"><a href="#cb2-16"></a>  }</span>
+<span id="cb2-17"><a href="#cb2-17"></a>  goodNum <span class="ot">&lt;-</span> <span class="cn">FALSE</span></span>
+<span id="cb2-18"><a href="#cb2-18"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 69316178</code></pre>
 </div>
@@ -537,51 +537,51 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <section id="part-2" class="level2">
 <h2 class="anchored" data-anchor-id="part-2">Part 2</h2>
 <div class="cell" data-hash="2020-09_cache/html/unnamed-chunk-3_ab4e787d812d531cb69e0936bf61fc37">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>goalNum <span class="ot">&lt;-</span> <span class="dv">0</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>goodNum <span class="ot">&lt;-</span> <span class="cn">FALSE</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">26</span><span class="sc">:</span><span class="dv">1000</span>) {</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span>(r1 <span class="cf">in</span> (i<span class="dv">-25</span>)<span class="sc">:</span>(i<span class="dv">-1</span>)) {</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span>(df[r1,<span class="dv">1</span>] <span class="sc">&lt;</span> df[i,<span class="dv">1</span>])</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>      <span class="cf">for</span>(r2 <span class="cf">in</span> (i<span class="dv">-25</span>)<span class="sc">:</span>(i<span class="dv">-1</span>))</span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span>(df[i,<span class="dv">1</span>] <span class="sc">-</span> df[r1,<span class="dv">1</span>] <span class="sc">==</span> df[r2,<span class="dv">1</span>]) {</span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>          goodNum <span class="ot">&lt;-</span> <span class="cn">TRUE</span></span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>          <span class="cf">break</span></span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>        }</span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span>(goodNum)</span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>      <span class="cf">break</span></span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(<span class="sc">!</span>goodNum) {</span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>    goalNum <span class="ot">&lt;-</span> df[i,<span class="dv">1</span>]</span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>    <span class="cf">break</span></span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>  goodNum <span class="ot">&lt;-</span> <span class="cn">FALSE</span></span>
-<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>goalNum <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb4-2"><a href="#cb4-2"></a>goodNum <span class="ot">&lt;-</span> <span class="cn">FALSE</span></span>
+<span id="cb4-3"><a href="#cb4-3"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">26</span><span class="sc">:</span><span class="dv">1000</span>) {</span>
+<span id="cb4-4"><a href="#cb4-4"></a>  <span class="cf">for</span>(r1 <span class="cf">in</span> (i<span class="dv">-25</span>)<span class="sc">:</span>(i<span class="dv">-1</span>)) {</span>
+<span id="cb4-5"><a href="#cb4-5"></a>    <span class="cf">if</span>(df[r1,<span class="dv">1</span>] <span class="sc">&lt;</span> df[i,<span class="dv">1</span>])</span>
+<span id="cb4-6"><a href="#cb4-6"></a>      <span class="cf">for</span>(r2 <span class="cf">in</span> (i<span class="dv">-25</span>)<span class="sc">:</span>(i<span class="dv">-1</span>))</span>
+<span id="cb4-7"><a href="#cb4-7"></a>        <span class="cf">if</span>(df[i,<span class="dv">1</span>] <span class="sc">-</span> df[r1,<span class="dv">1</span>] <span class="sc">==</span> df[r2,<span class="dv">1</span>]) {</span>
+<span id="cb4-8"><a href="#cb4-8"></a>          goodNum <span class="ot">&lt;-</span> <span class="cn">TRUE</span></span>
+<span id="cb4-9"><a href="#cb4-9"></a>          <span class="cf">break</span></span>
+<span id="cb4-10"><a href="#cb4-10"></a>        }</span>
+<span id="cb4-11"><a href="#cb4-11"></a>    <span class="cf">if</span>(goodNum)</span>
+<span id="cb4-12"><a href="#cb4-12"></a>      <span class="cf">break</span></span>
+<span id="cb4-13"><a href="#cb4-13"></a>  }</span>
+<span id="cb4-14"><a href="#cb4-14"></a>  <span class="cf">if</span>(<span class="sc">!</span>goodNum) {</span>
+<span id="cb4-15"><a href="#cb4-15"></a>    goalNum <span class="ot">&lt;-</span> df[i,<span class="dv">1</span>]</span>
+<span id="cb4-16"><a href="#cb4-16"></a>    <span class="cf">break</span></span>
+<span id="cb4-17"><a href="#cb4-17"></a>  }</span>
+<span id="cb4-18"><a href="#cb4-18"></a>  goodNum <span class="ot">&lt;-</span> <span class="cn">FALSE</span></span>
+<span id="cb4-19"><a href="#cb4-19"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell" data-hash="2020-09_cache/html/unnamed-chunk-4_1aa6bcb5ea107b44ce991963b84f5ae8">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>breakFlag <span class="ot">&lt;-</span> <span class="cn">FALSE</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(start <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">1000</span>) {</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span>(end <span class="cf">in</span> start<span class="sc">:</span><span class="dv">1000</span>) {</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span>(<span class="fu">sum</span>(df<span class="sc">$</span>num[start<span class="sc">:</span>end]) <span class="sc">==</span> goalNum) {</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>      breakFlag <span class="ot">&lt;-</span> <span class="cn">TRUE</span></span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>      <span class="cf">break</span></span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(breakFlag)</span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">break</span></span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>breakFlag <span class="ot">&lt;-</span> <span class="cn">FALSE</span></span>
+<span id="cb5-2"><a href="#cb5-2"></a><span class="cf">for</span>(start <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">1000</span>) {</span>
+<span id="cb5-3"><a href="#cb5-3"></a>  <span class="cf">for</span>(end <span class="cf">in</span> start<span class="sc">:</span><span class="dv">1000</span>) {</span>
+<span id="cb5-4"><a href="#cb5-4"></a>    <span class="cf">if</span>(<span class="fu">sum</span>(df<span class="sc">$</span>num[start<span class="sc">:</span>end]) <span class="sc">==</span> goalNum) {</span>
+<span id="cb5-5"><a href="#cb5-5"></a>      breakFlag <span class="ot">&lt;-</span> <span class="cn">TRUE</span></span>
+<span id="cb5-6"><a href="#cb5-6"></a>      <span class="cf">break</span></span>
+<span id="cb5-7"><a href="#cb5-7"></a>    }</span>
+<span id="cb5-8"><a href="#cb5-8"></a>  }</span>
+<span id="cb5-9"><a href="#cb5-9"></a>  <span class="cf">if</span>(breakFlag)</span>
+<span id="cb5-10"><a href="#cb5-10"></a>    <span class="cf">break</span></span>
+<span id="cb5-11"><a href="#cb5-11"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell" data-hash="2020-09_cache/html/unnamed-chunk-5_c7df14216538302e4f7a305e1ec3837c">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>smallest <span class="ot">&lt;-</span> <span class="fu">max</span>(df<span class="sc">$</span>num)</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>largest <span class="ot">&lt;-</span> <span class="fu">min</span>(df<span class="sc">$</span>num)</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(r <span class="cf">in</span> start<span class="sc">:</span>end) {</span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(df<span class="sc">$</span>num[r] <span class="sc">&lt;</span> smallest)</span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    smallest <span class="ot">&lt;-</span> df<span class="sc">$</span>num[r]</span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(df<span class="sc">$</span>num[r] <span class="sc">&gt;</span> largest)</span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>    largest <span class="ot">&lt;-</span> df<span class="sc">$</span>num[r]</span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>smallest <span class="sc">+</span> largest</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a>smallest <span class="ot">&lt;-</span> <span class="fu">max</span>(df<span class="sc">$</span>num)</span>
+<span id="cb6-2"><a href="#cb6-2"></a>largest <span class="ot">&lt;-</span> <span class="fu">min</span>(df<span class="sc">$</span>num)</span>
+<span id="cb6-3"><a href="#cb6-3"></a></span>
+<span id="cb6-4"><a href="#cb6-4"></a><span class="cf">for</span>(r <span class="cf">in</span> start<span class="sc">:</span>end) {</span>
+<span id="cb6-5"><a href="#cb6-5"></a>  <span class="cf">if</span>(df<span class="sc">$</span>num[r] <span class="sc">&lt;</span> smallest)</span>
+<span id="cb6-6"><a href="#cb6-6"></a>    smallest <span class="ot">&lt;-</span> df<span class="sc">$</span>num[r]</span>
+<span id="cb6-7"><a href="#cb6-7"></a>  <span class="cf">if</span>(df<span class="sc">$</span>num[r] <span class="sc">&gt;</span> largest)</span>
+<span id="cb6-8"><a href="#cb6-8"></a>    largest <span class="ot">&lt;-</span> df<span class="sc">$</span>num[r]</span>
+<span id="cb6-9"><a href="#cb6-9"></a>}</span>
+<span id="cb6-10"><a href="#cb6-10"></a></span>
+<span id="cb6-11"><a href="#cb6-11"></a>smallest <span class="sc">+</span> largest</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 9351526</code></pre>
 </div>

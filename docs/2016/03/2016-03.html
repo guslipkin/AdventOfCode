@@ -231,7 +231,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../2022/04/2022-04.html" class="sidebar-item-text sidebar-link">dt &lt;- readLines(“input.txt”)</a>
+  <a href="../../2022/04/2022-04.html" class="sidebar-item-text sidebar-link">2022-04: Camp Cleanup</a>
   </div>
 </li>
       </ul>
@@ -506,20 +506,20 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </header>
 
 <div class="cell" data-hash="2016-03_cache/html/unnamed-chunk-1_42b86de0126c844d07aa1c70c884b837">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(data.table)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">library</span>(data.table)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell" data-hash="2016-03_cache/html/unnamed-chunk-2_be763a86c5aa980a594da3bbac48cb82">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>dtM <span class="ot">&lt;-</span> <span class="fu">fread</span>(<span class="st">"input.txt"</span>, <span class="at">header =</span> <span class="cn">FALSE</span>) <span class="sc">|&gt;</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">`</span><span class="at">colnames&lt;-</span><span class="st">`</span>(<span class="fu">c</span>(letters[<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>]))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a>dtM <span class="ot">&lt;-</span> <span class="fu">fread</span>(<span class="st">"input.txt"</span>, <span class="at">header =</span> <span class="cn">FALSE</span>) <span class="sc">|&gt;</span></span>
+<span id="cb2-2"><a href="#cb2-2"></a>  <span class="st">`</span><span class="at">colnames&lt;-</span><span class="st">`</span>(<span class="fu">c</span>(letters[<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>]))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <section id="part-1" class="level2">
 <h2 class="anchored" data-anchor-id="part-1">Part 1</h2>
 <div class="cell" data-hash="2016-03_cache/html/unnamed-chunk-3_e8e7a1a7f4fe0c7fe6b10d32ba99e2c3">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>dt <span class="ot">&lt;-</span> dtM</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>dt<span class="sc">$</span>valid <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(dt<span class="sc">$</span>a <span class="sc">+</span> dt<span class="sc">$</span>b <span class="sc">&gt;</span> dt<span class="sc">$</span>c <span class="sc">&amp;</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>                     dt<span class="sc">$</span>a <span class="sc">+</span> dt<span class="sc">$</span>c <span class="sc">&gt;</span> dt<span class="sc">$</span>b <span class="sc">&amp;</span></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>                     dt<span class="sc">$</span>b <span class="sc">+</span> dt<span class="sc">$</span>c <span class="sc">&gt;</span> dt<span class="sc">$</span>a, <span class="cn">TRUE</span>, <span class="cn">FALSE</span>)</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(dt<span class="sc">$</span>valid)[<span class="st">"TRUE"</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>dt <span class="ot">&lt;-</span> dtM</span>
+<span id="cb3-2"><a href="#cb3-2"></a>dt<span class="sc">$</span>valid <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(dt<span class="sc">$</span>a <span class="sc">+</span> dt<span class="sc">$</span>b <span class="sc">&gt;</span> dt<span class="sc">$</span>c <span class="sc">&amp;</span></span>
+<span id="cb3-3"><a href="#cb3-3"></a>                     dt<span class="sc">$</span>a <span class="sc">+</span> dt<span class="sc">$</span>c <span class="sc">&gt;</span> dt<span class="sc">$</span>b <span class="sc">&amp;</span></span>
+<span id="cb3-4"><a href="#cb3-4"></a>                     dt<span class="sc">$</span>b <span class="sc">+</span> dt<span class="sc">$</span>c <span class="sc">&gt;</span> dt<span class="sc">$</span>a, <span class="cn">TRUE</span>, <span class="cn">FALSE</span>)</span>
+<span id="cb3-5"><a href="#cb3-5"></a><span class="fu">table</span>(dt<span class="sc">$</span>valid)[<span class="st">"TRUE"</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>TRUE 
  862 </code></pre>
@@ -529,14 +529,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <section id="part-2" class="level2">
 <h2 class="anchored" data-anchor-id="part-2">Part 2</h2>
 <div class="cell" data-hash="2016-03_cache/html/unnamed-chunk-4_c198ed827a5a63db6e253f1832ab7cc7">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>dt <span class="ot">&lt;-</span> dtM</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>dt <span class="ot">&lt;-</span> <span class="fu">data.table</span>(<span class="fu">t</span>(<span class="fu">matrix</span>(<span class="fu">c</span>(dt<span class="sc">$</span>a, dt<span class="sc">$</span>b, dt<span class="sc">$</span>c), <span class="dv">3</span>, <span class="fu">nrow</span>(dt)))) <span class="sc">|&gt;</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">`</span><span class="at">colnames&lt;-</span><span class="st">`</span>(<span class="fu">c</span>(letters[<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>]))</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>dt<span class="sc">$</span>valid <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(dt<span class="sc">$</span>a <span class="sc">+</span> dt<span class="sc">$</span>b <span class="sc">&gt;</span> dt<span class="sc">$</span>c <span class="sc">&amp;</span> </span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>                     dt<span class="sc">$</span>a <span class="sc">+</span> dt<span class="sc">$</span>c <span class="sc">&gt;</span> dt<span class="sc">$</span>b <span class="sc">&amp;</span></span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>                     dt<span class="sc">$</span>b <span class="sc">+</span> dt<span class="sc">$</span>c <span class="sc">&gt;</span> dt<span class="sc">$</span>a, <span class="cn">TRUE</span>, <span class="cn">FALSE</span>)</span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(dt<span class="sc">$</span>valid)[<span class="st">"TRUE"</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>dt <span class="ot">&lt;-</span> dtM</span>
+<span id="cb5-2"><a href="#cb5-2"></a>dt <span class="ot">&lt;-</span> <span class="fu">data.table</span>(<span class="fu">t</span>(<span class="fu">matrix</span>(<span class="fu">c</span>(dt<span class="sc">$</span>a, dt<span class="sc">$</span>b, dt<span class="sc">$</span>c), <span class="dv">3</span>, <span class="fu">nrow</span>(dt)))) <span class="sc">|&gt;</span></span>
+<span id="cb5-3"><a href="#cb5-3"></a>  <span class="st">`</span><span class="at">colnames&lt;-</span><span class="st">`</span>(<span class="fu">c</span>(letters[<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>]))</span>
+<span id="cb5-4"><a href="#cb5-4"></a></span>
+<span id="cb5-5"><a href="#cb5-5"></a>dt<span class="sc">$</span>valid <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(dt<span class="sc">$</span>a <span class="sc">+</span> dt<span class="sc">$</span>b <span class="sc">&gt;</span> dt<span class="sc">$</span>c <span class="sc">&amp;</span> </span>
+<span id="cb5-6"><a href="#cb5-6"></a>                     dt<span class="sc">$</span>a <span class="sc">+</span> dt<span class="sc">$</span>c <span class="sc">&gt;</span> dt<span class="sc">$</span>b <span class="sc">&amp;</span></span>
+<span id="cb5-7"><a href="#cb5-7"></a>                     dt<span class="sc">$</span>b <span class="sc">+</span> dt<span class="sc">$</span>c <span class="sc">&gt;</span> dt<span class="sc">$</span>a, <span class="cn">TRUE</span>, <span class="cn">FALSE</span>)</span>
+<span id="cb5-8"><a href="#cb5-8"></a><span class="fu">table</span>(dt<span class="sc">$</span>valid)[<span class="st">"TRUE"</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>TRUE 
 1577 </code></pre>

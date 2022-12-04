@@ -231,7 +231,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../2022/04/2022-04.html" class="sidebar-item-text sidebar-link">dt &lt;- readLines(“input.txt”)</a>
+  <a href="../../2022/04/2022-04.html" class="sidebar-item-text sidebar-link">2022-04: Camp Cleanup</a>
   </div>
 </li>
       </ul>
@@ -506,9 +506,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </header>
 
 <div class="cell" data-hash="2018-02_cache/html/unnamed-chunk-1_ab44fef5962f42d79679e02fd209ddf9">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(data.table)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>dt <span class="ot">&lt;-</span> <span class="fu">fread</span>(<span class="st">"input.txt"</span>, <span class="at">header =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(dt)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">library</span>(data.table)</span>
+<span id="cb1-2"><a href="#cb1-2"></a>dt <span class="ot">&lt;-</span> <span class="fu">fread</span>(<span class="st">"input.txt"</span>, <span class="at">header =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb1-3"><a href="#cb1-3"></a><span class="fu">head</span>(dt)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>                           V1
 1: jplenqtlagxhivmwmscfukzodp
@@ -522,14 +522,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <section id="part-1" class="level2">
 <h2 class="anchored" data-anchor-id="part-1">Part 1</h2>
 <div class="cell" data-hash="2018-02_cache/html/unnamed-chunk-2_010599fe8f41aff878ecb846fc3791b2">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sapply</span>(<span class="fu">strsplit</span>(dt<span class="sc">$</span>V1, <span class="st">""</span>), <span class="cf">function</span>(x) {</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  x <span class="ot">&lt;-</span> <span class="fu">table</span>(x)</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  x <span class="ot">&lt;-</span> <span class="fu">unique</span>(x[x <span class="sc">%in%</span> <span class="dv">2</span><span class="sc">:</span><span class="dv">3</span>])</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>}) <span class="sc">|&gt;</span></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unlist</span>() <span class="sc">|&gt;</span></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unname</span>() <span class="sc">|&gt;</span></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">table</span>() <span class="sc">|&gt;</span></span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prod</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="fu">sapply</span>(<span class="fu">strsplit</span>(dt<span class="sc">$</span>V1, <span class="st">""</span>), <span class="cf">function</span>(x) {</span>
+<span id="cb3-2"><a href="#cb3-2"></a>  x <span class="ot">&lt;-</span> <span class="fu">table</span>(x)</span>
+<span id="cb3-3"><a href="#cb3-3"></a>  x <span class="ot">&lt;-</span> <span class="fu">unique</span>(x[x <span class="sc">%in%</span> <span class="dv">2</span><span class="sc">:</span><span class="dv">3</span>])</span>
+<span id="cb3-4"><a href="#cb3-4"></a>}) <span class="sc">|&gt;</span></span>
+<span id="cb3-5"><a href="#cb3-5"></a>  <span class="fu">unlist</span>() <span class="sc">|&gt;</span></span>
+<span id="cb3-6"><a href="#cb3-6"></a>  <span class="fu">unname</span>() <span class="sc">|&gt;</span></span>
+<span id="cb3-7"><a href="#cb3-7"></a>  <span class="fu">table</span>() <span class="sc">|&gt;</span></span>
+<span id="cb3-8"><a href="#cb3-8"></a>  <span class="fu">prod</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 8118</code></pre>
 </div>
@@ -538,10 +538,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <section id="part-2" class="level2">
 <h2 class="anchored" data-anchor-id="part-2">Part 2</h2>
 <div class="cell" data-hash="2018-02_cache/html/unnamed-chunk-3_19739d8740db603684117bcd02bce871">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>mat <span class="ot">&lt;-</span> <span class="fu">adist</span>(dt<span class="sc">$</span>V1)</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>mat <span class="ot">&lt;-</span> <span class="fu">as.character</span>(<span class="fu">expand.grid</span>(dt<span class="sc">$</span>V1, dt<span class="sc">$</span>V1)[<span class="fu">which</span>(mat <span class="sc">==</span> <span class="dv">1</span>),][,<span class="dv">1</span>])</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>mat <span class="ot">&lt;-</span> <span class="fu">strsplit</span>(mat, <span class="st">""</span>)</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="fu">paste0</span>(mat[[<span class="dv">1</span>]][mat[[<span class="dv">1</span>]] <span class="sc">==</span> mat[[<span class="dv">2</span>]]], <span class="at">collapse =</span> <span class="st">""</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>mat <span class="ot">&lt;-</span> <span class="fu">adist</span>(dt<span class="sc">$</span>V1)</span>
+<span id="cb5-2"><a href="#cb5-2"></a>mat <span class="ot">&lt;-</span> <span class="fu">as.character</span>(<span class="fu">expand.grid</span>(dt<span class="sc">$</span>V1, dt<span class="sc">$</span>V1)[<span class="fu">which</span>(mat <span class="sc">==</span> <span class="dv">1</span>),][,<span class="dv">1</span>])</span>
+<span id="cb5-3"><a href="#cb5-3"></a>mat <span class="ot">&lt;-</span> <span class="fu">strsplit</span>(mat, <span class="st">""</span>)</span>
+<span id="cb5-4"><a href="#cb5-4"></a><span class="fu">paste0</span>(mat[[<span class="dv">1</span>]][mat[[<span class="dv">1</span>]] <span class="sc">==</span> mat[[<span class="dv">2</span>]]], <span class="at">collapse =</span> <span class="st">""</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "jbbenqtlaxhivmwyscjukztdp"</code></pre>
 </div>

@@ -231,7 +231,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../2022/04/2022-04.html" class="sidebar-item-text sidebar-link">dt &lt;- readLines(“input.txt”)</a>
+  <a href="../../2022/04/2022-04.html" class="sidebar-item-text sidebar-link">2022-04: Camp Cleanup</a>
   </div>
 </li>
       </ul>
@@ -506,19 +506,19 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </header>
 
 <div class="cell" data-hash="2018-05_cache/html/unnamed-chunk-1_c5cf0a81839546999234a9ab4bb44542">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stringi)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">library</span>(stringi)</span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>── Attaching packages ─────────────────────────────────────── tidyverse 1.3.2 ──
-✔ ggplot2 3.3.6      ✔ purrr   0.3.4 
+✔ ggplot2 3.4.0      ✔ purrr   0.3.5 
 ✔ tibble  3.1.8      ✔ dplyr   1.0.10
-✔ tidyr   1.2.0      ✔ stringr 1.4.1 
-✔ readr   2.1.2      ✔ forcats 0.5.2 
+✔ tidyr   1.2.1      ✔ stringr 1.4.1 
+✔ readr   2.1.3      ✔ forcats 0.5.2 
 ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
 ✖ dplyr::filter() masks stats::filter()
 ✖ dplyr::lag()    masks stats::lag()</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(data.table)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="fu">library</span>(data.table)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>
 Attaching package: 'data.table'
@@ -533,27 +533,27 @@ The following object is masked from 'package:purrr':
 </div>
 </div>
 <div class="cell" data-hash="2018-05_cache/html/unnamed-chunk-2_b23f35d5215044f22cf495a2ee9624f7">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>dt <span class="ot">&lt;-</span> <span class="fu">readLines</span>(<span class="st">"input.txt"</span>)</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>dt <span class="ot">&lt;-</span> <span class="fu">unlist</span>(<span class="fu">strsplit</span>(dt, <span class="st">""</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>dt <span class="ot">&lt;-</span> <span class="fu">readLines</span>(<span class="st">"input.txt"</span>)</span>
+<span id="cb5-2"><a href="#cb5-2"></a>dt <span class="ot">&lt;-</span> <span class="fu">unlist</span>(<span class="fu">strsplit</span>(dt, <span class="st">""</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <section id="part-1" class="level2">
 <h2 class="anchored" data-anchor-id="part-1">Part 1</h2>
 <div class="cell" data-hash="2018-05_cache/html/unnamed-chunk-3_fe5ef91f6feef56566eef80c7bee8aaf">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>reduced <span class="ot">&lt;-</span> <span class="cn">TRUE</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span>(reduced) {</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  old <span class="ot">&lt;-</span> <span class="fu">length</span>(dt)</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (x <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>(old <span class="sc">-</span> <span class="dv">1</span>)) {</span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (dt[x] <span class="sc">!=</span> dt[x <span class="sc">+</span> <span class="dv">1</span>] <span class="sc">&amp;</span> <span class="fu">toupper</span>(dt[x]) <span class="sc">==</span> <span class="fu">toupper</span>(dt[x <span class="sc">+</span> <span class="dv">1</span>])) {</span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>      dt[<span class="fu">c</span>(x, x <span class="sc">+</span> <span class="dv">1</span>)] <span class="ot">&lt;-</span> <span class="st">""</span></span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>      reduced <span class="ot">&lt;-</span> <span class="cn">TRUE</span></span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>  dt <span class="ot">&lt;-</span> dt[dt <span class="sc">!=</span> <span class="st">""</span>]</span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(old <span class="sc">==</span> <span class="fu">length</span>(dt)) {</span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>    reduced <span class="ot">&lt;-</span> <span class="cn">FALSE</span></span>
-<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(dt)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a>reduced <span class="ot">&lt;-</span> <span class="cn">TRUE</span></span>
+<span id="cb6-2"><a href="#cb6-2"></a><span class="cf">while</span>(reduced) {</span>
+<span id="cb6-3"><a href="#cb6-3"></a>  old <span class="ot">&lt;-</span> <span class="fu">length</span>(dt)</span>
+<span id="cb6-4"><a href="#cb6-4"></a>  <span class="cf">for</span> (x <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>(old <span class="sc">-</span> <span class="dv">1</span>)) {</span>
+<span id="cb6-5"><a href="#cb6-5"></a>    <span class="cf">if</span> (dt[x] <span class="sc">!=</span> dt[x <span class="sc">+</span> <span class="dv">1</span>] <span class="sc">&amp;</span> <span class="fu">toupper</span>(dt[x]) <span class="sc">==</span> <span class="fu">toupper</span>(dt[x <span class="sc">+</span> <span class="dv">1</span>])) {</span>
+<span id="cb6-6"><a href="#cb6-6"></a>      dt[<span class="fu">c</span>(x, x <span class="sc">+</span> <span class="dv">1</span>)] <span class="ot">&lt;-</span> <span class="st">""</span></span>
+<span id="cb6-7"><a href="#cb6-7"></a>      reduced <span class="ot">&lt;-</span> <span class="cn">TRUE</span></span>
+<span id="cb6-8"><a href="#cb6-8"></a>    }</span>
+<span id="cb6-9"><a href="#cb6-9"></a>  }</span>
+<span id="cb6-10"><a href="#cb6-10"></a>  dt <span class="ot">&lt;-</span> dt[dt <span class="sc">!=</span> <span class="st">""</span>]</span>
+<span id="cb6-11"><a href="#cb6-11"></a>  <span class="cf">if</span>(old <span class="sc">==</span> <span class="fu">length</span>(dt)) {</span>
+<span id="cb6-12"><a href="#cb6-12"></a>    reduced <span class="ot">&lt;-</span> <span class="cn">FALSE</span></span>
+<span id="cb6-13"><a href="#cb6-13"></a>  }</span>
+<span id="cb6-14"><a href="#cb6-14"></a>}</span>
+<span id="cb6-15"><a href="#cb6-15"></a><span class="fu">length</span>(dt)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 10598</code></pre>
 </div>
@@ -562,25 +562,25 @@ The following object is masked from 'package:purrr':
 <section id="part-2" class="level2">
 <h2 class="anchored" data-anchor-id="part-2">Part 2</h2>
 <div class="cell" data-hash="2018-05_cache/html/unnamed-chunk-4_823383b4b250886ecaad7b15be8cc25d">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sapply</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">26</span>, <span class="cf">function</span>(l) {</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  tmp <span class="ot">&lt;-</span> <span class="fu">stri_replace_all_regex</span>(dt, <span class="fu">paste0</span>(letters[l], <span class="st">"|"</span>, LETTERS[l]), <span class="st">""</span>)</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  reduced <span class="ot">&lt;-</span> <span class="cn">TRUE</span></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="cf">while</span> (reduced) {</span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    old <span class="ot">&lt;-</span> <span class="fu">length</span>(tmp)</span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> (x <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>(old <span class="sc">-</span> <span class="dv">1</span>)) {</span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> (tmp[x] <span class="sc">!=</span> tmp[x <span class="sc">+</span> <span class="dv">1</span>] <span class="sc">&amp;</span> <span class="fu">toupper</span>(tmp[x]) <span class="sc">==</span> <span class="fu">toupper</span>(tmp[x <span class="sc">+</span> <span class="dv">1</span>])) {</span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>        tmp[<span class="fu">c</span>(x, x <span class="sc">+</span> <span class="dv">1</span>)] <span class="ot">&lt;-</span> <span class="st">""</span></span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>        reduced <span class="ot">&lt;-</span> <span class="cn">TRUE</span></span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>      }</span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>    tmp <span class="ot">&lt;-</span> tmp[tmp <span class="sc">!=</span> <span class="st">""</span>]</span>
-<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (old <span class="sc">==</span> <span class="fu">length</span>(tmp)) {</span>
-<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>      reduced <span class="ot">&lt;-</span> <span class="cn">FALSE</span></span>
-<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">length</span>(tmp)</span>
-<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>}) <span class="sc">|&gt;</span></span>
-<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">min</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a><span class="fu">sapply</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">26</span>, <span class="cf">function</span>(l) {</span>
+<span id="cb8-2"><a href="#cb8-2"></a>  tmp <span class="ot">&lt;-</span> <span class="fu">stri_replace_all_regex</span>(dt, <span class="fu">paste0</span>(letters[l], <span class="st">"|"</span>, LETTERS[l]), <span class="st">""</span>)</span>
+<span id="cb8-3"><a href="#cb8-3"></a>  reduced <span class="ot">&lt;-</span> <span class="cn">TRUE</span></span>
+<span id="cb8-4"><a href="#cb8-4"></a>  <span class="cf">while</span> (reduced) {</span>
+<span id="cb8-5"><a href="#cb8-5"></a>    old <span class="ot">&lt;-</span> <span class="fu">length</span>(tmp)</span>
+<span id="cb8-6"><a href="#cb8-6"></a>    <span class="cf">for</span> (x <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>(old <span class="sc">-</span> <span class="dv">1</span>)) {</span>
+<span id="cb8-7"><a href="#cb8-7"></a>      <span class="cf">if</span> (tmp[x] <span class="sc">!=</span> tmp[x <span class="sc">+</span> <span class="dv">1</span>] <span class="sc">&amp;</span> <span class="fu">toupper</span>(tmp[x]) <span class="sc">==</span> <span class="fu">toupper</span>(tmp[x <span class="sc">+</span> <span class="dv">1</span>])) {</span>
+<span id="cb8-8"><a href="#cb8-8"></a>        tmp[<span class="fu">c</span>(x, x <span class="sc">+</span> <span class="dv">1</span>)] <span class="ot">&lt;-</span> <span class="st">""</span></span>
+<span id="cb8-9"><a href="#cb8-9"></a>        reduced <span class="ot">&lt;-</span> <span class="cn">TRUE</span></span>
+<span id="cb8-10"><a href="#cb8-10"></a>      }</span>
+<span id="cb8-11"><a href="#cb8-11"></a>    }</span>
+<span id="cb8-12"><a href="#cb8-12"></a>    tmp <span class="ot">&lt;-</span> tmp[tmp <span class="sc">!=</span> <span class="st">""</span>]</span>
+<span id="cb8-13"><a href="#cb8-13"></a>    <span class="cf">if</span> (old <span class="sc">==</span> <span class="fu">length</span>(tmp)) {</span>
+<span id="cb8-14"><a href="#cb8-14"></a>      reduced <span class="ot">&lt;-</span> <span class="cn">FALSE</span></span>
+<span id="cb8-15"><a href="#cb8-15"></a>    }</span>
+<span id="cb8-16"><a href="#cb8-16"></a>  }</span>
+<span id="cb8-17"><a href="#cb8-17"></a>  <span class="fu">length</span>(tmp)</span>
+<span id="cb8-18"><a href="#cb8-18"></a>}) <span class="sc">|&gt;</span></span>
+<span id="cb8-19"><a href="#cb8-19"></a>  <span class="fu">min</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 5312</code></pre>
 </div>

@@ -231,7 +231,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../2022/04/2022-04.html" class="sidebar-item-text sidebar-link">dt &lt;- readLines(“input.txt”)</a>
+  <a href="../../2022/04/2022-04.html" class="sidebar-item-text sidebar-link">2022-04: Camp Cleanup</a>
   </div>
 </li>
       </ul>
@@ -506,26 +506,26 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </header>
 
 <div class="cell" data-hash="2020-03_cache/html/unnamed-chunk-1_934992eda7dfce62935fc226032c0b92">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stringr)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"input2.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">library</span>(stringr)</span>
+<span id="cb1-2"><a href="#cb1-2"></a>df <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"input2.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <section id="part-1" class="level2">
 <h2 class="anchored" data-anchor-id="part-1">Part 1</h2>
 <div class="cell" data-hash="2020-03_cache/html/unnamed-chunk-2_7a4a0551f4b823151ef17359cc74c3d4">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="dv">1</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>pounds <span class="ot">&lt;-</span> <span class="st">""</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>xVals <span class="ot">&lt;-</span> <span class="fu">c</span>()</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(y <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">323</span>) {</span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  pounds <span class="ot">&lt;-</span> <span class="fu">paste</span>(pounds, <span class="fu">as.character</span>(df[y, x]), <span class="at">sep =</span> <span class="st">""</span>)</span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(x <span class="sc">+</span> <span class="dv">3</span> <span class="sc">&gt;</span> <span class="dv">31</span>)</span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    x <span class="ot">&lt;-</span> x <span class="sc">+</span> <span class="dv">3</span> <span class="sc">-</span> <span class="dv">31</span></span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>  <span class="cf">else</span></span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>    x <span class="ot">&lt;-</span> x <span class="sc">+</span> <span class="dv">3</span></span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>  xVals <span class="ot">&lt;-</span> <span class="fu">append</span>(xVals, <span class="fu">as.character</span>(x))</span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="fu">str_count</span>(pounds, <span class="st">"#"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a>x <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb2-2"><a href="#cb2-2"></a>pounds <span class="ot">&lt;-</span> <span class="st">""</span></span>
+<span id="cb2-3"><a href="#cb2-3"></a>xVals <span class="ot">&lt;-</span> <span class="fu">c</span>()</span>
+<span id="cb2-4"><a href="#cb2-4"></a></span>
+<span id="cb2-5"><a href="#cb2-5"></a><span class="cf">for</span>(y <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">323</span>) {</span>
+<span id="cb2-6"><a href="#cb2-6"></a>  pounds <span class="ot">&lt;-</span> <span class="fu">paste</span>(pounds, <span class="fu">as.character</span>(df[y, x]), <span class="at">sep =</span> <span class="st">""</span>)</span>
+<span id="cb2-7"><a href="#cb2-7"></a>  <span class="cf">if</span>(x <span class="sc">+</span> <span class="dv">3</span> <span class="sc">&gt;</span> <span class="dv">31</span>)</span>
+<span id="cb2-8"><a href="#cb2-8"></a>    x <span class="ot">&lt;-</span> x <span class="sc">+</span> <span class="dv">3</span> <span class="sc">-</span> <span class="dv">31</span></span>
+<span id="cb2-9"><a href="#cb2-9"></a>  <span class="cf">else</span></span>
+<span id="cb2-10"><a href="#cb2-10"></a>    x <span class="ot">&lt;-</span> x <span class="sc">+</span> <span class="dv">3</span></span>
+<span id="cb2-11"><a href="#cb2-11"></a>  xVals <span class="ot">&lt;-</span> <span class="fu">append</span>(xVals, <span class="fu">as.character</span>(x))</span>
+<span id="cb2-12"><a href="#cb2-12"></a>}</span>
+<span id="cb2-13"><a href="#cb2-13"></a></span>
+<span id="cb2-14"><a href="#cb2-14"></a><span class="fu">str_count</span>(pounds, <span class="st">"#"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 228</code></pre>
 </div>
@@ -534,24 +534,24 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <section id="part-2" class="level2">
 <h2 class="anchored" data-anchor-id="part-2">Part 2</h2>
 <div class="cell" data-hash="2020-03_cache/html/unnamed-chunk-3_c35d89d66e87a06ad4637c7a3d847305">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>over <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">5</span>, <span class="dv">7</span>, <span class="dv">1</span>)</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>down <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">2</span>)</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>running_total <span class="ot">&lt;-</span> <span class="dv">1</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(z <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>) {</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  x <span class="ot">&lt;-</span> <span class="dv">1</span></span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  pounds <span class="ot">&lt;-</span> <span class="st">""</span></span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span>(y <span class="cf">in</span> <span class="fu">seq</span>(<span class="dv">1</span>, <span class="dv">323</span>, <span class="at">by =</span> down[z])) {</span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>    pounds <span class="ot">&lt;-</span> <span class="fu">paste</span>(pounds, <span class="fu">as.character</span>(df[y, x]), <span class="at">sep =</span> <span class="st">""</span>)</span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span>(x <span class="sc">+</span> over[z] <span class="sc">&gt;</span> <span class="dv">31</span>)</span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>      x <span class="ot">&lt;-</span> x <span class="sc">+</span> over[z] <span class="sc">-</span> <span class="dv">31</span></span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span></span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>      x <span class="ot">&lt;-</span> x <span class="sc">+</span> over[z]</span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>  running_total <span class="ot">&lt;-</span> running_total <span class="sc">*</span> <span class="fu">str_count</span>(pounds, <span class="st">"#"</span>)</span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>running_total</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>over <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">5</span>, <span class="dv">7</span>, <span class="dv">1</span>)</span>
+<span id="cb4-2"><a href="#cb4-2"></a>down <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">2</span>)</span>
+<span id="cb4-3"><a href="#cb4-3"></a>running_total <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb4-4"><a href="#cb4-4"></a></span>
+<span id="cb4-5"><a href="#cb4-5"></a><span class="cf">for</span>(z <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>) {</span>
+<span id="cb4-6"><a href="#cb4-6"></a>  x <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb4-7"><a href="#cb4-7"></a>  pounds <span class="ot">&lt;-</span> <span class="st">""</span></span>
+<span id="cb4-8"><a href="#cb4-8"></a></span>
+<span id="cb4-9"><a href="#cb4-9"></a>  <span class="cf">for</span>(y <span class="cf">in</span> <span class="fu">seq</span>(<span class="dv">1</span>, <span class="dv">323</span>, <span class="at">by =</span> down[z])) {</span>
+<span id="cb4-10"><a href="#cb4-10"></a>    pounds <span class="ot">&lt;-</span> <span class="fu">paste</span>(pounds, <span class="fu">as.character</span>(df[y, x]), <span class="at">sep =</span> <span class="st">""</span>)</span>
+<span id="cb4-11"><a href="#cb4-11"></a>    <span class="cf">if</span>(x <span class="sc">+</span> over[z] <span class="sc">&gt;</span> <span class="dv">31</span>)</span>
+<span id="cb4-12"><a href="#cb4-12"></a>      x <span class="ot">&lt;-</span> x <span class="sc">+</span> over[z] <span class="sc">-</span> <span class="dv">31</span></span>
+<span id="cb4-13"><a href="#cb4-13"></a>    <span class="cf">else</span></span>
+<span id="cb4-14"><a href="#cb4-14"></a>      x <span class="ot">&lt;-</span> x <span class="sc">+</span> over[z]</span>
+<span id="cb4-15"><a href="#cb4-15"></a>  }</span>
+<span id="cb4-16"><a href="#cb4-16"></a>  running_total <span class="ot">&lt;-</span> running_total <span class="sc">*</span> <span class="fu">str_count</span>(pounds, <span class="st">"#"</span>)</span>
+<span id="cb4-17"><a href="#cb4-17"></a>}</span>
+<span id="cb4-18"><a href="#cb4-18"></a>running_total</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 6818112000</code></pre>
 </div>

@@ -231,7 +231,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../2022/04/2022-04.html" class="sidebar-item-text sidebar-link">dt &lt;- readLines(“input.txt”)</a>
+  <a href="../../2022/04/2022-04.html" class="sidebar-item-text sidebar-link">2022-04: Camp Cleanup</a>
   </div>
 </li>
       </ul>
@@ -506,38 +506,38 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </header>
 
 <div class="cell" data-hash="2020-08_cache/html/unnamed-chunk-1_5d34eccd617ea5aec81ecf024b122c96">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>masterDF <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"input.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a>masterDF <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"input.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <section id="part-1" class="level2">
 <h2 class="anchored" data-anchor-id="part-1">Part 1</h2>
 <div class="cell" data-hash="2020-08_cache/html/unnamed-chunk-2_fd0dc320ddc6c4b358a072bab8c6f068">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> masterDF</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>df<span class="sc">$</span>ipa <span class="ot">&lt;-</span> <span class="cn">NA</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>df<span class="sc">$</span>ipa[<span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="dv">0</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>acc <span class="ot">&lt;-</span> <span class="dv">0</span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>r <span class="ot">&lt;-</span> <span class="dv">1</span></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>flag <span class="ot">&lt;-</span> <span class="cn">TRUE</span></span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span>(flag <span class="sc">==</span> <span class="cn">TRUE</span>) {</span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(<span class="fu">as.character</span>(df<span class="sc">$</span>ope[r]) <span class="sc">==</span> <span class="st">"acc"</span> <span class="sc">&amp;</span> r <span class="sc">&lt;=</span> <span class="dv">626</span> <span class="sc">&amp;</span> r <span class="sc">&gt;=</span> <span class="dv">1</span>) {</span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>    acc <span class="ot">&lt;-</span> acc <span class="sc">+</span> df<span class="sc">$</span>arg[r]</span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>    flag <span class="ot">&lt;-</span> <span class="fu">is.na</span>(df<span class="sc">$</span>ipa[r <span class="sc">+</span> <span class="dv">1</span>])</span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>    df<span class="sc">$</span>ipa[r <span class="sc">+</span> <span class="dv">1</span>] <span class="ot">&lt;-</span> r</span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>    r <span class="ot">&lt;-</span> r <span class="sc">+</span> <span class="dv">1</span></span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>  <span class="cf">else</span> <span class="cf">if</span>(<span class="fu">as.character</span>(df<span class="sc">$</span>ope[r]) <span class="sc">==</span> <span class="st">"jmp"</span> <span class="sc">&amp;</span> r <span class="sc">+</span> df<span class="sc">$</span>arg[r] <span class="sc">&lt;=</span> <span class="dv">626</span> <span class="sc">&amp;</span> r <span class="sc">+</span> df<span class="sc">$</span>arg[r] <span class="sc">&gt;=</span> <span class="dv">1</span>) {</span>
-<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>    flag <span class="ot">&lt;-</span> <span class="fu">is.na</span>(df<span class="sc">$</span>ipa[r <span class="sc">+</span> df<span class="sc">$</span>arg[r]])</span>
-<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>    df<span class="sc">$</span>ipa[r <span class="sc">+</span> df<span class="sc">$</span>arg[r]] <span class="ot">&lt;-</span> r</span>
-<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>    r <span class="ot">&lt;-</span> r <span class="sc">+</span> df<span class="sc">$</span>arg[r]</span>
-<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>  <span class="cf">else</span> <span class="cf">if</span>(<span class="fu">as.character</span>(df<span class="sc">$</span>ope[r]) <span class="sc">==</span> <span class="st">"nop"</span> <span class="sc">&amp;</span> r <span class="sc">&lt;=</span> <span class="dv">626</span> <span class="sc">&amp;</span> r <span class="sc">&gt;=</span> <span class="dv">1</span>) {</span>
-<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>    flag <span class="ot">&lt;-</span> <span class="fu">is.na</span>(df<span class="sc">$</span>ipa[r <span class="sc">+</span> <span class="dv">1</span>])</span>
-<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>    df<span class="sc">$</span>ipa[r <span class="sc">+</span> <span class="dv">1</span>] <span class="ot">&lt;-</span> r</span>
-<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>    r <span class="ot">&lt;-</span> r <span class="sc">+</span> <span class="dv">1</span></span>
-<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>acc</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a>df <span class="ot">&lt;-</span> masterDF</span>
+<span id="cb2-2"><a href="#cb2-2"></a>df<span class="sc">$</span>ipa <span class="ot">&lt;-</span> <span class="cn">NA</span></span>
+<span id="cb2-3"><a href="#cb2-3"></a>df<span class="sc">$</span>ipa[<span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb2-4"><a href="#cb2-4"></a>acc <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb2-5"><a href="#cb2-5"></a>r <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb2-6"><a href="#cb2-6"></a>flag <span class="ot">&lt;-</span> <span class="cn">TRUE</span></span>
+<span id="cb2-7"><a href="#cb2-7"></a></span>
+<span id="cb2-8"><a href="#cb2-8"></a><span class="cf">while</span>(flag <span class="sc">==</span> <span class="cn">TRUE</span>) {</span>
+<span id="cb2-9"><a href="#cb2-9"></a>  <span class="cf">if</span>(<span class="fu">as.character</span>(df<span class="sc">$</span>ope[r]) <span class="sc">==</span> <span class="st">"acc"</span> <span class="sc">&amp;</span> r <span class="sc">&lt;=</span> <span class="dv">626</span> <span class="sc">&amp;</span> r <span class="sc">&gt;=</span> <span class="dv">1</span>) {</span>
+<span id="cb2-10"><a href="#cb2-10"></a>    acc <span class="ot">&lt;-</span> acc <span class="sc">+</span> df<span class="sc">$</span>arg[r]</span>
+<span id="cb2-11"><a href="#cb2-11"></a>    flag <span class="ot">&lt;-</span> <span class="fu">is.na</span>(df<span class="sc">$</span>ipa[r <span class="sc">+</span> <span class="dv">1</span>])</span>
+<span id="cb2-12"><a href="#cb2-12"></a>    df<span class="sc">$</span>ipa[r <span class="sc">+</span> <span class="dv">1</span>] <span class="ot">&lt;-</span> r</span>
+<span id="cb2-13"><a href="#cb2-13"></a>    r <span class="ot">&lt;-</span> r <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb2-14"><a href="#cb2-14"></a>    }</span>
+<span id="cb2-15"><a href="#cb2-15"></a>  <span class="cf">else</span> <span class="cf">if</span>(<span class="fu">as.character</span>(df<span class="sc">$</span>ope[r]) <span class="sc">==</span> <span class="st">"jmp"</span> <span class="sc">&amp;</span> r <span class="sc">+</span> df<span class="sc">$</span>arg[r] <span class="sc">&lt;=</span> <span class="dv">626</span> <span class="sc">&amp;</span> r <span class="sc">+</span> df<span class="sc">$</span>arg[r] <span class="sc">&gt;=</span> <span class="dv">1</span>) {</span>
+<span id="cb2-16"><a href="#cb2-16"></a>    flag <span class="ot">&lt;-</span> <span class="fu">is.na</span>(df<span class="sc">$</span>ipa[r <span class="sc">+</span> df<span class="sc">$</span>arg[r]])</span>
+<span id="cb2-17"><a href="#cb2-17"></a>    df<span class="sc">$</span>ipa[r <span class="sc">+</span> df<span class="sc">$</span>arg[r]] <span class="ot">&lt;-</span> r</span>
+<span id="cb2-18"><a href="#cb2-18"></a>    r <span class="ot">&lt;-</span> r <span class="sc">+</span> df<span class="sc">$</span>arg[r]</span>
+<span id="cb2-19"><a href="#cb2-19"></a>    }</span>
+<span id="cb2-20"><a href="#cb2-20"></a>  <span class="cf">else</span> <span class="cf">if</span>(<span class="fu">as.character</span>(df<span class="sc">$</span>ope[r]) <span class="sc">==</span> <span class="st">"nop"</span> <span class="sc">&amp;</span> r <span class="sc">&lt;=</span> <span class="dv">626</span> <span class="sc">&amp;</span> r <span class="sc">&gt;=</span> <span class="dv">1</span>) {</span>
+<span id="cb2-21"><a href="#cb2-21"></a>    flag <span class="ot">&lt;-</span> <span class="fu">is.na</span>(df<span class="sc">$</span>ipa[r <span class="sc">+</span> <span class="dv">1</span>])</span>
+<span id="cb2-22"><a href="#cb2-22"></a>    df<span class="sc">$</span>ipa[r <span class="sc">+</span> <span class="dv">1</span>] <span class="ot">&lt;-</span> r</span>
+<span id="cb2-23"><a href="#cb2-23"></a>    r <span class="ot">&lt;-</span> r <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb2-24"><a href="#cb2-24"></a>    }</span>
+<span id="cb2-25"><a href="#cb2-25"></a>}</span>
+<span id="cb2-26"><a href="#cb2-26"></a></span>
+<span id="cb2-27"><a href="#cb2-27"></a>acc</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 1317</code></pre>
 </div>
@@ -546,53 +546,53 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <section id="part-2" class="level2">
 <h2 class="anchored" data-anchor-id="part-2">Part 2</h2>
 <div class="cell" data-hash="2020-08_cache/html/unnamed-chunk-3_b7f6d8568ecf535a1aac22d7a3443bd3">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">626</span>) {</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  df <span class="ot">&lt;-</span> masterDF</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  df<span class="sc">$</span>ipa <span class="ot">&lt;-</span> <span class="cn">NA</span></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  df<span class="sc">$</span>ipa[<span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="dv">0</span></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  acc <span class="ot">&lt;-</span> <span class="dv">0</span></span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>  r <span class="ot">&lt;-</span> <span class="dv">1</span></span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>  flag <span class="ot">&lt;-</span> <span class="cn">TRUE</span></span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>  breakFlag <span class="ot">&lt;-</span> <span class="cn">FALSE</span></span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(<span class="fu">as.character</span>(df<span class="sc">$</span>ope[i]) <span class="sc">==</span> <span class="st">"nop"</span>)</span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>    df<span class="sc">$</span>ope[i] <span class="ot">&lt;-</span> <span class="st">"jmp"</span></span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>  <span class="cf">else</span> <span class="cf">if</span>(<span class="fu">as.character</span>(df<span class="sc">$</span>ope[i]) <span class="sc">==</span> <span class="st">"jmp"</span>)</span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>    df<span class="sc">$</span>ope[i] <span class="ot">&lt;-</span> <span class="st">"nop"</span></span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(<span class="fu">as.character</span>(df<span class="sc">$</span>ope[i]) <span class="sc">!=</span> <span class="st">"acc"</span>) {</span>
-<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span>(flag) {</span>
-<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span>(<span class="fu">as.character</span>(df<span class="sc">$</span>ope[r]) <span class="sc">==</span> <span class="st">"acc"</span> <span class="sc">&amp;</span> r <span class="sc">&lt;=</span> <span class="dv">626</span> <span class="sc">&amp;</span> r <span class="sc">&gt;=</span> <span class="dv">1</span>) {</span>
-<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>        acc <span class="ot">&lt;-</span> acc <span class="sc">+</span> df<span class="sc">$</span>arg[r]</span>
-<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>        flag <span class="ot">&lt;-</span> <span class="fu">is.na</span>(df<span class="sc">$</span>ipa[r <span class="sc">+</span> <span class="dv">1</span>])</span>
-<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>        df<span class="sc">$</span>ipa[r <span class="sc">+</span> <span class="dv">1</span>] <span class="ot">&lt;-</span> r</span>
-<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>        r <span class="ot">&lt;-</span> r <span class="sc">+</span> <span class="dv">1</span></span>
-<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>        }</span>
-<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>      <span class="cf">else</span> <span class="cf">if</span>(<span class="fu">as.character</span>(df<span class="sc">$</span>ope[r]) <span class="sc">==</span> <span class="st">"jmp"</span> <span class="sc">&amp;</span> r <span class="sc">+</span> df<span class="sc">$</span>arg[r] <span class="sc">&lt;=</span> <span class="dv">626</span> <span class="sc">&amp;</span> r <span class="sc">+</span> df<span class="sc">$</span>arg[r] <span class="sc">&gt;=</span> <span class="dv">1</span>) {</span>
-<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>        flag <span class="ot">&lt;-</span> <span class="fu">is.na</span>(df<span class="sc">$</span>ipa[r <span class="sc">+</span> df<span class="sc">$</span>arg[r]])</span>
-<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>        df<span class="sc">$</span>ipa[r <span class="sc">+</span> df<span class="sc">$</span>arg[r]] <span class="ot">&lt;-</span> r</span>
-<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>        r <span class="ot">&lt;-</span> r <span class="sc">+</span> df<span class="sc">$</span>arg[r]</span>
-<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a>        }</span>
-<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a>      <span class="cf">else</span> <span class="cf">if</span>(<span class="fu">as.character</span>(df<span class="sc">$</span>ope[r]) <span class="sc">==</span> <span class="st">"nop"</span> <span class="sc">&amp;</span> r <span class="sc">&lt;=</span> <span class="dv">626</span> <span class="sc">&amp;</span> r <span class="sc">&gt;=</span> <span class="dv">1</span>) {</span>
-<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a>        flag <span class="ot">&lt;-</span> <span class="fu">is.na</span>(df<span class="sc">$</span>ipa[r <span class="sc">+</span> <span class="dv">1</span>])</span>
-<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a>        df<span class="sc">$</span>ipa[r <span class="sc">+</span> <span class="dv">1</span>] <span class="ot">&lt;-</span> r</span>
-<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a>        r <span class="ot">&lt;-</span> r <span class="sc">+</span> <span class="dv">1</span></span>
-<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a>      }</span>
-<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span>(r <span class="sc">==</span> <span class="dv">626</span>) {</span>
-<span id="cb4-38"><a href="#cb4-38" aria-hidden="true" tabindex="-1"></a>        breakFlag <span class="ot">&lt;-</span> <span class="cn">TRUE</span></span>
-<span id="cb4-39"><a href="#cb4-39" aria-hidden="true" tabindex="-1"></a>        <span class="cf">break</span></span>
-<span id="cb4-40"><a href="#cb4-40" aria-hidden="true" tabindex="-1"></a>        }</span>
-<span id="cb4-41"><a href="#cb4-41" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb4-42"><a href="#cb4-42" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb4-43"><a href="#cb4-43" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(breakFlag)</span>
-<span id="cb4-44"><a href="#cb4-44" aria-hidden="true" tabindex="-1"></a>    <span class="cf">break</span></span>
-<span id="cb4-45"><a href="#cb4-45" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb4-46"><a href="#cb4-46" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-47"><a href="#cb4-47" aria-hidden="true" tabindex="-1"></a>acc</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">626</span>) {</span>
+<span id="cb4-2"><a href="#cb4-2"></a>  df <span class="ot">&lt;-</span> masterDF</span>
+<span id="cb4-3"><a href="#cb4-3"></a>  </span>
+<span id="cb4-4"><a href="#cb4-4"></a>  df<span class="sc">$</span>ipa <span class="ot">&lt;-</span> <span class="cn">NA</span></span>
+<span id="cb4-5"><a href="#cb4-5"></a>  df<span class="sc">$</span>ipa[<span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb4-6"><a href="#cb4-6"></a>  </span>
+<span id="cb4-7"><a href="#cb4-7"></a>  acc <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb4-8"><a href="#cb4-8"></a>  r <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb4-9"><a href="#cb4-9"></a>  </span>
+<span id="cb4-10"><a href="#cb4-10"></a>  flag <span class="ot">&lt;-</span> <span class="cn">TRUE</span></span>
+<span id="cb4-11"><a href="#cb4-11"></a>  breakFlag <span class="ot">&lt;-</span> <span class="cn">FALSE</span></span>
+<span id="cb4-12"><a href="#cb4-12"></a>  </span>
+<span id="cb4-13"><a href="#cb4-13"></a>  <span class="cf">if</span>(<span class="fu">as.character</span>(df<span class="sc">$</span>ope[i]) <span class="sc">==</span> <span class="st">"nop"</span>)</span>
+<span id="cb4-14"><a href="#cb4-14"></a>    df<span class="sc">$</span>ope[i] <span class="ot">&lt;-</span> <span class="st">"jmp"</span></span>
+<span id="cb4-15"><a href="#cb4-15"></a>  <span class="cf">else</span> <span class="cf">if</span>(<span class="fu">as.character</span>(df<span class="sc">$</span>ope[i]) <span class="sc">==</span> <span class="st">"jmp"</span>)</span>
+<span id="cb4-16"><a href="#cb4-16"></a>    df<span class="sc">$</span>ope[i] <span class="ot">&lt;-</span> <span class="st">"nop"</span></span>
+<span id="cb4-17"><a href="#cb4-17"></a>  </span>
+<span id="cb4-18"><a href="#cb4-18"></a>  <span class="cf">if</span>(<span class="fu">as.character</span>(df<span class="sc">$</span>ope[i]) <span class="sc">!=</span> <span class="st">"acc"</span>) {</span>
+<span id="cb4-19"><a href="#cb4-19"></a>    <span class="cf">while</span>(flag) {</span>
+<span id="cb4-20"><a href="#cb4-20"></a>      <span class="cf">if</span>(<span class="fu">as.character</span>(df<span class="sc">$</span>ope[r]) <span class="sc">==</span> <span class="st">"acc"</span> <span class="sc">&amp;</span> r <span class="sc">&lt;=</span> <span class="dv">626</span> <span class="sc">&amp;</span> r <span class="sc">&gt;=</span> <span class="dv">1</span>) {</span>
+<span id="cb4-21"><a href="#cb4-21"></a>        acc <span class="ot">&lt;-</span> acc <span class="sc">+</span> df<span class="sc">$</span>arg[r]</span>
+<span id="cb4-22"><a href="#cb4-22"></a>        flag <span class="ot">&lt;-</span> <span class="fu">is.na</span>(df<span class="sc">$</span>ipa[r <span class="sc">+</span> <span class="dv">1</span>])</span>
+<span id="cb4-23"><a href="#cb4-23"></a>        df<span class="sc">$</span>ipa[r <span class="sc">+</span> <span class="dv">1</span>] <span class="ot">&lt;-</span> r</span>
+<span id="cb4-24"><a href="#cb4-24"></a>        r <span class="ot">&lt;-</span> r <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb4-25"><a href="#cb4-25"></a>        }</span>
+<span id="cb4-26"><a href="#cb4-26"></a>      <span class="cf">else</span> <span class="cf">if</span>(<span class="fu">as.character</span>(df<span class="sc">$</span>ope[r]) <span class="sc">==</span> <span class="st">"jmp"</span> <span class="sc">&amp;</span> r <span class="sc">+</span> df<span class="sc">$</span>arg[r] <span class="sc">&lt;=</span> <span class="dv">626</span> <span class="sc">&amp;</span> r <span class="sc">+</span> df<span class="sc">$</span>arg[r] <span class="sc">&gt;=</span> <span class="dv">1</span>) {</span>
+<span id="cb4-27"><a href="#cb4-27"></a>        flag <span class="ot">&lt;-</span> <span class="fu">is.na</span>(df<span class="sc">$</span>ipa[r <span class="sc">+</span> df<span class="sc">$</span>arg[r]])</span>
+<span id="cb4-28"><a href="#cb4-28"></a>        df<span class="sc">$</span>ipa[r <span class="sc">+</span> df<span class="sc">$</span>arg[r]] <span class="ot">&lt;-</span> r</span>
+<span id="cb4-29"><a href="#cb4-29"></a>        r <span class="ot">&lt;-</span> r <span class="sc">+</span> df<span class="sc">$</span>arg[r]</span>
+<span id="cb4-30"><a href="#cb4-30"></a>        }</span>
+<span id="cb4-31"><a href="#cb4-31"></a>      <span class="cf">else</span> <span class="cf">if</span>(<span class="fu">as.character</span>(df<span class="sc">$</span>ope[r]) <span class="sc">==</span> <span class="st">"nop"</span> <span class="sc">&amp;</span> r <span class="sc">&lt;=</span> <span class="dv">626</span> <span class="sc">&amp;</span> r <span class="sc">&gt;=</span> <span class="dv">1</span>) {</span>
+<span id="cb4-32"><a href="#cb4-32"></a>        flag <span class="ot">&lt;-</span> <span class="fu">is.na</span>(df<span class="sc">$</span>ipa[r <span class="sc">+</span> <span class="dv">1</span>])</span>
+<span id="cb4-33"><a href="#cb4-33"></a>        df<span class="sc">$</span>ipa[r <span class="sc">+</span> <span class="dv">1</span>] <span class="ot">&lt;-</span> r</span>
+<span id="cb4-34"><a href="#cb4-34"></a>        r <span class="ot">&lt;-</span> r <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb4-35"><a href="#cb4-35"></a>      }</span>
+<span id="cb4-36"><a href="#cb4-36"></a>    </span>
+<span id="cb4-37"><a href="#cb4-37"></a>      <span class="cf">if</span>(r <span class="sc">==</span> <span class="dv">626</span>) {</span>
+<span id="cb4-38"><a href="#cb4-38"></a>        breakFlag <span class="ot">&lt;-</span> <span class="cn">TRUE</span></span>
+<span id="cb4-39"><a href="#cb4-39"></a>        <span class="cf">break</span></span>
+<span id="cb4-40"><a href="#cb4-40"></a>        }</span>
+<span id="cb4-41"><a href="#cb4-41"></a>    }</span>
+<span id="cb4-42"><a href="#cb4-42"></a>  }</span>
+<span id="cb4-43"><a href="#cb4-43"></a>  <span class="cf">if</span>(breakFlag)</span>
+<span id="cb4-44"><a href="#cb4-44"></a>    <span class="cf">break</span></span>
+<span id="cb4-45"><a href="#cb4-45"></a>}</span>
+<span id="cb4-46"><a href="#cb4-46"></a></span>
+<span id="cb4-47"><a href="#cb4-47"></a>acc</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 1033</code></pre>
 </div>
