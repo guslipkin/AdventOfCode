@@ -1,5 +1,5 @@
 ---
-ttile: "2022-04: Camp Cleanup"
+title: "2022-04: Camp Cleanup"
 format: html
 ---
 
