@@ -1,5 +1,5 @@
 ---
-title: "2022-05"
+title: "2022-05: Supply Stacks"
 format: html
 ---
 
@@ -8,24 +8,76 @@ library(tidyverse)
 library(data.table)
 ```
 
+This was a big mess. It took me forever to read in the input and I eventually stumbled upon `reaf_fwf` because I couldn't remember what a fixed-width file was. I kept looking for delimited readers and tried all sorts of crazy things.
+
+::: {.callout-note}
+
+The `do_part` function was added after completion so that the code isn't too long when sharing since it's such a minor difference.
+
+:::
+
 ```{r}
-dt <- fread("input.txt", header = FALSE)
-# dt <- readLines("input.txt")
+file_name <- "input.txt"
+move <- function(piles, i, ins, part) {
+  moveN <- ins$X2[i]
+  fromN <- ins$X3[i]
+  toN <- ins$X4[i]
+  
+  from <- piles[[fromN]]
+  to <- piles[[toN]]
+  
+  if (part == 1) { to <- c(rev(from[1:moveN]), to) }
+  else if (part == 2) { to <- c(from[1:moveN], to) }
+  from <- tail(from, -moveN)
+  
+  piles[[fromN]] <- from[!is.na(from)]
+  piles[[toN]] <- to[!is.na(to)]
+  
+  return(piles)
+}
+
+do_part <- function(part) {
+  dt <- readLines(file_name)
+  piles <- read_fwf(file = file_name, na = "  ", n_max = which(dt == "") - 2)
+  
+  piles <- piles |>
+    as.matrix()
+  piles <-
+    lapply(seq_len(ncol(piles)), \(i) piles[, i]) |>
+    lapply(\(x) str_extract(x[x != ""], "\\w"))
+  
+  ins <-
+    readLines(file_name) |>
+    tail(-(which(dt == "") - 1)) |>
+    str_match_all("move (\\d*) from (\\d*) to (\\d*)") %>%
+    do.call(rbind, .) |>
+    data.frame() |>
+    lapply(as.numeric) |>
+    data.frame()
+  
+  for (i in 1:nrow(ins)) {
+    piles <- move(piles, i, ins, part = part)
+  }
+  piles |>
+    lapply(\(x) head(x, 1)) |>
+    unlist() |>
+    paste(collapse = "")
+}
 ```
 
 ## Part 1
 
-```{r}
-
-```
+Once I had the input in, it was relatively smooth sailing. I missed the part in part 1 where the boxes move one by one (oh part 2, how I wish I knew you then...) but once I had that fixed, I was looking pretty good. I got the test input working but then the real input wasn't working. I eventually realized that my regex `\\d` was missing any numbers greater than 9 once that was fixed, everything else was pretty easy.
 
 ```{r}
-
+do_part(1)
 ```
 
 ## Part 2
 
-```{r}
+After firing off a celebratory text message, I read part 2, deleted my `rev` and was done in 52 seconds!
 
+```{r}
+do_part(2)
 ```
 
