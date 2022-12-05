@@ -2,3 +2,7 @@
 * text=auto
 
 docs/** linguist-generated
+
+*.qmd linguist-language=R
+*.rmd linguist-language=R
+*.Rmd linguist-language=R
