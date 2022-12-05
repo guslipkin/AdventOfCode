@@ -7,8 +7,8 @@ docs/** linguist-generated -linguist-detectable
 *.rmd linguist-language=Rmarkdown linguist-detectable=true
 *.Rmd linguist-language=Rmarkdown linguist-detectable=true
 
-*.html linguist-detectable=false
-*.css  linguist-detectable=false
-*.json  linguist-detectable=false
-*.js  linguist-detectable=false
-*.sh  linguist-detectable=false
+*.html linguist-vendored
+*.css  linguist-vendored
+*.json  linguist-vendored
+*.js  linguist-vendored
+*.sh  linguist-vendored
