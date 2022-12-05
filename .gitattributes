@@ -7,5 +7,5 @@ docs/** linguist-generated
 *.js linguist-detectable=false
 *.json linguist-detectable=false
 *.css linguist-detectable=false
-*.qmd linguist-language=RMarkdown
-*.Rmd linguist-language=RMarkdown
+*.qmd linguist-language=R
+*.Rmd linguist-language=R
