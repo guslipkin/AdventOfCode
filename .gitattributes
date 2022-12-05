@@ -2,10 +2,3 @@
 * text=auto
 
 docs/** linguist-generated
-
-*.html linguist-detectable=false
-*.js linguist-detectable=false
-*.json linguist-detectable=false
-*.css linguist-detectable=false
-*.qmd linguist-language=R
-*.Rmd linguist-language=R
