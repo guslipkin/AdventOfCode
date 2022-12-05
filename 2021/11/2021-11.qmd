@@ -1,0 +1,95 @@
+---
+title: "2021-11: Dumbo Octopus"
+format: html
+---
+
+```{r}
+library(tidyverse)
+library(data.table)
+```
+
+```{r}
+octopusM <- readLines("input.txt")
+```
+
+## Part 1
+
+```{r}
+octopus <- octopusM |>
+  strsplit("") %>%
+  do.call(rbind, .) |>
+  as.matrix() |>
+  apply(1, as.numeric) |>
+  t()
+
+octopusCol <- ncol(octopus)
+octopusRow <- nrow(octopus)
+
+flash_counter <- 0
+
+get_adjacent <- function(xx, yy, ncol, nrow) {
+  x <- xx; y <- yy
+  x <- (x-1):(x+1); y <- (y-1):(y+1)
+  
+  x <- x[sapply(x, \(j) between(j, 1, ncol))]
+  y <- y[sapply(y, \(j) between(j, 1, nrow))]
+
+  expand.grid("col" = x, "row" = y) |>
+    filter(!(col == xx & row == yy)) |>
+    as.matrix()
+}
+
+for(i in 1:100) {
+  octopus <- octopus + 1
+  
+  while(any(octopus > 9)) {
+    flash <- which(octopus > 9, arr.ind = TRUE)
+    octopus[octopus > 9] <- 0
+    for(x in 1:nrow(flash)) {
+      adj <- 
+        get_adjacent(flash[x, "col"], flash[x, "row"], octopusCol, octopusRow)
+      
+      octopus[adj[,"row"], adj[,"col"]] <- 
+        apply(octopus[adj[,"row"], adj[,"col"]], c(1, 2), 
+              \(x) { ifelse(x == 0, 0, x + 1) })
+    }
+  }
+  flash_counter <<- flash_counter + length(octopus[octopus == 0])
+}
+flash_counter
+```
+
+## Part 2
+
+```{r}
+octopus <- octopusM |>
+  strsplit("") %>%
+  do.call(rbind, .) |>
+  as.matrix() |>
+  apply(1, as.numeric) |>
+  t()
+
+i <- 1
+
+while(TRUE) {
+  octopus <- octopus + 1
+  
+  while(any(octopus > 9)) {
+    flash <- which(octopus > 9, arr.ind = TRUE)
+    octopus[octopus > 9] <- 0
+    for(x in 1:nrow(flash)) {
+      adj <- 
+        get_adjacent(flash[x, "col"], flash[x, "row"], octopusCol, octopusRow)
+      
+      octopus[adj[,"row"], adj[,"col"]] <- 
+        apply(octopus[adj[,"row"], adj[,"col"]], c(1, 2), 
+              \(x) { ifelse(x == 0, 0, x + 1) })
+    }
+  }
+  if (length(octopus[octopus == 0]) == octopusRow * octopusCol) {
+    print(i)
+    break
+  } else { i <- i + 1 }
+}
+```
+

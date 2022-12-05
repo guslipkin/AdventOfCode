@@ -1,0 +1,31 @@
+---
+title: "2022-05"
+format: html
+---
+
+```{r}
+library(tidyverse)
+library(data.table)
+```
+
+```{r}
+dt <- fread("input.txt", header = FALSE)
+# dt <- readLines("input.txt")
+```
+
+## Part 1
+
+```{r}
+
+```
+
+```{r}
+
+```
+
+## Part 2
+
+```{r}
+
+```
+

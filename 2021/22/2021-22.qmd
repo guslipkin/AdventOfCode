@@ -1,0 +1,25 @@
+---
+title: "2021-22: Reactor Reboot"
+format: html
+---
+
+```{r}
+library(tidyverse)
+library(data.table)
+```
+
+```{r}
+dt <-
+  readLines("input.txt") |>
+  str_split(" |,|\\.\\.") |>
+  lapply(\(x) str_remove_all(x, "x=|y=|z=")) %>%
+  do.call(rbind, .) |>
+  data.frame() |>
+  `colnames<-`(c("op", "x1", "x2", "y1", "y2", "z1", "z2")) |>
+  mutate_at(vars(matches("\\w\\d")), as.integer)
+
+dt
+
+
+```
+

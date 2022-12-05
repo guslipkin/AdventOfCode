@@ -20,7 +20,7 @@ I'm still working on getting the 2021 and earlier puzzles converted to Quarto. T
 ## Star Chart
 
 - 2022: ⭐️⭐️⭐️⭐️️⭐️ ️️️⭐️️️⭐️⭐️
-- 2021: ⭐️⭐️⭐️⭐️⭐️ ⭐️⭐️⭐️⭐️⭐️ ⭐️⭐️⭐️⭐️⭐️ ⭐️⭐️⭐️⭐️⭐️ ⭐️⭐️⭐️
+- 2021: ⭐️⭐️⭐️⭐️⭐️ ⭐️⭐️⭐️⭐️⭐️ ⭐️⭐️⭐️⭐️⭐️ ⭐️⭐️⭐️⭐️⭐️ ⭐️⭐️⭐️⭐️⭐️ 
 - 2020: ⭐️⭐️⭐️⭐️⭐️ ⭐️⭐️⭐️⭐️⭐️ ⭐️⭐️⭐️⭐️⭐️ ⭐️⭐️⭐️⭐️⭐️
 - 2019: ⭐️⭐️
 - 2018: ⭐️⭐️⭐️⭐️⭐️ ⭐️⭐️⭐️⭐️⭐️ ⭐️⭐️
@@ -28,7 +28,7 @@ I'm still working on getting the 2021 and earlier puzzles converted to Quarto. T
 - 2016: ⭐️⭐️⭐️⭐️⭐️ ⭐️️⭐⭐
 - 2015: ⭐️⭐️⭐️⭐️⭐️ ⭐️⭐️⭐️⭐️⭐️ ⭐️⭐️
 
-Total Stars: 90/400
+Total Stars: 92/400
 
 ```{r}
 #| echo: false

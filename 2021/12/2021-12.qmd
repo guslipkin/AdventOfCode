@@ -1,0 +1,39 @@
+---
+title: "2021-12: Passage Pathing"
+format: html
+---
+
+```{r}
+library(stringr)
+library(unglue)
+library(tidyverse)
+library(data.table)
+
+dt <- readLines("input2.txt")
+```
+
+## Part 1
+
+```{r}
+paste0(c("graph LR", dt), collapse = "\n") |>
+  str_replace_all("-", "-->") |>
+  str_replace_all("end", "finish") |>
+  DiagrammeR::mermaid()
+
+str_split(dt, "-", simplify = TRUE) |>
+  data.frame() |>
+  `colnames<-`(c("start", "finish")) |>
+  mutate(finish = ifelse(finish == "end", "finish", finish))
+
+combn(dt, m = 2) |>
+  t() |>
+  data.frame() |>
+  separate(X1, c("xStart", "xFinish")) |>
+  separate(X2, c("yFinish", "yStart")) |>
+  filter(xStart == yFinish | yStart == xFinish) |>
+  unique() |>
+  pivot_longer(cols = c(ends_with("Start"), ends_with("Finish"))) |>
+  unique()
+```
+
+

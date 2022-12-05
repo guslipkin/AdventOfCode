@@ -1,7 +1,6 @@
 ---
-title: "Advent of Code 2021 - Day 14"
-author: "Gus Lipkin ~ github.com/guslipkin/AdventOfCode2021"
-output: html_notebook
+title: "2022-14: Extended Polymerization"
+format: html
 ---
 
 ```{r}
@@ -9,21 +8,21 @@ library(tidyverse)
 library(stringr)
 library(data.table)
 
-dt <- readLines("input2.txt")
+dt <- readLines("input.txt")
 polymer <- dt[!grepl(" -> ", dt)][1]
 polymer <- str_split(polymer, "", simplify = TRUE)[1,]
 pairs <- data.frame(str_split(dt[grepl(" -> ", dt)], " -> ", simplify = TRUE))
 ```
 
+## Part 1
 
 ```{r}
-# part 1
-dt <- readLines("input2.txt")
+dt <- readLines("input.txt")
 polymer <- dt[!grepl(" -> ", dt)][1]
 polymer <- str_split(polymer, "", simplify = TRUE)[1,]
 pairs <- data.frame(str_split(dt[grepl(" -> ", dt)], " -> ", simplify = TRUE))
 
-for(d in 1:40) {
+for(d in 1:10) {
   pos <- data.frame("let" = NA, "pos" = NA)
   for (i in 1:(length(polymer) - 1)) {
     pos <- rbind(pos, data.frame("let" =
@@ -41,10 +40,12 @@ for(d in 1:40) {
   }
   # print((table(polymer)))
 }
-length(polymer)
 t <- sort(table(polymer))
 rev(t)[1] - t[1]
 ```
+
+## Part 2
+
 
 
 ```{r}

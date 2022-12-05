@@ -9,11 +9,64 @@ library(tidyverse)
 library(stringr)
 library(data.table)
 
-dt <- readLines("input.txt")
+dt <- readLines("input2.txt")
 dt <- str_split(dt, "", simplify = TRUE)
 dt <- data.frame(apply(dt, 2, as.numeric))
 ```
 
+## Part 2
+
+```{r}
+dt <- readLines("input2.txt")
+dt <- str_split(dt, "", simplify = TRUE)
+dtM <- apply(dt, c(1, 2), as.numeric)
+dt <- dtM
+
+dt <- dt - 1
+
+mat <- matrix(NA, nrow(dt), ncol(dt))
+
+coords <- 
+  expand.grid("row" = seq_len(nrow(mat)), "col" = seq_len(ncol(mat)))
+
+get_adjacent <- function(xx, yy, ncol, nrow) {
+  x <- xx; y <- yy
+  x <- (x-1):(x+1); y <- (y-1):(y+1)
+  
+  x <- x[sapply(x, \(j) between(j, 1, ncol))]
+  y <- y[sapply(y, \(j) between(j, 1, nrow))]
+
+  expand.grid("col" = x, "row" = y) |>
+    filter(!(col == xx & row == yy)) |>
+    as.matrix()
+}
+
+oldMat <- mat
+oldMat[!is.na(oldMat)] <- NA
+while (!all(is.na(mat)) & !all(is.na(oldMat)) & all(mat == oldMat)) {
+  dt <- dt - 2
+
+mat <- matrix(NA, nrow(dt), ncol(dt))
+  which(dt <= 0, arr.ind = TRUE) |>
+  data.frame() |>
+  arrange(row, col) |>
+  apply(1, \(x) {
+    mat[x["row"], x["col"]] <<- dtM[x["row"], x["col"]]
+  })
+
+mat
+  oldMat <- mat
+  for (i in 1:nrow(coords)) {
+    x <- coords$col[i]
+    y <- coords$row[i]
+    adj <- get_adjacent(x, y, ncol(mat), nrow(mat))
+    
+    if (nrow(adj) < 2) {
+      mat[adj[, "row"], adj[, "col"]] <<- NA
+    }
+  }
+}
+```
 
 ```{r warning=FALSE}
 # part 1

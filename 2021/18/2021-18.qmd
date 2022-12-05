@@ -1,0 +1,18 @@
+---
+title: "2021-18: Snailfish"
+format: html
+---
+
+```{r}
+library(tidyverse)
+library(data.table)
+```
+
+```{r}
+dt <- readLines("input.txt")
+```
+
+```{r}
+
+```
+
