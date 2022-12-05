@@ -3,6 +3,6 @@
 
 docs/** linguist-generated -linguist-detectable
 
-*.qmd linguist-language=R linguist-detectable
-*.rmd linguist-language=R linguist-detectable
-*.Rmd linguist-language=R linguist-detectable
+*.qmd linguist-language=Rmarkdown linguist-detectable
+*.rmd linguist-language=Rmarkdown linguist-detectable
+*.Rmd linguist-language=Rmarkdown linguist-detectable
