@@ -1,17 +1,17 @@
 ---
-title: "Advent of Code 2021 - Day 10"
-author: "Gus Lipkin ~ github.com/guslipkin/AdventOfCode2021"
-output: html_notebook
+title: "2021-10: Syntax Scoring"
+format: html
 ---
 
 ```{r}
-library(stringr)
+library(tidyverse)
 
 dt <- data.table::fread("input.txt", header = FALSE, colClasses = "character")
 ```
 
+## Part 1
+
 ```{r}
-# part 1
 dt2 <- dt
 
 monkeyBall <- function(x, n) {
@@ -44,9 +44,9 @@ if (is.na(t[">"]))
 (3 * t[")"]) + (57 * t["]"]) + (1197 * t["}"]) + (25137 * t[">"])
 ```
 
+## Part 2
 
 ```{r}
-# part 2
 dt2 <- dt
 
 monkeyBall <- function(x, n) {

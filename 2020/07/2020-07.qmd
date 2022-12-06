@@ -11,8 +11,6 @@ df <- read.csv("input.csv")
 df$child2C[as.character(df$child2C) == " "] <- NA
 df$child3C[as.character(df$child3C) == " "] <- NA
 df$child4C[as.character(df$child4C) == " "] <- NA
-
-df
 ```
 
 ## Part 1

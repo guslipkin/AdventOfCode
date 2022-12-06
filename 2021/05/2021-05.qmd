@@ -1,7 +1,6 @@
 ---
-title: "Advent of Code 2021 - Day 5"
-author: "Gus Lipkin ~ github.com/guslipkin/AdventOfCode2021"
-output: html_notebook
+title: "2021-05: Hydrothermal Venture"
+format: html
 ---
 
 ```{r}
@@ -9,6 +8,8 @@ library(tidyverse)
 library(data.table)
 library(stringr)
 ```
+
+## Part 1
 
 ```{r}
 # part 1
@@ -28,6 +29,8 @@ for(r in 1:nrow(dt)) {
 
 length(mx[mx > 1])
 ```
+
+## Part 2
 
 ```{r}
 # part 2

@@ -1,14 +1,10 @@
 ---
-title: "Advent of Code 2021 - Day 8"
-author: "Gus Lipkin ~ github.com/guslipkin/AdventOfCode2021"
-output:
-  pdf_document: default
-  html_notebook: default
-  html_document:
-    df_print: paged
+title: "2021-08: Seven Segment Search"
+format: html
 ---
 
-```{r warning=FALSE}
+```{r}
+#| warning: false
 library(stringr)
 library(tidyverse)
 library(data.table)
@@ -16,24 +12,21 @@ library(data.table)
 dt <- data.table::fread("input.txt", header = FALSE)
 ```
 
+## Part 1
 
 ```{r}
-# part 1
 dt2 <- data.table("output" = dt$V2)
 dt2 <- as.character(unlist(strsplit(dt2$output, " ")))
 length(dt2[nchar(dt2) %in% c(2, 3, 4, 7)])
 ```
 
-\pagebreak
-
 > This is how I laid out my positions
 
-```{r echo=FALSE, out.width=100}
-knitr::include_graphics("layout.png")
-```
+![](layout.png)
+
+## Part 2
 
 ```{r}
-# part 2
 df <- data.table::fread("input.txt", header = FALSE)
 dt1 <- data.table("input" = df$V1)
 dt1 <- data.table(str_split(dt1$input, " ", simplify = TRUE))

@@ -37,3 +37,7 @@ source("post-packages.R")
 
 cat("adventofcode.guslipkin.me", file = "docs/CNAME")
 ```
+
+## My Favorite Solutions
+
+- [2021-09](2021/09/2021-09.html)

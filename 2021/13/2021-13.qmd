@@ -1,7 +1,6 @@
 ---
-title: "Advent of Code 2021 - Day 13"
-author: "Gus Lipkin ~ github.com/guslipkin/AdventOfCode2021"
-output: html_notebook
+title: "2021-13: Transparent Origami"
+format: html
 ---
 
 ```{r}
@@ -26,8 +25,9 @@ paper <- matrix(data = FALSE,
 for(r in 1:nrow(coords)) { paper[coords$X2[r], coords$X1[r]] <- TRUE }
 ```
 
+## Part 1
+
 ```{r}
-# part 1
 fold <- function(dir, n, paper) {
   if (dir == "x") {
     paper1 <- paper[,1:(n)]
@@ -46,9 +46,9 @@ folded <- fold(folds$X1[1], folds$X2[1], paper)
 length(which(folded))
 ```
 
+## Part 2
 
 ```{r}
-# part 2
 fold <- function(dir, n, paper) {
   if (dir == "x") {
     paper1 <- paper[,1:(n)]

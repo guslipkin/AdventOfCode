@@ -269,6 +269,46 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <a href="../../2021/04/2021-04.html" class="sidebar-item-text sidebar-link">2021-04: Giant Squid</a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../2021/05/2021-05.html" class="sidebar-item-text sidebar-link">2021-05: Hydrothermal Venture</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../2021/06/2021-06.html" class="sidebar-item-text sidebar-link">2021-06: Lanternfish</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../2021/07/2021-07.html" class="sidebar-item-text sidebar-link">2021-07: The Treachery of Whales</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../2021/08/2021-08.html" class="sidebar-item-text sidebar-link">2021-08: Seven Segment Search</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../2021/09/2021-09.html" class="sidebar-item-text sidebar-link">2021-09: Smoke Basin</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../2021/10/2021-10.html" class="sidebar-item-text sidebar-link">2021-10: Syntax Scoring</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../2021/11/2021-11.html" class="sidebar-item-text sidebar-link">2021-11: Dumbo Octopus</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../2021/13/2021-13.html" class="sidebar-item-text sidebar-link">2021-13: Transparent Origami</a>
+  </div>
+</li>
       </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
@@ -510,1254 +550,51 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 </header>
 
-<div class="cell" data-hash="2020-07_cache/html/unnamed-chunk-1_c5e3c5aa4e10670d3d455ea7dcf95041">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>── Attaching packages ─────────────────────────────────────── tidyverse 1.3.2 ──
-✔ ggplot2 3.4.0      ✔ purrr   0.3.5 
-✔ tibble  3.1.8      ✔ dplyr   1.0.10
-✔ tidyr   1.2.1      ✔ stringr 1.4.1 
-✔ readr   2.1.3      ✔ forcats 0.5.2 
-── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
-✖ dplyr::filter() masks stats::filter()
-✖ dplyr::lag()    masks stats::lag()</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>df <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"input.csv"</span>)</span>
-<span id="cb3-2"><a href="#cb3-2"></a></span>
-<span id="cb3-3"><a href="#cb3-3"></a>df<span class="sc">$</span>child2C[<span class="fu">as.character</span>(df<span class="sc">$</span>child2C) <span class="sc">==</span> <span class="st">" "</span>] <span class="ot">&lt;-</span> <span class="cn">NA</span></span>
-<span id="cb3-4"><a href="#cb3-4"></a>df<span class="sc">$</span>child3C[<span class="fu">as.character</span>(df<span class="sc">$</span>child3C) <span class="sc">==</span> <span class="st">" "</span>] <span class="ot">&lt;-</span> <span class="cn">NA</span></span>
-<span id="cb3-5"><a href="#cb3-5"></a>df<span class="sc">$</span>child4C[<span class="fu">as.character</span>(df<span class="sc">$</span>child4C) <span class="sc">==</span> <span class="st">" "</span>] <span class="ot">&lt;-</span> <span class="cn">NA</span></span>
-<span id="cb3-6"><a href="#cb3-6"></a></span>
-<span id="cb3-7"><a href="#cb3-7"></a>df</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>                 parent child1N            child1C child2N             child2C
-1             pale cyan       2         posh black       4           wavy gold
-2         dull lavender       3        pale tomato      NA                &lt;NA&gt;
-3             light red       3          wavy teal       3          plaid aqua
-4            wavy green       3        wavy indigo      NA                &lt;NA&gt;
-5           bright blue       5        vibrant tan      NA                &lt;NA&gt;
-6        dotted fuchsia       5        dark orange       1         shiny coral
-7           pale tomato       2     bright magenta       5           dull lime
-8           light black       1      posh lavender       5         dotted gold
-9        wavy turquoise       4          pale teal       2           dim brown
-10          striped red       4        faded brown       4       dotted purple
-11          wavy silver       5   muted chartreuse       1        light silver
-12        posh lavender       5     striped silver       3          wavy beige
-13          pale maroon       1      striped white       4          light blue
-14       drab turquoise       2       shiny tomato      NA                &lt;NA&gt;
-15            dark aqua       2       plaid silver      NA                &lt;NA&gt;
-16        vibrant coral       3          wavy lime       2          shiny gold
-17          clear green       1        clear olive      NA                &lt;NA&gt;
-18       striped indigo       3  striped turquoise      NA                &lt;NA&gt;
-19           clear lime       3     mirrored green       2           light tan
-20          drab bronze       5     plaid lavender       1        muted yellow
-21        drab lavender       1        posh tomato       4        muted salmon
-22         striped aqua       1        pale maroon      NA                &lt;NA&gt;
-23            wavy gray       3          light tan       2          pale white
-24           faded aqua       1       plaid salmon       4       dotted yellow
-25            drab cyan       1        posh tomato       4     shiny turquoise
-26         vibrant blue       0        other bags.      NA                &lt;NA&gt;
-27           light lime       3     vibrant purple      NA                &lt;NA&gt;
-28           clear gray       3     mirrored olive       3       clear crimson
-29       bright magenta       0        other bags.      NA                &lt;NA&gt;
-30          wavy purple       4           dim gold       5         light green
-31         muted bronze       2         pale beige       2     clear turquoise
-32       striped violet       1         light gold      NA                &lt;NA&gt;
-33          dull salmon       2          posh gray       2         dotted blue
-34       striped orange       3        faded coral       3     dotted lavender
-35           drab coral       1        wavy indigo       1          dull black
-36         plaid yellow       5         faded cyan      NA                &lt;NA&gt;
-37          dark maroon       2    mirrored silver       5        muted salmon
-38          dark yellow       1        drab maroon       5          faded cyan
-39            posh teal       3     vibrant maroon       3         posh salmon
-40       mirrored black       1       drab fuchsia       2            posh red
-41          drab salmon       2          dull plum      NA                &lt;NA&gt;
-42          muted green       4         plaid gray       2       dim turquoise
-43        bright indigo       1   bright turquoise       4          dark beige
-44         wavy fuchsia       1       clear violet       4      striped bronze
-45         bright brown       5        dark purple      NA                &lt;NA&gt;
-46       dull turquoise       3         dim yellow       2          dim indigo
-47           pale coral       4        posh indigo      NA                &lt;NA&gt;
-48        striped green       4         dull green       5    dotted turquoise
-49         faded maroon       3          dim green       4         wavy purple
-50         vibrant lime       3      shiny fuchsia       1            pale red
-51           shiny plum       2      bright maroon       5         dull tomato
-52         faded silver       1     posh turquoise       5          posh white
-53      mirrored tomato       3      dotted tomato       4        vibrant blue
-54             pale red       5     vibrant indigo       4         vibrant red
-55            drab blue       2     bright magenta      NA                &lt;NA&gt;
-56           dim purple       4      drab lavender       4        plaid yellow
-57              dim red       5     striped silver       1           shiny red
-58             dim lime       5       plaid bronze       5         drab salmon
-59       mirrored beige       3      bright tomato       2           dull lime
-60          bright lime       5   clear chartreuse      NA                &lt;NA&gt;
-61     clear chartreuse       1        muted white       1      vibrant bronze
-62        dotted indigo       4         pale olive       1       bright violet
-63      striped crimson       3       muted salmon      NA                &lt;NA&gt;
-64          plaid green       3        posh tomato      NA                &lt;NA&gt;
-65            dim brown       3       striped teal       3        vibrant aqua
-66      faded turquoise       2           dim blue       3         clear green
-67         dotted coral       2     vibrant silver       3       plaid crimson
-68     mirrored magenta       3       striped teal       1      mirrored black
-69           shiny gray       3     bright magenta      NA                &lt;NA&gt;
-70      mirrored violet       5          drab blue       5          dark brown
-71           dark beige       2       vibrant blue       2      bright magenta
-72          dark bronze       3 vibrant chartreuse       2      posh turquoise
-73      clear turquoise       1     mirrored green       1        faded indigo
-74          dark silver       5        posh purple       4         dull silver
-75             dull tan       2      striped brown       3      vibrant salmon
-76        mirrored gray       2          dim white       4         muted white
-77          faded black       3         faded aqua       4          drab white
-78        light fuchsia       3       pale magenta      NA                &lt;NA&gt;
-79        wavy lavender       0        other bags.      NA                &lt;NA&gt;
-80           dull black       1      mirrored teal      NA                &lt;NA&gt;
-81   vibrant chartreuse       1        dull violet       4      posh turquoise
-82          posh yellow       5          wavy gold      NA                &lt;NA&gt;
-83           shiny teal       2        drab salmon       5     striped crimson
-84        plaid fuchsia       3          dim brown       2         posh bronze
-85         faded yellow       1         dotted tan       3          dark coral
-86      mirrored orange       3         pale coral      NA                &lt;NA&gt;
-87          wavy indigo       5        shiny coral       2        shiny yellow
-88        dotted salmon       1     drab turquoise       1        vibrant lime
-89         dull magenta       3        shiny coral       5         dull violet
-90         shiny tomato       1         dim salmon       1           dim olive
-91            drab gold       3        drab maroon       1        dotted black
-92        bright yellow       4         muted teal       1        faded maroon
-93            dull plum       1       shiny salmon       3           light tan
-94            posh gray       3         muted lime       2        dotted green
-95         clear violet       5     vibrant maroon      NA                &lt;NA&gt;
-96        dotted bronze       3          light tan       4        shiny yellow
-97        mirrored lime       2        bright teal       2            dim gold
-98         shiny indigo       3        dull silver       2            dim cyan
-99      vibrant crimson       2   light chartreuse      NA                &lt;NA&gt;
-100         dim magenta       5        plaid olive       2         muted green
-101            dim blue       1      bright silver       2          shiny gray
-102          plaid teal       4         shiny aqua       1        dull fuchsia
-103           dull teal       2       dotted black      NA                &lt;NA&gt;
-104          plaid gray       5        muted brown      NA                &lt;NA&gt;
-105           pale teal       5      striped olive       1      dotted fuchsia
-106         clear beige       3          pale lime       4        striped aqua
-107      mirrored green       4     mirrored olive       5          dim salmon
-108          plaid aqua       2         pale white       1           dull plum
-109           pale aqua       5      bright salmon       4      vibrant silver
-110       plaid crimson       3    striped magenta      NA                &lt;NA&gt;
-111        mirrored red       5         dull coral       5         pale yellow
-112          pale black       1          light red       4          faded teal
-113       dim turquoise       5       faded purple       4        wavy fuchsia
-114        dim lavender       1         light blue      NA                &lt;NA&gt;
-115           pale gray       3       mirrored red       5        light indigo
-116       clear magenta       5        bright gold       5        dim lavender
-117           dull gold       4       dull fuchsia       3         vibrant tan
-118          dim salmon       5        dull yellow       4          pale beige
-119        drab magenta       2     vibrant salmon      NA                &lt;NA&gt;
-120       vibrant green       3      bright purple       5          wavy brown
-121          dull brown       1           wavy tan       1        shiny salmon
-122         clear white       5        bright lime       3           light tan
-123     dotted lavender       5          wavy cyan       2         dark indigo
-124       dotted purple       5          dull teal       3          shiny plum
-125         drab yellow       3        faded beige       3        light silver
-126         dark orange       5        bright lime      NA                &lt;NA&gt;
-127         dotted cyan       1       vibrant lime       1         wavy maroon
-128         posh indigo       5        dull yellow       1      vibrant bronze
-129     dull chartreuse       2      wavy lavender       5        vibrant blue
-130           posh blue       3        wavy maroon      NA                &lt;NA&gt;
-131            dim teal       3    muted turquoise       1       vibrant black
-132         pale purple       1      striped olive      NA                &lt;NA&gt;
-133     drab chartreuse       1       clear orange       2     plaid turquoise
-134         plaid white       4       plaid indigo       5        vibrant lime
-135      vibrant bronze       5       vibrant blue       1           drab blue
-136       bright bronze       3      muted magenta       3        dotted black
-137         dark indigo       3      bright maroon      NA                &lt;NA&gt;
-138      muted lavender       1        light white       2         clear white
-139      vibrant violet       5       dull magenta       4          posh coral
-140          drab beige       2      plaid magenta       2        muted bronze
-141           drab plum       4    mirrored tomato       3      light lavender
-142    mirrored fuchsia       1    mirrored tomato       5        dotted black
-143        pale crimson       4         light plum      NA                &lt;NA&gt;
-144        dotted black       3      bright maroon      NA                &lt;NA&gt;
-145         wavy tomato       1          dim black       5       vibrant coral
-146         bright aqua       5          pale lime       3        striped teal
-147      vibrant purple       2    clear turquoise       4      vibrant bronze
-148         vibrant tan       4         posh black      NA                &lt;NA&gt;
-149     plaid turquoise       2      dotted violet       5       mirrored plum
-150          dim violet       3      dotted orange      NA                &lt;NA&gt;
-151          bright tan       2        dark indigo       4        faded purple
-152    muted chartreuse       4       dotted black       5     mirrored tomato
-153          muted gold       2          wavy gray       4          clear gold
-154         dull indigo       3    mirrored maroon      NA                &lt;NA&gt;
-155          clear aqua       4           dim plum       5       bright bronze
-156        muted maroon       1    striped crimson       3        vibrant aqua
-157          muted blue       4      clear magenta       4         pale bronze
-158           drab aqua       3      faded crimson      NA                &lt;NA&gt;
-159         shiny olive       4       shiny salmon       2           wavy plum
-160      striped bronze       4        plaid olive       4        plaid indigo
-161       mirrored gold       2     faded lavender      NA                &lt;NA&gt;
-162          faded blue       1       plaid bronze       3           dim olive
-163          plaid lime       2         dim yellow      NA                &lt;NA&gt;
-164      mirrored brown       4      light crimson      NA                &lt;NA&gt;
-165           plaid red       5         shiny aqua       5       wavy lavender
-166      mirrored coral       4      mirrored lime       5        muted orange
-167      mirrored olive       2       vibrant blue      NA                &lt;NA&gt;
-168         pale orange       4          wavy lime      NA                &lt;NA&gt;
-169         drab maroon       1       shiny yellow       3         dull yellow
-170         drab purple       5      bright tomato       4      striped bronze
-171        striped lime       5     posh turquoise       1          dim purple
-172          wavy beige       5       shiny tomato       3       drab lavender
-173         bright gold       5        vibrant red       1        shiny orange
-174       muted magenta       4        light olive       3          dotted tan
-175           dark lime       5      wavy lavender       4        clear maroon
-176         pale silver       3     faded lavender       2       dotted purple
-177      posh turquoise       5         dim yellow       4           posh lime
-178         shiny coral       2        dull tomato      NA                &lt;NA&gt;
-179          dim tomato       3         shiny aqua       3          light cyan
-180        plaid tomato       3       faded indigo      NA                &lt;NA&gt;
-181           clear tan       3    mirrored indigo      NA                &lt;NA&gt;
-182         wavy maroon       1        dark silver      NA                &lt;NA&gt;
-183           drab teal       5       muted salmon       4        plaid yellow
-184            dim plum       5        posh salmon       5        faded purple
-185      bright fuchsia       2         dark beige       3        faded yellow
-186        clear silver       2       plaid tomato       4    muted chartreuse
-187        shiny purple       5     muted lavender       2     clear turquoise
-188            dark red       3         plaid plum       2          dim indigo
-189          dark white       4       muted bronze       5       mirrored gold
-190         drab silver       1          dark gold       3         muted white
-191          dark green       3     posh turquoise      NA                &lt;NA&gt;
-192       striped white       1     vibrant maroon       1        shiny salmon
-193    striped lavender       1       light tomato       5          light lime
-194        mirrored tan       2       posh fuchsia      NA                &lt;NA&gt;
-195         pale salmon       4         shiny blue      NA                &lt;NA&gt;
-196          dark black       1       dotted coral       1       faded crimson
-197         vibrant red       1           dim gold       2         dull yellow
-198      pale turquoise       5         clear cyan      NA                &lt;NA&gt;
-199        bright olive       1    clear turquoise       4         bright teal
-200         shiny green       5           dim lime       3          wavy brown
-201      vibrant tomato       3       striped plum       2      vibrant maroon
-202      vibrant yellow       3         pale beige       4          dim orange
-203          muted aqua       3     vibrant purple      NA                &lt;NA&gt;
-204         dull orange       2       striped gray       3      vibrant bronze
-205           wavy cyan       2        drab maroon       4          shiny aqua
-206           faded tan       3    muted turquoise       2        plaid purple
-207        light maroon       5    wavy chartreuse       3     mirrored silver
-208      shiny lavender       1        dark silver       5          clear teal
-209     striped fuchsia       4         clear gold       3      bright magenta
-210        striped plum       4        bright lime       5        dotted black
-211          dotted red       4           dim gold       3          dim indigo
-212 mirrored chartreuse       5        posh tomato      NA                &lt;NA&gt;
-213           dim white       5       clear maroon      NA                &lt;NA&gt;
-214         muted black       2     posh turquoise       3      clear lavender
-215        muted silver       4      striped white       5       dotted tomato
-216         dotted lime       1         muted aqua       3        mirrored tan
-217    faded chartreuse       4     vibrant violet       5       faded magenta
-218     light turquoise       1      dotted purple      NA                &lt;NA&gt;
-219          plaid cyan       1     bright magenta       2     wavy chartreuse
-220         dull maroon       5          dim black      NA                &lt;NA&gt;
-221         wavy violet       1       faded yellow      NA                &lt;NA&gt;
-222        vibrant teal       5           dim lime       2        vibrant gold
-223        pale fuchsia       3      striped olive      NA                &lt;NA&gt;
-224         light brown       3   shiny chartreuse       2         wavy purple
-225          dull green       3     striped orange       2         posh indigo
-226           dark blue       5    striped magenta       3        striped gray
-227   mirrored lavender       3         posh black      NA                &lt;NA&gt;
-228         shiny brown       5     dotted magenta       4      dim chartreuse
-229         muted brown       3         dull black       3         pale maroon
-230        faded orange       1        dark orange      NA                &lt;NA&gt;
-231       muted fuchsia       3       plaid salmon      NA                &lt;NA&gt;
-232          clear plum       3          shiny red       4          dim silver
-233        bright coral       4        pale yellow       2       muted magenta
-234         muted coral       4      striped green      NA                &lt;NA&gt;
-235          drab olive       3       shiny salmon       4          clear cyan
-236          dim silver       2         shiny plum      NA                &lt;NA&gt;
-237           wavy plum       3   mirrored fuchsia       5         pale maroon
-238         plaid coral       1      mirrored gold      NA                &lt;NA&gt;
-239          posh beige       3    mirrored maroon       3     drab chartreuse
-240          drab green       1        bright teal       3    muted chartreuse
-241      bright crimson       3     striped orange       4           wavy plum
-242     posh chartreuse       5        clear white       3           light red
-243            dim gray       1   mirrored fuchsia       3          muted teal
-244       striped brown       2       muted orange      NA                &lt;NA&gt;
-245             dim tan       3         clear gold       5        clear salmon
-246     striped magenta       2       plaid indigo       5       drab lavender
-247       dotted violet       3        dull tomato      NA                &lt;NA&gt;
-248          dotted tan       1        dark orange       2           drab blue
-249         shiny beige       1          drab gold      NA                &lt;NA&gt;
-250          light plum       5       plaid tomato       5           wavy gray
-251        muted indigo       3         dim salmon      NA                &lt;NA&gt;
-252           clear red       3     mirrored beige      NA                &lt;NA&gt;
-253     mirrored silver       2          wavy plum       4     vibrant magenta
-254       dark lavender       2        wavy violet       5         muted green
-255          clear teal       4       wavy crimson      NA                &lt;NA&gt;
-256        light purple       5        faded black      NA                &lt;NA&gt;
-257        light salmon       3      vibrant beige       3       striped white
-258           dull gray       5       dim lavender      NA                &lt;NA&gt;
-259           posh aqua       1        light olive       4     mirrored purple
-260     pale chartreuse       5       faded indigo      NA                &lt;NA&gt;
-261        striped cyan       1        shiny olive       3       bright tomato
-262         clear coral       5       clear violet       1        plaid tomato
-263         bright cyan       3    mirrored violet       5       plaid magenta
-264         posh tomato       3         shiny aqua       1          pale beige
-265     bright lavender       4        clear beige       2      faded lavender
-266         dotted teal       5       plaid salmon       1      posh turquoise
-267        clear tomato       5      bright indigo      NA                &lt;NA&gt;
-268       dotted silver       2    mirrored indigo      NA                &lt;NA&gt;
-269          plaid plum       4      light crimson      NA                &lt;NA&gt;
-270        wavy magenta       2        posh indigo       2      vibrant indigo
-271         dull tomato       4          dull lime       4         faded brown
-272       vibrant black       5      light crimson       5       pale lavender
-273         pale bronze       3     vibrant violet      NA                &lt;NA&gt;
-274           wavy lime       5       shiny yellow       2          pale white
-275        striped gray       3       shiny tomato       3          dull coral
-276       faded crimson       4         pale white       3        muted bronze
-277         wavy orange       2       shiny indigo      NA                &lt;NA&gt;
-278        dotted white       1        striped tan       4       bright silver
-279         posh bronze       4       muted silver       1      light lavender
-280      dotted magenta       5      clear fuchsia       4        faded indigo
-281           dull cyan       3         clear teal       3           dim white
-282          clear gold       4           dim gold       3           dull lime
-283        bright beige       3          dull cyan       4       bright indigo
-284        clear orange       5       shiny salmon      NA                &lt;NA&gt;
-285        plaid silver       5      dotted purple       1          dim maroon
-286         shiny white       1        light brown       1       mirrored lime
-287           dark gray       5         shiny cyan       2         drab tomato
-288          drab white       4       shiny tomato       3          shiny gold
-289        vibrant cyan       2        wavy purple       4          light gold
-290        shiny yellow       4         shiny aqua       2          dim salmon
-291          posh coral       2       striped gray       4         dark orange
-292        clear salmon       4        posh yellow       2         pale violet
-293          posh olive       2       mirrored red       3          faded gold
-294       faded fuchsia       5        bright gold       3         pale tomato
-295      striped maroon       4        posh maroon       4          dim indigo
-296         dark violet       5       plaid tomato       3         bright lime
-297          dim maroon       1         dark beige       4           wavy gray
-298        wavy crimson       1          light tan       5          dark beige
-299       plaid magenta       1    shiny turquoise       1           dark lime
-300        clear indigo       4       muted maroon      NA                &lt;NA&gt;
-301         clear olive       5      mirrored teal       1          plaid lime
-302      mirrored white       3          pale gold      NA                &lt;NA&gt;
-303           wavy blue       1        dotted aqua       5          dark green
-304          faded cyan       4          wavy gray       5      vibrant bronze
-305          faded gray       2         drab brown       4        dotted coral
-306           dim coral       5        shiny olive       3          light plum
-307     vibrant fuchsia       5   shiny chartreuse       5         wavy bronze
-308       dotted tomato       5       faded indigo       3      vibrant maroon
-309        faded salmon       3        dull silver       2         wavy bronze
-310      vibrant orange       1       dotted beige      NA                &lt;NA&gt;
-311        muted violet       5          posh lime      NA                &lt;NA&gt;
-312         striped tan       3         muted lime      NA                &lt;NA&gt;
-313         drab violet       3 vibrant chartreuse       5      posh turquoise
-314       bright purple       2     vibrant bronze       3          wavy beige
-315      vibrant maroon       0        other bags.      NA                &lt;NA&gt;
-316          muted teal       2   bright turquoise      NA                &lt;NA&gt;
-317         bright plum       5          dark gold       2     shiny turquoise
-318       shiny crimson       3       wavy magenta      NA                &lt;NA&gt;
-319           wavy teal       5       faded indigo       4         dotted gray
-320          shiny blue       2       shiny salmon       4           light tan
-321     mirrored maroon       1       drab fuchsia       3        dotted green
-322        clear maroon       2        vibrant red       5       bright maroon
-323       bright salmon       1         dotted red       4       vibrant beige
-324           pale gold       3        plaid olive      NA                &lt;NA&gt;
-325          faded lime       3       faded maroon       5       mirrored aqua
-326       faded magenta       4       plaid orange       5      vibrant violet
-327           wavy aqua       5        drab yellow       5         posh bronze
-328         faded brown       3     mirrored green       5          dim salmon
-329         dark purple       4         pale beige       3       drab lavender
-330           dull lime       0        other bags.      NA                &lt;NA&gt;
-331        light orange       1      vibrant white       1     striped magenta
-332       mirrored plum       1        clear green       4          faded blue
-333       vibrant brown       4       dark crimson       5          light plum
-334     shiny turquoise       1          dark lime      NA                &lt;NA&gt;
-335           dark plum       2         wavy coral       2        striped gray
-336           shiny red       1         plaid gray       4          wavy beige
-337         posh violet       5 striped chartreuse       2         pale maroon
-338        light silver       2       clear silver       1         dark indigo
-339        plaid orange       4           dim gold       2      bright magenta
-340      vibrant silver       5          posh plum       3        vibrant aqua
-341        faded tomato       1         pale coral       2           posh gold
-342        shiny silver       4       faded orange       1       striped white
-343        plaid purple       2         posh olive       3         pale maroon
-344        light tomato       2     vibrant indigo       4         dark orange
-345           dull aqua       5        bright lime      NA                &lt;NA&gt;
-346            drab red       5          posh teal      NA                &lt;NA&gt;
-347         dotted gray       2     vibrant salmon       4 mirrored chartreuse
-348         dull bronze       3     mirrored brown      NA                &lt;NA&gt;
-349          shiny aqua       0        other bags.      NA                &lt;NA&gt;
-350            dim gold       0        other bags.      NA                &lt;NA&gt;
-351           pale blue       4          posh gray      NA                &lt;NA&gt;
-352        faded purple       5         shiny blue       5        plaid salmon
-353        striped teal       4     mirrored green      NA                &lt;NA&gt;
-354        shiny orange       4     faded lavender       2        muted salmon
-355         wavy yellow       5       clear silver       2         shiny brown
-356   vibrant turquoise       1    vibrant magenta       4        dull fuchsia
-357           dark teal       5         dim tomato      NA                &lt;NA&gt;
-358          posh brown       3        dark orange      NA                &lt;NA&gt;
-359        vibrant gray       2         dark beige       2           wavy teal
-360          drab black       1    mirrored maroon       3         pale silver
-361          light blue       2          dim olive       2     striped magenta
-362     muted turquoise       3           dim lime       3         shiny coral
-363           faded red       5         clear gray      NA                &lt;NA&gt;
-364   bright chartreuse       4         plaid teal       5         drab salmon
-365       light magenta       5         light aqua       4       light crimson
-366       striped coral       3     mirrored white      NA                &lt;NA&gt;
-367        shiny maroon       1        vibrant red       3          bright red
-368      striped yellow       1      bright orange       2          faded plum
-369          dull olive       2       posh fuchsia       2          dull coral
-370       dotted yellow       1        drab salmon       3        pale fuchsia
-371        light bronze       3          drab cyan       5     mirrored orange
-372    shiny chartreuse       1          wavy cyan       4        shiny tomato
-373         dull yellow       0        other bags.      NA                &lt;NA&gt;
-374          faded plum       5       vibrant blue       5        clear indigo
-375         wavy salmon       4       striped teal       3            wavy tan
-376         posh salmon       4    dull chartreuse       4        shiny yellow
-377          dull white       2          dim olive       4      vibrant bronze
-378          shiny gold       5      bright maroon       5          shiny aqua
-379           posh plum       4        posh purple       2          wavy beige
-380       shiny magenta       4          shiny tan       2          dull green
-381          wavy olive       4      vibrant olive       2       clear fuchsia
-382          muted lime       4         posh white       4        shiny tomato
-383        light indigo       2    clear turquoise       3       vibrant black
-384        muted yellow       3    mirrored tomato      NA                &lt;NA&gt;
-385         faded beige       5          clear red       3          dull brown
-386   striped turquoise       2        bright aqua       5            dim cyan
-387          pale beige       0        other bags.      NA                &lt;NA&gt;
-388         dull silver       3        bright lime       2         pale tomato
-389          clear cyan       1       vibrant blue       2          faded cyan
-390          posh green       2       vibrant gray       1        pale magenta
-391         muted beige       2          drab blue       3     vibrant magenta
-392       bright silver       4         dull brown       4      vibrant violet
-393     mirrored bronze       2      bright indigo       3         shiny coral
-394            dull red       4          dull plum       1       striped black
-395      dim chartreuse       3        drab maroon      NA                &lt;NA&gt;
-396        drab crimson       5     dull turquoise       3           posh gold
-397          wavy brown       1        muted white      NA                &lt;NA&gt;
-398        plaid violet       2       faded tomato      NA                &lt;NA&gt;
-399        muted salmon       1         light cyan       1        vibrant blue
-400     mirrored salmon       1       dotted green       2        plaid salmon
-401           posh lime       1       vibrant blue      NA                &lt;NA&gt;
-402           shiny tan       2         bright red       1          dim maroon
-403        vibrant aqua       5       shiny orange       2          dull coral
-404        posh magenta       5         dim maroon       2         wavy indigo
-405            posh red       4         dull black       2        shiny tomato
-406     mirrored indigo       4      faded magenta       1           light red
-407         drab indigo       4           dull tan       2          dark coral
-408    vibrant lavender       5     posh turquoise       4         posh bronze
-409       mirrored blue       1     striped bronze       4        plaid salmon
-410          plaid blue       4      bright violet       5           clear red
-411            dark tan       3   faded chartreuse       1           posh gold
-412         bright teal       3        pale yellow       1       vibrant white
-413           dark gold       1     mirrored green      NA                &lt;NA&gt;
-414         plaid beige       5           dim cyan      NA                &lt;NA&gt;
-415           pale plum       4      striped olive       1     mirrored violet
-416         drab orange       1         plaid cyan       2       vibrant green
-417          faded teal       4       muted salmon       1          dim tomato
-418           posh cyan       3         shiny gray       2         posh indigo
-419           plaid tan       4       plaid silver       2          dark beige
-420         muted olive       5     vibrant salmon       2         dull orange
-421           muted tan       5          wavy gold       2      striped orange
-422            posh tan       3     shiny lavender       5         vibrant red
-423       bright tomato       3          dull lime       3           wavy gray
-424      dark turquoise       3      vibrant coral       4          wavy beige
-425        faded indigo       4          wavy gray      NA                &lt;NA&gt;
-426          clear blue       2        pale yellow      NA                &lt;NA&gt;
-427          light gold       5        light olive       4         clear white
-428      light lavender       2       dotted black       4        plaid tomato
-429         faded coral       5          pale gold       4          dull black
-430      vibrant salmon       2         faded teal       4       drab lavender
-431        muted orange       1        posh salmon       2          light cyan
-432         clear black       3        wavy bronze       4           wavy lime
-433         pale violet       1       faded violet       3     pale chartreuse
-434         dotted plum       2   muted chartreuse       3   vibrant turquoise
-435        plaid maroon       1         posh coral       1        dull fuchsia
-436        dotted brown       1          posh lime       5      dull turquoise
-437          pale green       3       drab magenta       4          dim salmon
-438         dark tomato       2       clear indigo       1          light plum
-439      striped silver       5           dark red       4        faded purple
-440       shiny fuchsia       2          dark gold       3         dull tomato
-441       mirrored aqua       5        dark bronze      NA                &lt;NA&gt;
-442           dim beige       5         dull white      NA                &lt;NA&gt;
-443     dark chartreuse       4      light crimson       3          dim salmon
-444    plaid chartreuse       4          drab blue      NA                &lt;NA&gt;
-445           dim green       4       muted bronze       1        shiny indigo
-446    mirrored crimson       5       wavy fuchsia       2     vibrant magenta
-447        clear yellow       3       plaid bronze       1           light tan
-448    bright turquoise       3       shiny salmon      NA                &lt;NA&gt;
-449          drab brown       1    vibrant fuchsia      NA                &lt;NA&gt;
-450          dim bronze       2           dim aqua       4           dim beige
-451           dim black       1        posh purple       4     mirrored bronze
-452          plaid gold       4        posh silver       5     light turquoise
-453           drab lime       1         muted gold       4          dotted red
-454          bright red       1        dull yellow       4       mirrored gold
-455       vibrant white       2          dull lime       2        faded indigo
-456        drab fuchsia       3         pale beige       3         dark orange
-457      striped tomato       1          dark lime       5          dull coral
-458         faded green       2          wavy blue      NA                &lt;NA&gt;
-459       vibrant olive       3      bright tomato       4          wavy beige
-460          dark coral       5         faded teal       1     mirrored tomato
-461       bright violet       4          dark lime      NA                &lt;NA&gt;
-462            wavy tan       4          light tan       3         vibrant red
-463        dotted beige       5       striped gray       4           posh plum
-464    dotted turquoise       3     mirrored green       4           posh gold
-465       striped beige       1         clear gold       1       vibrant white
-466         posh silver       2       vibrant gold       2     mirrored violet
-467     mirrored purple       2         dim yellow       2         dull tomato
-468          shiny lime       4        clear olive       4     mirrored silver
-469          muted cyan       1         posh coral       5           drab blue
-470          light aqua       1        dark orange      NA                &lt;NA&gt;
-471          shiny cyan       2        dark maroon       5        shiny salmon
-472          posh white       1       posh fuchsia      NA                &lt;NA&gt;
-473        vibrant plum       4      light crimson      NA                &lt;NA&gt;
-474         dotted blue       1          shiny tan       3          light plum
-475         posh maroon       5    mirrored violet      NA                &lt;NA&gt;
-476         dull violet       1         faded teal       2           wavy cyan
-477           posh gold       4       muted salmon       4           dull plum
-478          dim orange       2         dull coral      NA                &lt;NA&gt;
-479            dim aqua       1        drab maroon      NA                &lt;NA&gt;
-480      striped salmon       4        muted white      NA                &lt;NA&gt;
-481           dark cyan       3       plaid maroon      NA                &lt;NA&gt;
-482            wavy red       2        wavy maroon       2  vibrant chartreuse
-483        light yellow       4          posh lime       1         light white
-484        striped blue       5      plaid magenta       5        vibrant gold
-485          dark olive       4         dim maroon       2           shiny tan
-486        vibrant gold       1         dull beige       4      posh turquoise
-487         muted white       1         dim indigo       5           dull lime
-488        light violet       5        wavy bronze      NA                &lt;NA&gt;
-489          pale olive       1           dim gold       2         shiny coral
-490          light gray       3        bright gold      NA                &lt;NA&gt;
-491          dim indigo       3        posh tomato       5         pale tomato
-492         pale indigo       4        pale bronze       5    light chartreuse
-493           muted red       3        clear white       4       dull lavender
-494         plaid olive       3        dark orange       3            dim gold
-495       dotted maroon       3       faded purple       5         light green
-496       bright orange       1        shiny black       2        dim lavender
-497     wavy chartreuse       3         clear lime       4         pale maroon
-498  mirrored turquoise       2    striped crimson       4      vibrant bronze
-499         dull purple       4       posh crimson      NA                &lt;NA&gt;
-500        faded bronze       1      clear fuchsia       2       light fuchsia
-501        clear bronze       3    pale chartreuse       5            dull tan
-502     vibrant magenta       4      shiny fuchsia       2         shiny coral
-503  striped chartreuse       2       shiny orange       3     mirrored tomato
-504        dotted green       1         pale beige       2     mirrored bronze
-505          wavy white       3       posh magenta       3        muted yellow
-506          muted plum       4          wavy gold      NA                &lt;NA&gt;
-507        faded violet       3        dark violet      NA                &lt;NA&gt;
-508        dull fuchsia       4       plaid indigo       1      mirrored brown
-509        bright green       3     mirrored white       5       dotted silver
-510        shiny violet       4     striped salmon      NA                &lt;NA&gt;
-511         dim fuchsia       3        striped red      NA                &lt;NA&gt;
-512      faded lavender       3           wavy tan       2          clear lime
-513            dim cyan       4         drab white      NA                &lt;NA&gt;
-514          dark brown       5         clear gold       3        vibrant blue
-515      clear lavender       5  striped turquoise       1       light crimson
-516         light green       3     striped silver       4       bright silver
-517       pale lavender       5       clear violet      NA                &lt;NA&gt;
-518       dotted orange       3      dotted tomato       2           dull plum
-519        bright black       3    posh chartreuse       5         wavy indigo
-520         dotted gold       5      striped white       2       striped brown
-521         plaid brown       3 striped chartreuse       3       striped black
-522          wavy coral       3      dim turquoise       4            dim lime
-523          pale brown       4          dim white       5      bright fuchsia
-524       mirrored teal       4      pale lavender       5      vibrant maroon
-525         posh orange       5       posh magenta       4         posh violet
-526         dim crimson       3        drab violet       1         dotted aqua
-527          muted gray       4       vibrant lime       1         dark maroon
-528         clear brown       5       shiny tomato       4         striped tan
-529        posh crimson       3         dim yellow       4     shiny turquoise
-530         plaid black       2          shiny tan       1          pale olive
-531        dark crimson       3       drab fuchsia       5          faded gold
-532            pale tan       5         posh black      NA                &lt;NA&gt;
-533         wavy bronze       1         clear lime      NA                &lt;NA&gt;
-534           wavy gold       2      dull lavender       1    bright turquoise
-535           pale lime       2         faded cyan       4        muted salmon
-536        dark magenta       4   faded chartreuse       1         muted brown
-537      striped purple       3     mirrored olive      NA                &lt;NA&gt;
-538        dull crimson       2       clear orange      NA                &lt;NA&gt;
-539          dull beige       1     drab turquoise       1         dark indigo
-540         dotted aqua       4    dull chartreuse      NA                &lt;NA&gt;
-541        clear purple       2        muted beige       3          dull black
-542       light crimson       1        faded brown       1         vibrant red
-543       clear fuchsia       1        dark maroon       3        muted salmon
-544       muted crimson       5         light lime       4           posh plum
-545        muted purple       3          dull gray       5           posh gray
-546        shiny salmon       5        faded brown       4    clear chartreuse
-547      plaid lavender       1           dim lime      NA                &lt;NA&gt;
-548      vibrant indigo       5         dim tomato       2       striped beige
-549       mirrored cyan       3        plaid coral       5          faded teal
-550          dim yellow       5      light crimson       1         pale tomato
-551   dotted chartreuse       3         shiny blue      NA                &lt;NA&gt;
-552         light beige       3        bright teal       1         pale tomato
-553        dotted olive       3      bright indigo       4       muted fuchsia
-554          pale white       1     vibrant maroon       2         pale tomato
-555     mirrored yellow       2         drab brown       3      striped salmon
-556         light olive       2     bright magenta      NA                &lt;NA&gt;
-557        muted tomato       4     shiny lavender      NA                &lt;NA&gt;
-558    light chartreuse       5         light plum       4         light olive
-559         posh purple       2       wavy crimson      NA                &lt;NA&gt;
-560       bright maroon       4       faded indigo      NA                &lt;NA&gt;
-561           dull blue       3         dark brown       3          dim indigo
-562         light coral       5         clear teal      NA                &lt;NA&gt;
-563         bright gray       3        muted black       3        vibrant cyan
-564        posh fuchsia       3         clear gold       1          dim salmon
-565         light white       3           dim cyan       5       clear crimson
-566          light teal       3      shiny fuchsia       2         muted white
-567        plaid salmon       2       dotted black       2          dark beige
-568          wavy black       5         posh olive      NA                &lt;NA&gt;
-569           drab gray       3    mirrored tomato       3       light crimson
-570           dim olive       5   clear chartreuse      NA                &lt;NA&gt;
-571        bright white       2       mirrored tan       1          pale green
-572       striped olive       3         muted gold      NA                &lt;NA&gt;
-573         faded olive       1       muted indigo      NA                &lt;NA&gt;
-574         pale yellow       5        light olive       5          plaid aqua
-575          dull coral       4      light crimson       5          shiny aqua
-576       vibrant beige       4      striped olive       5          clear gold
-577        dark fuchsia       1          pale teal       4           dull gray
-578         drab tomato       4     mirrored white      NA                &lt;NA&gt;
-579       clear crimson       4        pale tomato       3           wavy gray
-580      dotted crimson       1      plaid crimson       1        dark crimson
-581       striped black       4       muted maroon      NA                &lt;NA&gt;
-582        shiny bronze       1         dotted tan       1       vibrant beige
-583          light cyan       0        other bags.      NA                &lt;NA&gt;
-584          posh black       2          dim green      NA                &lt;NA&gt;
-585        striped gold       3           drab tan      NA                &lt;NA&gt;
-586         faded white       4         pale coral      NA                &lt;NA&gt;
-587            drab tan       4         clear gold       5         drab silver
-588           light tan       2          dull lime       1        muted salmon
-589        plaid indigo       3       plaid salmon       1      vibrant maroon
-590          faded gold       3         dark coral      NA                &lt;NA&gt;
-591         dark salmon       5        bright gold       1          pale white
-592        plaid bronze       3          drab gold       4        dotted black
-593         shiny black       3     bright magenta       2         dark indigo
-594        pale magenta       1         clear gold       5        posh fuchsia
-    child3N             child3C child4N             child4C
-1         2       vibrant brown      NA                &lt;NA&gt;
-2        NA                &lt;NA&gt;      NA                &lt;NA&gt;
-3         4       drab lavender       2        bright coral
-4        NA                &lt;NA&gt;      NA                &lt;NA&gt;
-5        NA                &lt;NA&gt;      NA                &lt;NA&gt;
-6        NA                &lt;NA&gt;      NA                &lt;NA&gt;
-7        NA                &lt;NA&gt;      NA                &lt;NA&gt;
-8         4        faded bronze      NA                &lt;NA&gt;
-9         5          muted lime      NA                &lt;NA&gt;
-10       NA                &lt;NA&gt;      NA                &lt;NA&gt;
-11        3      striped silver      NA                &lt;NA&gt;
-12        3           dim brown       5        clear indigo
-13       NA                &lt;NA&gt;      NA                &lt;NA&gt;
-14       NA                &lt;NA&gt;      NA                &lt;NA&gt;
-15       NA                &lt;NA&gt;      NA                &lt;NA&gt;
-16        1       dotted orange       3        muted indigo
-17       NA                &lt;NA&gt;      NA                &lt;NA&gt;
-18       NA                &lt;NA&gt;      NA                &lt;NA&gt;
-19       NA                &lt;NA&gt;      NA                &lt;NA&gt;
-20        5       vibrant coral      NA                &lt;NA&gt;
-21        4           dull lime      NA                &lt;NA&gt;
-22       NA                &lt;NA&gt;      NA                &lt;NA&gt;
-23        2      bright magenta       5        muted salmon
-24       NA                &lt;NA&gt;      NA                &lt;NA&gt;
-25       NA                &lt;NA&gt;      NA                &lt;NA&gt;
-26       NA                &lt;NA&gt;      NA                &lt;NA&gt;
-27       NA                &lt;NA&gt;      NA                &lt;NA&gt;
-28        5         dark orange       2            dim gold
-29       NA                &lt;NA&gt;      NA                &lt;NA&gt;
-30       NA                &lt;NA&gt;      NA                &lt;NA&gt;
-31        5          posh white       1           wavy gray
-32       NA                &lt;NA&gt;      NA                &lt;NA&gt;
-33       NA                &lt;NA&gt;      NA                &lt;NA&gt;
-34       NA                &lt;NA&gt;      NA                &lt;NA&gt;
-35        3 mirrored chartreuse      NA                &lt;NA&gt;
-36       NA                &lt;NA&gt;      NA                &lt;NA&gt;
-37        1         dull tomato      NA                &lt;NA&gt;
-38        4        clear indigo      NA                &lt;NA&gt;
-39       NA                &lt;NA&gt;      NA                &lt;NA&gt;
-40       NA                &lt;NA&gt;      NA                &lt;NA&gt;
-41       NA                &lt;NA&gt;      NA                &lt;NA&gt;
-42        2          dull coral       4           dim white
-43       NA                &lt;NA&gt;      NA                &lt;NA&gt;
-44        1     mirrored indigo       1          shiny cyan
-45       NA                &lt;NA&gt;      NA                &lt;NA&gt;
-46       NA                &lt;NA&gt;      NA                &lt;NA&gt;
-47       NA                &lt;NA&gt;      NA                &lt;NA&gt;
-48        3            pale red       2           dark gold
-49       NA                &lt;NA&gt;      NA                &lt;NA&gt;
-50        1      vibrant bronze      NA                &lt;NA&gt;
-51        2        plaid salmon       3         bright lime
-52        5           wavy lime       3         shiny coral
-53        4         dull yellow       5    clear chartreuse
-54        3      bright magenta       3          dim indigo
-55       NA                &lt;NA&gt;      NA                &lt;NA&gt;
-56        5          dull white       3         clear white
-57       NA                &lt;NA&gt;      NA                &lt;NA&gt;
-58       NA                &lt;NA&gt;      NA                &lt;NA&gt;
-59       NA                &lt;NA&gt;      NA                &lt;NA&gt;
-60       NA                &lt;NA&gt;      NA                &lt;NA&gt;
-61        2      vibrant maroon       4          clear lime
-62        3           drab gray      NA                &lt;NA&gt;
-63       NA                &lt;NA&gt;      NA                &lt;NA&gt;
-64       NA                &lt;NA&gt;      NA                &lt;NA&gt;
-65        3        plaid yellow      NA                &lt;NA&gt;
-66        3      striped bronze       2           dim beige
-67        4         dull silver       1          muted blue
-68        4         shiny black      NA                &lt;NA&gt;
-69       NA                &lt;NA&gt;      NA                &lt;NA&gt;
-70       NA                &lt;NA&gt;      NA                &lt;NA&gt;
-71        1          dim indigo      NA                &lt;NA&gt;
-72        4          faded aqua      NA                &lt;NA&gt;
-73        4          shiny aqua       4          dim tomato
-74       NA                &lt;NA&gt;      NA                &lt;NA&gt;
-75        1           drab gold      NA                &lt;NA&gt;
-76        1        muted orange       3       muted magenta
-77        2       dull lavender       1       bright purple
-78       NA                &lt;NA&gt;      NA                &lt;NA&gt;
-79       NA                &lt;NA&gt;      NA                &lt;NA&gt;
-80       NA                &lt;NA&gt;      NA                &lt;NA&gt;
-81       NA                &lt;NA&gt;      NA                &lt;NA&gt;
-82       NA                &lt;NA&gt;      NA                &lt;NA&gt;
-83       NA                &lt;NA&gt;      NA                &lt;NA&gt;
-84        1        striped aqua       1    shiny chartreuse
-85       NA                &lt;NA&gt;      NA                &lt;NA&gt;
-86       NA                &lt;NA&gt;      NA                &lt;NA&gt;
-87        2       striped brown      NA                &lt;NA&gt;
-88        3     dull chartreuse       1      vibrant maroon
-89        5     mirrored violet      NA                &lt;NA&gt;
-90       NA                &lt;NA&gt;      NA                &lt;NA&gt;
-91        4        plaid orange      NA                &lt;NA&gt;
-92        5     posh chartreuse       5        plaid indigo
-93       NA                &lt;NA&gt;      NA                &lt;NA&gt;
-94       NA                &lt;NA&gt;      NA                &lt;NA&gt;
-95       NA                &lt;NA&gt;      NA                &lt;NA&gt;
-96        3      mirrored brown       1        plaid yellow
-97        2         dull tomato       3          wavy green
-98        2     striped magenta      NA                &lt;NA&gt;
-99       NA                &lt;NA&gt;      NA                &lt;NA&gt;
-100       4      bright crimson      NA                &lt;NA&gt;
-101      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-102       4         bright lime      NA                &lt;NA&gt;
-103      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-104      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-105       3           dark teal       2          dim purple
-106       3        mirrored red      NA                &lt;NA&gt;
-107       4      vibrant bronze      NA                &lt;NA&gt;
-108       4      mirrored olive       3          dim maroon
-109       2        light orange      NA                &lt;NA&gt;
-110      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-111       5         drab maroon       2            dim gray
-112      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-113       3      vibrant purple       2          pale beige
-114      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-115      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-116       1       wavy lavender      NA                &lt;NA&gt;
-117      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-118      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-119      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-120       5         dotted gray       1         posh bronze
-121      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-122      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-123       4          shiny gold      NA                &lt;NA&gt;
-124      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-125      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-126      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-127       2            dull tan       5        shiny salmon
-128      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-129      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-130      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-131       5       dotted tomato      NA                &lt;NA&gt;
-132      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-133       2         drab maroon      NA                &lt;NA&gt;
-134      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-135       1           dull lime      NA                &lt;NA&gt;
-136       1           pale lime       2         dull violet
-137      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-138       2          posh white       3          dim purple
-139      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-140       2        muted purple      NA                &lt;NA&gt;
-141       3      mirrored green       5        muted salmon
-142       2          posh white      NA                &lt;NA&gt;
-143      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-144      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-145       1     mirrored purple      NA                &lt;NA&gt;
-146      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-147       1           dark lime       3       clear crimson
-148      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-149      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-150      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-151       4            dim blue      NA                &lt;NA&gt;
-152      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-153       1          shiny gold      NA                &lt;NA&gt;
-154      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-155      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-156      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-157       2          dull black       4       striped olive
-158      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-159       4         pale bronze       3           posh gold
-160       1          pale white       3     striped magenta
-161      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-162       2        wavy crimson       4        plaid silver
-163      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-164      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-165       1          posh beige      NA                &lt;NA&gt;
-166       5       dotted salmon       1        faded purple
-167      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-168      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-169       1       wavy lavender       2          dim salmon
-170       2   bright chartreuse       2         dark violet
-171      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-172       1        shiny orange      NA                &lt;NA&gt;
-173       3      striped bronze      NA                &lt;NA&gt;
-174      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-175       2       striped beige       4        plaid salmon
-176       3        wavy crimson      NA                &lt;NA&gt;
-177       5        shiny orange      NA                &lt;NA&gt;
-178      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-179      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-180      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-181      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-182      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-183       4          bright red       2           posh teal
-184       2          posh brown      NA                &lt;NA&gt;
-185      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-186      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-187       4          muted teal      NA                &lt;NA&gt;
-188       2           wavy gray      NA                &lt;NA&gt;
-189       3      plaid lavender      NA                &lt;NA&gt;
-190      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-191      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-192      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-193       1           posh gold      NA                &lt;NA&gt;
-194      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-195      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-196       4         drab violet       5    clear chartreuse
-197       1         faded brown       4          light cyan
-198      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-199       3      striped maroon       1        striped gold
-200       2       faded magenta       5         drab maroon
-201       4        muted silver       3  striped chartreuse
-202       4         dotted cyan      NA                &lt;NA&gt;
-203      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-204       2    bright turquoise      NA                &lt;NA&gt;
-205       5          clear lime      NA                &lt;NA&gt;
-206       3       clear crimson      NA                &lt;NA&gt;
-207       5          muted plum       2       mirrored blue
-208       5            dark red       4           faded red
-209       3         bright aqua      NA                &lt;NA&gt;
-210       5          drab beige      NA                &lt;NA&gt;
-211       4       striped olive       5           dim white
-212      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-213      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-214       2          shiny aqua       2            pale red
-215       4    mirrored fuchsia       2        clear maroon
-216      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-217       5            dim teal       2           dim green
-218      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-219       5      vibrant silver       3        pale crimson
-220      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-221      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-222       2           dim beige      NA                &lt;NA&gt;
-223      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-224      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-225       3          faded blue      NA                &lt;NA&gt;
-226       4          pale coral      NA                &lt;NA&gt;
-227      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-228       1           posh cyan      NA                &lt;NA&gt;
-229       5          posh brown       2        striped gray
-230      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-231      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-232      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-233       2   bright chartreuse       3         light olive
-234      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-235      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-236      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-237       5         posh salmon      NA                &lt;NA&gt;
-238      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-239       3         dark salmon       1         clear green
-240      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-241      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-242      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-243       4        clear maroon       5       striped white
-244      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-245       2     dark chartreuse      NA                &lt;NA&gt;
-246       2      dotted fuchsia       4          shiny aqua
-247      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-248      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-249      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-250       1         dull tomato      NA                &lt;NA&gt;
-251      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-252      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-253      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-254       2          dim purple      NA                &lt;NA&gt;
-255      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-256      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-257       5        pale magenta       5          muted blue
-258      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-259       4        vibrant gold       1          shiny aqua
-260      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-261       1         faded beige      NA                &lt;NA&gt;
-262      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-263       4      vibrant bronze      NA                &lt;NA&gt;
-264      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-265       3          faded aqua       5         pale purple
-266       2        muted silver      NA                &lt;NA&gt;
-267      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-268      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-269      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-270      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-271      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-272       3           dull blue       2          pale coral
-273      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-274       1          clear gold       5 mirrored chartreuse
-275       1          shiny aqua       2         dark orange
-276       2           posh blue       3        bright coral
-277      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-278       1       shiny fuchsia       3           posh gray
-279      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-280       3      dull turquoise       4        muted orange
-281       3         dull tomato       5      vibrant purple
-282       4         faded brown       4           wavy gray
-283       2           dull lime      NA                &lt;NA&gt;
-284      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-285       3          muted gold      NA                &lt;NA&gt;
-286      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-287      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-288       3           dull lime       3        plaid orange
-289       1         pale indigo       2     striped fuchsia
-290       3         posh tomato       5        muted salmon
-291       5        posh magenta      NA                &lt;NA&gt;
-292       3     mirrored violet      NA                &lt;NA&gt;
-293      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-294       2       dotted bronze       1      mirrored green
-295       5          shiny aqua       4           posh lime
-296       4      light lavender       4          dark brown
-297       5         shiny coral       1          pale white
-298      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-299       5          dim salmon      NA                &lt;NA&gt;
-300      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-301       3        dull magenta       5           wavy gray
-302      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-303      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-304       1      mirrored olive       3           drab blue
-305       5       dim turquoise       1     mirrored maroon
-306      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-307       2          bright red      NA                &lt;NA&gt;
-308       4         shiny coral      NA                &lt;NA&gt;
-309       2           drab teal      NA                &lt;NA&gt;
-310      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-311      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-312      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-313       1         bright cyan      NA                &lt;NA&gt;
-314       2        plaid bronze      NA                &lt;NA&gt;
-315      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-316      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-317       1         dull yellow      NA                &lt;NA&gt;
-318      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-319       3     pale chartreuse       3       vibrant coral
-320       1          dim salmon      NA                &lt;NA&gt;
-321       3         muted white      NA                &lt;NA&gt;
-322       4         light olive      NA                &lt;NA&gt;
-323       3         dark maroon       3      clear lavender
-324      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-325      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-326       1        dotted green       3        wavy crimson
-327      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-328       4        vibrant blue       1           wavy gray
-329      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-330      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-331      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-332      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-333      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-334      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-335       4          muted blue       2           dull aqua
-336       5            dark red      NA                &lt;NA&gt;
-337       1           dull lime      NA                &lt;NA&gt;
-338       2          dim salmon       2         drab salmon
-339       4       drab lavender      NA                &lt;NA&gt;
-340       2      light lavender      NA                &lt;NA&gt;
-341      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-342       2     faded turquoise       5        striped gray
-343       3           pale gold       1         faded white
-344       5        muted bronze       4        plaid tomato
-345      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-346      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-347       1       dotted tomato       4        posh magenta
-348      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-349      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-350      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-351      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-352       4         pale tomato       2           dark gold
-353      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-354       2          dim indigo      NA                &lt;NA&gt;
-355      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-356       5      mirrored green      NA                &lt;NA&gt;
-357      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-358      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-359       3        light purple      NA                &lt;NA&gt;
-360       3          dark brown       1          shiny gray
-361      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-362      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-363      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-364       5           wavy cyan      NA                &lt;NA&gt;
-365       3         dark yellow       1        light tomato
-366      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-367      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-368       3         light olive       3          shiny aqua
-369       2           faded red      NA                &lt;NA&gt;
-370      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-371       4       plaid crimson      NA                &lt;NA&gt;
-372      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-373      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-374       5           posh teal       4           posh plum
-375       1         clear white      NA                &lt;NA&gt;
-376       2        dotted black       3          clear lime
-377       4          faded cyan      NA                &lt;NA&gt;
-378       2          clear lime       2         muted white
-379       5          plaid plum      NA                &lt;NA&gt;
-380       3     mirrored purple      NA                &lt;NA&gt;
-381       1          light plum       2         dark violet
-382      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-383       3        striped lime      NA                &lt;NA&gt;
-384      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-385       4            dark red       1     vibrant magenta
-386       1       pale lavender      NA                &lt;NA&gt;
-387      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-388       3      mirrored green      NA                &lt;NA&gt;
-389       1         faded brown      NA                &lt;NA&gt;
-390      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-391       5         pale tomato      NA                &lt;NA&gt;
-392       4          dim violet      NA                &lt;NA&gt;
-393      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-394       1            dim teal       4           dim white
-395      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-396       4         bright gold       2        muted indigo
-397      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-398      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-399      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-400      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-401      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-402       3      vibrant salmon      NA                &lt;NA&gt;
-403       4      vibrant bronze       5         dark indigo
-404      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-405       4         faded beige      NA                &lt;NA&gt;
-406       3          muted gray       2      plaid lavender
-407      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-408       5        light tomato      NA                &lt;NA&gt;
-409       3           posh lime       4      mirrored green
-410      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-411       5    light chartreuse      NA                &lt;NA&gt;
-412       3        shiny salmon       1        plaid indigo
-413      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-414      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-415      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-416       4     striped crimson       2           posh teal
-417       5         clear white      NA                &lt;NA&gt;
-418      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-419       3        plaid salmon       5         light beige
-420      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-421       4      plaid lavender      NA                &lt;NA&gt;
-422       4        light bronze      NA                &lt;NA&gt;
-423      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-424      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-425      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-426      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-427       3        plaid silver       2       bright maroon
-428       4         dark orange       5          shiny blue
-429      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-430       5          clear teal       1           dim olive
-431       5        shiny tomato       4           dim olive
-432       4         shiny black      NA                &lt;NA&gt;
-433       5           drab blue      NA                &lt;NA&gt;
-434       5          posh brown      NA                &lt;NA&gt;
-435      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-436      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-437       1  vibrant chartreuse      NA                &lt;NA&gt;
-438       2      dull turquoise      NA                &lt;NA&gt;
-439      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-440      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-441      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-442      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-443       2         dark orange      NA                &lt;NA&gt;
-444      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-445      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-446      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-447      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-448      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-449      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-450      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-451       5           posh plum      NA                &lt;NA&gt;
-452       3       vibrant black      NA                &lt;NA&gt;
-453      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-454      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-455       1         faded brown       1        muted salmon
-456      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-457      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-458      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-459      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-460       3         dark orange       5          plaid lime
-461      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-462       2      mirrored olive      NA                &lt;NA&gt;
-463       1    bright turquoise       4     striped fuchsia
-464       5           drab plum      NA                &lt;NA&gt;
-465       3          faded cyan       2          shiny gold
-466      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-467      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-468       1        muted tomato      NA                &lt;NA&gt;
-469       4       wavy lavender      NA                &lt;NA&gt;
-470      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-471       5        muted salmon       2         wavy bronze
-472      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-473      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-474       5         dotted gray      NA                &lt;NA&gt;
-475      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-476       3         dull silver       3         vibrant red
-477       3        muted bronze      NA                &lt;NA&gt;
-478      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-479      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-480      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-481      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-482       5         wavy salmon      NA                &lt;NA&gt;
-483      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-484      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-485       5          wavy green      NA                &lt;NA&gt;
-486      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-487       5          shiny aqua      NA                &lt;NA&gt;
-488      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-489      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-490      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-491       4          shiny aqua      NA                &lt;NA&gt;
-492      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-493       5        muted purple      NA                &lt;NA&gt;
-494      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-495      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-496       1         shiny olive      NA                &lt;NA&gt;
-497      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-498       5     dotted lavender       2        clear silver
-499      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-500       2     pale chartreuse      NA                &lt;NA&gt;
-501       1         vibrant tan      NA                &lt;NA&gt;
-502       3        faded indigo       4         pale tomato
-503       1          clear lime      NA                &lt;NA&gt;
-504       2        wavy crimson      NA                &lt;NA&gt;
-505       3        wavy crimson       4       vibrant olive
-506      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-507      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-508       5          clear lime      NA                &lt;NA&gt;
-509      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-510      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-511      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-512      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-513      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-514      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-515       5           light tan       2          muted gold
-516       2       light crimson      NA                &lt;NA&gt;
-517      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-518       5         posh purple       2      drab turquoise
-519       5        dull crimson       2     clear turquoise
-520       3      mirrored green       3         dark violet
-521       2   bright chartreuse      NA                &lt;NA&gt;
-522      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-523       2        clear orange      NA                &lt;NA&gt;
-524       4        striped gray       4      vibrant indigo
-525       2       plaid magenta       4          muted cyan
-526      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-527       2          clear gold       3          plaid gray
-528       5    vibrant lavender       1          pale white
-529       2      vibrant purple       4       mirrored aqua
-530       2            wavy tan       1           clear red
-531      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-532      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-533      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-534       4       striped brown       5      drab turquoise
-535       4         shiny coral       3      mirrored green
-536       4      vibrant salmon       2          dim indigo
-537      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-538      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-539       1          dull white      NA                &lt;NA&gt;
-540      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-541      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-542       4       wavy lavender       1           wavy gray
-543      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-544       5       clear fuchsia       1      wavy turquoise
-545      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-546      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-547      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-548       2      mirrored olive      NA                &lt;NA&gt;
-549       5         pale indigo       3      bright fuchsia
-550      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-551      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-552       2          light blue      NA                &lt;NA&gt;
-553      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-554       2      bright magenta      NA                &lt;NA&gt;
-555       4         clear olive       1        dotted black
-556      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-557      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-558       3         dark indigo      NA                &lt;NA&gt;
-559      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-560      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-561       5         pale silver       1      mirrored brown
-562      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-563      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-564       2        shiny salmon      NA                &lt;NA&gt;
-565       3        dull fuchsia      NA                &lt;NA&gt;
-566       3         shiny black      NA                &lt;NA&gt;
-567       1         shiny coral      NA                &lt;NA&gt;
-568      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-569      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-570      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-571       5        dull magenta       5          plaid lime
-572      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-573      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-574       1         clear white       5        faded purple
-575       5           wavy cyan       3          dark beige
-576      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-577      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-578      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-579       4           drab blue       1      mirrored olive
-580       1       striped beige       4        pale fuchsia
-581      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-582       5        faded tomato      NA                &lt;NA&gt;
-583      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-584      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-585      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-586      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-587      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-588       4          pale beige      NA                &lt;NA&gt;
-589      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-590      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-591      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-592      NA                &lt;NA&gt;      NA                &lt;NA&gt;
-593       1           posh plum       5           drab gold
-594       2          faded cyan      NA                &lt;NA&gt;</code></pre>
-</div>
+<div class="cell" data-hash="2020-07_cache/html/unnamed-chunk-1_01f96be6784bc7c85e99b21cd8d89679">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-2"><a href="#cb1-2"></a></span>
+<span id="cb1-3"><a href="#cb1-3"></a>df <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"input.csv"</span>)</span>
+<span id="cb1-4"><a href="#cb1-4"></a></span>
+<span id="cb1-5"><a href="#cb1-5"></a>df<span class="sc">$</span>child2C[<span class="fu">as.character</span>(df<span class="sc">$</span>child2C) <span class="sc">==</span> <span class="st">" "</span>] <span class="ot">&lt;-</span> <span class="cn">NA</span></span>
+<span id="cb1-6"><a href="#cb1-6"></a>df<span class="sc">$</span>child3C[<span class="fu">as.character</span>(df<span class="sc">$</span>child3C) <span class="sc">==</span> <span class="st">" "</span>] <span class="ot">&lt;-</span> <span class="cn">NA</span></span>
+<span id="cb1-7"><a href="#cb1-7"></a>df<span class="sc">$</span>child4C[<span class="fu">as.character</span>(df<span class="sc">$</span>child4C) <span class="sc">==</span> <span class="st">" "</span>] <span class="ot">&lt;-</span> <span class="cn">NA</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <section id="part-1" class="level2">
 <h2 class="anchored" data-anchor-id="part-1">Part 1</h2>
 <div class="cell" data-hash="2020-07_cache/html/unnamed-chunk-2_ee63dd4e9f165415f0661b8443251572">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>longerDF <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">parent =</span> <span class="st">""</span>, <span class="at">nChild =</span> <span class="dv">0</span>, <span class="at">cChild =</span> <span class="st">""</span>)</span>
-<span id="cb5-2"><a href="#cb5-2"></a></span>
-<span id="cb5-3"><a href="#cb5-3"></a><span class="cf">for</span>(col <span class="cf">in</span> <span class="fu">seq</span>(<span class="dv">3</span>, <span class="dv">9</span>, <span class="at">by =</span> <span class="dv">2</span>)) {</span>
-<span id="cb5-4"><a href="#cb5-4"></a>  <span class="cf">for</span>(r <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(df)) {</span>
-<span id="cb5-5"><a href="#cb5-5"></a>    <span class="cf">if</span>(<span class="sc">!</span><span class="fu">is.na</span>(df[r,col<span class="dv">-1</span>]))</span>
-<span id="cb5-6"><a href="#cb5-6"></a>      <span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>df[r,col<span class="dv">-1</span>]) {</span>
-<span id="cb5-7"><a href="#cb5-7"></a>        longerDF <span class="ot">&lt;-</span> <span class="fu">rbind</span>(longerDF, <span class="fu">data.frame</span>(<span class="at">parent =</span> df[r,<span class="dv">1</span>], </span>
-<span id="cb5-8"><a href="#cb5-8"></a>                                               <span class="at">nChild =</span> df[r,col<span class="dv">-1</span>], </span>
-<span id="cb5-9"><a href="#cb5-9"></a>                                               <span class="at">cChild =</span> df[r,col]))</span>
-<span id="cb5-10"><a href="#cb5-10"></a>    }</span>
-<span id="cb5-11"><a href="#cb5-11"></a>  }</span>
-<span id="cb5-12"><a href="#cb5-12"></a>}</span>
-<span id="cb5-13"><a href="#cb5-13"></a>longerDF <span class="ot">&lt;-</span> longerDF[<span class="sc">-</span><span class="dv">1</span>,]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a>longerDF <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">parent =</span> <span class="st">""</span>, <span class="at">nChild =</span> <span class="dv">0</span>, <span class="at">cChild =</span> <span class="st">""</span>)</span>
+<span id="cb2-2"><a href="#cb2-2"></a></span>
+<span id="cb2-3"><a href="#cb2-3"></a><span class="cf">for</span>(col <span class="cf">in</span> <span class="fu">seq</span>(<span class="dv">3</span>, <span class="dv">9</span>, <span class="at">by =</span> <span class="dv">2</span>)) {</span>
+<span id="cb2-4"><a href="#cb2-4"></a>  <span class="cf">for</span>(r <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(df)) {</span>
+<span id="cb2-5"><a href="#cb2-5"></a>    <span class="cf">if</span>(<span class="sc">!</span><span class="fu">is.na</span>(df[r,col<span class="dv">-1</span>]))</span>
+<span id="cb2-6"><a href="#cb2-6"></a>      <span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>df[r,col<span class="dv">-1</span>]) {</span>
+<span id="cb2-7"><a href="#cb2-7"></a>        longerDF <span class="ot">&lt;-</span> <span class="fu">rbind</span>(longerDF, <span class="fu">data.frame</span>(<span class="at">parent =</span> df[r,<span class="dv">1</span>], </span>
+<span id="cb2-8"><a href="#cb2-8"></a>                                               <span class="at">nChild =</span> df[r,col<span class="dv">-1</span>], </span>
+<span id="cb2-9"><a href="#cb2-9"></a>                                               <span class="at">cChild =</span> df[r,col]))</span>
+<span id="cb2-10"><a href="#cb2-10"></a>    }</span>
+<span id="cb2-11"><a href="#cb2-11"></a>  }</span>
+<span id="cb2-12"><a href="#cb2-12"></a>}</span>
+<span id="cb2-13"><a href="#cb2-13"></a>longerDF <span class="ot">&lt;-</span> longerDF[<span class="sc">-</span><span class="dv">1</span>,]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell" data-hash="2020-07_cache/html/unnamed-chunk-3_a0c452ef1385c8e0ee584e0ece0f1ad8">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a>shinygoldDF <span class="ot">&lt;-</span> </span>
-<span id="cb6-2"><a href="#cb6-2"></a>  longerDF[longerDF<span class="sc">$</span>cChild <span class="sc">==</span> <span class="st">"shiny gold"</span> <span class="sc">|</span> longerDF<span class="sc">$</span>parent <span class="sc">==</span> <span class="st">"shiny gold"</span>,]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>shinygoldDF <span class="ot">&lt;-</span> </span>
+<span id="cb3-2"><a href="#cb3-2"></a>  longerDF[longerDF<span class="sc">$</span>cChild <span class="sc">==</span> <span class="st">"shiny gold"</span> <span class="sc">|</span> longerDF<span class="sc">$</span>parent <span class="sc">==</span> <span class="st">"shiny gold"</span>,]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell" data-hash="2020-07_cache/html/unnamed-chunk-4_53afc43baf2343498501f52d203dc4ae">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a>level <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"shiny gold"</span>)</span>
-<span id="cb7-2"><a href="#cb7-2"></a>oldRows <span class="ot">&lt;-</span> <span class="dv">0</span></span>
-<span id="cb7-3"><a href="#cb7-3"></a></span>
-<span id="cb7-4"><a href="#cb7-4"></a><span class="cf">while</span>(oldRows <span class="sc">!=</span> <span class="fu">nrow</span>(shinygoldDF)) {</span>
-<span id="cb7-5"><a href="#cb7-5"></a>  oldRows <span class="ot">&lt;-</span> <span class="fu">nrow</span>(shinygoldDF)</span>
-<span id="cb7-6"><a href="#cb7-6"></a>  level <span class="ot">&lt;-</span> <span class="fu">unlist</span>(shinygoldDF<span class="sc">$</span>parent)</span>
-<span id="cb7-7"><a href="#cb7-7"></a>  shinygoldDF <span class="ot">&lt;-</span></span>
-<span id="cb7-8"><a href="#cb7-8"></a>    df[<span class="fu">as.character</span>(df<span class="sc">$</span>parent) <span class="sc">%in%</span> level <span class="sc">|</span></span>
-<span id="cb7-9"><a href="#cb7-9"></a>         <span class="fu">as.character</span>(df<span class="sc">$</span>child1C) <span class="sc">%in%</span> level <span class="sc">|</span></span>
-<span id="cb7-10"><a href="#cb7-10"></a>         <span class="fu">as.character</span>(df<span class="sc">$</span>child2C) <span class="sc">%in%</span> level <span class="sc">|</span></span>
-<span id="cb7-11"><a href="#cb7-11"></a>         <span class="fu">as.character</span>(df<span class="sc">$</span>child3C) <span class="sc">%in%</span> level <span class="sc">|</span></span>
-<span id="cb7-12"><a href="#cb7-12"></a>         <span class="fu">as.character</span>(df<span class="sc">$</span>child4C) <span class="sc">%in%</span> level, ]</span>
-<span id="cb7-13"><a href="#cb7-13"></a>}</span>
-<span id="cb7-14"><a href="#cb7-14"></a><span class="fu">nrow</span>(shinygoldDF) <span class="sc">-</span> <span class="dv">1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>level <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"shiny gold"</span>)</span>
+<span id="cb4-2"><a href="#cb4-2"></a>oldRows <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb4-3"><a href="#cb4-3"></a></span>
+<span id="cb4-4"><a href="#cb4-4"></a><span class="cf">while</span>(oldRows <span class="sc">!=</span> <span class="fu">nrow</span>(shinygoldDF)) {</span>
+<span id="cb4-5"><a href="#cb4-5"></a>  oldRows <span class="ot">&lt;-</span> <span class="fu">nrow</span>(shinygoldDF)</span>
+<span id="cb4-6"><a href="#cb4-6"></a>  level <span class="ot">&lt;-</span> <span class="fu">unlist</span>(shinygoldDF<span class="sc">$</span>parent)</span>
+<span id="cb4-7"><a href="#cb4-7"></a>  shinygoldDF <span class="ot">&lt;-</span></span>
+<span id="cb4-8"><a href="#cb4-8"></a>    df[<span class="fu">as.character</span>(df<span class="sc">$</span>parent) <span class="sc">%in%</span> level <span class="sc">|</span></span>
+<span id="cb4-9"><a href="#cb4-9"></a>         <span class="fu">as.character</span>(df<span class="sc">$</span>child1C) <span class="sc">%in%</span> level <span class="sc">|</span></span>
+<span id="cb4-10"><a href="#cb4-10"></a>         <span class="fu">as.character</span>(df<span class="sc">$</span>child2C) <span class="sc">%in%</span> level <span class="sc">|</span></span>
+<span id="cb4-11"><a href="#cb4-11"></a>         <span class="fu">as.character</span>(df<span class="sc">$</span>child3C) <span class="sc">%in%</span> level <span class="sc">|</span></span>
+<span id="cb4-12"><a href="#cb4-12"></a>         <span class="fu">as.character</span>(df<span class="sc">$</span>child4C) <span class="sc">%in%</span> level, ]</span>
+<span id="cb4-13"><a href="#cb4-13"></a>}</span>
+<span id="cb4-14"><a href="#cb4-14"></a><span class="fu">nrow</span>(shinygoldDF) <span class="sc">-</span> <span class="dv">1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 164</code></pre>
 </div>
@@ -1779,7 +616,7 @@ Danger
 </div>
 </div>
 <div class="cell" data-hash="2020-07_cache/html/unnamed-chunk-5_d047907d02d5271846eb5e404011a531">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="fu">library</span>(data.table)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="fu">library</span>(data.table)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>
 Attaching package: 'data.table'</code></pre>
@@ -1794,41 +631,41 @@ Attaching package: 'data.table'</code></pre>
 
     transpose</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a><span class="fu">library</span>(stringr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a><span class="fu">library</span>(stringr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell" data-hash="2020-07_cache/html/unnamed-chunk-6_83d178dd3171e184e862eb023bea77f8">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a>df <span class="ot">&lt;-</span> <span class="fu">readLines</span>(<span class="st">"input3.txt"</span>)</span>
-<span id="cb14-2"><a href="#cb14-2"></a>dt <span class="ot">&lt;-</span> <span class="fu">data.table</span>(<span class="st">"parent"</span> <span class="ot">=</span> <span class="st">""</span>, <span class="st">"child"</span> <span class="ot">=</span> <span class="st">""</span>)</span>
-<span id="cb14-3"><a href="#cb14-3"></a><span class="co"># str_split(df, " bags contain | bags, | bags\\.")</span></span>
-<span id="cb14-4"><a href="#cb14-4"></a><span class="fu">str_extract_all</span>(df, <span class="st">"(no other|</span><span class="sc">\\</span><span class="st">d) (</span><span class="sc">\\</span><span class="st">w* </span><span class="sc">\\</span><span class="st">w*)|(</span><span class="sc">\\</span><span class="st">w* </span><span class="sc">\\</span><span class="st">w*) bags"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb14-5"><a href="#cb14-5"></a>  <span class="fu">lapply</span>(<span class="cf">function</span>(x) {</span>
-<span id="cb14-6"><a href="#cb14-6"></a>    <span class="fu">c</span>(</span>
-<span id="cb14-7"><a href="#cb14-7"></a>      <span class="fu">str_replace_all</span>(x[<span class="dv">1</span>], <span class="st">" bags"</span>, <span class="st">""</span>),</span>
-<span id="cb14-8"><a href="#cb14-8"></a>      <span class="fu">sapply</span>(x[<span class="sc">-</span><span class="dv">1</span>], <span class="cf">function</span>(y) {</span>
-<span id="cb14-9"><a href="#cb14-9"></a>        <span class="fu">str_extract_all</span>(y, <span class="st">"(</span><span class="sc">\\</span><span class="st">d|no other)| (</span><span class="sc">\\</span><span class="st">w* </span><span class="sc">\\</span><span class="st">w*)"</span>)</span>
-<span id="cb14-10"><a href="#cb14-10"></a>      }) <span class="sc">|&gt;</span> <span class="fu">unlist</span>() <span class="sc">|&gt;</span> <span class="fu">unname</span>()</span>
-<span id="cb14-11"><a href="#cb14-11"></a>    )</span>
-<span id="cb14-12"><a href="#cb14-12"></a>  }) <span class="sc">|&gt;</span></span>
-<span id="cb14-13"><a href="#cb14-13"></a>  <span class="fu">lapply</span>(<span class="cf">function</span>(x) {</span>
-<span id="cb14-14"><a href="#cb14-14"></a>    <span class="fu">str_remove_all</span>(x, <span class="st">" "</span>)</span>
-<span id="cb14-15"><a href="#cb14-15"></a>  }) <span class="sc">|&gt;</span></span>
-<span id="cb14-16"><a href="#cb14-16"></a>  <span class="fu">lapply</span>(<span class="cf">function</span>(x) {</span>
-<span id="cb14-17"><a href="#cb14-17"></a>    len <span class="ot">&lt;-</span> (<span class="fu">length</span>(x) <span class="sc">-</span> <span class="dv">1</span>) <span class="sc">/</span> <span class="dv">2</span></span>
-<span id="cb14-18"><a href="#cb14-18"></a>    counts <span class="ot">&lt;-</span> x[<span class="dv">2</span><span class="sc">*</span>(<span class="dv">1</span><span class="sc">:</span>len)]</span>
-<span id="cb14-19"><a href="#cb14-19"></a>    counts <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(<span class="fu">ifelse</span>(counts <span class="sc">==</span> <span class="st">"no other"</span>, <span class="cn">NA</span>, counts))</span>
-<span id="cb14-20"><a href="#cb14-20"></a>    children <span class="ot">&lt;-</span> x[<span class="dv">2</span><span class="sc">*</span>(<span class="dv">1</span><span class="sc">:</span>len) <span class="sc">+</span> <span class="dv">1</span>]</span>
-<span id="cb14-21"><a href="#cb14-21"></a>    children <span class="ot">&lt;-</span> <span class="fu">sapply</span>(<span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(counts), <span class="cf">function</span>(y) {</span>
-<span id="cb14-22"><a href="#cb14-22"></a>      <span class="cf">if</span>(<span class="sc">!</span><span class="fu">is.na</span>(counts[y])) {</span>
-<span id="cb14-23"><a href="#cb14-23"></a>       <span class="fu">t</span>(<span class="fu">t</span>(<span class="fu">rep</span>(children[y], <span class="at">times =</span> counts[y])))</span>
-<span id="cb14-24"><a href="#cb14-24"></a>      } <span class="cf">else</span> { <span class="fu">return</span>(<span class="cn">NA</span>) }</span>
-<span id="cb14-25"><a href="#cb14-25"></a>    }) <span class="sc">|&gt;</span> <span class="fu">unlist</span>()</span>
-<span id="cb14-26"><a href="#cb14-26"></a>    sumCount <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(<span class="fu">is.na</span>(counts), <span class="dv">0</span>, counts)</span>
-<span id="cb14-27"><a href="#cb14-27"></a>    parent <span class="ot">&lt;-</span> <span class="fu">rep</span>(x[<span class="dv">1</span>], <span class="fu">sum</span>(sumCount))</span>
-<span id="cb14-28"><a href="#cb14-28"></a>    <span class="fu">cbind</span>(parent, children)</span>
-<span id="cb14-29"><a href="#cb14-29"></a>  })</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a>df <span class="ot">&lt;-</span> <span class="fu">readLines</span>(<span class="st">"input3.txt"</span>)</span>
+<span id="cb11-2"><a href="#cb11-2"></a>dt <span class="ot">&lt;-</span> <span class="fu">data.table</span>(<span class="st">"parent"</span> <span class="ot">=</span> <span class="st">""</span>, <span class="st">"child"</span> <span class="ot">=</span> <span class="st">""</span>)</span>
+<span id="cb11-3"><a href="#cb11-3"></a><span class="co"># str_split(df, " bags contain | bags, | bags\\.")</span></span>
+<span id="cb11-4"><a href="#cb11-4"></a><span class="fu">str_extract_all</span>(df, <span class="st">"(no other|</span><span class="sc">\\</span><span class="st">d) (</span><span class="sc">\\</span><span class="st">w* </span><span class="sc">\\</span><span class="st">w*)|(</span><span class="sc">\\</span><span class="st">w* </span><span class="sc">\\</span><span class="st">w*) bags"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb11-5"><a href="#cb11-5"></a>  <span class="fu">lapply</span>(<span class="cf">function</span>(x) {</span>
+<span id="cb11-6"><a href="#cb11-6"></a>    <span class="fu">c</span>(</span>
+<span id="cb11-7"><a href="#cb11-7"></a>      <span class="fu">str_replace_all</span>(x[<span class="dv">1</span>], <span class="st">" bags"</span>, <span class="st">""</span>),</span>
+<span id="cb11-8"><a href="#cb11-8"></a>      <span class="fu">sapply</span>(x[<span class="sc">-</span><span class="dv">1</span>], <span class="cf">function</span>(y) {</span>
+<span id="cb11-9"><a href="#cb11-9"></a>        <span class="fu">str_extract_all</span>(y, <span class="st">"(</span><span class="sc">\\</span><span class="st">d|no other)| (</span><span class="sc">\\</span><span class="st">w* </span><span class="sc">\\</span><span class="st">w*)"</span>)</span>
+<span id="cb11-10"><a href="#cb11-10"></a>      }) <span class="sc">|&gt;</span> <span class="fu">unlist</span>() <span class="sc">|&gt;</span> <span class="fu">unname</span>()</span>
+<span id="cb11-11"><a href="#cb11-11"></a>    )</span>
+<span id="cb11-12"><a href="#cb11-12"></a>  }) <span class="sc">|&gt;</span></span>
+<span id="cb11-13"><a href="#cb11-13"></a>  <span class="fu">lapply</span>(<span class="cf">function</span>(x) {</span>
+<span id="cb11-14"><a href="#cb11-14"></a>    <span class="fu">str_remove_all</span>(x, <span class="st">" "</span>)</span>
+<span id="cb11-15"><a href="#cb11-15"></a>  }) <span class="sc">|&gt;</span></span>
+<span id="cb11-16"><a href="#cb11-16"></a>  <span class="fu">lapply</span>(<span class="cf">function</span>(x) {</span>
+<span id="cb11-17"><a href="#cb11-17"></a>    len <span class="ot">&lt;-</span> (<span class="fu">length</span>(x) <span class="sc">-</span> <span class="dv">1</span>) <span class="sc">/</span> <span class="dv">2</span></span>
+<span id="cb11-18"><a href="#cb11-18"></a>    counts <span class="ot">&lt;-</span> x[<span class="dv">2</span><span class="sc">*</span>(<span class="dv">1</span><span class="sc">:</span>len)]</span>
+<span id="cb11-19"><a href="#cb11-19"></a>    counts <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(<span class="fu">ifelse</span>(counts <span class="sc">==</span> <span class="st">"no other"</span>, <span class="cn">NA</span>, counts))</span>
+<span id="cb11-20"><a href="#cb11-20"></a>    children <span class="ot">&lt;-</span> x[<span class="dv">2</span><span class="sc">*</span>(<span class="dv">1</span><span class="sc">:</span>len) <span class="sc">+</span> <span class="dv">1</span>]</span>
+<span id="cb11-21"><a href="#cb11-21"></a>    children <span class="ot">&lt;-</span> <span class="fu">sapply</span>(<span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(counts), <span class="cf">function</span>(y) {</span>
+<span id="cb11-22"><a href="#cb11-22"></a>      <span class="cf">if</span>(<span class="sc">!</span><span class="fu">is.na</span>(counts[y])) {</span>
+<span id="cb11-23"><a href="#cb11-23"></a>       <span class="fu">t</span>(<span class="fu">t</span>(<span class="fu">rep</span>(children[y], <span class="at">times =</span> counts[y])))</span>
+<span id="cb11-24"><a href="#cb11-24"></a>      } <span class="cf">else</span> { <span class="fu">return</span>(<span class="cn">NA</span>) }</span>
+<span id="cb11-25"><a href="#cb11-25"></a>    }) <span class="sc">|&gt;</span> <span class="fu">unlist</span>()</span>
+<span id="cb11-26"><a href="#cb11-26"></a>    sumCount <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(<span class="fu">is.na</span>(counts), <span class="dv">0</span>, counts)</span>
+<span id="cb11-27"><a href="#cb11-27"></a>    parent <span class="ot">&lt;-</span> <span class="fu">rep</span>(x[<span class="dv">1</span>], <span class="fu">sum</span>(sumCount))</span>
+<span id="cb11-28"><a href="#cb11-28"></a>    <span class="fu">cbind</span>(parent, children)</span>
+<span id="cb11-29"><a href="#cb11-29"></a>  })</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell" data-hash="2020-07_cache/html/unnamed-chunk-7_08debcc179c0043481d281545f3159ba">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a><span class="fu">rep</span>(<span class="st">"c"</span>, <span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a><span class="fu">rep</span>(<span class="st">"c"</span>, <span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "c" "c" "c" "c" "c"</code></pre>
 </div>

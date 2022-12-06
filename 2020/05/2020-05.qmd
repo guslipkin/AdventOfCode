@@ -7,7 +7,6 @@ library(stringr)
 library(DescTools)
 
 df <- read.csv("input.csv")
-df
 ```
 
 ## Part 1

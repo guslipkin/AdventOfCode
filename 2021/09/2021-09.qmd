@@ -1,7 +1,6 @@
 ---
-title: "Advent of Code 2021 - Day 9"
-author: "Gus Lipkin ~ github.com/guslipkin/AdventOfCode2021"
-output: html_notebook
+title: "2021-09: Smoke Basin"
+format: html
 ---
 
 ```{r}
@@ -22,9 +21,9 @@ dt <- cbind(cbind(dtPadSides, dt), dtPadSides)
 dt <- data.frame(apply(dt, 2, as.numeric))
 ```
 
+## Part 1
 
 ```{r}
-# part 1
 dt2 <- dt
 
 coordX <- c()
@@ -47,8 +46,9 @@ for(n in 1:length(rLow)) {
 s
 ```
 
+## Part 2
+
 ```{r}
-# part 2
 dt2 <- dt
 dt2[dt2 == 9 | dt2 == 10] <- NA
 
@@ -83,41 +83,5 @@ dt3 %>%
   ggplot() +
   geom_point(aes(x = x, y = y, color = cluster))
 ggsave("cluster.png")
-```
-
-```{r}
-dt <- fread("input2.txt", header = FALSE, colClasses = "character")
-dt <- data.frame(str_split(dt$V1, "", simplify = TRUE))
-dtPadTop <- dt[1,]
-dtPadTop[!is.na(dtPadTop)] <- 10
-dt <- rbind(rbind(dtPadTop, dt), dtPadTop)
-dtPadSides <- dt[,1]
-dtPadSides[!is.na(dtPadSides)] <- 10
-dt <- cbind(cbind(dtPadSides, dt), dtPadSides)
-dt <- data.frame(apply(dt, 2, as.numeric))
-
-dt2 <- dt
-dt2[dt2 == 9 | dt2 == 10] <- NA
-
-coordX <- c()
-coordY <- c()
-rLow <- c()
-for(r in 2:(nrow(dt2) - 1)) {
-  for(c in 2:(ncol(dt2) - 1)) {
-    if(!is.na(dt2[r,c])) {
-      rLow <- append(rLow, dt2[r,c])
-      coordX <- append(coordX, c)
-      coordY <- append(coordY, r)
-    }
-  }
-}
-
-dt3 <- data.frame("x" = coordX, "y" = coordY, "d" = rLow)
-db <- dbscan(dt3[,1:2], eps = 1, minPts = 0)
-dt3$cluster <- db$cluster
-
-fviz_cluster(db, data = dt3[,1:2], choose.vars = c("x", "y")) +
-  theme_minimal()
-ggsave("sample_input.png")
 ```
 
