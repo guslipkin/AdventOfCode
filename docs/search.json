@@ -1103,14 +1103,14 @@
     "href": "2022/06/2022-06.html#part-1",
     "title": "2022-06: Tuning Trouble",
     "section": "Part 1",
-    "text": "Part 1\nHardcoding everything will bite me in the butt later probably. Ultimately not too bad in hindsight.\n\ndata.frame(\"w\" = dt,\n           \"x\" = c(dt[-1], NA),\n           \"y\" = c(dt[-1:-2], NA, NA),\n           \"z\" = c(dt[-1:-3], NA, NA, NA)) |>\n  mutate(marker = paste0(w, x, y, z, sep = \"\")) |>\n  apply(1, function(x) {\n    max(table(strsplit(x[\"marker\"], \"\")))\n  }) -> tmp\n(which(tmp == 1) + 3)[1]\n\n[1] 1578"
+    "text": "Part 1\nHardcoding everything will bite me in the butt later probably. Ultimately not too bad in hindsight.\n\nNewOriginal\n\n\n\ndo_part(4)\n\nbdjq \n1578 \n\n\n\n\n\ndata.frame(\"w\" = dt,\n           \"x\" = c(dt[-1], NA),\n           \"y\" = c(dt[-1:-2], NA, NA),\n           \"z\" = c(dt[-1:-3], NA, NA, NA)) |>\n  mutate(marker = paste0(w, x, y, z, sep = \"\")) |>\n  apply(1, function(x) {\n    max(table(strsplit(x[\"marker\"], \"\")))\n  }) -> tmp\n(which(tmp == 1) + 3)[1]\n\n[1] 1578"
   },
   {
     "objectID": "2022/06/2022-06.html#part-2",
     "href": "2022/06/2022-06.html#part-2",
     "title": "2022-06: Tuning Trouble",
     "section": "Part 2",
-    "text": "Part 2\nWell, well, well. Hardcoding is never a good move. Took a bit of time to get it figured out, but I got there in the end.\n\nget_vec <- function(vec, place) {\n  if (place == 0) { return(vec) }\n  c(vec[-1:(-place)], rep(NA, place))\n}\n\nlapply(0:13, function(x) {\n  get_vec(dt, x)\n}) |>\n  data.frame() |>\n  `colnames<-`(paste0(\"X\", 1:14)) %>%\n  apply(1, function(x) {\n    paste0(x, collapse = \"\")\n  }) |>\n  sapply(function(x) {\n    max(table(strsplit(x, \"\")))\n  }) -> tmp\n(which(tmp == 1) + 13)[1]\n\nmdcbnwqgshpvfj \n          2178"
+    "text": "Part 2\nWell, well, well. Hardcoding is never a good move. Took a bit of time to get it figured out, but I got there in the end.\n\nNewOriginal\n\n\n\ndo_part(14)\n\nmdcbnwqgshpvfj \n          2178 \n\n\n\n\n\nget_vec <- function(vec, place) {\n  if (place == 0) { return(vec) }\n  c(vec[-1:(-place)], rep(NA, place))\n}\n\nlapply(0:13, function(x) {\n  get_vec(dt, x)\n}) |>\n  data.frame() |>\n  `colnames<-`(paste0(\"X\", 1:14)) %>%\n  apply(1, function(x) {\n    paste0(x, collapse = \"\")\n  }) |>\n  sapply(function(x) {\n    max(table(strsplit(x, \"\")))\n  }) -> tmp\n(which(tmp == 1) + 13)[1]\n\nmdcbnwqgshpvfj \n          2178"
   },
   {
     "objectID": "index.html",
