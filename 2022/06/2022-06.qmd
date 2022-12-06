@@ -1,0 +1,56 @@
+---
+title: "2022-06: Tuning Trouble"
+format: html
+---
+
+```{r}
+library(tidyverse)
+library(data.table)
+library(mistlecode)
+```
+
+```{r}
+dt <- unlist(strsplit(readLines("input.txt"), ""))
+```
+
+This looks easy. Oh wait. I totally misread the problem...
+
+## Part 1
+
+Hardcoding everything will bite me in the butt later probably. Ultimately not too bad in hindsight.
+
+```{r}
+data.frame("w" = dt,
+           "x" = c(dt[-1], NA),
+           "y" = c(dt[-1:-2], NA, NA),
+           "z" = c(dt[-1:-3], NA, NA, NA)) |>
+  mutate(marker = paste0(w, x, y, z, sep = "")) |>
+  apply(1, function(x) {
+    max(table(strsplit(x["marker"], "")))
+  }) -> tmp
+(which(tmp == 1) + 3)[1]
+```
+
+## Part 2
+
+Well, well, well. Hardcoding is never a good move. Took a bit of time to get it figured out, but I got there in the end.
+
+```{r}
+get_vec <- function(vec, place) {
+  if (place == 0) { return(vec) }
+  c(vec[-1:(-place)], rep(NA, place))
+}
+
+lapply(0:13, function(x) {
+  get_vec(dt, x)
+}) |>
+  data.frame() |>
+  `colnames<-`(paste0("X", 1:14)) %>%
+  apply(1, function(x) {
+    paste0(x, collapse = "")
+  }) |>
+  sapply(function(x) {
+    max(table(strsplit(x, "")))
+  }) -> tmp
+(which(tmp == 1) + 13)[1]
+```

@@ -52,13 +52,29 @@ dt <- readLines("input2.txt")
 polymer <- dt[!grepl(" -> ", dt)][1]
 polymer <- str_split(polymer, "", simplify = TRUE)[1,]
 pairs <- 
+  data.frame(str_split(dt[grepl(" -> ", dt)], " -> ", simplify = TRUE)) %>%
+  `colnames<-`(c("pair", "add"))
+
+get_pairs <- function(x) {
+  data.table("x" = x, y = c(x[-1], NA))
+}
+get_pairs(polymer)
+```
+
+4 7 13 25 49
+4 6 12 24 48
+
+```{r}
+dt <- readLines("input2.txt")
+polymer <- dt[!grepl(" -> ", dt)][1]
+polymer <- str_split(polymer, "", simplify = TRUE)[1,]
+pairs <- 
   data.frame(str_split(dt[grepl(" -> ", dt)], " -> ", simplify = TRUE))
 
 dt <-
-  data.frame("x" = polymer, "y" = c(polymer[-1], NA)) %>%
+  data.frame("x" = polymer[-length(polymer)], "y" = polymer[-1]) %>%
   mutate("z" = paste0(x, y, sep = "")) %>%
   select("z") %>%
-  head(-1) %>%
   group_by(z) %>%
   count()
   
@@ -72,7 +88,7 @@ counts <-
 
 build_poly <- function(dt, counts, i = 1) {
   if (i == 10) { return(list(dt, counts)) }
-  
+  # i <- 1
   dt <- dt %>%
     right_join(pairs, by = c("z" = "X1")) %>%
     filter(!is.na(n))
@@ -80,11 +96,15 @@ build_poly <- function(dt, counts, i = 1) {
   counts <-
     dt %>%
     group_by(X2) %>%
-    summarise(n = n()) %>%
+      summarise(n = n()) %>%
+    ungroup() %>%
     `colnames<-`(c("value", "n")) %>%
     rbind(data.frame(counts)) %>%
     group_by(value) %>%
-    summarise(n = sum(n))
+      summarise(n = sum(n)) %>%
+    ungroup() %>%
+    filter(!is.na(n))
+  print(counts)
   
   dt <- dt %>%
     separate("z", into = c("x", "y"), sep = 1) %>%
@@ -96,6 +116,7 @@ build_poly <- function(dt, counts, i = 1) {
     group_by(value) %>%
     summarise(n = sum(n)) %>%
     rename("z" = value)
+  
   build_poly(dt, counts, i + 1)
 }
 
@@ -108,7 +129,8 @@ tab <-
   pivot_longer(cols = c(x, y)) |>
   select(-name) |>
   group_by(value) |>
-  summarise(n = sum(n)) |>
+    summarise(n = sum(n)) |>
+  ungroup() |>
   arrange(desc(n)) |>
   left_join(tab[[2]] %>% rename(n1 = n), by = "value") |>
   mutate(n = n + n1) |>
@@ -119,6 +141,11 @@ unname(tab[1] - rev(tab)[1])
 tab
 ```
 
+NC NB CH CN BC HB
+
+NC NB CH B
+
+N b CN BC HB
 
 ```{r}
 # part 2

@@ -618,136 +618,230 @@ The following object is masked from 'package:purrr':
 </section>
 <section id="part-2" class="level2">
 <h2 class="anchored" data-anchor-id="part-2">Part 2</h2>
-<div class="cell" data-hash="2021-14_cache/html/unnamed-chunk-3_a3e9bb1d8484d9692898314fbd03d556">
+<div class="cell" data-hash="2021-14_cache/html/unnamed-chunk-3_d4119a8acb8d2335dc08198c82dbb118">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a>dt <span class="ot">&lt;-</span> <span class="fu">readLines</span>(<span class="st">"input2.txt"</span>)</span>
 <span id="cb8-2"><a href="#cb8-2"></a>polymer <span class="ot">&lt;-</span> dt[<span class="sc">!</span><span class="fu">grepl</span>(<span class="st">" -&gt; "</span>, dt)][<span class="dv">1</span>]</span>
 <span id="cb8-3"><a href="#cb8-3"></a>polymer <span class="ot">&lt;-</span> <span class="fu">str_split</span>(polymer, <span class="st">""</span>, <span class="at">simplify =</span> <span class="cn">TRUE</span>)[<span class="dv">1</span>,]</span>
 <span id="cb8-4"><a href="#cb8-4"></a>pairs <span class="ot">&lt;-</span> </span>
-<span id="cb8-5"><a href="#cb8-5"></a>  <span class="fu">data.frame</span>(<span class="fu">str_split</span>(dt[<span class="fu">grepl</span>(<span class="st">" -&gt; "</span>, dt)], <span class="st">" -&gt; "</span>, <span class="at">simplify =</span> <span class="cn">TRUE</span>))</span>
-<span id="cb8-6"><a href="#cb8-6"></a></span>
-<span id="cb8-7"><a href="#cb8-7"></a>dt <span class="ot">&lt;-</span></span>
-<span id="cb8-8"><a href="#cb8-8"></a>  <span class="fu">data.frame</span>(<span class="st">"x"</span> <span class="ot">=</span> polymer, <span class="st">"y"</span> <span class="ot">=</span> <span class="fu">c</span>(polymer[<span class="sc">-</span><span class="dv">1</span>], <span class="cn">NA</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb8-9"><a href="#cb8-9"></a>  <span class="fu">mutate</span>(<span class="st">"z"</span> <span class="ot">=</span> <span class="fu">paste0</span>(x, y, <span class="at">sep =</span> <span class="st">""</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb8-10"><a href="#cb8-10"></a>  <span class="fu">select</span>(<span class="st">"z"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb8-11"><a href="#cb8-11"></a>  <span class="fu">head</span>(<span class="sc">-</span><span class="dv">1</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb8-12"><a href="#cb8-12"></a>  <span class="fu">group_by</span>(z) <span class="sc">%&gt;%</span></span>
-<span id="cb8-13"><a href="#cb8-13"></a>  <span class="fu">count</span>()</span>
-<span id="cb8-14"><a href="#cb8-14"></a>  </span>
-<span id="cb8-15"><a href="#cb8-15"></a>counts <span class="ot">&lt;-</span> <span class="fu">unique</span>(<span class="fu">unlist</span>(<span class="fu">strsplit</span>(pairs<span class="sc">$</span>X1, <span class="st">""</span>)))</span>
-<span id="cb8-16"><a href="#cb8-16"></a>counts <span class="ot">&lt;-</span> </span>
-<span id="cb8-17"><a href="#cb8-17"></a>  <span class="fu">rep</span>(<span class="dv">0</span>, <span class="fu">length</span>(counts)) <span class="sc">%&gt;%</span></span>
-<span id="cb8-18"><a href="#cb8-18"></a>  <span class="st">`</span><span class="at">names&lt;-</span><span class="st">`</span>(<span class="fu">sort</span>(<span class="fu">unique</span>(counts))) <span class="sc">%&gt;%</span></span>
-<span id="cb8-19"><a href="#cb8-19"></a>  <span class="fu">data.frame</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb8-20"><a href="#cb8-20"></a>  <span class="fu">rownames_to_column</span>(<span class="at">var =</span> <span class="st">"value"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb8-21"><a href="#cb8-21"></a>  <span class="st">`</span><span class="at">colnames&lt;-</span><span class="st">`</span>(<span class="fu">c</span>(<span class="st">"value"</span>, <span class="st">"n"</span>))</span>
-<span id="cb8-22"><a href="#cb8-22"></a></span>
-<span id="cb8-23"><a href="#cb8-23"></a>build_poly <span class="ot">&lt;-</span> <span class="cf">function</span>(dt, counts, <span class="at">i =</span> <span class="dv">1</span>) {</span>
-<span id="cb8-24"><a href="#cb8-24"></a>  <span class="cf">if</span> (i <span class="sc">==</span> <span class="dv">10</span>) { <span class="fu">return</span>(<span class="fu">list</span>(dt, counts)) }</span>
-<span id="cb8-25"><a href="#cb8-25"></a>  </span>
-<span id="cb8-26"><a href="#cb8-26"></a>  dt <span class="ot">&lt;-</span> dt <span class="sc">%&gt;%</span></span>
-<span id="cb8-27"><a href="#cb8-27"></a>    <span class="fu">right_join</span>(pairs, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"z"</span> <span class="ot">=</span> <span class="st">"X1"</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb8-28"><a href="#cb8-28"></a>    <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(n))</span>
-<span id="cb8-29"><a href="#cb8-29"></a>  </span>
-<span id="cb8-30"><a href="#cb8-30"></a>  counts <span class="ot">&lt;-</span></span>
-<span id="cb8-31"><a href="#cb8-31"></a>    dt <span class="sc">%&gt;%</span></span>
-<span id="cb8-32"><a href="#cb8-32"></a>    <span class="fu">group_by</span>(X2) <span class="sc">%&gt;%</span></span>
-<span id="cb8-33"><a href="#cb8-33"></a>    <span class="fu">summarise</span>(<span class="at">n =</span> <span class="fu">n</span>()) <span class="sc">%&gt;%</span></span>
-<span id="cb8-34"><a href="#cb8-34"></a>    <span class="st">`</span><span class="at">colnames&lt;-</span><span class="st">`</span>(<span class="fu">c</span>(<span class="st">"value"</span>, <span class="st">"n"</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb8-35"><a href="#cb8-35"></a>    <span class="fu">rbind</span>(<span class="fu">data.frame</span>(counts)) <span class="sc">%&gt;%</span></span>
-<span id="cb8-36"><a href="#cb8-36"></a>    <span class="fu">group_by</span>(value) <span class="sc">%&gt;%</span></span>
-<span id="cb8-37"><a href="#cb8-37"></a>    <span class="fu">summarise</span>(<span class="at">n =</span> <span class="fu">sum</span>(n))</span>
-<span id="cb8-38"><a href="#cb8-38"></a>  </span>
-<span id="cb8-39"><a href="#cb8-39"></a>  dt <span class="ot">&lt;-</span> dt <span class="sc">%&gt;%</span></span>
-<span id="cb8-40"><a href="#cb8-40"></a>    <span class="fu">separate</span>(<span class="st">"z"</span>, <span class="at">into =</span> <span class="fu">c</span>(<span class="st">"x"</span>, <span class="st">"y"</span>), <span class="at">sep =</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb8-41"><a href="#cb8-41"></a>    <span class="fu">mutate</span>(<span class="at">x =</span> <span class="fu">paste</span>(x, X2, <span class="at">sep =</span> <span class="st">""</span>),</span>
-<span id="cb8-42"><a href="#cb8-42"></a>           <span class="at">y =</span> <span class="fu">paste</span>(X2, y, <span class="at">sep =</span> <span class="st">""</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb8-43"><a href="#cb8-43"></a>    <span class="fu">select</span>(<span class="sc">-</span>X2) <span class="sc">%&gt;%</span></span>
-<span id="cb8-44"><a href="#cb8-44"></a>    <span class="fu">pivot_longer</span>(<span class="at">cols =</span> <span class="fu">c</span>(x, y)) <span class="sc">%&gt;%</span></span>
-<span id="cb8-45"><a href="#cb8-45"></a>    <span class="fu">select</span>(<span class="sc">-</span>name) <span class="sc">%&gt;%</span></span>
-<span id="cb8-46"><a href="#cb8-46"></a>    <span class="fu">group_by</span>(value) <span class="sc">%&gt;%</span></span>
-<span id="cb8-47"><a href="#cb8-47"></a>    <span class="fu">summarise</span>(<span class="at">n =</span> <span class="fu">sum</span>(n)) <span class="sc">%&gt;%</span></span>
-<span id="cb8-48"><a href="#cb8-48"></a>    <span class="fu">rename</span>(<span class="st">"z"</span> <span class="ot">=</span> value)</span>
-<span id="cb8-49"><a href="#cb8-49"></a>  <span class="fu">build_poly</span>(dt, counts, i <span class="sc">+</span> <span class="dv">1</span>)</span>
-<span id="cb8-50"><a href="#cb8-50"></a>}</span>
-<span id="cb8-51"><a href="#cb8-51"></a></span>
-<span id="cb8-52"><a href="#cb8-52"></a><span class="fu">options</span>(<span class="at">digits =</span> <span class="dv">20</span>)</span>
-<span id="cb8-53"><a href="#cb8-53"></a></span>
-<span id="cb8-54"><a href="#cb8-54"></a>tab <span class="ot">&lt;-</span> <span class="fu">build_poly</span>(dt, counts)</span>
-<span id="cb8-55"><a href="#cb8-55"></a>tab <span class="ot">&lt;-</span></span>
-<span id="cb8-56"><a href="#cb8-56"></a>  tab[[<span class="dv">1</span>]] <span class="sc">|&gt;</span></span>
-<span id="cb8-57"><a href="#cb8-57"></a>  <span class="fu">separate</span>(<span class="st">"z"</span>, <span class="at">into =</span> <span class="fu">c</span>(<span class="st">"x"</span>, <span class="st">"y"</span>), <span class="at">sep =</span> <span class="dv">1</span>) <span class="sc">|&gt;</span></span>
-<span id="cb8-58"><a href="#cb8-58"></a>  <span class="fu">pivot_longer</span>(<span class="at">cols =</span> <span class="fu">c</span>(x, y)) <span class="sc">|&gt;</span></span>
-<span id="cb8-59"><a href="#cb8-59"></a>  <span class="fu">select</span>(<span class="sc">-</span>name) <span class="sc">|&gt;</span></span>
-<span id="cb8-60"><a href="#cb8-60"></a>  <span class="fu">group_by</span>(value) <span class="sc">|&gt;</span></span>
-<span id="cb8-61"><a href="#cb8-61"></a>  <span class="fu">summarise</span>(<span class="at">n =</span> <span class="fu">sum</span>(n)) <span class="sc">|&gt;</span></span>
-<span id="cb8-62"><a href="#cb8-62"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(n)) <span class="sc">|&gt;</span></span>
-<span id="cb8-63"><a href="#cb8-63"></a>  <span class="fu">left_join</span>(tab[[<span class="dv">2</span>]] <span class="sc">%&gt;%</span> <span class="fu">rename</span>(<span class="at">n1 =</span> n), <span class="at">by =</span> <span class="st">"value"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb8-64"><a href="#cb8-64"></a>  <span class="fu">mutate</span>(<span class="at">n =</span> n <span class="sc">+</span> n1) <span class="sc">|&gt;</span></span>
-<span id="cb8-65"><a href="#cb8-65"></a>  <span class="fu">select</span>(<span class="sc">-</span>n1) <span class="sc">|&gt;</span></span>
-<span id="cb8-66"><a href="#cb8-66"></a>  <span class="fu">deframe</span>()</span>
-<span id="cb8-67"><a href="#cb8-67"></a></span>
-<span id="cb8-68"><a href="#cb8-68"></a><span class="fu">unname</span>(tab[<span class="dv">1</span>] <span class="sc">-</span> <span class="fu">rev</span>(tab)[<span class="dv">1</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb8-5"><a href="#cb8-5"></a>  <span class="fu">data.frame</span>(<span class="fu">str_split</span>(dt[<span class="fu">grepl</span>(<span class="st">" -&gt; "</span>, dt)], <span class="st">" -&gt; "</span>, <span class="at">simplify =</span> <span class="cn">TRUE</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb8-6"><a href="#cb8-6"></a>  <span class="st">`</span><span class="at">colnames&lt;-</span><span class="st">`</span>(<span class="fu">c</span>(<span class="st">"pair"</span>, <span class="st">"add"</span>))</span>
+<span id="cb8-7"><a href="#cb8-7"></a></span>
+<span id="cb8-8"><a href="#cb8-8"></a>get_pairs <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb8-9"><a href="#cb8-9"></a>  <span class="fu">data.table</span>(<span class="st">"x"</span> <span class="ot">=</span> x, <span class="at">y =</span> <span class="fu">c</span>(x[<span class="sc">-</span><span class="dv">1</span>], <span class="cn">NA</span>))</span>
+<span id="cb8-10"><a href="#cb8-10"></a>}</span>
+<span id="cb8-11"><a href="#cb8-11"></a><span class="fu">get_pairs</span>(polymer)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   x    y
+1: N    N
+2: N    C
+3: C    B
+4: B &lt;NA&gt;</code></pre>
+</div>
+</div>
+<p>4 7 13 25 49 4 6 12 24 48</p>
+<div class="cell" data-hash="2021-14_cache/html/unnamed-chunk-4_eeeab3d4e3856190d7244564c5691bb5">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a>dt <span class="ot">&lt;-</span> <span class="fu">readLines</span>(<span class="st">"input2.txt"</span>)</span>
+<span id="cb10-2"><a href="#cb10-2"></a>polymer <span class="ot">&lt;-</span> dt[<span class="sc">!</span><span class="fu">grepl</span>(<span class="st">" -&gt; "</span>, dt)][<span class="dv">1</span>]</span>
+<span id="cb10-3"><a href="#cb10-3"></a>polymer <span class="ot">&lt;-</span> <span class="fu">str_split</span>(polymer, <span class="st">""</span>, <span class="at">simplify =</span> <span class="cn">TRUE</span>)[<span class="dv">1</span>,]</span>
+<span id="cb10-4"><a href="#cb10-4"></a>pairs <span class="ot">&lt;-</span> </span>
+<span id="cb10-5"><a href="#cb10-5"></a>  <span class="fu">data.frame</span>(<span class="fu">str_split</span>(dt[<span class="fu">grepl</span>(<span class="st">" -&gt; "</span>, dt)], <span class="st">" -&gt; "</span>, <span class="at">simplify =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb10-6"><a href="#cb10-6"></a></span>
+<span id="cb10-7"><a href="#cb10-7"></a>dt <span class="ot">&lt;-</span></span>
+<span id="cb10-8"><a href="#cb10-8"></a>  <span class="fu">data.frame</span>(<span class="st">"x"</span> <span class="ot">=</span> polymer[<span class="sc">-</span><span class="fu">length</span>(polymer)], <span class="st">"y"</span> <span class="ot">=</span> polymer[<span class="sc">-</span><span class="dv">1</span>]) <span class="sc">%&gt;%</span></span>
+<span id="cb10-9"><a href="#cb10-9"></a>  <span class="fu">mutate</span>(<span class="st">"z"</span> <span class="ot">=</span> <span class="fu">paste0</span>(x, y, <span class="at">sep =</span> <span class="st">""</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb10-10"><a href="#cb10-10"></a>  <span class="fu">select</span>(<span class="st">"z"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb10-11"><a href="#cb10-11"></a>  <span class="fu">group_by</span>(z) <span class="sc">%&gt;%</span></span>
+<span id="cb10-12"><a href="#cb10-12"></a>  <span class="fu">count</span>()</span>
+<span id="cb10-13"><a href="#cb10-13"></a>  </span>
+<span id="cb10-14"><a href="#cb10-14"></a>counts <span class="ot">&lt;-</span> <span class="fu">unique</span>(<span class="fu">unlist</span>(<span class="fu">strsplit</span>(pairs<span class="sc">$</span>X1, <span class="st">""</span>)))</span>
+<span id="cb10-15"><a href="#cb10-15"></a>counts <span class="ot">&lt;-</span> </span>
+<span id="cb10-16"><a href="#cb10-16"></a>  <span class="fu">rep</span>(<span class="dv">0</span>, <span class="fu">length</span>(counts)) <span class="sc">%&gt;%</span></span>
+<span id="cb10-17"><a href="#cb10-17"></a>  <span class="st">`</span><span class="at">names&lt;-</span><span class="st">`</span>(<span class="fu">sort</span>(<span class="fu">unique</span>(counts))) <span class="sc">%&gt;%</span></span>
+<span id="cb10-18"><a href="#cb10-18"></a>  <span class="fu">data.frame</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb10-19"><a href="#cb10-19"></a>  <span class="fu">rownames_to_column</span>(<span class="at">var =</span> <span class="st">"value"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb10-20"><a href="#cb10-20"></a>  <span class="st">`</span><span class="at">colnames&lt;-</span><span class="st">`</span>(<span class="fu">c</span>(<span class="st">"value"</span>, <span class="st">"n"</span>))</span>
+<span id="cb10-21"><a href="#cb10-21"></a></span>
+<span id="cb10-22"><a href="#cb10-22"></a>build_poly <span class="ot">&lt;-</span> <span class="cf">function</span>(dt, counts, <span class="at">i =</span> <span class="dv">1</span>) {</span>
+<span id="cb10-23"><a href="#cb10-23"></a>  <span class="cf">if</span> (i <span class="sc">==</span> <span class="dv">10</span>) { <span class="fu">return</span>(<span class="fu">list</span>(dt, counts)) }</span>
+<span id="cb10-24"><a href="#cb10-24"></a>  <span class="co"># i &lt;- 1</span></span>
+<span id="cb10-25"><a href="#cb10-25"></a>  dt <span class="ot">&lt;-</span> dt <span class="sc">%&gt;%</span></span>
+<span id="cb10-26"><a href="#cb10-26"></a>    <span class="fu">right_join</span>(pairs, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"z"</span> <span class="ot">=</span> <span class="st">"X1"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb10-27"><a href="#cb10-27"></a>    <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(n))</span>
+<span id="cb10-28"><a href="#cb10-28"></a>  </span>
+<span id="cb10-29"><a href="#cb10-29"></a>  counts <span class="ot">&lt;-</span></span>
+<span id="cb10-30"><a href="#cb10-30"></a>    dt <span class="sc">%&gt;%</span></span>
+<span id="cb10-31"><a href="#cb10-31"></a>    <span class="fu">group_by</span>(X2) <span class="sc">%&gt;%</span></span>
+<span id="cb10-32"><a href="#cb10-32"></a>      <span class="fu">summarise</span>(<span class="at">n =</span> <span class="fu">n</span>()) <span class="sc">%&gt;%</span></span>
+<span id="cb10-33"><a href="#cb10-33"></a>    <span class="fu">ungroup</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb10-34"><a href="#cb10-34"></a>    <span class="st">`</span><span class="at">colnames&lt;-</span><span class="st">`</span>(<span class="fu">c</span>(<span class="st">"value"</span>, <span class="st">"n"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb10-35"><a href="#cb10-35"></a>    <span class="fu">rbind</span>(<span class="fu">data.frame</span>(counts)) <span class="sc">%&gt;%</span></span>
+<span id="cb10-36"><a href="#cb10-36"></a>    <span class="fu">group_by</span>(value) <span class="sc">%&gt;%</span></span>
+<span id="cb10-37"><a href="#cb10-37"></a>      <span class="fu">summarise</span>(<span class="at">n =</span> <span class="fu">sum</span>(n)) <span class="sc">%&gt;%</span></span>
+<span id="cb10-38"><a href="#cb10-38"></a>    <span class="fu">ungroup</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb10-39"><a href="#cb10-39"></a>    <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(n))</span>
+<span id="cb10-40"><a href="#cb10-40"></a>  <span class="fu">print</span>(counts)</span>
+<span id="cb10-41"><a href="#cb10-41"></a>  </span>
+<span id="cb10-42"><a href="#cb10-42"></a>  dt <span class="ot">&lt;-</span> dt <span class="sc">%&gt;%</span></span>
+<span id="cb10-43"><a href="#cb10-43"></a>    <span class="fu">separate</span>(<span class="st">"z"</span>, <span class="at">into =</span> <span class="fu">c</span>(<span class="st">"x"</span>, <span class="st">"y"</span>), <span class="at">sep =</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb10-44"><a href="#cb10-44"></a>    <span class="fu">mutate</span>(<span class="at">x =</span> <span class="fu">paste</span>(x, X2, <span class="at">sep =</span> <span class="st">""</span>),</span>
+<span id="cb10-45"><a href="#cb10-45"></a>           <span class="at">y =</span> <span class="fu">paste</span>(X2, y, <span class="at">sep =</span> <span class="st">""</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb10-46"><a href="#cb10-46"></a>    <span class="fu">select</span>(<span class="sc">-</span>X2) <span class="sc">%&gt;%</span></span>
+<span id="cb10-47"><a href="#cb10-47"></a>    <span class="fu">pivot_longer</span>(<span class="at">cols =</span> <span class="fu">c</span>(x, y)) <span class="sc">%&gt;%</span></span>
+<span id="cb10-48"><a href="#cb10-48"></a>    <span class="fu">select</span>(<span class="sc">-</span>name) <span class="sc">%&gt;%</span></span>
+<span id="cb10-49"><a href="#cb10-49"></a>    <span class="fu">group_by</span>(value) <span class="sc">%&gt;%</span></span>
+<span id="cb10-50"><a href="#cb10-50"></a>    <span class="fu">summarise</span>(<span class="at">n =</span> <span class="fu">sum</span>(n)) <span class="sc">%&gt;%</span></span>
+<span id="cb10-51"><a href="#cb10-51"></a>    <span class="fu">rename</span>(<span class="st">"z"</span> <span class="ot">=</span> value)</span>
+<span id="cb10-52"><a href="#cb10-52"></a>  </span>
+<span id="cb10-53"><a href="#cb10-53"></a>  <span class="fu">build_poly</span>(dt, counts, i <span class="sc">+</span> <span class="dv">1</span>)</span>
+<span id="cb10-54"><a href="#cb10-54"></a>}</span>
+<span id="cb10-55"><a href="#cb10-55"></a></span>
+<span id="cb10-56"><a href="#cb10-56"></a><span class="fu">options</span>(<span class="at">digits =</span> <span class="dv">20</span>)</span>
+<span id="cb10-57"><a href="#cb10-57"></a></span>
+<span id="cb10-58"><a href="#cb10-58"></a>tab <span class="ot">&lt;-</span> <span class="fu">build_poly</span>(dt, counts)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 4 × 2
+  value     n
+  &lt;chr&gt; &lt;dbl&gt;
+1 B         1
+2 C         1
+3 H         1
+4 N         0
+# A tibble: 4 × 2
+  value     n
+  &lt;chr&gt; &lt;dbl&gt;
+1 B         5
+2 C         3
+3 H         1
+4 N         0
+# A tibble: 4 × 2
+  value     n
+  &lt;chr&gt; &lt;dbl&gt;
+1 B         8
+2 C         4
+3 H         3
+4 N         2
+# A tibble: 4 × 2
+  value     n
+  &lt;chr&gt; &lt;dbl&gt;
+1 B        13
+2 C         6
+3 H         4
+4 N         5
+# A tibble: 4 × 2
+  value     n
+  &lt;chr&gt; &lt;dbl&gt;
+1 B        18
+2 C         9
+3 H         6
+4 N         8
+# A tibble: 4 × 2
+  value     n
+  &lt;chr&gt; &lt;dbl&gt;
+1 B        24
+2 C        13
+3 H         7
+4 N        11
+# A tibble: 4 × 2
+  value     n
+  &lt;chr&gt; &lt;dbl&gt;
+1 B        30
+2 C        17
+3 H         9
+4 N        14
+# A tibble: 4 × 2
+  value     n
+  &lt;chr&gt; &lt;dbl&gt;
+1 B        36
+2 C        21
+3 H        11
+4 N        17
+# A tibble: 4 × 2
+  value     n
+  &lt;chr&gt; &lt;dbl&gt;
+1 B        42
+2 C        25
+3 H        13
+4 N        20</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a>tab <span class="ot">&lt;-</span></span>
+<span id="cb12-2"><a href="#cb12-2"></a>  tab[[<span class="dv">1</span>]] <span class="sc">|&gt;</span></span>
+<span id="cb12-3"><a href="#cb12-3"></a>  <span class="fu">separate</span>(<span class="st">"z"</span>, <span class="at">into =</span> <span class="fu">c</span>(<span class="st">"x"</span>, <span class="st">"y"</span>), <span class="at">sep =</span> <span class="dv">1</span>) <span class="sc">|&gt;</span></span>
+<span id="cb12-4"><a href="#cb12-4"></a>  <span class="fu">pivot_longer</span>(<span class="at">cols =</span> <span class="fu">c</span>(x, y)) <span class="sc">|&gt;</span></span>
+<span id="cb12-5"><a href="#cb12-5"></a>  <span class="fu">select</span>(<span class="sc">-</span>name) <span class="sc">|&gt;</span></span>
+<span id="cb12-6"><a href="#cb12-6"></a>  <span class="fu">group_by</span>(value) <span class="sc">|&gt;</span></span>
+<span id="cb12-7"><a href="#cb12-7"></a>    <span class="fu">summarise</span>(<span class="at">n =</span> <span class="fu">sum</span>(n)) <span class="sc">|&gt;</span></span>
+<span id="cb12-8"><a href="#cb12-8"></a>  <span class="fu">ungroup</span>() <span class="sc">|&gt;</span></span>
+<span id="cb12-9"><a href="#cb12-9"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(n)) <span class="sc">|&gt;</span></span>
+<span id="cb12-10"><a href="#cb12-10"></a>  <span class="fu">left_join</span>(tab[[<span class="dv">2</span>]] <span class="sc">%&gt;%</span> <span class="fu">rename</span>(<span class="at">n1 =</span> n), <span class="at">by =</span> <span class="st">"value"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb12-11"><a href="#cb12-11"></a>  <span class="fu">mutate</span>(<span class="at">n =</span> n <span class="sc">+</span> n1) <span class="sc">|&gt;</span></span>
+<span id="cb12-12"><a href="#cb12-12"></a>  <span class="fu">select</span>(<span class="sc">-</span>n1) <span class="sc">|&gt;</span></span>
+<span id="cb12-13"><a href="#cb12-13"></a>  <span class="fu">deframe</span>()</span>
+<span id="cb12-14"><a href="#cb12-14"></a></span>
+<span id="cb12-15"><a href="#cb12-15"></a><span class="fu">unname</span>(tab[<span class="dv">1</span>] <span class="sc">-</span> <span class="fu">rev</span>(tab)[<span class="dv">1</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 1482</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a>tab</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a>tab</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>   B    N    C    H 
 1731  863  329  249 </code></pre>
 </div>
 </div>
-<div class="cell" data-hash="2021-14_cache/html/unnamed-chunk-4_cb89ec1bff7c644fe882374b89ad846b">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a><span class="co"># part 2</span></span>
-<span id="cb12-2"><a href="#cb12-2"></a>dt <span class="ot">&lt;-</span> <span class="fu">readLines</span>(<span class="st">"input2.txt"</span>)</span>
-<span id="cb12-3"><a href="#cb12-3"></a>polymer <span class="ot">&lt;-</span> dt[<span class="sc">!</span><span class="fu">grepl</span>(<span class="st">" -&gt; "</span>, dt)][<span class="dv">1</span>]</span>
-<span id="cb12-4"><a href="#cb12-4"></a>polymer <span class="ot">&lt;-</span> <span class="fu">str_split</span>(polymer, <span class="st">""</span>, <span class="at">simplify =</span> <span class="cn">TRUE</span>)[<span class="dv">1</span>,]</span>
-<span id="cb12-5"><a href="#cb12-5"></a>pairs <span class="ot">&lt;-</span> <span class="fu">str_split</span>(dt[<span class="fu">grepl</span>(<span class="st">" -&gt; "</span>, dt)], <span class="st">" -&gt; "</span>, <span class="at">simplify =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb12-6"><a href="#cb12-6"></a>pairsV <span class="ot">&lt;-</span> pairs[,<span class="dv">2</span>]</span>
-<span id="cb12-7"><a href="#cb12-7"></a><span class="fu">names</span>(pairsV) <span class="ot">&lt;-</span> pairs[,<span class="dv">1</span>]</span>
-<span id="cb12-8"><a href="#cb12-8"></a></span>
-<span id="cb12-9"><a href="#cb12-9"></a>pairsList <span class="ot">&lt;-</span> <span class="fu">c</span>()</span>
-<span id="cb12-10"><a href="#cb12-10"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>(<span class="fu">length</span>(polymer) <span class="sc">-</span> <span class="dv">1</span>)) {</span>
-<span id="cb12-11"><a href="#cb12-11"></a>  pairsList <span class="ot">&lt;-</span> <span class="fu">append</span>(pairsList, <span class="fu">paste0</span>(polymer[i<span class="sc">:</span>(i <span class="sc">+</span> <span class="dv">1</span>)], <span class="at">collapse =</span> <span class="st">""</span>))</span>
-<span id="cb12-12"><a href="#cb12-12"></a>}</span>
-<span id="cb12-13"><a href="#cb12-13"></a>pairsList <span class="ot">&lt;-</span> <span class="fu">table</span>(pairsList)</span>
-<span id="cb12-14"><a href="#cb12-14"></a></span>
-<span id="cb12-15"><a href="#cb12-15"></a>ohNo <span class="ot">&lt;-</span> <span class="cf">function</span>(x, n) {</span>
-<span id="cb12-16"><a href="#cb12-16"></a>  <span class="cf">if</span>(n <span class="sc">==</span> <span class="dv">1</span>) { <span class="fu">return</span>(x) }</span>
-<span id="cb12-17"><a href="#cb12-17"></a>  </span>
-<span id="cb12-18"><a href="#cb12-18"></a>  pairsNames <span class="ot">&lt;-</span> <span class="fu">names</span>(x)</span>
-<span id="cb12-19"><a href="#cb12-19"></a>  temp <span class="ot">&lt;-</span> <span class="fu">c</span>()</span>
-<span id="cb12-20"><a href="#cb12-20"></a>  <span class="cf">for</span> (i <span class="cf">in</span> pairsNames) {</span>
-<span id="cb12-21"><a href="#cb12-21"></a>    mid <span class="ot">&lt;-</span> pairsV[i]</span>
-<span id="cb12-22"><a href="#cb12-22"></a>    str <span class="ot">&lt;-</span> <span class="fu">str_split</span>(i, <span class="st">""</span>, <span class="at">simplify =</span> <span class="cn">TRUE</span>)[<span class="dv">1</span>, ]</span>
-<span id="cb12-23"><a href="#cb12-23"></a>    temp <span class="ot">&lt;-</span> <span class="fu">append</span>(temp,</span>
-<span id="cb12-24"><a href="#cb12-24"></a>                   <span class="fu">paste0</span>(str[<span class="dv">1</span>], mid, str[<span class="dv">2</span>], <span class="at">collapse =</span> <span class="st">""</span>))</span>
-<span id="cb12-25"><a href="#cb12-25"></a>  }</span>
-<span id="cb12-26"><a href="#cb12-26"></a>  temp <span class="ot">&lt;-</span> <span class="fu">table</span>(temp)</span>
-<span id="cb12-27"><a href="#cb12-27"></a>  <span class="fu">print</span>(temp)</span>
-<span id="cb12-28"><a href="#cb12-28"></a></span>
-<span id="cb12-29"><a href="#cb12-29"></a>  newPairs <span class="ot">&lt;-</span> <span class="fu">c</span>()</span>
-<span id="cb12-30"><a href="#cb12-30"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(temp)) {</span>
-<span id="cb12-31"><a href="#cb12-31"></a>    val1 <span class="ot">&lt;-</span> x[i]</span>
-<span id="cb12-32"><a href="#cb12-32"></a>    <span class="fu">names</span>(val1) <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="fu">substr</span>(<span class="fu">names</span>(temp[i]), <span class="dv">1</span>, <span class="dv">2</span>))</span>
-<span id="cb12-33"><a href="#cb12-33"></a>    newPairs <span class="ot">&lt;-</span> <span class="fu">append</span>(newPairs, val1)</span>
-<span id="cb12-34"><a href="#cb12-34"></a>    </span>
-<span id="cb12-35"><a href="#cb12-35"></a>    val2 <span class="ot">&lt;-</span> x[i]</span>
-<span id="cb12-36"><a href="#cb12-36"></a>    <span class="fu">names</span>(val2) <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="fu">substr</span>(<span class="fu">names</span>(temp[i]), <span class="dv">2</span>, <span class="dv">3</span>))</span>
-<span id="cb12-37"><a href="#cb12-37"></a>    newPairs <span class="ot">&lt;-</span> <span class="fu">append</span>(newPairs, val2)</span>
-<span id="cb12-38"><a href="#cb12-38"></a>  }</span>
-<span id="cb12-39"><a href="#cb12-39"></a></span>
-<span id="cb12-40"><a href="#cb12-40"></a>  x <span class="ot">&lt;-</span> <span class="fu">data.table</span>(<span class="st">"pairs"</span> <span class="ot">=</span> <span class="fu">names</span>(newPairs), <span class="st">"vals"</span> <span class="ot">=</span> <span class="fu">as.double</span>(newPairs))</span>
-<span id="cb12-41"><a href="#cb12-41"></a>  x <span class="ot">&lt;-</span> x[, <span class="fu">sum</span>(.SD), by <span class="ot">=</span> <span class="st">"pairs"</span>]</span>
-<span id="cb12-42"><a href="#cb12-42"></a>  </span>
-<span id="cb12-43"><a href="#cb12-43"></a>  newPairs <span class="ot">&lt;-</span> x<span class="sc">$</span>V1</span>
-<span id="cb12-44"><a href="#cb12-44"></a>  <span class="fu">names</span>(newPairs) <span class="ot">&lt;-</span> x<span class="sc">$</span>pairs</span>
-<span id="cb12-45"><a href="#cb12-45"></a>  </span>
-<span id="cb12-46"><a href="#cb12-46"></a>  <span class="fu">print</span>(newPairs)</span>
-<span id="cb12-47"><a href="#cb12-47"></a></span>
-<span id="cb12-48"><a href="#cb12-48"></a>  <span class="fu">return</span>(<span class="fu">ohNo</span>(newPairs, n<span class="dv">-1</span>))</span>
-<span id="cb12-49"><a href="#cb12-49"></a>}</span>
-<span id="cb12-50"><a href="#cb12-50"></a><span class="fu">options</span>(<span class="at">scipen=</span><span class="dv">999</span>)</span>
-<span id="cb12-51"><a href="#cb12-51"></a>temp <span class="ot">&lt;-</span> <span class="fu">ohNo</span>(pairsList, <span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>NC NB CH CN BC HB</p>
+<p>NC NB CH B</p>
+<p>N b CN BC HB</p>
+<div class="cell" data-hash="2021-14_cache/html/unnamed-chunk-5_7aa13a0c70bc43eb41738e5833493070">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a><span class="co"># part 2</span></span>
+<span id="cb16-2"><a href="#cb16-2"></a>dt <span class="ot">&lt;-</span> <span class="fu">readLines</span>(<span class="st">"input2.txt"</span>)</span>
+<span id="cb16-3"><a href="#cb16-3"></a>polymer <span class="ot">&lt;-</span> dt[<span class="sc">!</span><span class="fu">grepl</span>(<span class="st">" -&gt; "</span>, dt)][<span class="dv">1</span>]</span>
+<span id="cb16-4"><a href="#cb16-4"></a>polymer <span class="ot">&lt;-</span> <span class="fu">str_split</span>(polymer, <span class="st">""</span>, <span class="at">simplify =</span> <span class="cn">TRUE</span>)[<span class="dv">1</span>,]</span>
+<span id="cb16-5"><a href="#cb16-5"></a>pairs <span class="ot">&lt;-</span> <span class="fu">str_split</span>(dt[<span class="fu">grepl</span>(<span class="st">" -&gt; "</span>, dt)], <span class="st">" -&gt; "</span>, <span class="at">simplify =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb16-6"><a href="#cb16-6"></a>pairsV <span class="ot">&lt;-</span> pairs[,<span class="dv">2</span>]</span>
+<span id="cb16-7"><a href="#cb16-7"></a><span class="fu">names</span>(pairsV) <span class="ot">&lt;-</span> pairs[,<span class="dv">1</span>]</span>
+<span id="cb16-8"><a href="#cb16-8"></a></span>
+<span id="cb16-9"><a href="#cb16-9"></a>pairsList <span class="ot">&lt;-</span> <span class="fu">c</span>()</span>
+<span id="cb16-10"><a href="#cb16-10"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>(<span class="fu">length</span>(polymer) <span class="sc">-</span> <span class="dv">1</span>)) {</span>
+<span id="cb16-11"><a href="#cb16-11"></a>  pairsList <span class="ot">&lt;-</span> <span class="fu">append</span>(pairsList, <span class="fu">paste0</span>(polymer[i<span class="sc">:</span>(i <span class="sc">+</span> <span class="dv">1</span>)], <span class="at">collapse =</span> <span class="st">""</span>))</span>
+<span id="cb16-12"><a href="#cb16-12"></a>}</span>
+<span id="cb16-13"><a href="#cb16-13"></a>pairsList <span class="ot">&lt;-</span> <span class="fu">table</span>(pairsList)</span>
+<span id="cb16-14"><a href="#cb16-14"></a></span>
+<span id="cb16-15"><a href="#cb16-15"></a>ohNo <span class="ot">&lt;-</span> <span class="cf">function</span>(x, n) {</span>
+<span id="cb16-16"><a href="#cb16-16"></a>  <span class="cf">if</span>(n <span class="sc">==</span> <span class="dv">1</span>) { <span class="fu">return</span>(x) }</span>
+<span id="cb16-17"><a href="#cb16-17"></a>  </span>
+<span id="cb16-18"><a href="#cb16-18"></a>  pairsNames <span class="ot">&lt;-</span> <span class="fu">names</span>(x)</span>
+<span id="cb16-19"><a href="#cb16-19"></a>  temp <span class="ot">&lt;-</span> <span class="fu">c</span>()</span>
+<span id="cb16-20"><a href="#cb16-20"></a>  <span class="cf">for</span> (i <span class="cf">in</span> pairsNames) {</span>
+<span id="cb16-21"><a href="#cb16-21"></a>    mid <span class="ot">&lt;-</span> pairsV[i]</span>
+<span id="cb16-22"><a href="#cb16-22"></a>    str <span class="ot">&lt;-</span> <span class="fu">str_split</span>(i, <span class="st">""</span>, <span class="at">simplify =</span> <span class="cn">TRUE</span>)[<span class="dv">1</span>, ]</span>
+<span id="cb16-23"><a href="#cb16-23"></a>    temp <span class="ot">&lt;-</span> <span class="fu">append</span>(temp,</span>
+<span id="cb16-24"><a href="#cb16-24"></a>                   <span class="fu">paste0</span>(str[<span class="dv">1</span>], mid, str[<span class="dv">2</span>], <span class="at">collapse =</span> <span class="st">""</span>))</span>
+<span id="cb16-25"><a href="#cb16-25"></a>  }</span>
+<span id="cb16-26"><a href="#cb16-26"></a>  temp <span class="ot">&lt;-</span> <span class="fu">table</span>(temp)</span>
+<span id="cb16-27"><a href="#cb16-27"></a>  <span class="fu">print</span>(temp)</span>
+<span id="cb16-28"><a href="#cb16-28"></a></span>
+<span id="cb16-29"><a href="#cb16-29"></a>  newPairs <span class="ot">&lt;-</span> <span class="fu">c</span>()</span>
+<span id="cb16-30"><a href="#cb16-30"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(temp)) {</span>
+<span id="cb16-31"><a href="#cb16-31"></a>    val1 <span class="ot">&lt;-</span> x[i]</span>
+<span id="cb16-32"><a href="#cb16-32"></a>    <span class="fu">names</span>(val1) <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="fu">substr</span>(<span class="fu">names</span>(temp[i]), <span class="dv">1</span>, <span class="dv">2</span>))</span>
+<span id="cb16-33"><a href="#cb16-33"></a>    newPairs <span class="ot">&lt;-</span> <span class="fu">append</span>(newPairs, val1)</span>
+<span id="cb16-34"><a href="#cb16-34"></a>    </span>
+<span id="cb16-35"><a href="#cb16-35"></a>    val2 <span class="ot">&lt;-</span> x[i]</span>
+<span id="cb16-36"><a href="#cb16-36"></a>    <span class="fu">names</span>(val2) <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="fu">substr</span>(<span class="fu">names</span>(temp[i]), <span class="dv">2</span>, <span class="dv">3</span>))</span>
+<span id="cb16-37"><a href="#cb16-37"></a>    newPairs <span class="ot">&lt;-</span> <span class="fu">append</span>(newPairs, val2)</span>
+<span id="cb16-38"><a href="#cb16-38"></a>  }</span>
+<span id="cb16-39"><a href="#cb16-39"></a></span>
+<span id="cb16-40"><a href="#cb16-40"></a>  x <span class="ot">&lt;-</span> <span class="fu">data.table</span>(<span class="st">"pairs"</span> <span class="ot">=</span> <span class="fu">names</span>(newPairs), <span class="st">"vals"</span> <span class="ot">=</span> <span class="fu">as.double</span>(newPairs))</span>
+<span id="cb16-41"><a href="#cb16-41"></a>  x <span class="ot">&lt;-</span> x[, <span class="fu">sum</span>(.SD), by <span class="ot">=</span> <span class="st">"pairs"</span>]</span>
+<span id="cb16-42"><a href="#cb16-42"></a>  </span>
+<span id="cb16-43"><a href="#cb16-43"></a>  newPairs <span class="ot">&lt;-</span> x<span class="sc">$</span>V1</span>
+<span id="cb16-44"><a href="#cb16-44"></a>  <span class="fu">names</span>(newPairs) <span class="ot">&lt;-</span> x<span class="sc">$</span>pairs</span>
+<span id="cb16-45"><a href="#cb16-45"></a>  </span>
+<span id="cb16-46"><a href="#cb16-46"></a>  <span class="fu">print</span>(newPairs)</span>
+<span id="cb16-47"><a href="#cb16-47"></a></span>
+<span id="cb16-48"><a href="#cb16-48"></a>  <span class="fu">return</span>(<span class="fu">ohNo</span>(newPairs, n<span class="dv">-1</span>))</span>
+<span id="cb16-49"><a href="#cb16-49"></a>}</span>
+<span id="cb16-50"><a href="#cb16-50"></a><span class="fu">options</span>(<span class="at">scipen=</span><span class="dv">999</span>)</span>
+<span id="cb16-51"><a href="#cb16-51"></a>temp <span class="ot">&lt;-</span> <span class="fu">ohNo</span>(pairsList, <span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>temp
 CHB NBC NCN 
@@ -795,13 +889,13 @@ BBC BBN BHH BNB CBH CCN CHB CNC HBC HCB HCN HNH NBB NBC NCH
  BB  BC  BN  BH  HH  NB  CB  CC  CN  CH  HB  NC  HC  HN  NH 
 293 212 173 128  86 110  69  57 122  39  95  32  68  26  26 </code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a><span class="co"># print(temp)</span></span>
-<span id="cb14-2"><a href="#cb14-2"></a>letters <span class="ot">&lt;-</span> <span class="fu">str_split</span>(<span class="fu">names</span>(temp), <span class="st">""</span>, <span class="at">simplify =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb14-3"><a href="#cb14-3"></a>dt <span class="ot">&lt;-</span> <span class="fu">data.table</span>(<span class="st">"let1"</span> <span class="ot">=</span> letters[,<span class="dv">1</span>], <span class="st">"let2"</span> <span class="ot">=</span> letters[,<span class="dv">2</span>], <span class="st">"vals"</span> <span class="ot">=</span> temp)</span>
-<span id="cb14-4"><a href="#cb14-4"></a>dt <span class="ot">&lt;-</span> <span class="fu">rbind</span>(dt[,.(let1, vals)], dt[,.(let2, vals)], <span class="at">use.names =</span> <span class="cn">FALSE</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb14-5"><a href="#cb14-5"></a>  .[, <span class="fu">sum</span>(.SD), by <span class="ot">=</span> <span class="st">"let1"</span>] <span class="sc">%&gt;%</span></span>
-<span id="cb14-6"><a href="#cb14-6"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(V1))</span>
-<span id="cb14-7"><a href="#cb14-7"></a>dt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1"></a><span class="co"># print(temp)</span></span>
+<span id="cb18-2"><a href="#cb18-2"></a>letters <span class="ot">&lt;-</span> <span class="fu">str_split</span>(<span class="fu">names</span>(temp), <span class="st">""</span>, <span class="at">simplify =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb18-3"><a href="#cb18-3"></a>dt <span class="ot">&lt;-</span> <span class="fu">data.table</span>(<span class="st">"let1"</span> <span class="ot">=</span> letters[,<span class="dv">1</span>], <span class="st">"let2"</span> <span class="ot">=</span> letters[,<span class="dv">2</span>], <span class="st">"vals"</span> <span class="ot">=</span> temp)</span>
+<span id="cb18-4"><a href="#cb18-4"></a>dt <span class="ot">&lt;-</span> <span class="fu">rbind</span>(dt[,.(let1, vals)], dt[,.(let2, vals)], <span class="at">use.names =</span> <span class="cn">FALSE</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb18-5"><a href="#cb18-5"></a>  .[, <span class="fu">sum</span>(.SD), by <span class="ot">=</span> <span class="st">"let1"</span>] <span class="sc">%&gt;%</span></span>
+<span id="cb18-6"><a href="#cb18-6"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(V1))</span>
+<span id="cb18-7"><a href="#cb18-7"></a>dt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>   let1   V1
 1:    B 1373
@@ -809,12 +903,12 @@ BBC BBN BHH BNB CBH CCN CHB CNC HBC HCB HCN HNH NBB NBC NCH
 3:    H  554
 4:    N  489</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a><span class="fu">head</span>(dt, <span class="dv">1</span>)<span class="sc">$</span>V1 <span class="sc">-</span> <span class="fu">tail</span>(dt, <span class="dv">1</span>)<span class="sc">$</span>V1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1"></a><span class="fu">head</span>(dt, <span class="dv">1</span>)<span class="sc">$</span>V1 <span class="sc">-</span> <span class="fu">tail</span>(dt, <span class="dv">1</span>)<span class="sc">$</span>V1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 884</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1"></a><span class="co"># 6415466473169 too high</span></span>
-<span id="cb18-2"><a href="#cb18-2"></a><span class="co"># 26510512726256 too high</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1"></a><span class="co"># 6415466473169 too high</span></span>
+<span id="cb22-2"><a href="#cb22-2"></a><span class="co"># 26510512726256 too high</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 
 

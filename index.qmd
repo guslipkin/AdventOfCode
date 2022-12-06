@@ -40,4 +40,5 @@ cat("adventofcode.guslipkin.me", file = "docs/CNAME")
 
 ## My Favorite Solutions
 
-- [2021-09](2021/09/2021-09.html)
+- [2021-09](2021/09/2021-09.html): I used the `dbscan` clustering method to solve a path finding issue.
+- [2022-04](2022/04/2022-04.html): While not my fastest part 1, part 2 took me just 38 seconds!

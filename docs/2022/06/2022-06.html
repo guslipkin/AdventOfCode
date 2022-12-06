@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Gus Lipkin’s Awesome Code - Welcome!</title>
+<title>Gus Lipkin’s Awesome Code - 2022-06: Tuning Trouble</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,27 +20,90 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1.6em;
   vertical-align: middle;
 }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="site_libs/quarto-search/fuse.min.js"></script>
-<script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
-<script src="site_libs/quarto-html/quarto.js"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="site_libs/quarto-html/anchor.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -62,7 +125,7 @@ ul.task-list li input[type="checkbox"] {
 }</script>
 
 
-<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="../../styles.css">
 </head>
 
 <body class="nav-sidebar floating nav-fixed">
@@ -72,7 +135,7 @@ ul.task-list li input[type="checkbox"] {
     <nav class="navbar navbar-expand-lg navbar-dark ">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container">
-    <a class="navbar-brand" href="./index.html">
+    <a class="navbar-brand" href="../../index.html">
     <span class="navbar-title">Gus Lipkin’s Awesome Code</span>
     </a>
   </div>
@@ -120,7 +183,7 @@ ul.task-list li input[type="checkbox"] {
     </nav>
   <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
     <div class="container-fluid d-flex justify-content-between">
-      <h1 class="quarto-secondary-nav-title">Welcome!</h1>
+      <h1 class="quarto-secondary-nav-title">2022-06: Tuning Trouble</h1>
       <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
         <i class="bi bi-chevron-right"></i>
       </button>
@@ -140,7 +203,7 @@ ul.task-list li input[type="checkbox"] {
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./index.html" class="sidebar-item-text sidebar-link active">Welcome!</a>
+  <a href="../../index.html" class="sidebar-item-text sidebar-link">Welcome!</a>
   </div>
 </li>
         <li class="sidebar-item sidebar-item-section">
@@ -153,27 +216,27 @@ ul.task-list li input[type="checkbox"] {
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./2022/01/2022-01.html" class="sidebar-item-text sidebar-link">2022-01: Calorie Counting</a>
+  <a href="../../2022/01/2022-01.html" class="sidebar-item-text sidebar-link">2022-01: Calorie Counting</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./2022/02/2022-02.html" class="sidebar-item-text sidebar-link">2022-02: Rock Paper Scissors</a>
+  <a href="../../2022/02/2022-02.html" class="sidebar-item-text sidebar-link">2022-02: Rock Paper Scissors</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./2022/03/2022-03.html" class="sidebar-item-text sidebar-link">2022-03: Rucksack Reorganization</a>
+  <a href="../../2022/03/2022-03.html" class="sidebar-item-text sidebar-link">2022-03: Rucksack Reorganization</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./2022/04/2022-04.html" class="sidebar-item-text sidebar-link">2022-04: Camp Cleanup</a>
+  <a href="../../2022/04/2022-04.html" class="sidebar-item-text sidebar-link">2022-04: Camp Cleanup</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./2022/05/2022-05.html" class="sidebar-item-text sidebar-link">2022-05: Supply Stacks</a>
+  <a href="../../2022/05/2022-05.html" class="sidebar-item-text sidebar-link">2022-05: Supply Stacks</a>
   </div>
 </li>
       </ul>
@@ -188,62 +251,62 @@ ul.task-list li input[type="checkbox"] {
       <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./2021/01/2021-01.html" class="sidebar-item-text sidebar-link">2021-01: Sonar Sweep</a>
+  <a href="../../2021/01/2021-01.html" class="sidebar-item-text sidebar-link">2021-01: Sonar Sweep</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./2021/02/2021-02.html" class="sidebar-item-text sidebar-link">2021-02: Dive!</a>
+  <a href="../../2021/02/2021-02.html" class="sidebar-item-text sidebar-link">2021-02: Dive!</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./2021/03/2021-03.html" class="sidebar-item-text sidebar-link">2021-03: Binary Diagnostic</a>
+  <a href="../../2021/03/2021-03.html" class="sidebar-item-text sidebar-link">2021-03: Binary Diagnostic</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./2021/04/2021-04.html" class="sidebar-item-text sidebar-link">2021-04: Giant Squid</a>
+  <a href="../../2021/04/2021-04.html" class="sidebar-item-text sidebar-link">2021-04: Giant Squid</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./2021/05/2021-05.html" class="sidebar-item-text sidebar-link">2021-05: Hydrothermal Venture</a>
+  <a href="../../2021/05/2021-05.html" class="sidebar-item-text sidebar-link">2021-05: Hydrothermal Venture</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./2021/06/2021-06.html" class="sidebar-item-text sidebar-link">2021-06: Lanternfish</a>
+  <a href="../../2021/06/2021-06.html" class="sidebar-item-text sidebar-link">2021-06: Lanternfish</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./2021/07/2021-07.html" class="sidebar-item-text sidebar-link">2021-07: The Treachery of Whales</a>
+  <a href="../../2021/07/2021-07.html" class="sidebar-item-text sidebar-link">2021-07: The Treachery of Whales</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./2021/08/2021-08.html" class="sidebar-item-text sidebar-link">2021-08: Seven Segment Search</a>
+  <a href="../../2021/08/2021-08.html" class="sidebar-item-text sidebar-link">2021-08: Seven Segment Search</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./2021/09/2021-09.html" class="sidebar-item-text sidebar-link">2021-09: Smoke Basin</a>
+  <a href="../../2021/09/2021-09.html" class="sidebar-item-text sidebar-link">2021-09: Smoke Basin</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./2021/10/2021-10.html" class="sidebar-item-text sidebar-link">2021-10: Syntax Scoring</a>
+  <a href="../../2021/10/2021-10.html" class="sidebar-item-text sidebar-link">2021-10: Syntax Scoring</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./2021/11/2021-11.html" class="sidebar-item-text sidebar-link">2021-11: Dumbo Octopus</a>
+  <a href="../../2021/11/2021-11.html" class="sidebar-item-text sidebar-link">2021-11: Dumbo Octopus</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./2021/13/2021-13.html" class="sidebar-item-text sidebar-link">2021-13: Transparent Origami</a>
+  <a href="../../2021/13/2021-13.html" class="sidebar-item-text sidebar-link">2021-13: Transparent Origami</a>
   </div>
 </li>
       </ul>
@@ -258,52 +321,52 @@ ul.task-list li input[type="checkbox"] {
       <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./2020/01/2020-01.html" class="sidebar-item-text sidebar-link">2020-01: Report Repair</a>
+  <a href="../../2020/01/2020-01.html" class="sidebar-item-text sidebar-link">2020-01: Report Repair</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./2020/02/2020-02.html" class="sidebar-item-text sidebar-link">2020-02: Password Philosophy</a>
+  <a href="../../2020/02/2020-02.html" class="sidebar-item-text sidebar-link">2020-02: Password Philosophy</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./2020/03/2020-03.html" class="sidebar-item-text sidebar-link">2020-03: Toboggan Trajectory</a>
+  <a href="../../2020/03/2020-03.html" class="sidebar-item-text sidebar-link">2020-03: Toboggan Trajectory</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./2020/04/2020-04.html" class="sidebar-item-text sidebar-link">2020-04: Passport Processing</a>
+  <a href="../../2020/04/2020-04.html" class="sidebar-item-text sidebar-link">2020-04: Passport Processing</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./2020/05/2020-05.html" class="sidebar-item-text sidebar-link">2020-05: Binary Boarding</a>
+  <a href="../../2020/05/2020-05.html" class="sidebar-item-text sidebar-link">2020-05: Binary Boarding</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./2020/06/2020-06.html" class="sidebar-item-text sidebar-link">2020-06: Custom Customs</a>
+  <a href="../../2020/06/2020-06.html" class="sidebar-item-text sidebar-link">2020-06: Custom Customs</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./2020/07/2020-07.html" class="sidebar-item-text sidebar-link">2020-07: Handy Haversacks</a>
+  <a href="../../2020/07/2020-07.html" class="sidebar-item-text sidebar-link">2020-07: Handy Haversacks</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./2020/08/2020-08.html" class="sidebar-item-text sidebar-link">2020-08: Handheld Halting</a>
+  <a href="../../2020/08/2020-08.html" class="sidebar-item-text sidebar-link">2020-08: Handheld Halting</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./2020/09/2020-09.html" class="sidebar-item-text sidebar-link">2020-09: Encoding Error</a>
+  <a href="../../2020/09/2020-09.html" class="sidebar-item-text sidebar-link">2020-09: Encoding Error</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./2020/10/2020-10.html" class="sidebar-item-text sidebar-link">2020-10: Adapter Array</a>
+  <a href="../../2020/10/2020-10.html" class="sidebar-item-text sidebar-link">2020-10: Adapter Array</a>
   </div>
 </li>
       </ul>
@@ -318,7 +381,7 @@ ul.task-list li input[type="checkbox"] {
       <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./2019/01/2019-01.html" class="sidebar-item-text sidebar-link">2019-01: The Tyranny of the Rocket Equation</a>
+  <a href="../../2019/01/2019-01.html" class="sidebar-item-text sidebar-link">2019-01: The Tyranny of the Rocket Equation</a>
   </div>
 </li>
       </ul>
@@ -333,32 +396,32 @@ ul.task-list li input[type="checkbox"] {
       <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./2018/01/2018-01.html" class="sidebar-item-text sidebar-link">2018-01: Chronal Calibration</a>
+  <a href="../../2018/01/2018-01.html" class="sidebar-item-text sidebar-link">2018-01: Chronal Calibration</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./2018/02/2018-02.html" class="sidebar-item-text sidebar-link">2018-02: Inventory Management System</a>
+  <a href="../../2018/02/2018-02.html" class="sidebar-item-text sidebar-link">2018-02: Inventory Management System</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./2018/03/2018-03.html" class="sidebar-item-text sidebar-link">2018-03: No Matter How You Slice It</a>
+  <a href="../../2018/03/2018-03.html" class="sidebar-item-text sidebar-link">2018-03: No Matter How You Slice It</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./2018/04/2018-04.html" class="sidebar-item-text sidebar-link">2018-04: Repose Record</a>
+  <a href="../../2018/04/2018-04.html" class="sidebar-item-text sidebar-link">2018-04: Repose Record</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./2018/05/2018-05.html" class="sidebar-item-text sidebar-link">2018-05: Alchemical Reduction</a>
+  <a href="../../2018/05/2018-05.html" class="sidebar-item-text sidebar-link">2018-05: Alchemical Reduction</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./2018/06/2018-06.html" class="sidebar-item-text sidebar-link">2018-06: Chronal Coordinates</a>
+  <a href="../../2018/06/2018-06.html" class="sidebar-item-text sidebar-link">2018-06: Chronal Coordinates</a>
   </div>
 </li>
       </ul>
@@ -373,12 +436,12 @@ ul.task-list li input[type="checkbox"] {
       <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./2017/01/2017-01.html" class="sidebar-item-text sidebar-link">2017-01: Inverse Captcha</a>
+  <a href="../../2017/01/2017-01.html" class="sidebar-item-text sidebar-link">2017-01: Inverse Captcha</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./2017/02/2017-02.html" class="sidebar-item-text sidebar-link">2017-02: Corruption Checksum</a>
+  <a href="../../2017/02/2017-02.html" class="sidebar-item-text sidebar-link">2017-02: Corruption Checksum</a>
   </div>
 </li>
       </ul>
@@ -393,22 +456,22 @@ ul.task-list li input[type="checkbox"] {
       <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth1 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./2016/01/2016-01.html" class="sidebar-item-text sidebar-link">2016-01: No Time for a Taxicab</a>
+  <a href="../../2016/01/2016-01.html" class="sidebar-item-text sidebar-link">2016-01: No Time for a Taxicab</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./2016/02/2016-02.html" class="sidebar-item-text sidebar-link">2016-02: Bathroom Security</a>
+  <a href="../../2016/02/2016-02.html" class="sidebar-item-text sidebar-link">2016-02: Bathroom Security</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./2016/03/2016-03.html" class="sidebar-item-text sidebar-link">2016-03: Squares With Three Sides</a>
+  <a href="../../2016/03/2016-03.html" class="sidebar-item-text sidebar-link">2016-03: Squares With Three Sides</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./2016/04/2016-04.html" class="sidebar-item-text sidebar-link">2016-04: Security Through Obscurity</a>
+  <a href="../../2016/04/2016-04.html" class="sidebar-item-text sidebar-link">2016-04: Security Through Obscurity</a>
   </div>
 </li>
       </ul>
@@ -423,32 +486,32 @@ ul.task-list li input[type="checkbox"] {
       <ul id="quarto-sidebar-section-8" class="collapse list-unstyled sidebar-section depth1 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./2015/01/2015-01.html" class="sidebar-item-text sidebar-link">2015-01: Not Quite Lisp</a>
+  <a href="../../2015/01/2015-01.html" class="sidebar-item-text sidebar-link">2015-01: Not Quite Lisp</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./2015/02/2015-02.html" class="sidebar-item-text sidebar-link">2015-02: I Was Told There Would Be No Math</a>
+  <a href="../../2015/02/2015-02.html" class="sidebar-item-text sidebar-link">2015-02: I Was Told There Would Be No Math</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./2015/03/2015-03.html" class="sidebar-item-text sidebar-link">2015-03: Perfectly Spherical Houses in a Vacuum</a>
+  <a href="../../2015/03/2015-03.html" class="sidebar-item-text sidebar-link">2015-03: Perfectly Spherical Houses in a Vacuum</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./2015/04/2015-04.html" class="sidebar-item-text sidebar-link">2015-04: The Ideal Stocking Stuffer</a>
+  <a href="../../2015/04/2015-04.html" class="sidebar-item-text sidebar-link">2015-04: The Ideal Stocking Stuffer</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./2015/05/2015-05.html" class="sidebar-item-text sidebar-link">2015-05: Doesn’t He Have Intern-Elves For This?</a>
+  <a href="../../2015/05/2015-05.html" class="sidebar-item-text sidebar-link">2015-05: Doesn’t He Have Intern-Elves For This?</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./2015/06/2015-06.html" class="sidebar-item-text sidebar-link">2015-06: Probably a Fire Hazard</a>
+  <a href="../../2015/06/2015-06.html" class="sidebar-item-text sidebar-link">2015-06: Probably a Fire Hazard</a>
   </div>
 </li>
       </ul>
@@ -462,8 +525,8 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#star-chart" id="toc-star-chart" class="nav-link active" data-scroll-target="#star-chart">Star Chart</a></li>
-  <li><a href="#my-favorite-solutions" id="toc-my-favorite-solutions" class="nav-link" data-scroll-target="#my-favorite-solutions">My Favorite Solutions</a></li>
+  <li><a href="#part-1" id="toc-part-1" class="nav-link active" data-scroll-target="#part-1">Part 1</a></li>
+  <li><a href="#part-2" id="toc-part-2" class="nav-link" data-scroll-target="#part-2">Part 2</a></li>
   </ul>
 </nav>
     </div>
@@ -472,7 +535,7 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title d-none d-lg-block">Welcome!</h1>
+<h1 class="title d-none d-lg-block">2022-06: Tuning Trouble</h1>
 </div>
 
 
@@ -487,43 +550,81 @@ ul.task-list li input[type="checkbox"] {
 
 </header>
 
-<p>Welcome to my Advent of Code book! All of my solutions are in R with varying degrees of complexity and documentation.</p>
-<div class="callout-caution callout callout-style-default callout-captioned">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
+<div class="cell" data-hash="2022-06_cache/html/unnamed-chunk-1_94dab4d66d1e23645ce5a829640ca5a9">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Attaching packages ─────────────────────────────────────── tidyverse 1.3.2 ──
+✔ ggplot2 3.4.0      ✔ purrr   0.3.5 
+✔ tibble  3.1.8      ✔ dplyr   1.0.10
+✔ tidyr   1.2.1      ✔ stringr 1.5.0 
+✔ readr   2.1.3      ✔ forcats 0.5.2 
+── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+✖ dplyr::filter() masks stats::filter()
+✖ dplyr::lag()    masks stats::lag()</code></pre>
 </div>
-<div class="callout-caption-container flex-fill">
-Under Construction
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>I’m still working on getting the 2021 and earlier puzzles converted to Quarto. The star chart below is accurate, even if I don’t have the solutions posted here just yet.</p>
-</div>
-</div>
-<section id="star-chart" class="level2">
-<h2 class="anchored" data-anchor-id="star-chart">Star Chart</h2>
-<ul>
-<li>2022: ⭐️⭐️⭐️⭐️️⭐️ ️️️⭐️️️⭐️⭐️️️⭐️⭐️</li>
-<li>2021: ⭐️⭐️⭐️⭐️⭐️ ⭐️⭐️⭐️⭐️⭐️ ⭐️⭐️⭐️⭐️⭐️ ⭐️⭐️⭐️⭐️⭐️ ⭐️⭐️⭐️⭐️⭐️</li>
-<li>2020: ⭐️⭐️⭐️⭐️⭐️ ⭐️⭐️⭐️⭐️⭐️ ⭐️⭐️⭐️⭐️⭐️ ⭐️⭐️⭐️⭐️⭐️</li>
-<li>2019: ⭐️⭐️</li>
-<li>2018: ⭐️⭐️⭐️⭐️⭐️ ⭐️⭐️⭐️⭐️⭐️ ⭐️⭐️</li>
-<li>2017: ⭐️⭐️⭐️⭐️⭐</li>
-<li>2016: ⭐️⭐️⭐️⭐️⭐️ ⭐️️⭐⭐</li>
-<li>2015: ⭐️⭐️⭐️⭐️⭐️ ⭐️⭐️⭐️⭐️⭐️ ⭐️⭐️</li>
-</ul>
-<p>Total Stars: 94/400</p>
-<div class="cell" data-hash="index_cache/html/unnamed-chunk-1_d1fc66c9f897b87510d9e2f3d6c5de7b">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="fu">library</span>(data.table)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'data.table'
 
+The following objects are masked from 'package:dplyr':
+
+    between, first, last
+
+The following object is masked from 'package:purrr':
+
+    transpose</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="fu">library</span>(mistlecode)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-hash="2022-06_cache/html/unnamed-chunk-2_c7f4c5efb0b0426fbd5821a7b808b732">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a>dt <span class="ot">&lt;-</span> <span class="fu">unlist</span>(<span class="fu">strsplit</span>(<span class="fu">readLines</span>(<span class="st">"input.txt"</span>), <span class="st">""</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>This looks easy. Oh wait. I totally misread the problem…</p>
+<section id="part-1" class="level2">
+<h2 class="anchored" data-anchor-id="part-1">Part 1</h2>
+<p>Hardcoding everything will bite me in the butt later probably. Ultimately not too bad in hindsight.</p>
+<div class="cell" data-hash="2022-06_cache/html/unnamed-chunk-3_13c28cdeef9566a57a66e5c99d2ee764">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a><span class="fu">data.frame</span>(<span class="st">"w"</span> <span class="ot">=</span> dt,</span>
+<span id="cb7-2"><a href="#cb7-2"></a>           <span class="st">"x"</span> <span class="ot">=</span> <span class="fu">c</span>(dt[<span class="sc">-</span><span class="dv">1</span>], <span class="cn">NA</span>),</span>
+<span id="cb7-3"><a href="#cb7-3"></a>           <span class="st">"y"</span> <span class="ot">=</span> <span class="fu">c</span>(dt[<span class="sc">-</span><span class="dv">1</span><span class="sc">:-</span><span class="dv">2</span>], <span class="cn">NA</span>, <span class="cn">NA</span>),</span>
+<span id="cb7-4"><a href="#cb7-4"></a>           <span class="st">"z"</span> <span class="ot">=</span> <span class="fu">c</span>(dt[<span class="sc">-</span><span class="dv">1</span><span class="sc">:-</span><span class="dv">3</span>], <span class="cn">NA</span>, <span class="cn">NA</span>, <span class="cn">NA</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb7-5"><a href="#cb7-5"></a>  <span class="fu">mutate</span>(<span class="at">marker =</span> <span class="fu">paste0</span>(w, x, y, z, <span class="at">sep =</span> <span class="st">""</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb7-6"><a href="#cb7-6"></a>  <span class="fu">apply</span>(<span class="dv">1</span>, <span class="cf">function</span>(x) {</span>
+<span id="cb7-7"><a href="#cb7-7"></a>    <span class="fu">max</span>(<span class="fu">table</span>(<span class="fu">strsplit</span>(x[<span class="st">"marker"</span>], <span class="st">""</span>)))</span>
+<span id="cb7-8"><a href="#cb7-8"></a>  }) <span class="ot">-&gt;</span> tmp</span>
+<span id="cb7-9"><a href="#cb7-9"></a>(<span class="fu">which</span>(tmp <span class="sc">==</span> <span class="dv">1</span>) <span class="sc">+</span> <span class="dv">3</span>)[<span class="dv">1</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1578</code></pre>
+</div>
 </div>
 </section>
-<section id="my-favorite-solutions" class="level2">
-<h2 class="anchored" data-anchor-id="my-favorite-solutions">My Favorite Solutions</h2>
-<ul>
-<li><a href="2021/09/2021-09.html">2021-09</a>: I used the <code>dbscan</code> clustering method to solve a path finding issue.</li>
-<li><a href="2022/04/2022-04.html">2022-04</a>: While not my fastest part 1, part 2 took me just 38 seconds!</li>
-</ul>
+<section id="part-2" class="level2">
+<h2 class="anchored" data-anchor-id="part-2">Part 2</h2>
+<p>Well, well, well. Hardcoding is never a good move. Took a bit of time to get it figured out, but I got there in the end.</p>
+<div class="cell" data-hash="2022-06_cache/html/unnamed-chunk-4_1eefb6a95e4348c35e0df76a2f63aaa3">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a>get_vec <span class="ot">&lt;-</span> <span class="cf">function</span>(vec, place) {</span>
+<span id="cb9-2"><a href="#cb9-2"></a>  <span class="cf">if</span> (place <span class="sc">==</span> <span class="dv">0</span>) { <span class="fu">return</span>(vec) }</span>
+<span id="cb9-3"><a href="#cb9-3"></a>  <span class="fu">c</span>(vec[<span class="sc">-</span><span class="dv">1</span><span class="sc">:</span>(<span class="sc">-</span>place)], <span class="fu">rep</span>(<span class="cn">NA</span>, place))</span>
+<span id="cb9-4"><a href="#cb9-4"></a>}</span>
+<span id="cb9-5"><a href="#cb9-5"></a></span>
+<span id="cb9-6"><a href="#cb9-6"></a><span class="fu">lapply</span>(<span class="dv">0</span><span class="sc">:</span><span class="dv">13</span>, <span class="cf">function</span>(x) {</span>
+<span id="cb9-7"><a href="#cb9-7"></a>  <span class="fu">get_vec</span>(dt, x)</span>
+<span id="cb9-8"><a href="#cb9-8"></a>}) <span class="sc">|&gt;</span></span>
+<span id="cb9-9"><a href="#cb9-9"></a>  <span class="fu">data.frame</span>() <span class="sc">|&gt;</span></span>
+<span id="cb9-10"><a href="#cb9-10"></a>  <span class="st">`</span><span class="at">colnames&lt;-</span><span class="st">`</span>(<span class="fu">paste0</span>(<span class="st">"X"</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">14</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb9-11"><a href="#cb9-11"></a>  <span class="fu">apply</span>(<span class="dv">1</span>, <span class="cf">function</span>(x) {</span>
+<span id="cb9-12"><a href="#cb9-12"></a>    <span class="fu">paste0</span>(x, <span class="at">collapse =</span> <span class="st">""</span>)</span>
+<span id="cb9-13"><a href="#cb9-13"></a>  }) <span class="sc">|&gt;</span></span>
+<span id="cb9-14"><a href="#cb9-14"></a>  <span class="fu">sapply</span>(<span class="cf">function</span>(x) {</span>
+<span id="cb9-15"><a href="#cb9-15"></a>    <span class="fu">max</span>(<span class="fu">table</span>(<span class="fu">strsplit</span>(x, <span class="st">""</span>)))</span>
+<span id="cb9-16"><a href="#cb9-16"></a>  }) <span class="ot">-&gt;</span> tmp</span>
+<span id="cb9-17"><a href="#cb9-17"></a>(<span class="fu">which</span>(tmp <span class="sc">==</span> <span class="dv">1</span>) <span class="sc">+</span> <span class="dv">13</span>)[<span class="dv">1</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>mdcbnwqgshpvfj 
+          2178 </code></pre>
+</div>
+</div>
 
 
 </section>
