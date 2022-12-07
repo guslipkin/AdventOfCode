@@ -1,0 +1,69 @@
+---
+title: "Day 3: Crossed Wires"
+format: html
+---
+
+```{r}
+#| message: false
+library(mistlecode)
+```
+
+```{r}
+dtM <-
+  readLines("input2.txt") |>
+  lapply(\(x) {
+    strsplit(x, ",")[[1]] |>
+      data.frame() |>
+      `colnames<-`(c("col")) |>
+      separate(col = "col", into = c("dir", "mag"), sep = 1) |>
+      mutate(mag = as.integer(mag))
+  })
+```
+
+## Part 1
+
+```{r}
+mat <-
+  matrix(0, max(dtM[[1]]$mag, dtM[[2]]$mag) * 2 + 1, max(dtM[[1]]$mag, dtM[[2]]$mag) * 2 + 1)
+lapply(1:2, \(y) {
+  curR <<- (nrow(mat) - 1) / 2
+  curC <<- (ncol(mat) - 1) / 2
+
+  dt <- dtM[[y]]
+  dt$wire <- y
+  
+  apply(dt, 1, \(x) {
+    dir <- x["dir"]
+    mag <- as.numeric(x["mag"])
+    wire <- as.numeric(x["wire"])
+    if (dir == "R") {
+      mat[curR:(curR + mag), curC] <<-
+        ifelse(!all(mat[curR:(curR + mag), curC] %in% c(0, wire)), wire, 3)
+      curR <<- curR + mag
+    } else if (dir == "L") {
+      mat[(curR - mag):curR, curC] <<-
+        ifelse(!all(mat[curR:(curR - mag), curC] %in% c(0, wire)), wire, 3)
+      curR <<- curR - mag
+    } else if (dir == "U") {
+      mat[curR, curC:(curC + mag)] <<-
+        ifelse(!all(mat[curR, curC:(curC + mag)] %in% c(0, wire)), wire, 3)
+      curC <<- curC + mag
+    } else if (dir == "U") {
+      mat[curR, (curC - mag):curC] <<-
+        ifelse(!all(mat[curR, curC:(curC - mag)] %in% c(0, wire)), wire, 3)
+      curC <<- curC - mag
+    }
+    invisible()
+  })
+})
+
+unique(as.vector(mat))
+
+which(mat == 3, arr.ind = TRUE) |>
+  data.frame() |>
+  mutate("rDist" = abs(row - (nrow(mat) - 1) / 2),
+         "cDist" = abs(col - (ncol(mat) - 1) / 2),
+         "dist" = rDist + cDist) |>
+  arrange(dist)
+```
+

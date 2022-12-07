@@ -19,16 +19,48 @@ I'm still working on getting the 2021 and earlier puzzles converted to Quarto. T
 
 ## Star Chart
 
-- 2022: ⭐️⭐️⭐️⭐️️⭐️ ️️️⭐️️️⭐️⭐️️️⭐️⭐️
-- 2021: ⭐️⭐️⭐️⭐️⭐️ ⭐️⭐️⭐️⭐️⭐️ ⭐️⭐️⭐️⭐️⭐️ ⭐️⭐️⭐️⭐️⭐️ ⭐️⭐️⭐️⭐️⭐️ 
-- 2020: ⭐️⭐️⭐️⭐️⭐️ ⭐️⭐️⭐️⭐️⭐️ ⭐️⭐️⭐️⭐️⭐️ ⭐️⭐️⭐️⭐️⭐️
-- 2019: ⭐️⭐️
-- 2018: ⭐️⭐️⭐️⭐️⭐️ ⭐️⭐️⭐️⭐️⭐️ ⭐️⭐️
-- 2017: ⭐️⭐️⭐️⭐️⭐
-- 2016: ⭐️⭐️⭐️⭐️⭐️ ⭐️️⭐⭐
-- 2015: ⭐️⭐️⭐️⭐️⭐️ ⭐️⭐️⭐️⭐️⭐️ ⭐️⭐️
+```{r}
+#| output: false
+#| include: false
+library(tidyverse)
+years <- c(2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022)
+stars <- c(  12,    8,    5,   12,    4,   20,   26,   14)
 
-Total Stars: 94/400
+mapply(\(y, s) {
+  c("star" = 1:s) |>
+    `names<-`(rep(y, s))
+}, years, stars) |>
+  unlist() %>%
+  data.frame("year" = names(.), "stars" = .) |>
+  group_by(year) |>
+    mutate(label = max(stars)) |>
+    ungroup() |>
+  mutate(label = ifelse(label == stars, label, NA)) |>
+  ggplot(aes(x = year, y = stars)) +
+  ggstar::geom_star(fill = "gold", size = 5) +
+  geom_label(aes(label = label), size = 3) +
+  theme_minimal() +
+  theme(
+    legend.position = "none",
+    axis.ticks = element_blank(),
+    axis.text = element_text(face = "bold"),
+    axis.text.y = element_blank(),
+    panel.grid = element_blank(),
+    panel.background = element_rect(fill = 'transparent', colour = 'transparent'),
+    plot.background = element_rect(fill = 'transparent', color = NA)
+  ) +
+  xlab("Year") + ylab("Stars") +
+  ylim(0, max(stars) + 4) +
+  coord_cartesian(clip = "off") +
+  geom_label(x = .75, y = -2.45, label = paste(rep(" ", 146), collapse = ""), hjust = 0, fill = "white") +
+  geom_label(x = 4.5, y = -3.7, label = "       ") +
+  ggtext::geom_richtext(x = .22, y = max(stars) / 2 + 2, label = "", angle = 90, label.padding = unit(c(.6, 1.1, .4, 1.1), "lines")) +
+  geom_label(x = .5, y = max(stars) + 3, label = paste("My Advent of Code Star Chart\nTotal Stars: ", sum(stars)), hjust = 0) -> p
+p
+ggsave("stars.png", p, bg = 'transparent')
+```
+
+![](stars.png)
 
 ```{r}
 #| echo: false

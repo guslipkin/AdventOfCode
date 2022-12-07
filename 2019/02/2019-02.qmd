@@ -1,0 +1,64 @@
+---
+title: "Day 2: 1202 Program Alarm"
+format: html
+---
+
+```{r}
+#| message: false
+library(mistlecode)
+```
+
+```{r}
+dtM <- readLines("input.txt") |>
+  str_split(",", simplify = TRUE) |>
+  as.numeric()
+```
+
+## Part 1
+
+```{r}
+dt <- dtM
+dt[1 + 1] <- 12
+dt[2 + 1] <- 2
+d <- 0
+x <- 1
+while(d != 99) {
+  if (dt[x] == 1) { dt[dt[x + 3] + 1] <- dt[dt[x + 1] + 1] + dt[dt[x + 2] + 1] }
+  else if (dt[x] == 2) { dt[dt[x + 3] + 1] <- dt[dt[x + 1] + 1] * dt[dt[x + 2] + 1] }
+  x <- x + 4
+  d <- dt[x]
+}
+dt[1]
+x
+```
+
+## Part 2
+
+```{r}
+breakFlag <- FALSE
+for (i in 0:99) {
+  for (j in 0:99) {
+    dt <- dtM
+    dt[1 + 1] <- i
+    dt[2 + 1] <- j
+    d <- 0
+    x <- 1
+    while (d != 99) {
+      if (dt[x] == 1) {
+        dt[dt[x + 3] + 1] <- dt[dt[x + 1] + 1] + dt[dt[x + 2] + 1]
+      }
+      else if (dt[x] == 2) {
+        dt[dt[x + 3] + 1] <- dt[dt[x + 1] + 1] * dt[dt[x + 2] + 1]
+      }
+      x <- x + 4
+      d <- dt[x]
+    }
+    if (dt[1] == 19690720) {
+      breakFlag <- TRUE
+      break
+    }
+  }
+  if (breakFlag) { break }
+}
+100 * dt[1 + 1] + dt[2 + 1]
+```

@@ -1,0 +1,151 @@
+---
+title: "2022-07: No Space Left On Device"
+format: html
+---
+
+```{r}
+#| message: false
+library(mistlecode)
+```
+
+```{r}
+dt <-
+  readLines("input.txt")
+wd <- getwd()
+```
+
+Oh no. This will probably use recursion.
+
+## Part 1
+
+My first attempt I just kinda hoped I wouldn't need recursion. It was silly, but
+a guy can dream. My next idea was to just create the file system and so that's
+what I did. Rather than making the files the size it says, I just filled them
+with one line holding the size so that I could read it in later. Getting the
+instructions fleshed out wasn't too bad. It reminds me a lot of my [Cat Simulator 2019](https://guslipkin.me/presentations/cat_simulator_2019) 
+project from Intro to UNIX.
+
+```{r}
+dir.create("here_we_go")
+setwd(paste0(wd, "/here_we_go"))
+
+invisible(sapply(dt, \(x) {
+  if(grepl("dir ", x)) {
+    d <- str_remove(x, "dir ")
+    if (!dir.exists(d)) { dir.create(d) }
+  } else if (grepl("[0-9]+", x)) {
+    f <- paste0(str_remove_all(x, "[0-9 \\.]"), ".txt")
+    if (!file.exists(f)) {
+      f <- file(f)
+      content <-
+        paste0(as.numeric(paste0(
+          str_extract_all(x, "\\d", simplify = TRUE), collapse = ""
+        )), "\n")
+      cat(content, file = f)
+      close(f)
+    }
+  } else if (grepl("\\$ cd \\.\\.", x)) {
+    setwd("../")
+  } else if (grepl("\\$ cd \\w", x)) {
+    d <- str_remove(x, "\\$ cd ")
+    if (!dir.exists(d)) { dir.create(d) }
+    setwd(d)
+  } else if (grepl("\\$ cd /", x)) {
+    setwd(paste0(wd, "/here_we_go")) 
+  } else if (!grepl("\\$ ls|\\$ cd /", x)) { print(x) }
+}))
+setwd(wd)
+```
+
+Getting this bit working was a pain, but I'm really pleased with it. I had it
+working on the test input for a while before the real input which was
+excruciating, but I eventually tracked the problem down to my regex where I
+remove any file paths. In my earlier step where I repeated file paths then
+unlisted, any duplicates are assigned a trailing number. In the test input, this
+number was never more than one digit. In my regex, I was only looking for one
+digit and so any paths with no digits or more than one digit were missed. With
+that out of the way, it still doesn't work. Eventually I realized I was
+collapsing my paths backwards so all my folder sizes were reversed. Fixing that
+eventually got me where I needed to be.
+
+```{r}
+#| message: false
+#| warning: false
+v <- 
+paste0("here_we_go/", list.files("here_we_go", recursive = TRUE)) |>
+  sapply(\(x) {
+    count <- str_count(x, "/") - 1
+    count <- ifelse(count == 0, 1, count)
+    rep(x, count)
+  }) 
+paths <-
+  v |>
+  lapply(\(x) {
+    xx <- str_remove(x, "here_we_go/")
+    sapply(0:(length(x) - 1), \(x) {
+      if (x == 0) { return(xx) }
+      m <- str_split(xx, "/")[[1]]
+      m <- m[-(length(m) - (1:x))]
+      m <- paste0(m, collapse = "/")
+      return(m)
+    }) |>
+      unlist() |>
+      unique()
+  }) |>
+  unlist() |>
+  unname()
+
+files <- 
+  v |>
+  unlist() |>
+  sapply(\(x) {
+    x <- as.numeric(readLines(x))
+  }) |>
+  data.frame() |>
+  rownames_to_column(var = "path") |>
+  `colnames<-`(c("full_path", "size")) |>
+  cbind(paths) |>
+  mutate(path = str_remove(paths, "/\\w*\\.txt\\d*"))
+  # filter(grepl("\\.txt", path)) |>
+  # mutate(path = str_remove(path, "/\\w*\\.txt[0-9]?"))
+files |>
+  group_by(path) |>
+    summarise(size = sum(size)) |>
+    arrange(path, .by_group = TRUE) |>
+  ungroup() |>
+  filter(size <= 100000) |>
+  pull(size) |>
+  sum()
+```
+
+## Part 2
+
+This wasn't too bad. Just took a bit to make the changes needed from part 1. I
+was briefly stuck when just grouping by path in the second pipeline, but adding
+the level grouping took care of it and I was good to go!
+
+```{r}
+f <- 
+  files |>
+  select(paths, size) |>
+  mutate(path = str_remove(paths, "/\\w*\\.txt\\d*")) |>
+  select(-paths) |>
+  unique() |>
+  group_by(path) |>
+    summarise(size = sum(size)) |>
+    ungroup() |>
+  mutate(level = str_count(path, "/"))
+home <- sum(f$size[f$level == 0])
+
+f |>
+  group_by(path, level) |>
+    summarise(size = sum(size), .groups = "keep") |>
+    arrange(path, .by_group = TRUE) |>
+    ungroup() |>
+  mutate(free = 70000000 - home,
+         sort = size + free) |>
+  arrange(desc(sort), size) |>
+  filter(sort > 30000000) |>
+  tail(1) |>
+  pull(size)
+```
