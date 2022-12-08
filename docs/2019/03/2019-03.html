@@ -246,7 +246,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../2022/07/2022-07.html" class="sidebar-item-text sidebar-link">2022-07</a>
+  <a href="../../2022/07/2022-07.html" class="sidebar-item-text sidebar-link">2022-07: No Space Left On Device</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../2022/08/2022-08.html" class="sidebar-item-text sidebar-link">2022-06: Tuning Trouble</a>
   </div>
 </li>
       </ul>
@@ -585,74 +590,67 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <section id="part-1" class="level2">
 <h2 class="anchored" data-anchor-id="part-1">Part 1</h2>
-<div class="cell" data-hash="2019-03_cache/html/unnamed-chunk-3_6fb13d4f10bca8e00b2f4f49d301ef21">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>mat <span class="ot">&lt;-</span></span>
-<span id="cb4-2"><a href="#cb4-2"></a>  <span class="fu">matrix</span>(<span class="dv">0</span>, <span class="fu">max</span>(dtM[[<span class="dv">1</span>]]<span class="sc">$</span>mag, dtM[[<span class="dv">2</span>]]<span class="sc">$</span>mag) <span class="sc">*</span> <span class="dv">2</span> <span class="sc">+</span> <span class="dv">1</span>, <span class="fu">max</span>(dtM[[<span class="dv">1</span>]]<span class="sc">$</span>mag, dtM[[<span class="dv">2</span>]]<span class="sc">$</span>mag) <span class="sc">*</span> <span class="dv">2</span> <span class="sc">+</span> <span class="dv">1</span>)</span>
-<span id="cb4-3"><a href="#cb4-3"></a><span class="fu">lapply</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>, \(y) {</span>
-<span id="cb4-4"><a href="#cb4-4"></a>  curR <span class="ot">&lt;&lt;-</span> (<span class="fu">nrow</span>(mat) <span class="sc">-</span> <span class="dv">1</span>) <span class="sc">/</span> <span class="dv">2</span></span>
-<span id="cb4-5"><a href="#cb4-5"></a>  curC <span class="ot">&lt;&lt;-</span> (<span class="fu">ncol</span>(mat) <span class="sc">-</span> <span class="dv">1</span>) <span class="sc">/</span> <span class="dv">2</span></span>
-<span id="cb4-6"><a href="#cb4-6"></a></span>
-<span id="cb4-7"><a href="#cb4-7"></a>  dt <span class="ot">&lt;-</span> dtM[[y]]</span>
-<span id="cb4-8"><a href="#cb4-8"></a>  dt<span class="sc">$</span>wire <span class="ot">&lt;-</span> y</span>
-<span id="cb4-9"><a href="#cb4-9"></a>  </span>
-<span id="cb4-10"><a href="#cb4-10"></a>  <span class="fu">apply</span>(dt, <span class="dv">1</span>, \(x) {</span>
-<span id="cb4-11"><a href="#cb4-11"></a>    dir <span class="ot">&lt;-</span> x[<span class="st">"dir"</span>]</span>
-<span id="cb4-12"><a href="#cb4-12"></a>    mag <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(x[<span class="st">"mag"</span>])</span>
-<span id="cb4-13"><a href="#cb4-13"></a>    wire <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(x[<span class="st">"wire"</span>])</span>
-<span id="cb4-14"><a href="#cb4-14"></a>    <span class="cf">if</span> (dir <span class="sc">==</span> <span class="st">"R"</span>) {</span>
-<span id="cb4-15"><a href="#cb4-15"></a>      mat[curR<span class="sc">:</span>(curR <span class="sc">+</span> mag), curC] <span class="ot">&lt;&lt;-</span></span>
-<span id="cb4-16"><a href="#cb4-16"></a>        <span class="fu">ifelse</span>(<span class="sc">!</span><span class="fu">all</span>(mat[curR<span class="sc">:</span>(curR <span class="sc">+</span> mag), curC] <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">0</span>, wire)), wire, <span class="dv">3</span>)</span>
-<span id="cb4-17"><a href="#cb4-17"></a>      curR <span class="ot">&lt;&lt;-</span> curR <span class="sc">+</span> mag</span>
-<span id="cb4-18"><a href="#cb4-18"></a>    } <span class="cf">else</span> <span class="cf">if</span> (dir <span class="sc">==</span> <span class="st">"L"</span>) {</span>
-<span id="cb4-19"><a href="#cb4-19"></a>      mat[(curR <span class="sc">-</span> mag)<span class="sc">:</span>curR, curC] <span class="ot">&lt;&lt;-</span></span>
-<span id="cb4-20"><a href="#cb4-20"></a>        <span class="fu">ifelse</span>(<span class="sc">!</span><span class="fu">all</span>(mat[curR<span class="sc">:</span>(curR <span class="sc">-</span> mag), curC] <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">0</span>, wire)), wire, <span class="dv">3</span>)</span>
-<span id="cb4-21"><a href="#cb4-21"></a>      curR <span class="ot">&lt;&lt;-</span> curR <span class="sc">-</span> mag</span>
-<span id="cb4-22"><a href="#cb4-22"></a>    } <span class="cf">else</span> <span class="cf">if</span> (dir <span class="sc">==</span> <span class="st">"U"</span>) {</span>
-<span id="cb4-23"><a href="#cb4-23"></a>      mat[curR, curC<span class="sc">:</span>(curC <span class="sc">+</span> mag)] <span class="ot">&lt;&lt;-</span></span>
-<span id="cb4-24"><a href="#cb4-24"></a>        <span class="fu">ifelse</span>(<span class="sc">!</span><span class="fu">all</span>(mat[curR, curC<span class="sc">:</span>(curC <span class="sc">+</span> mag)] <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">0</span>, wire)), wire, <span class="dv">3</span>)</span>
-<span id="cb4-25"><a href="#cb4-25"></a>      curC <span class="ot">&lt;&lt;-</span> curC <span class="sc">+</span> mag</span>
-<span id="cb4-26"><a href="#cb4-26"></a>    } <span class="cf">else</span> <span class="cf">if</span> (dir <span class="sc">==</span> <span class="st">"U"</span>) {</span>
-<span id="cb4-27"><a href="#cb4-27"></a>      mat[curR, (curC <span class="sc">-</span> mag)<span class="sc">:</span>curC] <span class="ot">&lt;&lt;-</span></span>
-<span id="cb4-28"><a href="#cb4-28"></a>        <span class="fu">ifelse</span>(<span class="sc">!</span><span class="fu">all</span>(mat[curR, curC<span class="sc">:</span>(curC <span class="sc">-</span> mag)] <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">0</span>, wire)), wire, <span class="dv">3</span>)</span>
-<span id="cb4-29"><a href="#cb4-29"></a>      curC <span class="ot">&lt;&lt;-</span> curC <span class="sc">-</span> mag</span>
-<span id="cb4-30"><a href="#cb4-30"></a>    }</span>
-<span id="cb4-31"><a href="#cb4-31"></a>    <span class="fu">invisible</span>()</span>
-<span id="cb4-32"><a href="#cb4-32"></a>  })</span>
-<span id="cb4-33"><a href="#cb4-33"></a>})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[[1]]
-NULL
-
-[[2]]
-NULL</code></pre>
+<div class="cell" data-hash="2019-03_cache/html/unnamed-chunk-3_64ba1e0e5ee010508faba20ad3001112">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>dt <span class="ot">&lt;-</span> <span class="fu">rbind</span>(</span>
+<span id="cb4-2"><a href="#cb4-2"></a>  dtM[[<span class="dv">1</span>]] <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">wire =</span> <span class="dv">1</span>),</span>
+<span id="cb4-3"><a href="#cb4-3"></a>  dtM[[<span class="dv">2</span>]] <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">wire =</span> <span class="dv">2</span>)</span>
+<span id="cb4-4"><a href="#cb4-4"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="fu">unique</span>(<span class="fu">as.vector</span>(mat))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 0 2 3 1</code></pre>
+<div class="cell" data-hash="2019-03_cache/html/unnamed-chunk-4_732b416d78fee1886c1c446e8838df91">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>mat <span class="ot">&lt;-</span></span>
+<span id="cb5-2"><a href="#cb5-2"></a>  <span class="fu">matrix</span>(<span class="dv">0</span>, <span class="fu">max</span>(dtM[[<span class="dv">1</span>]]<span class="sc">$</span>mag, dtM[[<span class="dv">2</span>]]<span class="sc">$</span>mag) <span class="sc">*</span> <span class="dv">2</span> <span class="sc">+</span> <span class="dv">1</span>, <span class="fu">max</span>(dtM[[<span class="dv">1</span>]]<span class="sc">$</span>mag, dtM[[<span class="dv">2</span>]]<span class="sc">$</span>mag) <span class="sc">*</span> <span class="dv">2</span> <span class="sc">+</span> <span class="dv">1</span>)</span>
+<span id="cb5-3"><a href="#cb5-3"></a></span>
+<span id="cb5-4"><a href="#cb5-4"></a>curR <span class="ot">&lt;-</span> (<span class="fu">nrow</span>(mat) <span class="sc">-</span> <span class="dv">1</span>) <span class="sc">/</span> <span class="dv">2</span></span>
+<span id="cb5-5"><a href="#cb5-5"></a>curC <span class="ot">&lt;-</span> (<span class="fu">ncol</span>(mat) <span class="sc">-</span> <span class="dv">1</span>) <span class="sc">/</span> <span class="dv">2</span></span>
+<span id="cb5-6"><a href="#cb5-6"></a></span>
+<span id="cb5-7"><a href="#cb5-7"></a><span class="fu">apply</span>(dt, <span class="dv">1</span>, \(x) {</span>
+<span id="cb5-8"><a href="#cb5-8"></a>  dir <span class="ot">&lt;-</span> x[<span class="st">"dir"</span>]</span>
+<span id="cb5-9"><a href="#cb5-9"></a>  mag <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(x[<span class="st">"mag"</span>])</span>
+<span id="cb5-10"><a href="#cb5-10"></a>  y <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(x[<span class="st">"wire"</span>])</span>
+<span id="cb5-11"><a href="#cb5-11"></a>  <span class="cf">if</span> (dir <span class="sc">==</span> <span class="st">"R"</span>) {</span>
+<span id="cb5-12"><a href="#cb5-12"></a>    mat[curR<span class="sc">:</span>(curR <span class="sc">-</span> mag), curC] <span class="ot">&lt;&lt;-</span> y</span>
+<span id="cb5-13"><a href="#cb5-13"></a>    curR <span class="ot">&lt;-</span> curR <span class="sc">+</span> mag</span>
+<span id="cb5-14"><a href="#cb5-14"></a>  } <span class="cf">else</span> <span class="cf">if</span> (dir <span class="sc">==</span> <span class="st">"L"</span>) {</span>
+<span id="cb5-15"><a href="#cb5-15"></a>    mat[(curR <span class="sc">-</span> mag)<span class="sc">:</span>curR, curC] <span class="ot">&lt;&lt;-</span> y</span>
+<span id="cb5-16"><a href="#cb5-16"></a>    curR <span class="ot">&lt;-</span> curR <span class="sc">-</span> mag</span>
+<span id="cb5-17"><a href="#cb5-17"></a>  } <span class="cf">else</span> <span class="cf">if</span> (dir <span class="sc">==</span> <span class="st">"U"</span>) {</span>
+<span id="cb5-18"><a href="#cb5-18"></a>    mat[curR, curC<span class="sc">:</span>(curC <span class="sc">+</span> mag)] <span class="ot">&lt;&lt;-</span> y</span>
+<span id="cb5-19"><a href="#cb5-19"></a>    curC <span class="ot">&lt;-</span> curC <span class="sc">+</span> mag</span>
+<span id="cb5-20"><a href="#cb5-20"></a>  } <span class="cf">else</span> <span class="cf">if</span> (dir <span class="sc">==</span> <span class="st">"U"</span>) {</span>
+<span id="cb5-21"><a href="#cb5-21"></a>    mat[curR, (curC <span class="sc">-</span> mag)<span class="sc">:</span>curC] <span class="ot">&lt;&lt;-</span> y</span>
+<span id="cb5-22"><a href="#cb5-22"></a>    curC <span class="ot">&lt;-</span> curC <span class="sc">-</span> mag</span>
+<span id="cb5-23"><a href="#cb5-23"></a>  }</span>
+<span id="cb5-24"><a href="#cb5-24"></a>  </span>
+<span id="cb5-25"><a href="#cb5-25"></a>  <span class="fu">data.frame</span>(<span class="fu">which</span>(mat <span class="sc">==</span> y, <span class="at">arr.ind =</span> <span class="cn">TRUE</span>), <span class="st">"wire"</span> <span class="ot">=</span> y)</span>
+<span id="cb5-26"><a href="#cb5-26"></a>}) <span class="sc">%&gt;%</span></span>
+<span id="cb5-27"><a href="#cb5-27"></a>  <span class="fu">do.call</span>(rbind, .) <span class="sc">|&gt;</span></span>
+<span id="cb5-28"><a href="#cb5-28"></a>  <span class="fu">mutate</span>(<span class="at">wire =</span> <span class="fu">as.character</span>(wire)) <span class="sc">|&gt;</span></span>
+<span id="cb5-29"><a href="#cb5-29"></a>  <span class="fu">group_by</span>(row, col) <span class="sc">|&gt;</span></span>
+<span id="cb5-30"><a href="#cb5-30"></a>    <span class="fu">summarise</span>(<span class="at">wire =</span> <span class="fu">str_c</span>(<span class="fu">unique</span>(wire), <span class="at">collapse =</span> <span class="st">" "</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb5-31"><a href="#cb5-31"></a>    <span class="fu">ungroup</span>() <span class="sc">|&gt;</span></span>
+<span id="cb5-32"><a href="#cb5-32"></a>  <span class="fu">filter</span>(wire <span class="sc">==</span> <span class="st">"1 2"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb5-33"><a href="#cb5-33"></a>  <span class="fu">mutate</span>(<span class="at">dist =</span> <span class="fu">abs</span>(row <span class="sc">-</span> curR) <span class="sc">+</span> <span class="fu">abs</span>(col <span class="sc">-</span> curC)) <span class="sc">|&gt;</span></span>
+<span id="cb5-34"><a href="#cb5-34"></a>  <span class="fu">arrange</span>(dist)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>`summarise()` has grouped output by 'row'. You can override using the `.groups`
+argument.</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a><span class="fu">which</span>(mat <span class="sc">==</span> <span class="dv">3</span>, <span class="at">arr.ind =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span></span>
-<span id="cb8-2"><a href="#cb8-2"></a>  <span class="fu">data.frame</span>() <span class="sc">|&gt;</span></span>
-<span id="cb8-3"><a href="#cb8-3"></a>  <span class="fu">mutate</span>(<span class="st">"rDist"</span> <span class="ot">=</span> <span class="fu">abs</span>(row <span class="sc">-</span> (<span class="fu">nrow</span>(mat) <span class="sc">-</span> <span class="dv">1</span>) <span class="sc">/</span> <span class="dv">2</span>),</span>
-<span id="cb8-4"><a href="#cb8-4"></a>         <span class="st">"cDist"</span> <span class="ot">=</span> <span class="fu">abs</span>(col <span class="sc">-</span> (<span class="fu">ncol</span>(mat) <span class="sc">-</span> <span class="dv">1</span>) <span class="sc">/</span> <span class="dv">2</span>),</span>
-<span id="cb8-5"><a href="#cb8-5"></a>         <span class="st">"dist"</span> <span class="ot">=</span> rDist <span class="sc">+</span> cDist) <span class="sc">|&gt;</span></span>
-<span id="cb8-6"><a href="#cb8-6"></a>  <span class="fu">arrange</span>(dist)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>   row col rDist cDist dist
-1    9   8     1     0    1
-2   10   8     2     0    2
-3   11   8     3     0    3
-4   12   8     4     0    4
-5   13   8     5     0    5
-6   14   8     6     0    6
-7   15   8     7     0    7
-8    8  15     0     7    7
-9   11  13     3     5    8
-10   9  15     1     7    8
-11  12  13     4     5    9
-12  13  13     5     5   10
-13  14  13     6     5   11
-14  15  13     7     5   12
-15  16  13     8     5   13</code></pre>
+<pre><code># A tibble: 12 × 4
+     row   col wire   dist
+   &lt;int&gt; &lt;int&gt; &lt;chr&gt; &lt;dbl&gt;
+ 1     8     8 1 2       0
+ 2     7     8 1 2       1
+ 3     8     9 1 2       1
+ 4     6     8 1 2       2
+ 5     8    10 1 2       2
+ 6     5     8 1 2       3
+ 7     8    11 1 2       3
+ 8     4     8 1 2       4
+ 9     8    12 1 2       4
+10     3     8 1 2       5
+11     8    13 1 2       5
+12     2     8 1 2       6</code></pre>
 </div>
 </div>
 

@@ -4,14 +4,19 @@ format: html
 ---
 
 ```{r}
+#| message: false
 library(mistlecode)
 ```
 
 ```{r}
-dt <- fread("input2.txt", header = FALSE)
+dt <- fread("input.txt", header = FALSE)
 ```
 
+Oh no. I always do hate grid based ones.
+
 ## Part 1
+
+This was a weird one. I'm writing this the day after I wrote the code, and I have no clue what my thought process was. I did it reasonably quickly so I'm not too unhappy with it.
 
 ```{r}
 mm <- 
@@ -22,126 +27,62 @@ mm <-
   apply(c(1, 2), as.numeric)
 
 grid <- expand.grid("col" = 1:ncol(mm), "row" = 1:nrow(mm))
-mapply(\(x, y) {
-  tree <- mm[y, x]
-  colMin <- 1; colMax <- ncol(mm)
-  rowMin <- 1; rowMax <- nrow(mm)
-  if (x == 1 | x == ncol(mm) | y == 1 | y == nrow(mm)) { return(c(x, y)) }
-  # print(paste(y, x))
-  # print(tree)
-  # print(all(mm[(y+1):nrow(mm),x] < tree, na.rm = TRUE))
-  #      print(all(mm[1:(y-1),x] < tree, na.rm = TRUE))
-  #      print(all(mm[y,1:(x-1)] < tree, na.rm = TRUE))
-  #      print(all(mm[y,(x+1):ncol(mm)] < tree, na.rm = TRUE))
-  if (all(mm[(y+1):nrow(mm),x] < tree, na.rm = TRUE) | 
-      all(mm[1:(y-1),x] < tree, na.rm = TRUE) | 
-      all(mm[y,1:(x-1)] < tree, na.rm = TRUE) | 
-      all(mm[y,(x+1):ncol(mm)] < tree, na.rm = TRUE)) { return(c(x, y)) }
-}, grid$col, grid$row) -> m
+
+m <-
+  mapply(\(x, y) {
+    tree <- mm[y, x]
+    
+    if (x == 1 | x == ncol(mm) | y == 1 | y == nrow(mm)) { return(c(x, y)) }
+    
+    if (all(mm[(y + 1):nrow(mm), x] < tree, na.rm = TRUE) |
+        all(mm[1:(y - 1), x] < tree, na.rm = TRUE) |
+        all(mm[y, 1:(x - 1)] < tree, na.rm = TRUE) |
+        all(mm[y, (x + 1):ncol(mm)] < tree, na.rm = TRUE)) {
+      return(c(x, y))
+    }
+  }, grid$col, grid$row)
 
 m[!sapply(m, is.null)] %>%
   do.call(rbind, .) |>
   data.frame() |>
   `colnames<-`(c("col", "row")) -> mi
 nrow(mi)
-# coords_to_matrix(rep("X", nrow(mi)), mi$row, mi$col)
 ```
 
 ## Part 2
 
+This was a mess. I kept trying to be smart about it and wasted so much time. I mostly had trouble working with patterns like `[5050]` where the first five can see both the zero and the second five, but not the second zero. This meant that `x < 5` ignored the five, and `x <= 5` would keep going and read over the remaining zero. Even though I ended up hard-coding everything, I'm rather pleased with how neat it is. I'm sure I could move more of it to functions, but it wouldn't be too much prettier, if any.
+
 ```{r}
-library(purrr)
 scenic <- matrix(NA, nrow(mm), ncol(mm))
-biggest <- function(i, tree) { i < tree }
+
+checker <- function(vec, i, tree, dir) {
+  vec <- detect_index(vec, \(.x) { .x >= tree }) 
+  if (dir == -1) { vec <- ifelse(vec == 0, i - 1, vec) }
+  else { vec <- ifelse(vec == 0, ncol(mm) - i, vec) }
+  vec
+}
+
 mapply(\(y, x) {
   tree <- mm[y, x]
+  up <- NA; down <- NA; left <- NA; right <- NA
+  if (y == 1) { up <- 0 }; if (y == nrow(mm)) { down <- 0 }
+  if (x == 1) { left <- 0}; if (x == ncol(mm)) { right <- 0 }
+  
   rowMin <- ifelse(y - 1 < 1, 1, y - 1); rowMax <- ifelse(y + 1 > nrow(mm), nrow(mm), y + 1)
   colMin <- ifelse(x - 1 < 1, 1, x - 1); colMax <- ifelse(x + 1 > ncol(mm), ncol(mm), x + 1)
   
   yMin <- ifelse(y - 1 < 1, 1, y - 1); yMax <- ifelse(y + 1 > nrow(mm), nrow(mm), y + 1)
   xMin <- ifelse(x - 1 < 1, 1, x - 1); xMax <- ifelse(x + 1 > ncol(mm), ncol(mm), x + 1)
   
-  # up <- detect_index(mm[1:yMin, x], biggest, .dir = "backward", tree = tree)
-  # left <- detect_index(mm[y, 1:xMin], biggest, .dir = "backward", tree = tree)
-  # right <- detect_index(mm[y, xMax:ncol(mm)], biggest, .dir = "forward", tree = tree)
-  # down <- detect_index(mm[rowMax:nrow(mm), x], biggest, .dir = "forward", tree = tree)
+  if (is.na(up)) { up <- checker(rev(mm[1:yMin, x]), y, tree, -1) }
+  if (is.na(left)) { left <- checker(rev(mm[y, 1:xMin]), x, tree, -1) }
+  if (is.na(right)) { right <- checker(mm[y, xMax:ncol(mm)], x, tree, 1) }
+  if (is.na(down)) { down <- checker(mm[rowMax:nrow(mm), x], y, tree, 1) }
   
-  up <- mm[1:yMin, x][unlist(slide(mm[1:yMin, x], biggest, .before = Inf, tree = tree))]
-  print(paste(y, x))
-  print(up)
-  # print(paste(y, x))
-  # print(paste(up, left, right, down))
-  # 
-  # scene <- c(up, left, right, down)
-  # # print(scene)
-  # scenic[y,x] <<- prod(scene[scene != 0])
-}, grid$row, grid$col) |> invisible()
-scenic
-```
-
-
-```{r}
-maxMaster <- 1
-max <- 0
-dist <- 1
-scenic <- mm
-
-biggest_visible <- function(tree, x) {
-  biggest <- tree
-  breakFlag <- FALSE
-  # print(paste("x:", x))
-  for(i in 1:length(x)) {
-    if (x[i] == tree & i == 1) { return(1) }
-    else if (x[i] > tree & x[i] > biggest) {
-      biggest <- x[i]
-    }
-  }
-  if (length(x) > 1) {
-    smallest <- x[1]
-    for (i in 2:length(x)) {
-      if (x[i] >= smallest) {
-        smallest <- x[i]
-      }
-    }
-    if (all(smallest >= x)) {
-      return(length(x))
-    }
-  }
-  if (biggest == tree) { return(length(x[x < tree])) }
-  # if (breakFlag) { return(1) }
-  which(x == biggest)[1]
-}
-mapply(\(y, x) {
-  tree <- mm[y, x]
-  rowMin <- ifelse(y-1 < 1, 1, y-1); rowMax <- ifelse(y+1 > nrow(mm), nrow(mm), y + 1)
-  colMin <- ifelse(x-1 < 1, 1, x-1); colMax <- ifelse(x+1 > ncol(mm), ncol(mm), x + 1)
-  
-  yMin <- ifelse(y-1 < 1, 1, y-1); yMax <- ifelse(y+1 > nrow(mm), nrow(mm), y + 1)
-  xMin <- ifelse(x-1 < 1, 1, x-1); xMax <- ifelse(x+1 > ncol(mm), ncol(mm), x + 1)
-  
-  up <- biggest_visible(tree, rev(mm[1:yMin, x]))
-  left <- biggest_visible(tree, rev(mm[y, 1:xMin]))
-  right <- biggest_visible(tree, mm[y, xMax:ncol(mm)])
-  down <- biggest_visible(tree, mm[rowMax:nrow(mm), x])
-  
-  # if (is.na(up)) { up <- 0 }
-  # if (is.na(left)) { left <- 0 }
-  # if (is.na(right)) { right <- 0 }
-  # if (is.na(down)) { down <- 0 }
-  if(y == 1 & x == 3) {
-  print(paste("here", tree))
-  # print(biggest_visible(tree, rev(mm[y, 1:xMin])))
-  print(paste(up, left, right, down))
-  # print(paste(y, x, tree))
-  # print(paste(up, left, down, right))
-  }
   scene <- c(up, left, right, down)
-  scenic[y,x] <<- prod(scene[scene != 0])
+  scenic[y, x] <<- prod(scene[scene != 0])
 }, grid$row, grid$col) |> invisible()
-# max(scenic)
-scenic
+max(scenic)
 ```
 
-< 2202832
-  4579200
-  4579200
