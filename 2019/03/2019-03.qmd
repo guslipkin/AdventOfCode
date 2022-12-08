@@ -23,47 +23,47 @@ dtM <-
 ## Part 1
 
 ```{r}
+dt <- rbind(
+  dtM[[1]] |> mutate(wire = 1),
+  dtM[[2]] |> mutate(wire = 2)
+  )
+```
+
+
+```{r}
 mat <-
   matrix(0, max(dtM[[1]]$mag, dtM[[2]]$mag) * 2 + 1, max(dtM[[1]]$mag, dtM[[2]]$mag) * 2 + 1)
-lapply(1:2, \(y) {
-  curR <<- (nrow(mat) - 1) / 2
-  curC <<- (ncol(mat) - 1) / 2
 
-  dt <- dtM[[y]]
-  dt$wire <- y
+curR <- (nrow(mat) - 1) / 2
+curC <- (ncol(mat) - 1) / 2
+
+apply(dt, 1, \(x) {
+  dir <- x["dir"]
+  mag <- as.numeric(x["mag"])
+  y <- as.numeric(x["wire"])
+  if (dir == "R") {
+    mat[curR:(curR - mag), curC] <<- y
+    curR <- curR + mag
+  } else if (dir == "L") {
+    mat[(curR - mag):curR, curC] <<- y
+    curR <- curR - mag
+  } else if (dir == "U") {
+    mat[curR, curC:(curC + mag)] <<- y
+    curC <- curC + mag
+  } else if (dir == "U") {
+    mat[curR, (curC - mag):curC] <<- y
+    curC <- curC - mag
+  }
   
-  apply(dt, 1, \(x) {
-    dir <- x["dir"]
-    mag <- as.numeric(x["mag"])
-    wire <- as.numeric(x["wire"])
-    if (dir == "R") {
-      mat[curR:(curR + mag), curC] <<-
-        ifelse(!all(mat[curR:(curR + mag), curC] %in% c(0, wire)), wire, 3)
-      curR <<- curR + mag
-    } else if (dir == "L") {
-      mat[(curR - mag):curR, curC] <<-
-        ifelse(!all(mat[curR:(curR - mag), curC] %in% c(0, wire)), wire, 3)
-      curR <<- curR - mag
-    } else if (dir == "U") {
-      mat[curR, curC:(curC + mag)] <<-
-        ifelse(!all(mat[curR, curC:(curC + mag)] %in% c(0, wire)), wire, 3)
-      curC <<- curC + mag
-    } else if (dir == "U") {
-      mat[curR, (curC - mag):curC] <<-
-        ifelse(!all(mat[curR, curC:(curC - mag)] %in% c(0, wire)), wire, 3)
-      curC <<- curC - mag
-    }
-    invisible()
-  })
-})
-
-unique(as.vector(mat))
-
-which(mat == 3, arr.ind = TRUE) |>
-  data.frame() |>
-  mutate("rDist" = abs(row - (nrow(mat) - 1) / 2),
-         "cDist" = abs(col - (ncol(mat) - 1) / 2),
-         "dist" = rDist + cDist) |>
+  data.frame(which(mat == y, arr.ind = TRUE), "wire" = y)
+}) %>%
+  do.call(rbind, .) |>
+  mutate(wire = as.character(wire)) |>
+  group_by(row, col) |>
+    summarise(wire = str_c(unique(wire), collapse = " ")) |>
+    ungroup() |>
+  filter(wire == "1 2") |>
+  mutate(dist = abs(row - curR) + abs(col - curC)) |>
   arrange(dist)
 ```
 
