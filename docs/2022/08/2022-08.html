@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Gus Lipkin’s Awesome Code - 2022-06: Tuning Trouble</title>
+<title>Gus Lipkin’s Awesome Code - 2022-08: Treetop Tree House</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -183,7 +183,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     </nav>
   <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
     <div class="container-fluid d-flex justify-content-between">
-      <h1 class="quarto-secondary-nav-title">2022-06: Tuning Trouble</h1>
+      <h1 class="quarto-secondary-nav-title">2022-08: Treetop Tree House</h1>
       <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
         <i class="bi bi-chevron-right"></i>
       </button>
@@ -251,7 +251,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../2022/08/2022-08.html" class="sidebar-item-text sidebar-link active">2022-06: Tuning Trouble</a>
+  <a href="../../2022/08/2022-08.html" class="sidebar-item-text sidebar-link active">2022-08: Treetop Tree House</a>
   </div>
 </li>
       </ul>
@@ -555,7 +555,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title d-none d-lg-block">2022-06: Tuning Trouble</h1>
+<h1 class="title d-none d-lg-block">2022-08: Treetop Tree House</h1>
 </div>
 
 
@@ -617,38 +617,37 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <section id="part-2" class="level2">
 <h2 class="anchored" data-anchor-id="part-2">Part 2</h2>
 <p>This was a mess. I kept trying to be smart about it and wasted so much time. I mostly had trouble working with patterns like <code>[5050]</code> where the first five can see both the zero and the second five, but not the second zero. This meant that <code>x &lt; 5</code> ignored the five, and <code>x &lt;= 5</code> would keep going and read over the remaining zero. Even though I ended up hard-coding everything, I’m rather pleased with how neat it is. I’m sure I could move more of it to functions, but it wouldn’t be too much prettier, if any.</p>
-<div class="cell" data-hash="2022-08_cache/html/unnamed-chunk-4_37e3fa3e766b579fa0ff1354cbea0283">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>grid <span class="ot">&lt;-</span> <span class="fu">expand.grid</span>(<span class="st">"col"</span> <span class="ot">=</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">ncol</span>(mm), <span class="st">"row"</span> <span class="ot">=</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(mm))</span>
-<span id="cb5-2"><a href="#cb5-2"></a>scenic <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="cn">NA</span>, <span class="fu">nrow</span>(mm), <span class="fu">ncol</span>(mm))</span>
-<span id="cb5-3"><a href="#cb5-3"></a></span>
-<span id="cb5-4"><a href="#cb5-4"></a>checker <span class="ot">&lt;-</span> <span class="cf">function</span>(vec, i, tree, dir) {</span>
-<span id="cb5-5"><a href="#cb5-5"></a>  vec <span class="ot">&lt;-</span> <span class="fu">detect_index</span>(vec, \(.x) { .x <span class="sc">&gt;=</span> tree }) </span>
-<span id="cb5-6"><a href="#cb5-6"></a>  <span class="cf">if</span> (dir <span class="sc">==</span> <span class="sc">-</span><span class="dv">1</span>) { vec <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(vec <span class="sc">==</span> <span class="dv">0</span>, i <span class="sc">-</span> <span class="dv">1</span>, vec) }</span>
-<span id="cb5-7"><a href="#cb5-7"></a>  <span class="cf">else</span> { vec <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(vec <span class="sc">==</span> <span class="dv">0</span>, <span class="fu">ncol</span>(mm) <span class="sc">-</span> i, vec) }</span>
-<span id="cb5-8"><a href="#cb5-8"></a>  vec</span>
-<span id="cb5-9"><a href="#cb5-9"></a>}</span>
-<span id="cb5-10"><a href="#cb5-10"></a></span>
-<span id="cb5-11"><a href="#cb5-11"></a><span class="fu">mapply</span>(\(y, x) {</span>
-<span id="cb5-12"><a href="#cb5-12"></a>  tree <span class="ot">&lt;-</span> mm[y, x]</span>
-<span id="cb5-13"><a href="#cb5-13"></a>  up <span class="ot">&lt;-</span> <span class="cn">NA</span>; down <span class="ot">&lt;-</span> <span class="cn">NA</span>; left <span class="ot">&lt;-</span> <span class="cn">NA</span>; right <span class="ot">&lt;-</span> <span class="cn">NA</span></span>
-<span id="cb5-14"><a href="#cb5-14"></a>  <span class="cf">if</span> (y <span class="sc">==</span> <span class="dv">1</span>) { up <span class="ot">&lt;-</span> <span class="dv">0</span> }; <span class="cf">if</span> (y <span class="sc">==</span> <span class="fu">nrow</span>(mm)) { down <span class="ot">&lt;-</span> <span class="dv">0</span> }</span>
-<span id="cb5-15"><a href="#cb5-15"></a>  <span class="cf">if</span> (x <span class="sc">==</span> <span class="dv">1</span>) { left <span class="ot">&lt;-</span> <span class="dv">0</span>}; <span class="cf">if</span> (x <span class="sc">==</span> <span class="fu">ncol</span>(mm)) { right <span class="ot">&lt;-</span> <span class="dv">0</span> }</span>
-<span id="cb5-16"><a href="#cb5-16"></a>  </span>
-<span id="cb5-17"><a href="#cb5-17"></a>  rowMin <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(y <span class="sc">-</span> <span class="dv">1</span> <span class="sc">&lt;</span> <span class="dv">1</span>, <span class="dv">1</span>, y <span class="sc">-</span> <span class="dv">1</span>); rowMax <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(y <span class="sc">+</span> <span class="dv">1</span> <span class="sc">&gt;</span> <span class="fu">nrow</span>(mm), <span class="fu">nrow</span>(mm), y <span class="sc">+</span> <span class="dv">1</span>)</span>
-<span id="cb5-18"><a href="#cb5-18"></a>  colMin <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(x <span class="sc">-</span> <span class="dv">1</span> <span class="sc">&lt;</span> <span class="dv">1</span>, <span class="dv">1</span>, x <span class="sc">-</span> <span class="dv">1</span>); colMax <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(x <span class="sc">+</span> <span class="dv">1</span> <span class="sc">&gt;</span> <span class="fu">ncol</span>(mm), <span class="fu">ncol</span>(mm), x <span class="sc">+</span> <span class="dv">1</span>)</span>
-<span id="cb5-19"><a href="#cb5-19"></a>  </span>
-<span id="cb5-20"><a href="#cb5-20"></a>  yMin <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(y <span class="sc">-</span> <span class="dv">1</span> <span class="sc">&lt;</span> <span class="dv">1</span>, <span class="dv">1</span>, y <span class="sc">-</span> <span class="dv">1</span>); yMax <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(y <span class="sc">+</span> <span class="dv">1</span> <span class="sc">&gt;</span> <span class="fu">nrow</span>(mm), <span class="fu">nrow</span>(mm), y <span class="sc">+</span> <span class="dv">1</span>)</span>
-<span id="cb5-21"><a href="#cb5-21"></a>  xMin <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(x <span class="sc">-</span> <span class="dv">1</span> <span class="sc">&lt;</span> <span class="dv">1</span>, <span class="dv">1</span>, x <span class="sc">-</span> <span class="dv">1</span>); xMax <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(x <span class="sc">+</span> <span class="dv">1</span> <span class="sc">&gt;</span> <span class="fu">ncol</span>(mm), <span class="fu">ncol</span>(mm), x <span class="sc">+</span> <span class="dv">1</span>)</span>
-<span id="cb5-22"><a href="#cb5-22"></a>  </span>
-<span id="cb5-23"><a href="#cb5-23"></a>  <span class="cf">if</span> (<span class="fu">is.na</span>(up)) { up <span class="ot">&lt;-</span> <span class="fu">checker</span>(<span class="fu">rev</span>(mm[<span class="dv">1</span><span class="sc">:</span>yMin, x]), y, tree, <span class="sc">-</span><span class="dv">1</span>) }</span>
-<span id="cb5-24"><a href="#cb5-24"></a>  <span class="cf">if</span> (<span class="fu">is.na</span>(left)) { left <span class="ot">&lt;-</span> <span class="fu">checker</span>(<span class="fu">rev</span>(mm[y, <span class="dv">1</span><span class="sc">:</span>xMin]), x, tree, <span class="sc">-</span><span class="dv">1</span>) }</span>
-<span id="cb5-25"><a href="#cb5-25"></a>  <span class="cf">if</span> (<span class="fu">is.na</span>(right)) { right <span class="ot">&lt;-</span> <span class="fu">checker</span>(mm[y, xMax<span class="sc">:</span><span class="fu">ncol</span>(mm)], x, tree, <span class="dv">1</span>) }</span>
-<span id="cb5-26"><a href="#cb5-26"></a>  <span class="cf">if</span> (<span class="fu">is.na</span>(down)) { down <span class="ot">&lt;-</span> <span class="fu">checker</span>(mm[rowMax<span class="sc">:</span><span class="fu">nrow</span>(mm), x], y, tree, <span class="dv">1</span>) }</span>
-<span id="cb5-27"><a href="#cb5-27"></a>  </span>
-<span id="cb5-28"><a href="#cb5-28"></a>  scene <span class="ot">&lt;-</span> <span class="fu">c</span>(up, left, right, down)</span>
-<span id="cb5-29"><a href="#cb5-29"></a>  scenic[y, x] <span class="ot">&lt;&lt;-</span> <span class="fu">prod</span>(scene[scene <span class="sc">!=</span> <span class="dv">0</span>])</span>
-<span id="cb5-30"><a href="#cb5-30"></a>}, grid<span class="sc">$</span>row, grid<span class="sc">$</span>col) <span class="sc">|&gt;</span> <span class="fu">invisible</span>()</span>
-<span id="cb5-31"><a href="#cb5-31"></a><span class="fu">max</span>(scenic)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-hash="2022-08_cache/html/unnamed-chunk-4_27828d2f8ab4ee649dc4e167d934067c">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>scenic <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="cn">NA</span>, <span class="fu">nrow</span>(mm), <span class="fu">ncol</span>(mm))</span>
+<span id="cb5-2"><a href="#cb5-2"></a></span>
+<span id="cb5-3"><a href="#cb5-3"></a>checker <span class="ot">&lt;-</span> <span class="cf">function</span>(vec, i, tree, dir) {</span>
+<span id="cb5-4"><a href="#cb5-4"></a>  vec <span class="ot">&lt;-</span> <span class="fu">detect_index</span>(vec, \(.x) { .x <span class="sc">&gt;=</span> tree }) </span>
+<span id="cb5-5"><a href="#cb5-5"></a>  <span class="cf">if</span> (dir <span class="sc">==</span> <span class="sc">-</span><span class="dv">1</span>) { vec <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(vec <span class="sc">==</span> <span class="dv">0</span>, i <span class="sc">-</span> <span class="dv">1</span>, vec) }</span>
+<span id="cb5-6"><a href="#cb5-6"></a>  <span class="cf">else</span> { vec <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(vec <span class="sc">==</span> <span class="dv">0</span>, <span class="fu">ncol</span>(mm) <span class="sc">-</span> i, vec) }</span>
+<span id="cb5-7"><a href="#cb5-7"></a>  vec</span>
+<span id="cb5-8"><a href="#cb5-8"></a>}</span>
+<span id="cb5-9"><a href="#cb5-9"></a></span>
+<span id="cb5-10"><a href="#cb5-10"></a><span class="fu">mapply</span>(\(y, x) {</span>
+<span id="cb5-11"><a href="#cb5-11"></a>  tree <span class="ot">&lt;-</span> mm[y, x]</span>
+<span id="cb5-12"><a href="#cb5-12"></a>  up <span class="ot">&lt;-</span> <span class="cn">NA</span>; down <span class="ot">&lt;-</span> <span class="cn">NA</span>; left <span class="ot">&lt;-</span> <span class="cn">NA</span>; right <span class="ot">&lt;-</span> <span class="cn">NA</span></span>
+<span id="cb5-13"><a href="#cb5-13"></a>  <span class="cf">if</span> (y <span class="sc">==</span> <span class="dv">1</span>) { up <span class="ot">&lt;-</span> <span class="dv">0</span> }; <span class="cf">if</span> (y <span class="sc">==</span> <span class="fu">nrow</span>(mm)) { down <span class="ot">&lt;-</span> <span class="dv">0</span> }</span>
+<span id="cb5-14"><a href="#cb5-14"></a>  <span class="cf">if</span> (x <span class="sc">==</span> <span class="dv">1</span>) { left <span class="ot">&lt;-</span> <span class="dv">0</span>}; <span class="cf">if</span> (x <span class="sc">==</span> <span class="fu">ncol</span>(mm)) { right <span class="ot">&lt;-</span> <span class="dv">0</span> }</span>
+<span id="cb5-15"><a href="#cb5-15"></a>  </span>
+<span id="cb5-16"><a href="#cb5-16"></a>  rowMin <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(y <span class="sc">-</span> <span class="dv">1</span> <span class="sc">&lt;</span> <span class="dv">1</span>, <span class="dv">1</span>, y <span class="sc">-</span> <span class="dv">1</span>); rowMax <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(y <span class="sc">+</span> <span class="dv">1</span> <span class="sc">&gt;</span> <span class="fu">nrow</span>(mm), <span class="fu">nrow</span>(mm), y <span class="sc">+</span> <span class="dv">1</span>)</span>
+<span id="cb5-17"><a href="#cb5-17"></a>  colMin <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(x <span class="sc">-</span> <span class="dv">1</span> <span class="sc">&lt;</span> <span class="dv">1</span>, <span class="dv">1</span>, x <span class="sc">-</span> <span class="dv">1</span>); colMax <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(x <span class="sc">+</span> <span class="dv">1</span> <span class="sc">&gt;</span> <span class="fu">ncol</span>(mm), <span class="fu">ncol</span>(mm), x <span class="sc">+</span> <span class="dv">1</span>)</span>
+<span id="cb5-18"><a href="#cb5-18"></a>  </span>
+<span id="cb5-19"><a href="#cb5-19"></a>  yMin <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(y <span class="sc">-</span> <span class="dv">1</span> <span class="sc">&lt;</span> <span class="dv">1</span>, <span class="dv">1</span>, y <span class="sc">-</span> <span class="dv">1</span>); yMax <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(y <span class="sc">+</span> <span class="dv">1</span> <span class="sc">&gt;</span> <span class="fu">nrow</span>(mm), <span class="fu">nrow</span>(mm), y <span class="sc">+</span> <span class="dv">1</span>)</span>
+<span id="cb5-20"><a href="#cb5-20"></a>  xMin <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(x <span class="sc">-</span> <span class="dv">1</span> <span class="sc">&lt;</span> <span class="dv">1</span>, <span class="dv">1</span>, x <span class="sc">-</span> <span class="dv">1</span>); xMax <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(x <span class="sc">+</span> <span class="dv">1</span> <span class="sc">&gt;</span> <span class="fu">ncol</span>(mm), <span class="fu">ncol</span>(mm), x <span class="sc">+</span> <span class="dv">1</span>)</span>
+<span id="cb5-21"><a href="#cb5-21"></a>  </span>
+<span id="cb5-22"><a href="#cb5-22"></a>  <span class="cf">if</span> (<span class="fu">is.na</span>(up)) { up <span class="ot">&lt;-</span> <span class="fu">checker</span>(<span class="fu">rev</span>(mm[<span class="dv">1</span><span class="sc">:</span>yMin, x]), y, tree, <span class="sc">-</span><span class="dv">1</span>) }</span>
+<span id="cb5-23"><a href="#cb5-23"></a>  <span class="cf">if</span> (<span class="fu">is.na</span>(left)) { left <span class="ot">&lt;-</span> <span class="fu">checker</span>(<span class="fu">rev</span>(mm[y, <span class="dv">1</span><span class="sc">:</span>xMin]), x, tree, <span class="sc">-</span><span class="dv">1</span>) }</span>
+<span id="cb5-24"><a href="#cb5-24"></a>  <span class="cf">if</span> (<span class="fu">is.na</span>(right)) { right <span class="ot">&lt;-</span> <span class="fu">checker</span>(mm[y, xMax<span class="sc">:</span><span class="fu">ncol</span>(mm)], x, tree, <span class="dv">1</span>) }</span>
+<span id="cb5-25"><a href="#cb5-25"></a>  <span class="cf">if</span> (<span class="fu">is.na</span>(down)) { down <span class="ot">&lt;-</span> <span class="fu">checker</span>(mm[rowMax<span class="sc">:</span><span class="fu">nrow</span>(mm), x], y, tree, <span class="dv">1</span>) }</span>
+<span id="cb5-26"><a href="#cb5-26"></a>  </span>
+<span id="cb5-27"><a href="#cb5-27"></a>  scene <span class="ot">&lt;-</span> <span class="fu">c</span>(up, left, right, down)</span>
+<span id="cb5-28"><a href="#cb5-28"></a>  scenic[y, x] <span class="ot">&lt;&lt;-</span> <span class="fu">prod</span>(scene[scene <span class="sc">!=</span> <span class="dv">0</span>])</span>
+<span id="cb5-29"><a href="#cb5-29"></a>}, grid<span class="sc">$</span>row, grid<span class="sc">$</span>col) <span class="sc">|&gt;</span> <span class="fu">invisible</span>()</span>
+<span id="cb5-30"><a href="#cb5-30"></a><span class="fu">max</span>(scenic)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 321975</code></pre>
 </div>
