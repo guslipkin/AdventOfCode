@@ -96,18 +96,17 @@ bags <-
   }) |>
   unlist(recursive = FALSE) |>
   lapply(\(x) {
-    if (any(grepl("shiny gold|no other bags", x))) { return(NULL) }
+    if (any(grepl("shiny gold", x))) { return(NULL) }
     x
   })
 
-empties <- sapply(bags, is.null)
-bags <- bags[!empties]
+bags <- bags[!sapply(bags, is.null)]
 
-bags |>
-  unlist() |>
-  data.frame() |>
-  rownames_to_column() |>
-  filter(rowname == "shiny gold" | unlist.bags. == "shiny gold")
+# bags |>
+#   unlist() |>
+#   data.frame() |>
+#   rownames_to_column() |>
+#   filter(rowname == "shiny gold" | unlist.bags. == "shiny gold")
 
 # get_contents <- function(bag, pBag = "shiny gold") {
 #   if (is.null(bag) | length(bag) == 0 | any(grepl("no other bags", bag))) { return(pBag) }
@@ -115,10 +114,11 @@ bags |>
 # 
 # }
 
-get_contents <- function(bag, pBag = "shiny gold") {
-  if (pBag %in% names(which(bags == "no other bags"))) { return(c("no other bags" = pBag)) }
-  bag <- bag[!(bag %in% empties[empties])]
-  lapply(bag, \(n) list(n, get_contents(bags[[n]], pBag = n)))
+get_contents <- function(.x, .y) {
+  bag <- .x
+  pBag <- .y
+  if (pBag %in% names(which(bags == "no other bags"))) { return(get_contents(.y, "no other bags")) }
+  furrr:::future_map2(bags[[bag]], pBag, \(.x, .y) { get_contents(.x, .y) })
 }
 
 n <- names(bags)
@@ -130,32 +130,51 @@ l <-
       list() |>
       `names<-`(x)
   }) |>
-  unlist(recursive = FALSE)
+  # unlist(recursive = FALSE) |>
+  lapply(\(x) {
+    y <- unlist(x)
+    names(y) <- c(rep(names(x), length(y)))
+    
+    y
+  }) |>
+  unlist() |> 
+  as.list()
+future::plan(
+  list(future::tweak(future::multicore, workers = 12)),
+  list(future::tweak(future::sequential))
+)
 
-cl <- parallel::makeCluster(6)
-parallel::clusterExport(cl, c("bags", "l", "get_contents", "str_remove_all", "empties"))
-pbapply::pblapply(l, \(l) {
-  m <- get_contents(l) |> unlist()
-  
-  tb <-
-    table(bags[["shiny gold"]]) |>
-    data.frame() |>
-    `colnames<-`(c("parent", "n"))
-  
-  m <- data.frame("parent" = names(m), "child" = m)
-  m$parent <- str_remove_all(parent, "\\d")
-  m[m$parent == "shiny gold",] |>
-    nrow()
-}, cl = cl) |>
-  unlist() |>
-  length()
+progressr::with_progress({
+  p <- progressr::progressor(steps = length(l))
+  l <-
+    furrr::future_map2(l, names(l), \(.x, .y) {
+      p()
+      bag <- get_contents(.x, .y)
+      if (is.null(bag)) { bag <- .x }
+      else { bag <- .y }
+      return(bag)
+      })
+})
 
-parallel::stopCluster(cl)
+l |> unlist(recursive = FALSE)
+
+# tb <-
+#   table(bags[["shiny gold"]]) |>
+#   data.frame() |>
+#   `colnames<-`(c("parent", "n"))
+# 
+# # l
+# data.frame("parent" = names(l), "child" = l) |>
+#   mutate(parent = str_remove_all(parent, "\\d")) |>
+#   filter(parent == "shiny gold") |>
+#   nrow()
+# 
+# bags[["dark red"]]
 ```
 
 ```{r}
 #| eval: false
-df <- readLines("test.txt")
+df <- readLines("input.txt")
 dt <- data.table("parent" = "", "child" = "")
 # str_split(df, " bags contain | bags, | bags\\.")
 bags <- 
@@ -187,209 +206,15 @@ bags <-
 
 bags <- bags[!sapply(bags, is.null)]
 
-bags |>
-  unlist() |>
-  data.frame() |>
-  rownames_to_column() |>
-  filter(rowname == "shiny gold" | unlist.bags. == "shiny gold")
-
-# get_contents <- function(bag, pBag = "shiny gold") {
-#   if (is.null(bag) | length(bag) == 0 | any(grepl("no other bags", bag))) { return(pBag) }
-#   else { lapply(bag, \(n) get_contents(bags[[n]], pBag = n)) |> unlist() }
-# 
-# }
+no_others <- names(which(bags == "no other bags"))
 
 get_contents <- function(bag, pBag = "shiny gold") {
-  if (pBag %in% names(which(bags == "no other bags"))) { return(c("no other bags" = pBag)) }
-  bag <- bag[!(bag %in% names(which(bags == "no other bags")))]
-  ls <- list()
-  for(n in 1:length(bag)) {
-    n <- bag[n]
-    name <- names(n)
-    ls[[length(ls) + 1]] <- list(n, get_contents(bags[name], pBag = n))
-  }
-  return(ls)
+  print(paste(bag, pBag))
+  if (length(pBag) == 0 | pBag %in% no_others) { return(c("no other bags" = pBag)) }
+  # bag <- bag[!(bag %in% names(which(bags == "no other bags")))]
   # lapply(bag, \(n) list(n, get_contents(bags[[n]], pBag = n)))
-}
-
-n <- names(bags)
-n <- c("shiny gold", n[n != "shiny gold"])
-
-l <-
-  lapply(n, \(x) {
-    bags[[x]] |>
-      list() |>
-      `names<-`(x)
-  }) |>
-  unlist(recursive = FALSE)
-
-ls <- list()
-for(i in 1:length(l)) {
-  ls[[length(ls) + 1]] <- get_contents(l[i])
-}
-
-tb <-
-  table(bags[["shiny gold"]]) |>
-  data.frame() |>
-  `colnames<-`(c("parent", "n"))
-
-ls
-data.frame("parent" = names(l), "child" = l) |>
-  mutate(parent = str_remove_all(parent, "\\d")) |>
-  filter(parent == "shiny gold")
-```
-
-```{r}
-#| eval: false
-df <- readLines("input.txt")
-dt <- data.table("parent" = "", "child" = "")
-# str_split(df, " bags contain | bags, | bags\\.")
-bags <- 
-  str_extract_all(df, "(no other|\\d) (\\w* \\w*)|(\\w* \\w*) bags") |>
-  lapply(\(x) {
-    l <- sapply(x[-1], \(y) {
-        if (y == "no other bags") { return(y) }
-        count <- as.numeric(str_extract_all(y, "\\d ")[[1]])
-        y <- rep(gsub("\\d ", "", y), count)
-        return(y)
-      })
-    
-      if (is.matrix(l)) { l <- as.vector(l) }
-    
-      l <-
-        l |>
-        unname() |>
-        unlist() |>
-        list() |>
-        `names<-`(gsub(" bags", "", x[1]))
-      
-      return(l)
-  }) |>
-  unlist(recursive = FALSE) |>
-  lapply(\(x) {
-    if (any(grepl("shiny gold|no other bags", x))) { return(NULL) }
-    x
-  })
-
-bags <- bags[!sapply(bags, is.null)]
-
-# bags |>
-#   unlist() |>
-#   data.frame() |>
-#   rownames_to_column() |>
-#   filter(rowname == "shiny gold" | unlist.bags. == "shiny gold")
-
-# get_contents <- function(bag, pBag = "shiny gold") {
-#   if (is.null(bag) | length(bag) == 0 | any(grepl("no other bags", bag))) { return(pBag) }
-#   else { lapply(bag, \(n) get_contents(bags[[n]], pBag = n)) |> unlist() }
-# 
-# }
-
-get_contents <- function(bag, pBag = "shiny gold") {
-  if (pBag %in% names(which(bags == "no other bags"))) { return(c("no other bags" = pBag)) }
-  bag <- bag[!(bag %in% names(which(bags == "no other bags")))]
-  # lapply(bag, \(n) list(n, get_contents(bags[[n]], pBag = n)))
-  length_bag <- length(bag)
-  unique_bag <- unique(bag)
   # print(unique_bag)
-  unique_bag <- furrr::future_map(unique_bag, \(n) list(n, get_contents(bags[[n]], pBag = n)))
-  rep(unique_bag, length_bag)
-}
-
-n <- names(bags)
-n <- c("shiny gold", n[n != "shiny gold"])
-
-l <-
-  lapply(n, \(x) {
-    bags[[x]] |>
-      list() |>
-      `names<-`(x)
-  }) |>
-  unlist(recursive = FALSE)
-future::plan(
-  list(future::tweak(future::multicore, workers = 12)),
-  list(future::tweak(future::sequential))
-)
-
-progressr::with_progress({
-  p <- progressr::progressor(steps = length(l))
-  l <- 
-    furrr::future_map(l, ~{
-      p()
-      get_contents(.x)
-      }, .progress = TRUE) |>
-    unlist()
-})
-
-tb <-
-  table(bags[["shiny gold"]]) |>
-  data.frame() |>
-  `colnames<-`(c("parent", "n"))
-
-# l
-data.frame("parent" = names(l), "child" = l) |>
-  mutate(parent = str_remove_all(parent, "\\d")) |>
-  filter(parent == "shiny gold") |>
-  nrow()
-```
-
-```{r}
-#| eval: false
-df <- readLines("test.txt")
-dt <- data.table("parent" = "", "child" = "")
-# str_split(df, " bags contain | bags, | bags\\.")
-bags <- 
-  str_extract_all(df, "(no other|\\d) (\\w* \\w*)|(\\w* \\w*) bags") |>
-  lapply(\(x) {
-    l <- sapply(x[-1], \(y) {
-        if (y == "no other bags") { return(y) }
-        count <- as.numeric(str_extract_all(y, "\\d ")[[1]])
-        y <- rep(gsub("\\d ", "", y), count)
-        return(y)
-      })
-    
-      if (is.matrix(l)) { l <- as.vector(l) }
-    
-      l <-
-        l |>
-        unname() |>
-        unlist() |>
-        list() |>
-        `names<-`(gsub(" bags", "", x[1]))
-      
-      return(l)
-  }) |>
-  unlist(recursive = FALSE) |>
-  lapply(\(x) {
-    if (any(grepl("shiny gold|no other bags", x))) { return(NULL) }
-    x
-  })
-
-bags <- bags[!sapply(bags, is.null)]
-
-# bags |>
-#   unlist() |>
-#   data.frame() |>
-#   rownames_to_column() |>
-#   filter(rowname == "shiny gold" | unlist.bags. == "shiny gold")
-
-# get_contents <- function(bag, pBag = "shiny gold") {
-#   if (is.null(bag) | length(bag) == 0 | any(grepl("no other bags", bag))) { return(pBag) }
-#   else { lapply(bag, \(n) get_contents(bags[[n]], pBag = n)) |> unlist() }
-# 
-# }
-
-get_contents <- function(bag, pBag = "shiny gold") {
-  if (pBag %in% names(which(bags == "no other bags"))) { return(c("no other bags" = pBag)) }
-  bag <- bag[!(bag %in% names(which(bags == "no other bags")))]
-  # lapply(bag, \(n) list(n, get_contents(bags[[n]], pBag = n)))
-  # length_bag <- length(bag)
-  # unique_bag <- unique(bag)
-  # print(unique_bag)
-  # unique_bag <- furrr::future_map(unique_bag, \(n) list(n, get_contents(bags[[n]], pBag = n)))
-  # rep(unique_bag, length_bag)
-  print((bag))
-  get_contents(bags[[bag]], pBag = bag)
+  get_contents(bag, pBag = names(bag))
 }
 
 n <- names(bags)
@@ -408,21 +233,19 @@ l <-
     
     y
   }) |>
-  unlist()
-future::plan(
-  list(future::tweak(future::multicore, workers = 12)),
-  list(future::tweak(future::sequential))
-)
+  unlist() |> 
+  as.list()
 
-progressr::with_progress({
-  p <- progressr::progressor(steps = length(l))
-  l <- 
-    furrr::future_map(l, ~{
-      p()
-      get_contents(.x)
-      }, .progress = TRUE) |>
-    unlist()
-})
+lapply(l, \(l) { get_contents(l, "shiny gold") })
+
+lapply(l, \(l) {  })
+
+cl <- parallel::makeCluster(6)
+parallel::clusterExport(cl, c("bags", "l", "get_contents"))
+l <- 
+  pbapply::pblapply(l, get_contents, cl = cl) |>
+  unlist()
+parallel::stopCluster(cl)
 
 tb <-
   table(bags[["shiny gold"]]) |>
@@ -435,6 +258,7 @@ data.frame("parent" = names(l), "child" = l) |>
   filter(parent == "shiny gold") |>
   nrow()
 ```
+
 
 ```{r}
 #| eval: false

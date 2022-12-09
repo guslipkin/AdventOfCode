@@ -1,0 +1,115 @@
+---
+title: "2022-09: "
+format: html
+---
+
+```{r}
+#| message: false
+library(mistlecode)
+```
+
+```{r}
+dt <- 
+  fread("input2.txt", header = FALSE) |>
+  `colnames<-`(c("dir", "mag"))
+dt <-
+  dt %>%
+  .[rep(seq_len(dim(dt)[1]), dt$mag)] %>%
+  mutate(mag = 1)
+# dt <- 
+#   readLines("input.txt") |>
+#   str_split("", simplify = TRUE) |>
+#   unlist(recursive = FALSE) |>
+#   data.frame()
+```
+
+# Part 1
+
+```{r}
+size <- 13
+hM <- matrix(NA, size, size)
+tM <- hM
+
+size <- ceiling(size / 2)
+hR <- size; hC <- size; tR <- size; tC <- size
+
+move_h <- function(dir, mag, row, col) {
+  if (dir == "R") { return(list("row" = row, "col" = col + mag)) }
+  if (dir == "L") { return(list("row" = row, "col" = col - mag)) }
+  if (dir == "U") { return(list("row" = row - mag, "col" = col)) }
+  if (dir == "D") { return(list("row" = row + mag, "col" = col)) }
+}
+
+hM[hR,hC] <- 1
+# print(hM)
+# hM[hR,hC] <- NA
+
+m <- move_h(dt$dir[1], dt$mag[1], hR, hC)
+hR <- m$row; hC <- m$col
+
+plane <- c("R" = "c", "L" = "c", "U" = "r", "D" = "r")
+
+move_t <- function(hR, hC, row, col, diag) {
+  if(!diag) { return(list("row" = hR, "col" = hC)) }
+  # ur
+  if (hR < row & hC > col) { return(list("row" = hR + 1, "col" = hC)) }
+  # br
+  else if (hR > row & hC > col) { return(list("row" = hR - 1, "col" = hC)) }
+  # ul
+  if (hR < row & hC < col) { return(list("row" = hR + 1, "col" = hC)) }
+  return(list("row" = row, "col" = col))
+}
+
+is_diag <- function(hR, hC, tR, tC) {
+  if(abs(tR - hR) == abs(tC - hC)) { print("diag"); return(TRUE) }
+  return(FALSE)
+}
+
+stops <- data.frame("row" = c(), "col" = c())
+# for(i in 2:nrow(dt)) {
+s <- sapply(2:15, \(i) {
+  hM[hR,hC] <<- i
+  # print(hM)
+  # print(paste(tR, tC))
+  tM[tR,tC] <<- i
+  # print(tM)
+  # print(tM[tR,tC])
+  if (tR == 4 & tC == 9) { print(i); print(tM); print(hM)}
+  # plane[dt$dir[i]] != plane[dt$dir[i-1]]
+  diag <- unname(ifelse(is_diag(hR, hC, tR, tC), TRUE, FALSE))
+  if ((diag & sqrt(abs(tC - hC)^2 + abs(tR - hR)^2) > 1) | plane[dt$dir[i]] == plane[dt$dir[i-1]]) {
+    # print("hello")
+    # if(!any(get_adjacent_values(tR, tC, hM) == "H", na.rm = TRUE) | diag) {
+    m <- move_t(hR, hC, tR, tC, diag)
+    tR <<- m$row; tC <<- m$col
+    stops <<- rbind(stops, data.frame("row" = tR, "col" = tC))
+    # }
+  }
+  # hM[hR,hC] <<- NA
+  
+  m <- move_h(dt$dir[i], dt$mag[i], hR, hC)
+  hR <<- m$row; hC <<- m$col
+})
+# stops
+# coords_to_matrix(rep("X", nrow(stops)), stops$row, stops$col)
+
+tM[1:7,-1:-6]
+hM[1:7,-1:-6]
+stops |>
+  unique() |>
+  nrow()
+```
+
+1300
+6798
+
+```{r}
+
+```
+
+## Part 2
+
+```{r}
+
+```
+
