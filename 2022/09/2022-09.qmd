@@ -44,20 +44,21 @@ hM[hR,hC] <- 1
 # print(hM)
 # hM[hR,hC] <- NA
 
+hR1 <- hR; hC1 <- hC
 m <- move_h(dt$dir[1], dt$mag[1], hR, hC)
 hR <- m$row; hC <- m$col
 
 plane <- c("R" = "c", "L" = "c", "U" = "r", "D" = "r")
 
-move_t <- function(hR, hC, row, col, diag) {
-  if(!diag) { return(list("row" = hR, "col" = hC)) }
+move_t <- function(hR, hC, row, hR1, hC1, col, diag) {
+  if(!diag) { return(list("row" = hR1, "col" = hC1)) }
   # ur
-  if (hR < row & hC > col) { return(list("row" = hR + 1, "col" = hC)) }
-  # br
-  else if (hR > row & hC > col) { return(list("row" = hR - 1, "col" = hC)) }
-  # ul
-  if (hR < row & hC < col) { return(list("row" = hR + 1, "col" = hC)) }
-  return(list("row" = row, "col" = col))
+  # if (hR < row & hC > col) { return(list("row" = hR + 1, "col" = hC)) }
+  # # br
+  # else if (hR > row & hC > col) { return(list("row" = hR - 1, "col" = hC)) }
+  # # ul
+  # if (hR < row & hC < col) { return(list("row" = hR + 1, "col" = hC)) }
+  return(list("row" = hR1, "col" = hC1))
 }
 
 is_diag <- function(hR, hC, tR, tC) {
@@ -77,22 +78,23 @@ s <- sapply(2:15, \(i) {
   if (tR == 4 & tC == 9) { print(i); print(tM); print(hM)}
   # plane[dt$dir[i]] != plane[dt$dir[i-1]]
   diag <- unname(ifelse(is_diag(hR, hC, tR, tC), TRUE, FALSE))
-  if ((diag & sqrt(abs(tC - hC)^2 + abs(tR - hR)^2) > 1) | plane[dt$dir[i]] == plane[dt$dir[i-1]]) {
+  if ((sqrt(abs(tC - hC)^2 + abs(tR - hR)^2) > 1)) {
     # print("hello")
     # if(!any(get_adjacent_values(tR, tC, hM) == "H", na.rm = TRUE) | diag) {
-    m <- move_t(hR, hC, tR, tC, diag)
+    m <- move_t(hR, hC, hR1, hC1, tR, tC, diag)
     tR <<- m$row; tC <<- m$col
     stops <<- rbind(stops, data.frame("row" = tR, "col" = tC))
     # }
   }
   # hM[hR,hC] <<- NA
   
+  hR1 <<- hR; hC1 <<- hC
   m <- move_h(dt$dir[i], dt$mag[i], hR, hC)
   hR <<- m$row; hC <<- m$col
 })
 # stops
 # coords_to_matrix(rep("X", nrow(stops)), stops$row, stops$col)
-
+# get_adjacent_coords(tR, tC, data = tM)[which(get_adjacent_values(tR, tC, tM) == 8),]
 tM[1:7,-1:-6]
 hM[1:7,-1:-6]
 stops |>
