@@ -1,0 +1,111 @@
+---
+title: "2022-10: "
+format: html
+---
+
+```{r}
+#| message: false
+library(mistlecode)
+```
+
+```{r}
+# dt <- fread("input.txt", header = FALSE)
+dt <-
+  readLines("input2.txt") |>
+  str_split(" ", simplify = TRUE) |>
+  unlist(recursive = FALSE) |>
+  data.frame() |>
+  mutate(X2 = as.numeric(X2))
+```
+
+## Part 1
+
+```{r}
+dt <-
+  dt |>
+  mutate("mag" = ifelse(X1 == "noop", 1, 2)) |>
+  select("dir" = "X1", "mag", "X2") |>
+  mutate(ins = row_number()) |>
+  expand_directions(preserve_data = TRUE) |>
+  data.table()
+
+dt$dup = duplicated(dt$ins, fromLast = TRUE)
+dt$X2 = ifelse(dt$dup, NA, dt$X2)
+
+dt$X3 <- 
+  lag_multiple(dt$X2, -1) |>
+  pull()
+
+sapply(c(20, 60, 100, 140, 180, 220), \(x) {
+  sum(1, sum(dt[1:x, "X3"], na.rm = TRUE)) * x
+}) |>
+  sum()
+```
+
+## Part 2
+
+```{r}
+m <- matrix(" ", 6, 40)
+
+dt$X2 <- ifelse(is.na(dt$X2), 0, dt$X2)
+dt$cumsum <- sapply(1:240, \(x) { sum(1, sum(dt[1:x, "X2"], na.rm = TRUE)) })
+
+sapply(1:240, \(x) {
+  forty <- (1 %/% 40)
+  cumsum <- c(dt$cumsum[x]-1, dt$cumsum[x], dt$cumsum[x]+1)
+  sprite_pos <- cumsum[!is.na(cumsum)]
+  # print(c(sprite_pos, forty))
+  if (any((sprite_pos + (40 * forty)) == x)) {
+    sprite_pos <- min(which(sprite_pos == x))
+    print(sprite_pos)
+    if (sprite_pos == 1) { sprite_pos <- cumsum[1]  }
+    else if (sprite_pos == 3) { sprite_pos <- cumsum[3] }
+    else { sprite_pos <- cumsum[2] }
+    # print(c(forty, sprite_pos))
+    return(sprite_pos + (40 * forty))
+  }
+  return(0)
+}) |> invisible()
+
+matrix_to_coords(m) |>
+  data.frame() |>
+  filter(data == "#") |>
+  ggplot() +
+  geom_point(aes(x = col, y = row), size = 5, shape = 15) +
+  coord_fixed()
+```
+
+
+```{r}
+m <- rep(" ", 40 * 6)
+
+dt$cumsum <- cumsum(ifelse(is.na(dt$X2), 0, dt$X2 + 1))
+# dt$cumsum <- ifelse(dt$dup, dt$cumsum, 0)
+
+sprite_pos <- 0
+while (sprite_pos <= 240) {
+sapply(((40*(i-1))+1):(40*i), \(x) {
+  sprite_pos <<- dt$cumsum[x]
+  if (any((x-1):(x+1) == x)) {
+    y <- which((x-1):(x+1) == x)
+    if(y == 1) { x <- x - 1 }
+    else if (y == 3) { x <- x + 1 }
+    m[x] <<- "#"
+  }
+}) |> invisible()
+m
+dt$cumsum <- dt$cumsum + 40
+i <- i + 1
+}
+m
+
+matrix_to_coords(matrix(m, 6, 40)) |>
+  data.frame() |>
+  filter(data == "#") |>
+  ggplot() +
+  geom_point(aes(x = col, y = row), size = 5, shape = 15) +
+  coord_fixed()
+# |>
+#   matrix(6, 40, byrow = TRUE)
+```
+

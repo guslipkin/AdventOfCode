@@ -10,7 +10,7 @@ library(mistlecode)
 
 ```{r}
 dtM <-
-  readLines("input2.txt") |>
+  readLines("input.txt") |>
   lapply(\(x) {
     strsplit(x, ",")[[1]] |>
       data.frame() |>
@@ -23,47 +23,44 @@ dtM <-
 ## Part 1
 
 ```{r}
-dt <- rbind(
-  dtM[[1]] |> mutate(wire = 1),
-  dtM[[2]] |> mutate(wire = 2)
-  )
+dtM <- lapply(dtM, expand_directions)
+
+dtM[[1]] <- follow_directions(dtM[[1]], 0, 0)
+dtM[[2]] <- follow_directions(dtM[[2]], 0, 0)
+
+inner_join(dtM[[1]], dtM[[2]], by = c("row", "col")) |>
+  lapply(abs) |>
+  data.frame() |>
+  mutate(dist = row + col) |>
+  arrange(dist) |>
+  head(1) |>
+  pull(dist)
 ```
 
+## Part 2
 
 ```{r}
-mat <-
-  matrix(0, max(dtM[[1]]$mag, dtM[[2]]$mag) * 2 + 1, max(dtM[[1]]$mag, dtM[[2]]$mag) * 2 + 1)
+dtM <-
+  readLines("input.txt") |>
+  lapply(\(x) {
+    strsplit(x, ",")[[1]] |>
+      data.frame() |>
+      `colnames<-`(c("col")) |>
+      separate(col = "col", into = c("dir", "mag"), sep = 1) |>
+      mutate(mag = as.integer(mag), step = row_number())
+  })
 
-curR <- (nrow(mat) - 1) / 2
-curC <- (ncol(mat) - 1) / 2
+dtM <- lapply(dtM, expand_directions)
 
-apply(dt, 1, \(x) {
-  dir <- x["dir"]
-  mag <- as.numeric(x["mag"])
-  y <- as.numeric(x["wire"])
-  if (dir == "R") {
-    mat[curR:(curR - mag), curC] <<- y
-    curR <- curR + mag
-  } else if (dir == "L") {
-    mat[(curR - mag):curR, curC] <<- y
-    curR <- curR - mag
-  } else if (dir == "U") {
-    mat[curR, curC:(curC + mag)] <<- y
-    curC <- curC + mag
-  } else if (dir == "U") {
-    mat[curR, (curC - mag):curC] <<- y
-    curC <- curC - mag
-  }
-  
-  data.frame(which(mat == y, arr.ind = TRUE), "wire" = y)
-}) %>%
-  do.call(rbind, .) |>
-  mutate(wire = as.character(wire)) |>
-  group_by(row, col) |>
-    summarise(wire = str_c(unique(wire), collapse = " ")) |>
-    ungroup() |>
-  filter(wire == "1 2") |>
-  mutate(dist = abs(row - curR) + abs(col - curC)) |>
-  arrange(dist)
+dtM[[1]] <- follow_directions(dtM[[1]], 0, 0)
+dtM[[2]] <- follow_directions(dtM[[2]], 0, 0)
+
+inner_join(dtM[[1]], dtM[[2]], by = c("row", "col")) |>
+  lapply(abs) |>
+  data.frame() |>
+  mutate(dist = row + col) |>
+  arrange(dist) |>
+  head(1) |>
+  pull(dist)
 ```
 
