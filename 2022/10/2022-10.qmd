@@ -1,5 +1,5 @@
 ---
-title: "2022-10: "
+title: "2022-10: Cathode-Ray Tube"
 format: html
 ---
 
@@ -11,14 +11,25 @@ library(mistlecode)
 ```{r}
 # dt <- fread("input.txt", header = FALSE)
 dt <-
-  readLines("input2.txt") |>
+  readLines("input.txt") |>
   str_split(" ", simplify = TRUE) |>
   unlist(recursive = FALSE) |>
   data.frame() |>
   mutate(X2 = as.numeric(X2))
 ```
 
+Oh. This looks a lot like last year's day one.
+
 ## Part 1
+
+Part 1 wasn't too bad. I was a really big dummy and forgot to download the test
+input then was trying to check my real input as the test input which didn't
+work. Other than that, I'm really happy I got to use
+`mistlecode::expand_directions` which I only wrote a few hours prior. I did have
+to make some live modifications, but nothing crazy. Once everything was mostly
+right, I had a problem where the first five signals were correct, but the last
+wasn't. I eventually realized that I needed to lead the add values and that got
+everything sorted.
 
 ```{r}
 dt <-
@@ -32,9 +43,7 @@ dt <-
 dt$dup = duplicated(dt$ins, fromLast = TRUE)
 dt$X2 = ifelse(dt$dup, NA, dt$X2)
 
-dt$X3 <- 
-  lag_multiple(dt$X2, -1) |>
-  pull()
+dt$X3 <- lead(dt$X2, 1)
 
 sapply(c(20, 60, 100, 140, 180, 220), \(x) {
   sum(1, sum(dt[1:x, "X3"], na.rm = TRUE)) * x
@@ -44,68 +53,39 @@ sapply(c(20, 60, 100, 140, 180, 220), \(x) {
 
 ## Part 2
 
+This was an absolute mess. I didn't understand the question at all and still
+don't really get it. The difference between what I had and what I thought I
+should have made the solution relatively clear, but only after struggling with
+it for hours. I do like ggplot-able solutions though. Those are always nice.
+
 ```{r}
 m <- matrix(" ", 6, 40)
 
 dt$X2 <- ifelse(is.na(dt$X2), 0, dt$X2)
 dt$cumsum <- sapply(1:240, \(x) { sum(1, sum(dt[1:x, "X2"], na.rm = TRUE)) })
 
-sapply(1:240, \(x) {
-  forty <- (1 %/% 40)
-  cumsum <- c(dt$cumsum[x]-1, dt$cumsum[x], dt$cumsum[x]+1)
-  sprite_pos <- cumsum[!is.na(cumsum)]
-  # print(c(sprite_pos, forty))
-  if (any((sprite_pos + (40 * forty)) == x)) {
-    sprite_pos <- min(which(sprite_pos == x))
-    print(sprite_pos)
-    if (sprite_pos == 1) { sprite_pos <- cumsum[1]  }
-    else if (sprite_pos == 3) { sprite_pos <- cumsum[3] }
-    else { sprite_pos <- cumsum[2] }
-    # print(c(forty, sprite_pos))
-    return(sprite_pos + (40 * forty))
-  }
-  return(0)
-}) |> invisible()
+m <-
+  sapply(1:240, \(x) {
+    forty <- (x %/% 40)
+    cumsum <- c(dt$cumsum[x] - 1, dt$cumsum[x], dt$cumsum[x] + 1)
+    sprite_pos <- cumsum[!is.na(cumsum)]
+    if (any((sprite_pos + (40 * forty)) == x)) {
+      sprite_pos <- suppressWarnings(min(which(sprite_pos == x), na.rm = TRUE))
+      if (sprite_pos == 1) { sprite_pos <- cumsum[1] }
+      else if (sprite_pos == 3) { sprite_pos <- cumsum[3] }
+      else { sprite_pos <- cumsum[2] }
+      return(sprite_pos + (40 * forty))
+    }
+    return(NA)
+  })
 
-matrix_to_coords(m) |>
+m[240] <- 0
+
+matrix_to_coords(matrix(m, 6, 40, byrow = TRUE)) |>
   data.frame() |>
-  filter(data == "#") |>
+  filter(!is.na(data)) |>
+  mutate(col = ifelse(col == 40, 0, col)) |>
   ggplot() +
-  geom_point(aes(x = col, y = row), size = 5, shape = 15) +
+  geom_point(aes(x = col, y = -row), size = 5, shape = 15) +
   coord_fixed()
 ```
-
-
-```{r}
-m <- rep(" ", 40 * 6)
-
-dt$cumsum <- cumsum(ifelse(is.na(dt$X2), 0, dt$X2 + 1))
-# dt$cumsum <- ifelse(dt$dup, dt$cumsum, 0)
-
-sprite_pos <- 0
-while (sprite_pos <= 240) {
-sapply(((40*(i-1))+1):(40*i), \(x) {
-  sprite_pos <<- dt$cumsum[x]
-  if (any((x-1):(x+1) == x)) {
-    y <- which((x-1):(x+1) == x)
-    if(y == 1) { x <- x - 1 }
-    else if (y == 3) { x <- x + 1 }
-    m[x] <<- "#"
-  }
-}) |> invisible()
-m
-dt$cumsum <- dt$cumsum + 40
-i <- i + 1
-}
-m
-
-matrix_to_coords(matrix(m, 6, 40)) |>
-  data.frame() |>
-  filter(data == "#") |>
-  ggplot() +
-  geom_point(aes(x = col, y = row), size = 5, shape = 15) +
-  coord_fixed()
-# |>
-#   matrix(6, 40, byrow = TRUE)
-```
-

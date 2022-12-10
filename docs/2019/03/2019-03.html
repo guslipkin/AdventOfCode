@@ -251,7 +251,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../2022/08/2022-08.html" class="sidebar-item-text sidebar-link">2022-06: Tuning Trouble</a>
+  <a href="../../2022/08/2022-08.html" class="sidebar-item-text sidebar-link">2022-08: Treetop Tree House</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../2022/10/2022-10.html" class="sidebar-item-text sidebar-link">2022-10:</a>
   </div>
 </li>
       </ul>
@@ -546,6 +551,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
    
   <ul>
   <li><a href="#part-1" id="toc-part-1" class="nav-link active" data-scroll-target="#part-1">Part 1</a></li>
+  <li><a href="#part-2" id="toc-part-2" class="nav-link" data-scroll-target="#part-2">Part 2</a></li>
   </ul>
 </nav>
     </div>
@@ -574,12 +580,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="cell-output cell-output-stdout">
 <pre><code>To install `mistlecode` yourself, run `devtools::install_github('guslipkin/mistlecode')`.
 
- Also loading:  cipheR data.table dplyr pacman purrr slider stringr tidyverse</code></pre>
+ Also loading:  cipheR data.table dplyr purrr slider stringr tidyverse</code></pre>
 </div>
 </div>
-<div class="cell" data-hash="2019-03_cache/html/unnamed-chunk-2_0ba06f7599d2846a0cd539a8166aac55">
+<div class="cell" data-hash="2019-03_cache/html/unnamed-chunk-2_941278555bee22828792eefa16a351fe">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>dtM <span class="ot">&lt;-</span></span>
-<span id="cb3-2"><a href="#cb3-2"></a>  <span class="fu">readLines</span>(<span class="st">"input2.txt"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb3-2"><a href="#cb3-2"></a>  <span class="fu">readLines</span>(<span class="st">"input.txt"</span>) <span class="sc">|&gt;</span></span>
 <span id="cb3-3"><a href="#cb3-3"></a>  <span class="fu">lapply</span>(\(x) {</span>
 <span id="cb3-4"><a href="#cb3-4"></a>    <span class="fu">strsplit</span>(x, <span class="st">","</span>)[[<span class="dv">1</span>]] <span class="sc">|&gt;</span></span>
 <span id="cb3-5"><a href="#cb3-5"></a>      <span class="fu">data.frame</span>() <span class="sc">|&gt;</span></span>
@@ -590,67 +596,51 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <section id="part-1" class="level2">
 <h2 class="anchored" data-anchor-id="part-1">Part 1</h2>
-<div class="cell" data-hash="2019-03_cache/html/unnamed-chunk-3_64ba1e0e5ee010508faba20ad3001112">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>dt <span class="ot">&lt;-</span> <span class="fu">rbind</span>(</span>
-<span id="cb4-2"><a href="#cb4-2"></a>  dtM[[<span class="dv">1</span>]] <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">wire =</span> <span class="dv">1</span>),</span>
-<span id="cb4-3"><a href="#cb4-3"></a>  dtM[[<span class="dv">2</span>]] <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">wire =</span> <span class="dv">2</span>)</span>
-<span id="cb4-4"><a href="#cb4-4"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="cell" data-hash="2019-03_cache/html/unnamed-chunk-4_732b416d78fee1886c1c446e8838df91">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>mat <span class="ot">&lt;-</span></span>
-<span id="cb5-2"><a href="#cb5-2"></a>  <span class="fu">matrix</span>(<span class="dv">0</span>, <span class="fu">max</span>(dtM[[<span class="dv">1</span>]]<span class="sc">$</span>mag, dtM[[<span class="dv">2</span>]]<span class="sc">$</span>mag) <span class="sc">*</span> <span class="dv">2</span> <span class="sc">+</span> <span class="dv">1</span>, <span class="fu">max</span>(dtM[[<span class="dv">1</span>]]<span class="sc">$</span>mag, dtM[[<span class="dv">2</span>]]<span class="sc">$</span>mag) <span class="sc">*</span> <span class="dv">2</span> <span class="sc">+</span> <span class="dv">1</span>)</span>
-<span id="cb5-3"><a href="#cb5-3"></a></span>
-<span id="cb5-4"><a href="#cb5-4"></a>curR <span class="ot">&lt;-</span> (<span class="fu">nrow</span>(mat) <span class="sc">-</span> <span class="dv">1</span>) <span class="sc">/</span> <span class="dv">2</span></span>
-<span id="cb5-5"><a href="#cb5-5"></a>curC <span class="ot">&lt;-</span> (<span class="fu">ncol</span>(mat) <span class="sc">-</span> <span class="dv">1</span>) <span class="sc">/</span> <span class="dv">2</span></span>
-<span id="cb5-6"><a href="#cb5-6"></a></span>
-<span id="cb5-7"><a href="#cb5-7"></a><span class="fu">apply</span>(dt, <span class="dv">1</span>, \(x) {</span>
-<span id="cb5-8"><a href="#cb5-8"></a>  dir <span class="ot">&lt;-</span> x[<span class="st">"dir"</span>]</span>
-<span id="cb5-9"><a href="#cb5-9"></a>  mag <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(x[<span class="st">"mag"</span>])</span>
-<span id="cb5-10"><a href="#cb5-10"></a>  y <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(x[<span class="st">"wire"</span>])</span>
-<span id="cb5-11"><a href="#cb5-11"></a>  <span class="cf">if</span> (dir <span class="sc">==</span> <span class="st">"R"</span>) {</span>
-<span id="cb5-12"><a href="#cb5-12"></a>    mat[curR<span class="sc">:</span>(curR <span class="sc">-</span> mag), curC] <span class="ot">&lt;&lt;-</span> y</span>
-<span id="cb5-13"><a href="#cb5-13"></a>    curR <span class="ot">&lt;-</span> curR <span class="sc">+</span> mag</span>
-<span id="cb5-14"><a href="#cb5-14"></a>  } <span class="cf">else</span> <span class="cf">if</span> (dir <span class="sc">==</span> <span class="st">"L"</span>) {</span>
-<span id="cb5-15"><a href="#cb5-15"></a>    mat[(curR <span class="sc">-</span> mag)<span class="sc">:</span>curR, curC] <span class="ot">&lt;&lt;-</span> y</span>
-<span id="cb5-16"><a href="#cb5-16"></a>    curR <span class="ot">&lt;-</span> curR <span class="sc">-</span> mag</span>
-<span id="cb5-17"><a href="#cb5-17"></a>  } <span class="cf">else</span> <span class="cf">if</span> (dir <span class="sc">==</span> <span class="st">"U"</span>) {</span>
-<span id="cb5-18"><a href="#cb5-18"></a>    mat[curR, curC<span class="sc">:</span>(curC <span class="sc">+</span> mag)] <span class="ot">&lt;&lt;-</span> y</span>
-<span id="cb5-19"><a href="#cb5-19"></a>    curC <span class="ot">&lt;-</span> curC <span class="sc">+</span> mag</span>
-<span id="cb5-20"><a href="#cb5-20"></a>  } <span class="cf">else</span> <span class="cf">if</span> (dir <span class="sc">==</span> <span class="st">"U"</span>) {</span>
-<span id="cb5-21"><a href="#cb5-21"></a>    mat[curR, (curC <span class="sc">-</span> mag)<span class="sc">:</span>curC] <span class="ot">&lt;&lt;-</span> y</span>
-<span id="cb5-22"><a href="#cb5-22"></a>    curC <span class="ot">&lt;-</span> curC <span class="sc">-</span> mag</span>
-<span id="cb5-23"><a href="#cb5-23"></a>  }</span>
-<span id="cb5-24"><a href="#cb5-24"></a>  </span>
-<span id="cb5-25"><a href="#cb5-25"></a>  <span class="fu">data.frame</span>(<span class="fu">which</span>(mat <span class="sc">==</span> y, <span class="at">arr.ind =</span> <span class="cn">TRUE</span>), <span class="st">"wire"</span> <span class="ot">=</span> y)</span>
-<span id="cb5-26"><a href="#cb5-26"></a>}) <span class="sc">%&gt;%</span></span>
-<span id="cb5-27"><a href="#cb5-27"></a>  <span class="fu">do.call</span>(rbind, .) <span class="sc">|&gt;</span></span>
-<span id="cb5-28"><a href="#cb5-28"></a>  <span class="fu">mutate</span>(<span class="at">wire =</span> <span class="fu">as.character</span>(wire)) <span class="sc">|&gt;</span></span>
-<span id="cb5-29"><a href="#cb5-29"></a>  <span class="fu">group_by</span>(row, col) <span class="sc">|&gt;</span></span>
-<span id="cb5-30"><a href="#cb5-30"></a>    <span class="fu">summarise</span>(<span class="at">wire =</span> <span class="fu">str_c</span>(<span class="fu">unique</span>(wire), <span class="at">collapse =</span> <span class="st">" "</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb5-31"><a href="#cb5-31"></a>    <span class="fu">ungroup</span>() <span class="sc">|&gt;</span></span>
-<span id="cb5-32"><a href="#cb5-32"></a>  <span class="fu">filter</span>(wire <span class="sc">==</span> <span class="st">"1 2"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb5-33"><a href="#cb5-33"></a>  <span class="fu">mutate</span>(<span class="at">dist =</span> <span class="fu">abs</span>(row <span class="sc">-</span> curR) <span class="sc">+</span> <span class="fu">abs</span>(col <span class="sc">-</span> curC)) <span class="sc">|&gt;</span></span>
-<span id="cb5-34"><a href="#cb5-34"></a>  <span class="fu">arrange</span>(dist)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>`summarise()` has grouped output by 'row'. You can override using the `.groups`
-argument.</code></pre>
-</div>
+<div class="cell" data-hash="2019-03_cache/html/unnamed-chunk-3_46757ef456796f4e77b677e390fb5293">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>dtM <span class="ot">&lt;-</span> <span class="fu">lapply</span>(dtM, expand_directions)</span>
+<span id="cb4-2"><a href="#cb4-2"></a></span>
+<span id="cb4-3"><a href="#cb4-3"></a>dtM[[<span class="dv">1</span>]] <span class="ot">&lt;-</span> <span class="fu">follow_directions</span>(dtM[[<span class="dv">1</span>]], <span class="dv">0</span>, <span class="dv">0</span>)</span>
+<span id="cb4-4"><a href="#cb4-4"></a>dtM[[<span class="dv">2</span>]] <span class="ot">&lt;-</span> <span class="fu">follow_directions</span>(dtM[[<span class="dv">2</span>]], <span class="dv">0</span>, <span class="dv">0</span>)</span>
+<span id="cb4-5"><a href="#cb4-5"></a></span>
+<span id="cb4-6"><a href="#cb4-6"></a><span class="fu">inner_join</span>(dtM[[<span class="dv">1</span>]], dtM[[<span class="dv">2</span>]], <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"row"</span>, <span class="st">"col"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb4-7"><a href="#cb4-7"></a>  <span class="fu">lapply</span>(abs) <span class="sc">|&gt;</span></span>
+<span id="cb4-8"><a href="#cb4-8"></a>  <span class="fu">data.frame</span>() <span class="sc">|&gt;</span></span>
+<span id="cb4-9"><a href="#cb4-9"></a>  <span class="fu">mutate</span>(<span class="at">dist =</span> row <span class="sc">+</span> col) <span class="sc">|&gt;</span></span>
+<span id="cb4-10"><a href="#cb4-10"></a>  <span class="fu">arrange</span>(dist) <span class="sc">|&gt;</span></span>
+<span id="cb4-11"><a href="#cb4-11"></a>  <span class="fu">head</span>(<span class="dv">1</span>) <span class="sc">|&gt;</span></span>
+<span id="cb4-12"><a href="#cb4-12"></a>  <span class="fu">pull</span>(dist)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 12 × 4
-     row   col wire   dist
-   &lt;int&gt; &lt;int&gt; &lt;chr&gt; &lt;dbl&gt;
- 1     8     8 1 2       0
- 2     7     8 1 2       1
- 3     8     9 1 2       1
- 4     6     8 1 2       2
- 5     8    10 1 2       2
- 6     5     8 1 2       3
- 7     8    11 1 2       3
- 8     4     8 1 2       4
- 9     8    12 1 2       4
-10     3     8 1 2       5
-11     8    13 1 2       5
-12     2     8 1 2       6</code></pre>
+<pre><code>[1] 1264</code></pre>
+</div>
+</div>
+</section>
+<section id="part-2" class="level2">
+<h2 class="anchored" data-anchor-id="part-2">Part 2</h2>
+<div class="cell" data-hash="2019-03_cache/html/unnamed-chunk-4_20422e18d078d46a5ad2ebb717edcd8d">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a>dtM <span class="ot">&lt;-</span></span>
+<span id="cb6-2"><a href="#cb6-2"></a>  <span class="fu">readLines</span>(<span class="st">"input.txt"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb6-3"><a href="#cb6-3"></a>  <span class="fu">lapply</span>(\(x) {</span>
+<span id="cb6-4"><a href="#cb6-4"></a>    <span class="fu">strsplit</span>(x, <span class="st">","</span>)[[<span class="dv">1</span>]] <span class="sc">|&gt;</span></span>
+<span id="cb6-5"><a href="#cb6-5"></a>      <span class="fu">data.frame</span>() <span class="sc">|&gt;</span></span>
+<span id="cb6-6"><a href="#cb6-6"></a>      <span class="st">`</span><span class="at">colnames&lt;-</span><span class="st">`</span>(<span class="fu">c</span>(<span class="st">"col"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb6-7"><a href="#cb6-7"></a>      <span class="fu">separate</span>(<span class="at">col =</span> <span class="st">"col"</span>, <span class="at">into =</span> <span class="fu">c</span>(<span class="st">"dir"</span>, <span class="st">"mag"</span>), <span class="at">sep =</span> <span class="dv">1</span>) <span class="sc">|&gt;</span></span>
+<span id="cb6-8"><a href="#cb6-8"></a>      <span class="fu">mutate</span>(<span class="at">mag =</span> <span class="fu">as.integer</span>(mag), <span class="at">step =</span> <span class="fu">row_number</span>())</span>
+<span id="cb6-9"><a href="#cb6-9"></a>  })</span>
+<span id="cb6-10"><a href="#cb6-10"></a></span>
+<span id="cb6-11"><a href="#cb6-11"></a>dtM <span class="ot">&lt;-</span> <span class="fu">lapply</span>(dtM, expand_directions)</span>
+<span id="cb6-12"><a href="#cb6-12"></a></span>
+<span id="cb6-13"><a href="#cb6-13"></a>dtM[[<span class="dv">1</span>]] <span class="ot">&lt;-</span> <span class="fu">follow_directions</span>(dtM[[<span class="dv">1</span>]], <span class="dv">0</span>, <span class="dv">0</span>)</span>
+<span id="cb6-14"><a href="#cb6-14"></a>dtM[[<span class="dv">2</span>]] <span class="ot">&lt;-</span> <span class="fu">follow_directions</span>(dtM[[<span class="dv">2</span>]], <span class="dv">0</span>, <span class="dv">0</span>)</span>
+<span id="cb6-15"><a href="#cb6-15"></a></span>
+<span id="cb6-16"><a href="#cb6-16"></a><span class="fu">inner_join</span>(dtM[[<span class="dv">1</span>]], dtM[[<span class="dv">2</span>]], <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"row"</span>, <span class="st">"col"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb6-17"><a href="#cb6-17"></a>  <span class="fu">lapply</span>(abs) <span class="sc">|&gt;</span></span>
+<span id="cb6-18"><a href="#cb6-18"></a>  <span class="fu">data.frame</span>() <span class="sc">|&gt;</span></span>
+<span id="cb6-19"><a href="#cb6-19"></a>  <span class="fu">mutate</span>(<span class="at">dist =</span> row <span class="sc">+</span> col) <span class="sc">|&gt;</span></span>
+<span id="cb6-20"><a href="#cb6-20"></a>  <span class="fu">arrange</span>(dist) <span class="sc">|&gt;</span></span>
+<span id="cb6-21"><a href="#cb6-21"></a>  <span class="fu">head</span>(<span class="dv">1</span>) <span class="sc">|&gt;</span></span>
+<span id="cb6-22"><a href="#cb6-22"></a>  <span class="fu">pull</span>(dist)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1264</code></pre>
 </div>
 </div>
 
