@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Gus Lipkin’s Awesome Code - Day 3: Crossed Wires</title>
+<title>Gus Lipkin’s Awesome Code - 2019-03: Crossed Wires</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -183,7 +183,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     </nav>
   <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
     <div class="container-fluid d-flex justify-content-between">
-      <h1 class="quarto-secondary-nav-title">Day 3: Crossed Wires</h1>
+      <h1 class="quarto-secondary-nav-title">2019-03: Crossed Wires</h1>
       <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
         <i class="bi bi-chevron-right"></i>
       </button>
@@ -256,7 +256,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../2022/10/2022-10.html" class="sidebar-item-text sidebar-link">2022-10:</a>
+  <a href="../../2022/10/2022-10.html" class="sidebar-item-text sidebar-link">2022-10: Cathode-Ray Tube</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../2022/11/2022-11.html" class="sidebar-item-text sidebar-link">2022-11: Monkey in the Middle</a>
   </div>
 </li>
       </ul>
@@ -393,12 +398,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="false">2019</a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="false">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">2019</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 ">  
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../2019/01/2019-01.html" class="sidebar-item-text sidebar-link">2019-01: The Tyranny of the Rocket Equation</a>
@@ -407,6 +412,16 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../2019/02/2019-02.html" class="sidebar-item-text sidebar-link">Day 2: 1202 Program Alarm</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../2019/03/2019-03.html" class="sidebar-item-text sidebar-link active">2019-03: Crossed Wires</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../2019/04/2019-04.html" class="sidebar-item-text sidebar-link">2019-04: Secure Container</a>
   </div>
 </li>
       </ul>
@@ -560,7 +575,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title d-none d-lg-block">Day 3: Crossed Wires</h1>
+<h1 class="title d-none d-lg-block">2019-03: Crossed Wires</h1>
 </div>
 
 
@@ -583,8 +598,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
  Also loading:  cipheR data.table dplyr purrr slider stringr tidyverse</code></pre>
 </div>
 </div>
-<div class="cell" data-hash="2019-03_cache/html/unnamed-chunk-2_941278555bee22828792eefa16a351fe">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>dtM <span class="ot">&lt;-</span></span>
+<div class="cell" data-hash="2019-03_cache/html/unnamed-chunk-2_e9de691c3d29a73cbef1403d6b34755b">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>dtMM <span class="ot">&lt;-</span></span>
 <span id="cb3-2"><a href="#cb3-2"></a>  <span class="fu">readLines</span>(<span class="st">"input.txt"</span>) <span class="sc">|&gt;</span></span>
 <span id="cb3-3"><a href="#cb3-3"></a>  <span class="fu">lapply</span>(\(x) {</span>
 <span id="cb3-4"><a href="#cb3-4"></a>    <span class="fu">strsplit</span>(x, <span class="st">","</span>)[[<span class="dv">1</span>]] <span class="sc">|&gt;</span></span>
@@ -596,19 +611,17 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <section id="part-1" class="level2">
 <h2 class="anchored" data-anchor-id="part-1">Part 1</h2>
-<div class="cell" data-hash="2019-03_cache/html/unnamed-chunk-3_46757ef456796f4e77b677e390fb5293">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>dtM <span class="ot">&lt;-</span> <span class="fu">lapply</span>(dtM, expand_directions)</span>
+<div class="cell" data-hash="2019-03_cache/html/unnamed-chunk-3_57217dcb45c6369ec61f1141bdb37abc">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>dtM <span class="ot">&lt;-</span> <span class="fu">lapply</span>(dtMM, expand_directions, <span class="at">preserve_data =</span> <span class="cn">TRUE</span>)</span>
 <span id="cb4-2"><a href="#cb4-2"></a></span>
-<span id="cb4-3"><a href="#cb4-3"></a>dtM[[<span class="dv">1</span>]] <span class="ot">&lt;-</span> <span class="fu">follow_directions</span>(dtM[[<span class="dv">1</span>]], <span class="dv">0</span>, <span class="dv">0</span>)</span>
-<span id="cb4-4"><a href="#cb4-4"></a>dtM[[<span class="dv">2</span>]] <span class="ot">&lt;-</span> <span class="fu">follow_directions</span>(dtM[[<span class="dv">2</span>]], <span class="dv">0</span>, <span class="dv">0</span>)</span>
+<span id="cb4-3"><a href="#cb4-3"></a>dtM[[<span class="dv">1</span>]] <span class="ot">&lt;-</span> <span class="fu">follow_directions</span>(dtM[[<span class="dv">1</span>]], <span class="dv">0</span>, <span class="dv">0</span>, <span class="at">preserve_data =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb4-4"><a href="#cb4-4"></a>dtM[[<span class="dv">2</span>]] <span class="ot">&lt;-</span> <span class="fu">follow_directions</span>(dtM[[<span class="dv">2</span>]], <span class="dv">0</span>, <span class="dv">0</span>, <span class="at">preserve_data =</span> <span class="cn">TRUE</span>)</span>
 <span id="cb4-5"><a href="#cb4-5"></a></span>
 <span id="cb4-6"><a href="#cb4-6"></a><span class="fu">inner_join</span>(dtM[[<span class="dv">1</span>]], dtM[[<span class="dv">2</span>]], <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"row"</span>, <span class="st">"col"</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb4-7"><a href="#cb4-7"></a>  <span class="fu">lapply</span>(abs) <span class="sc">|&gt;</span></span>
-<span id="cb4-8"><a href="#cb4-8"></a>  <span class="fu">data.frame</span>() <span class="sc">|&gt;</span></span>
-<span id="cb4-9"><a href="#cb4-9"></a>  <span class="fu">mutate</span>(<span class="at">dist =</span> row <span class="sc">+</span> col) <span class="sc">|&gt;</span></span>
-<span id="cb4-10"><a href="#cb4-10"></a>  <span class="fu">arrange</span>(dist) <span class="sc">|&gt;</span></span>
-<span id="cb4-11"><a href="#cb4-11"></a>  <span class="fu">head</span>(<span class="dv">1</span>) <span class="sc">|&gt;</span></span>
-<span id="cb4-12"><a href="#cb4-12"></a>  <span class="fu">pull</span>(dist)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb4-7"><a href="#cb4-7"></a>  <span class="fu">mutate</span>(<span class="at">dist =</span> <span class="fu">abs</span>(row) <span class="sc">+</span> <span class="fu">abs</span>(col)) <span class="sc">|&gt;</span></span>
+<span id="cb4-8"><a href="#cb4-8"></a>  <span class="fu">arrange</span>(dist) <span class="sc">|&gt;</span></span>
+<span id="cb4-9"><a href="#cb4-9"></a>  <span class="fu">head</span>(<span class="dv">1</span>) <span class="sc">|&gt;</span></span>
+<span id="cb4-10"><a href="#cb4-10"></a>  <span class="fu">pull</span>(dist)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 1264</code></pre>
 </div>
@@ -616,31 +629,21 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </section>
 <section id="part-2" class="level2">
 <h2 class="anchored" data-anchor-id="part-2">Part 2</h2>
-<div class="cell" data-hash="2019-03_cache/html/unnamed-chunk-4_20422e18d078d46a5ad2ebb717edcd8d">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a>dtM <span class="ot">&lt;-</span></span>
-<span id="cb6-2"><a href="#cb6-2"></a>  <span class="fu">readLines</span>(<span class="st">"input.txt"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb6-3"><a href="#cb6-3"></a>  <span class="fu">lapply</span>(\(x) {</span>
-<span id="cb6-4"><a href="#cb6-4"></a>    <span class="fu">strsplit</span>(x, <span class="st">","</span>)[[<span class="dv">1</span>]] <span class="sc">|&gt;</span></span>
-<span id="cb6-5"><a href="#cb6-5"></a>      <span class="fu">data.frame</span>() <span class="sc">|&gt;</span></span>
-<span id="cb6-6"><a href="#cb6-6"></a>      <span class="st">`</span><span class="at">colnames&lt;-</span><span class="st">`</span>(<span class="fu">c</span>(<span class="st">"col"</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb6-7"><a href="#cb6-7"></a>      <span class="fu">separate</span>(<span class="at">col =</span> <span class="st">"col"</span>, <span class="at">into =</span> <span class="fu">c</span>(<span class="st">"dir"</span>, <span class="st">"mag"</span>), <span class="at">sep =</span> <span class="dv">1</span>) <span class="sc">|&gt;</span></span>
-<span id="cb6-8"><a href="#cb6-8"></a>      <span class="fu">mutate</span>(<span class="at">mag =</span> <span class="fu">as.integer</span>(mag), <span class="at">step =</span> <span class="fu">row_number</span>())</span>
-<span id="cb6-9"><a href="#cb6-9"></a>  })</span>
-<span id="cb6-10"><a href="#cb6-10"></a></span>
-<span id="cb6-11"><a href="#cb6-11"></a>dtM <span class="ot">&lt;-</span> <span class="fu">lapply</span>(dtM, expand_directions)</span>
-<span id="cb6-12"><a href="#cb6-12"></a></span>
-<span id="cb6-13"><a href="#cb6-13"></a>dtM[[<span class="dv">1</span>]] <span class="ot">&lt;-</span> <span class="fu">follow_directions</span>(dtM[[<span class="dv">1</span>]], <span class="dv">0</span>, <span class="dv">0</span>)</span>
-<span id="cb6-14"><a href="#cb6-14"></a>dtM[[<span class="dv">2</span>]] <span class="ot">&lt;-</span> <span class="fu">follow_directions</span>(dtM[[<span class="dv">2</span>]], <span class="dv">0</span>, <span class="dv">0</span>)</span>
-<span id="cb6-15"><a href="#cb6-15"></a></span>
-<span id="cb6-16"><a href="#cb6-16"></a><span class="fu">inner_join</span>(dtM[[<span class="dv">1</span>]], dtM[[<span class="dv">2</span>]], <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"row"</span>, <span class="st">"col"</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb6-17"><a href="#cb6-17"></a>  <span class="fu">lapply</span>(abs) <span class="sc">|&gt;</span></span>
-<span id="cb6-18"><a href="#cb6-18"></a>  <span class="fu">data.frame</span>() <span class="sc">|&gt;</span></span>
-<span id="cb6-19"><a href="#cb6-19"></a>  <span class="fu">mutate</span>(<span class="at">dist =</span> row <span class="sc">+</span> col) <span class="sc">|&gt;</span></span>
-<span id="cb6-20"><a href="#cb6-20"></a>  <span class="fu">arrange</span>(dist) <span class="sc">|&gt;</span></span>
-<span id="cb6-21"><a href="#cb6-21"></a>  <span class="fu">head</span>(<span class="dv">1</span>) <span class="sc">|&gt;</span></span>
-<span id="cb6-22"><a href="#cb6-22"></a>  <span class="fu">pull</span>(dist)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-hash="2019-03_cache/html/unnamed-chunk-4_bc921f728c63753b8d7654d5efdf190d">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a>dtM[[<span class="dv">1</span>]] <span class="ot">&lt;-</span> </span>
+<span id="cb6-2"><a href="#cb6-2"></a>  dtM[[<span class="dv">1</span>]] <span class="sc">|&gt;</span></span>
+<span id="cb6-3"><a href="#cb6-3"></a>  <span class="fu">mutate</span>(<span class="at">step =</span> <span class="fu">row_number</span>())</span>
+<span id="cb6-4"><a href="#cb6-4"></a>dtM[[<span class="dv">2</span>]] <span class="ot">&lt;-</span> </span>
+<span id="cb6-5"><a href="#cb6-5"></a>  dtM[[<span class="dv">2</span>]] <span class="sc">|&gt;</span></span>
+<span id="cb6-6"><a href="#cb6-6"></a>  <span class="fu">mutate</span>(<span class="at">step =</span> <span class="fu">row_number</span>())</span>
+<span id="cb6-7"><a href="#cb6-7"></a></span>
+<span id="cb6-8"><a href="#cb6-8"></a><span class="fu">inner_join</span>(dtM[[<span class="dv">1</span>]], dtM[[<span class="dv">2</span>]], <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"row"</span>, <span class="st">"col"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb6-9"><a href="#cb6-9"></a>  <span class="fu">mutate</span>(<span class="at">steps =</span> step.x <span class="sc">+</span> step.y) <span class="sc">|&gt;</span></span>
+<span id="cb6-10"><a href="#cb6-10"></a>  <span class="fu">arrange</span>(steps) <span class="sc">|&gt;</span></span>
+<span id="cb6-11"><a href="#cb6-11"></a>  <span class="fu">head</span>(<span class="dv">1</span>) <span class="sc">|&gt;</span></span>
+<span id="cb6-12"><a href="#cb6-12"></a>  <span class="fu">pull</span>(steps)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 1264</code></pre>
+<pre><code>[1] 37390</code></pre>
 </div>
 </div>
 

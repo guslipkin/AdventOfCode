@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Gus Lipkin’s Awesome Code - 2015-01: Not Quite Lisp</title>
+<title>Gus Lipkin’s Awesome Code - 2019-04: Secure Container</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -183,7 +183,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     </nav>
   <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
     <div class="container-fluid d-flex justify-content-between">
-      <h1 class="quarto-secondary-nav-title">2015-01: Not Quite Lisp</h1>
+      <h1 class="quarto-secondary-nav-title">2019-04: Secure Container</h1>
       <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
         <i class="bi bi-chevron-right"></i>
       </button>
@@ -398,12 +398,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="false">2019</a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="false">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">2019</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 ">  
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../2019/01/2019-01.html" class="sidebar-item-text sidebar-link">2019-01: The Tyranny of the Rocket Equation</a>
@@ -421,7 +421,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../2019/04/2019-04.html" class="sidebar-item-text sidebar-link">2019-04: Secure Container</a>
+  <a href="../../2019/04/2019-04.html" class="sidebar-item-text sidebar-link active">2019-04: Secure Container</a>
   </div>
 </li>
       </ul>
@@ -518,15 +518,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" aria-expanded="true">2015</a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" aria-expanded="false">2015</a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" aria-expanded="false">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-8" class="collapse list-unstyled sidebar-section depth1 show">  
+      <ul id="quarto-sidebar-section-8" class="collapse list-unstyled sidebar-section depth1 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../2015/01/2015-01.html" class="sidebar-item-text sidebar-link active">2015-01: Not Quite Lisp</a>
+  <a href="../../2015/01/2015-01.html" class="sidebar-item-text sidebar-link">2015-01: Not Quite Lisp</a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -565,8 +565,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#part-1" id="toc-part-1" class="nav-link active" data-scroll-target="#part-1">Part 1</a></li>
+  <li><a href="#part-1" id="toc-part-1" class="nav-link active" data-scroll-target="#part-1">Part 1</a>
+  <ul class="collapse">
   <li><a href="#part-2" id="toc-part-2" class="nav-link" data-scroll-target="#part-2">Part 2</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -575,7 +577,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title d-none d-lg-block">2015-01: Not Quite Lisp</h1>
+<h1 class="title d-none d-lg-block">2019-04: Secure Container</h1>
 </div>
 
 
@@ -590,36 +592,57 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 </header>
 
-<div class="cell" data-hash="2015-01_cache/html/unnamed-chunk-1_2765540aa19f21efa7fbd428f3c7996f">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">library</span>(stringr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="cell" data-hash="2015-01_cache/html/unnamed-chunk-2_864b562ae603b059a2659204b5db649d">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a>dt <span class="ot">&lt;-</span> <span class="fu">readLines</span>(<span class="st">"input.txt"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in readLines("input.txt"): incomplete final line found on 'input.txt'</code></pre>
-</div>
-</div>
-<section id="part-1" class="level2">
-<h2 class="anchored" data-anchor-id="part-1">Part 1</h2>
-<div class="cell" data-hash="2015-01_cache/html/unnamed-chunk-3_2257fa26dd2ea347fda926656fc9fbde">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="fu">str_count</span>(dt, <span class="st">"</span><span class="sc">\\</span><span class="st">("</span>) <span class="sc">-</span> <span class="fu">str_count</span>(dt, <span class="st">"</span><span class="sc">\\</span><span class="st">)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-hash="2019-04_cache/html/unnamed-chunk-1_1fa368ed80fb552cb156fa25be2fdb0a">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">library</span>(mistlecode)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 138</code></pre>
+<pre><code>To install `mistlecode` yourself, run `devtools::install_github('guslipkin/mistlecode')`.
+
+ Also loading:  cipheR data.table dplyr purrr slider stringr tidyverse</code></pre>
 </div>
 </div>
-</section>
+<div class="cell" data-hash="2019-04_cache/html/unnamed-chunk-2_273be292e006fc91ed2caed39525bced">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>dt <span class="ot">&lt;-</span></span>
+<span id="cb3-2"><a href="#cb3-2"></a>  <span class="st">"235741-706948"</span> <span class="sc">|&gt;</span></span>
+<span id="cb3-3"><a href="#cb3-3"></a>  <span class="fu">strsplit</span>(<span class="st">"-"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb3-4"><a href="#cb3-4"></a>  <span class="fu">unlist</span>() <span class="sc">|&gt;</span></span>
+<span id="cb3-5"><a href="#cb3-5"></a>  <span class="fu">as.numeric</span>()</span>
+<span id="cb3-6"><a href="#cb3-6"></a>dt <span class="ot">&lt;-</span> dt[<span class="dv">1</span>]<span class="sc">:</span>dt[<span class="dv">2</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="part-1" class="level1">
+<h1>Part 1</h1>
+<div class="cell" data-hash="2019-04_cache/html/unnamed-chunk-3_e74009fd49ad5f44a22cfcbdf6367145">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>s1 <span class="ot">&lt;-</span> <span class="fu">map</span>(dt, \(password) {</span>
+<span id="cb4-2"><a href="#cb4-2"></a>  s <span class="ot">&lt;-</span> <span class="fu">str_split</span>(password, <span class="st">""</span>, <span class="at">simplify =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb4-3"><a href="#cb4-3"></a>  ret1 <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(<span class="fu">all</span>(s <span class="sc">==</span> <span class="fu">cummax</span>(s)), <span class="cn">TRUE</span>, <span class="cn">FALSE</span>)</span>
+<span id="cb4-4"><a href="#cb4-4"></a>  ret2 <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(<span class="sc">!</span><span class="fu">str_detect</span>(password, <span class="st">"(.)</span><span class="sc">\\</span><span class="st">1"</span>), <span class="cn">FALSE</span>, <span class="cn">TRUE</span>)</span>
+<span id="cb4-5"><a href="#cb4-5"></a>  </span>
+<span id="cb4-6"><a href="#cb4-6"></a>  ret <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(ret1 <span class="sc">&amp;</span> ret2, <span class="cn">TRUE</span>, <span class="cn">FALSE</span>)</span>
+<span id="cb4-7"><a href="#cb4-7"></a>  <span class="fu">return</span>(ret)</span>
+<span id="cb4-8"><a href="#cb4-8"></a>}) <span class="sc">|&gt;</span></span>
+<span id="cb4-9"><a href="#cb4-9"></a>  <span class="fu">unlist</span>()</span>
+<span id="cb4-10"><a href="#cb4-10"></a><span class="fu">sum</span>(s1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1178</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a>dt <span class="ot">&lt;-</span> dt[s1]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 <section id="part-2" class="level2">
 <h2 class="anchored" data-anchor-id="part-2">Part 2</h2>
-<div class="cell" data-hash="2015-01_cache/html/unnamed-chunk-4_cd88886107e3f84a3f51cd4c1224d6b3">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a>dt <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="st">"paren"</span> <span class="ot">=</span> <span class="fu">t</span>(<span class="fu">str_split_fixed</span>(dt, <span class="st">""</span>, <span class="fu">nchar</span>(dt))))</span>
-<span id="cb6-2"><a href="#cb6-2"></a>dt<span class="sc">$</span>val <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(dt<span class="sc">$</span>paren <span class="sc">==</span> <span class="st">"("</span>, <span class="dv">1</span>, <span class="sc">-</span><span class="dv">1</span>)</span>
-<span id="cb6-3"><a href="#cb6-3"></a><span class="fu">which</span>(<span class="fu">cumsum</span>(dt<span class="sc">$</span>val) <span class="sc">==</span> <span class="sc">-</span><span class="dv">1</span>)[<span class="dv">1</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-hash="2019-04_cache/html/unnamed-chunk-4_7f16d07444460ef4e5db16d4546d39dd">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a>s2 <span class="ot">&lt;-</span></span>
+<span id="cb7-2"><a href="#cb7-2"></a>  <span class="fu">sapply</span>(dt, \(s) {</span>
+<span id="cb7-3"><a href="#cb7-3"></a>    s <span class="ot">&lt;-</span> <span class="fu">str_split</span>(s, <span class="st">""</span>) <span class="sc">|&gt;</span> <span class="fu">unlist</span>() <span class="sc">|&gt;</span> <span class="fu">table</span>()</span>
+<span id="cb7-4"><a href="#cb7-4"></a>    s <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(<span class="fu">any</span>(s <span class="sc">==</span> <span class="dv">2</span>), <span class="cn">TRUE</span>, <span class="cn">FALSE</span>)</span>
+<span id="cb7-5"><a href="#cb7-5"></a>    <span class="fu">return</span>(s)</span>
+<span id="cb7-6"><a href="#cb7-6"></a>  })</span>
+<span id="cb7-7"><a href="#cb7-7"></a><span class="fu">sum</span>(s2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 1771</code></pre>
+<pre><code>[1] 763</code></pre>
 </div>
 </div>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->
