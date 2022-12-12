@@ -24,7 +24,7 @@ I'm still working on getting the 2021 and earlier puzzles converted to Quarto. T
 #| include: false
 library(tidyverse)
 years <- c(2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022)
-stars <- c(  12,    8,    5,   12,    5,   20,   26,   18)
+stars <- c(  12,    8,    5,   12,    8,   20,   26,   18)
 
 mapply(\(y, s) {
   c("star" = 1:s) |>

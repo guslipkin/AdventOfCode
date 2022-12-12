@@ -1,0 +1,132 @@
+---
+title: "2022-07: "
+format: html
+---
+
+```{r}
+#| message: false
+library(mistlecode)
+library(rlang)
+```
+
+```{r}
+dt <- readLines("input.txt")
+
+dt <- 
+  data.frame(dt) |>
+  mutate(monkey = cumsum(grepl("Monkey \\d+:", dt)) - 1) |>
+  filter(dt != "")
+dt
+```
+
+## Part 1
+
+```{r}
+operation <- function(op, val) {
+  function(old) {
+    if (val == "old") { val <- as.integer(old) } else { val <- as.integer(val) }
+    if (op == "*") { val <- old * val }
+    else if (op == "+") { val <- old + val }
+    return(val)
+  }
+}
+
+new_monkey <- function(dt, x) {
+  name <- str_extract(dt[1,"dt"], "\\d+")
+  starting_items <- 
+    str_split(dt[2,"dt"], ":|,", simplify = TRUE)[1,-1] |> as.integer()
+  opp <- 
+    str_split(dt[3, "dt"], "=", simplify = TRUE)[1,2] |>
+    str_match(" (new|old) (\\+|\\-|\\*|\\/) (old|\\d+)")
+  op <- operation(op = opp[1,3], val = opp[1,4])
+  test <- str_extract(dt[4,"dt"], "\\d+") |> as.integer()
+  case_true <- str_extract(dt[5,"dt"], "\\d+")
+  case_false <- str_extract(dt[6,"dt"], "\\d+")
+  x <- list(
+    "name" = name,
+    "starting_items" = starting_items,
+    "operation" = op,
+    "test" = test,
+    "case_true" = case_true,
+    "case_false" = case_false,
+    "inspections" = 0
+  )
+  structure(x, class = "monkey")
+}
+
+monkeys <- 
+  lapply(unique(dt$monkey), \(m) { 
+    new_monkey(dt[dt$monkey == m,], m) 
+  })
+names(monkeys) <- sapply(monkeys, \(m) m$name)
+
+process_items <- function(item, monkey, these_monkeys) {
+  if (is.na(monkey$starting_items[item]) | 
+      item > length(monkey$starting_items)) { return(these_monkeys) }
+  worry_level <- monkey$operation(monkey$starting_items[item])
+  worry_level <- floor(worry_level / divide)
+  if (worry_level %% monkey$test == 0) {
+    case_true <- these_monkeys[[monkey$case_true]]$starting_items
+    case_true <- c(case_true, worry_level)
+    case_true <- case_true[!is.na(case_true)]
+    these_monkeys[[monkey$case_true]]$starting_items <- case_true
+  } else {
+    case_false <- these_monkeys[[monkey$case_false]]$starting_items
+    case_false <- c(case_false, worry_level)
+    case_false <- case_false[!is.na(case_false)]
+    these_monkeys[[monkey$case_false]]$starting_items <- case_false
+  }
+  process_items(item + 1, monkey, these_monkeys)
+}
+
+process_monkey <- function(i, these_monkeys) {
+  if (i == length(monkeys) + 1) { return(these_monkeys) }
+  monkey <- these_monkeys[[i]]
+  these_monkeys <- process_items(1, monkey, these_monkeys)
+  monkey$inspections <- monkey$inspections + length(monkey$starting_items)
+  monkey$starting_items <- NA_integer_
+  these_monkeys[[i]] <- monkey
+  process_monkey(i + 1, these_monkeys)
+}
+
+round <- function(these_monkeys, round) {
+  if (round == round_max + 1) { return(these_monkeys) }
+  these_monkeys <- process_monkey(1, these_monkeys)
+  round(these_monkeys, round + 1)
+}
+```
+
+```{r}
+divide <- 3
+round_max <- 20
+m <- round(monkeys, 1)
+sapply(m, \(m) m$inspections) |>
+  sort(decreasing = TRUE) |>
+  head(2) |>
+  prod()
+```
+
+## Part 2
+
+```{r}
+divide <- 1
+i <- 1
+m <- monkeys
+while (i <= 10000) {
+  round_max <- 1
+  m <<- round(m, 1)
+  i <- i + 1
+}
+sapply(m, \(m) m$inspections) |>
+  sort(decreasing = TRUE) |>
+  head(2) |>
+  prod()
+```
+
+
+```{r}
+combn(c(23, 19, 13, 17), m = 2) |>
+  t() |>
+  apply(1, prod)
+```
+

@@ -1,5 +1,5 @@
 ---
-title: "Day 3: Crossed Wires"
+title: "2019-03: Crossed Wires"
 format: html
 ---
 
@@ -9,7 +9,7 @@ library(mistlecode)
 ```
 
 ```{r}
-dtM <-
+dtMM <-
   readLines("input.txt") |>
   lapply(\(x) {
     strsplit(x, ",")[[1]] |>
@@ -23,15 +23,13 @@ dtM <-
 ## Part 1
 
 ```{r}
-dtM <- lapply(dtM, expand_directions)
+dtM <- lapply(dtMM, expand_directions, preserve_data = TRUE)
 
-dtM[[1]] <- follow_directions(dtM[[1]], 0, 0)
-dtM[[2]] <- follow_directions(dtM[[2]], 0, 0)
+dtM[[1]] <- follow_directions(dtM[[1]], 0, 0, preserve_data = TRUE)
+dtM[[2]] <- follow_directions(dtM[[2]], 0, 0, preserve_data = TRUE)
 
 inner_join(dtM[[1]], dtM[[2]], by = c("row", "col")) |>
-  lapply(abs) |>
-  data.frame() |>
-  mutate(dist = row + col) |>
+  mutate(dist = abs(row) + abs(col)) |>
   arrange(dist) |>
   head(1) |>
   pull(dist)
@@ -40,27 +38,17 @@ inner_join(dtM[[1]], dtM[[2]], by = c("row", "col")) |>
 ## Part 2
 
 ```{r}
-dtM <-
-  readLines("input.txt") |>
-  lapply(\(x) {
-    strsplit(x, ",")[[1]] |>
-      data.frame() |>
-      `colnames<-`(c("col")) |>
-      separate(col = "col", into = c("dir", "mag"), sep = 1) |>
-      mutate(mag = as.integer(mag), step = row_number())
-  })
-
-dtM <- lapply(dtM, expand_directions)
-
-dtM[[1]] <- follow_directions(dtM[[1]], 0, 0)
-dtM[[2]] <- follow_directions(dtM[[2]], 0, 0)
+dtM[[1]] <- 
+  dtM[[1]] |>
+  mutate(step = row_number())
+dtM[[2]] <- 
+  dtM[[2]] |>
+  mutate(step = row_number())
 
 inner_join(dtM[[1]], dtM[[2]], by = c("row", "col")) |>
-  lapply(abs) |>
-  data.frame() |>
-  mutate(dist = row + col) |>
-  arrange(dist) |>
+  mutate(steps = step.x + step.y) |>
+  arrange(steps) |>
   head(1) |>
-  pull(dist)
+  pull(steps)
 ```
 

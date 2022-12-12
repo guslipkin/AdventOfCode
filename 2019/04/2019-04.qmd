@@ -1,0 +1,47 @@
+---
+title: "2019-04: Secure Container"
+format: html
+---
+
+```{r}
+#| message: false
+library(mistlecode)
+```
+
+```{r}
+dt <-
+  "235741-706948" |>
+  strsplit("-") |>
+  unlist() |>
+  as.numeric()
+dt <- dt[1]:dt[2]
+```
+
+# Part 1
+
+```{r}
+s1 <- map(dt, \(password) {
+  s <- str_split(password, "", simplify = TRUE)
+  ret1 <- ifelse(all(s == cummax(s)), TRUE, FALSE)
+  ret2 <- ifelse(!str_detect(password, "(.)\\1"), FALSE, TRUE)
+  
+  ret <- ifelse(ret1 & ret2, TRUE, FALSE)
+  return(ret)
+}) |>
+  unlist()
+sum(s1)
+
+dt <- dt[s1]
+```
+
+## Part 2
+
+```{r}
+s2 <-
+  sapply(dt, \(s) {
+    s <- str_split(s, "") |> unlist() |> table()
+    s <- ifelse(any(s == 2), TRUE, FALSE)
+    return(s)
+  })
+sum(s2)
+```
