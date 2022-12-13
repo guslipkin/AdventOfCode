@@ -9,7 +9,7 @@ library(mistlecode)
 ```
 
 ```{r}
-dt <- readLines("input.txt")
+dt <- readLines("input2.txt")
 
 dt <- 
   data.frame(dt) |>
@@ -42,18 +42,20 @@ operation <- function(op, val) {
 
 new_monkey <- function(dt, x) {
   name <- str_extract(dt[1,"dt"], "\\d+")
-  starting_items <- 
-    str_split(dt[2,"dt"], ":|,", simplify = TRUE)[1,-1] |> as.integer()
+  items <- 
+    str_split(dt[2,"dt"], ":|,", simplify = TRUE)[1,-1] |> as.numeric()
   opp <- 
     str_split(dt[3, "dt"], "=", simplify = TRUE)[1,2] |>
     str_match(" (new|old) (\\+|\\-|\\*|\\/) (old|\\d+)")
+  op_op <- opp[1,3]
+  op_num <- ifelse(opp[1,4])
   op <- operation(op = opp[1,3], val = opp[1,4])
   test <- str_extract(dt[4,"dt"], "\\d+") |> as.integer()
   case_true <- str_extract(dt[5,"dt"], "\\d+")
   case_false <- str_extract(dt[6,"dt"], "\\d+")
   x <- list(
     "name" = name,
-    "starting_items" = starting_items,
+    "items" = items,
     "operation" = op,
     "test" = test,
     "case_true" = case_true,
@@ -70,20 +72,20 @@ monkeys <-
 names(monkeys) <- sapply(monkeys, \(m) m$name)
 
 process_items <- function(item, monkey, these_monkeys) {
-  if (is.na(monkey$starting_items[item]) | 
-      item > length(monkey$starting_items)) { return(these_monkeys) }
-  worry_level <- monkey$operation(monkey$starting_items[item])
-  worry_level <- floor(worry_level / divide)
+  if (is.na(monkey$items[item]) | 
+      item > length(monkey$items)) { return(these_monkeys) }
+  worry_level <- monkey$operation(monkey$items[item])
+  worry_level <- floor(worry_level / 3)
   if (worry_level %% monkey$test == 0) {
-    case_true <- these_monkeys[[monkey$case_true]]$starting_items
-    case_true <- c(case_true, worry_level)
-    case_true <- case_true[!is.na(case_true)]
-    these_monkeys[[monkey$case_true]]$starting_items <- case_true
+    case_true <- 
+      c(these_monkeys[[monkey$case_true]]$items, worry_level)
+    these_monkeys[[monkey$case_true]]$items <- 
+      case_true[!is.na(case_true)]
   } else {
-    case_false <- these_monkeys[[monkey$case_false]]$starting_items
-    case_false <- c(case_false, worry_level)
-    case_false <- case_false[!is.na(case_false)]
-    these_monkeys[[monkey$case_false]]$starting_items <- case_false
+    case_false <- 
+      c(these_monkeys[[monkey$case_false]]$items, worry_level)
+    these_monkeys[[monkey$case_false]]$items <- 
+      case_false[!is.na(case_false)]
   }
   process_items(item + 1, monkey, these_monkeys)
 }
@@ -93,8 +95,8 @@ process_monkey <- function(i, these_monkeys) {
   monkey <- these_monkeys[[i]]
   these_monkeys <- process_items(1, monkey, these_monkeys)
   monkey$inspections <- 
-    monkey$inspections + length(monkey$starting_items)
-  monkey$starting_items <- NA_integer_
+    sum(monkey$inspections, length(monkey$items), na.rm = TRUE)
+  monkey$items <- as.numeric(NA)
   these_monkeys[[i]] <- monkey
   process_monkey(i + 1, these_monkeys)
 }
@@ -107,7 +109,6 @@ round <- function(these_monkeys, round) {
 ```
 
 ```{r}
-divide <- 3
 round_max <- 20
 m <- round(monkeys, 1)
 sapply(m, \(m) m$inspections) |>
@@ -118,69 +119,49 @@ sapply(m, \(m) m$inspections) |>
 
 ## Part 2
 
+I want to scream. I submitted my answer just to see and it's right, even though
+the test input was wrong. I could've submitted yesterday 😭 So many hours
+devoted to these monkeys for nothing...
+
+I figured out the `worry_level %% prod(tests)` thing pretty quick after part 1,
+but it took a full day because the test input never lined up, even if I got
+super close. I still want to figure out why that is, but for now I'm just happy
+to have the star.
+
 ```{r}
 process_items <- function(item, monkey, these_monkeys) {
-  if (is.na(monkey$starting_items[item]) | 
-      item > length(monkey$starting_items)) { return(these_monkeys) }
-  a <- monkey$operation(monkey$starting_items[item])
-  b <- monkey$test
-  s <-
-    sapply(c(23, 19, 13, 17), \(b) {
-      (1:1000)[sapply(1:1000, \(m) a %% m == b %% m)]
-    }) |>
-    unlist() |>
-    table()
-  worry_level <- floor(a / max(which(s == 4)))
-  if (worry_level %% monkey$test == 0) {
-    case_true <- these_monkeys[[monkey$case_true]]$starting_items
-    case_true <- c(case_true, worry_level)
-    case_true <- case_true[!is.na(case_true)]
-    these_monkeys[[monkey$case_true]]$starting_items <- case_true
+  if (is.na(monkey$items[item]) | 
+      item > length(monkey$items)) { return(these_monkeys) }
+  worry_level <- monkey$operation(monkey$items[item])
+  case <- (worry_level %% monkey$test) == 0
+  worry_level <- worry_level %% prod(tests)
+  if (case) {
+    case_true <- 
+      c(these_monkeys[[monkey$case_true]]$items, worry_level)
+    these_monkeys[[monkey$case_true]]$items <- 
+      case_true[!is.na(case_true)]
   } else {
-    case_false <- these_monkeys[[monkey$case_false]]$starting_items
-    case_false <- c(case_false, worry_level)
-    case_false <- case_false[!is.na(case_false)]
-    these_monkeys[[monkey$case_false]]$starting_items <- case_false
+    case_false <- 
+      c(these_monkeys[[monkey$case_false]]$items, worry_level)
+    these_monkeys[[monkey$case_false]]$items <- 
+      case_false[!is.na(case_false)]
   }
   process_items(item + 1, monkey, these_monkeys)
 }
 
-divide <- 1
+m <- monkeys
+tests <- sapply(m, \(m) m$test)
+
 round_max <- 1
 i <- 1
-m <- monkeys
 while (i <= 10000) {
-  m <<- round(m, 1)
+  m <- process_monkey(1, m)
   i <- i + 1
 }
+
 sapply(m, \(m) m$inspections) |>
   sort(decreasing = TRUE) |>
   head(2) |>
   prod()
-
-2500700045 > 2713310158
 ```
 
-```{r}
-a <- 25811
-b <- 23
-l <- 1000
-s1 <- (1:1000)[sapply(1:1000, \(m) a %% m == 23 %% m)]
-s2 <- (1:1000)[sapply(1:1000, \(m) a %% m == 19 %% m)]
-
-s <-
-  sapply(c(23, 19, 13, 17), \(b) {
-    (1:1000)[sapply(1:1000, \(m) a %% m == b %% m)]
-  })
-names(s) <- c(23, 19, 13, 17)
-max(which(table(unlist(s)) == 4))
-
-max(intersect(s1, s2))
-```
-
-
-```{r}
-combn(c(23, 19, 13, 17), m = 2) |>
-  t() |>
-  apply(1, prod)
-```
