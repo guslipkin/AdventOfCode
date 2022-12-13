@@ -9,7 +9,7 @@ library(mistlecode)
 ```
 
 ```{r}
-dt <- readLines("input2.txt")
+dt <- readLines("input.txt")
 
 dt <- 
   data.frame(dt) |>
