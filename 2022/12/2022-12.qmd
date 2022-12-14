@@ -1,0 +1,50 @@
+---
+title: "2022-12: Hill Climbing Algorithm"
+format: html
+---
+
+```{r}
+#| message: false
+library(mistlecode)
+```
+
+```{r}
+dt <- 
+  readLines("input2.txt") |>
+  str_split("", simplify = TRUE)
+```
+
+```{r}
+lettersE <- c("S", letters, "E")
+m <- apply(dt, c(1,2), \(l) which(lettersE == l))
+e <- which(m == length(lettersE), arr.ind = TRUE)[1,]
+```
+
+```{r}
+.lee <- function(.data, row, col, paths = NULL) {
+  if (is.null(paths)) { 
+    paths <- matrix(0, nrow(.data), ncol(.data))
+    pts <- which(.data == min(.data), arr.ind = TRUE)[1,]
+    paths[pts["row"], pts["col"]] <- max(paths + 1)
+    return(.lee(.data, row, col, paths))
+  } else {
+    mPaths <- max(paths)
+    pts <- which(.data == mPaths, arr.ind = TRUE)
+    for(i in 1:nrow(pts)) { paths[pts[i,"row"], pts[i,"col"]] <- mPaths + 1 }
+  }
+  if (paths[row, col] != 0) { return(paths) }
+  else { return(.lee(.data, row, col, paths)) }
+}
+
+l <- .lee(m, e["row"], e["col"])
+which(l == max(l), arr.ind = TRUE)
+max(l)
+```
+
+53
+29
+
+```{r}
+
+```
+
