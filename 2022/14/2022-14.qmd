@@ -88,6 +88,16 @@ which(cave == "o") |>
   sum(-1)
 ```
 
+```{r}
+matrix_to_coords(cave) |>
+  data.frame() |>
+  filter(data != " ") |>
+  mutate(row = as.integer(row), col = as.integer(col)) |>
+  filter(row <= 200) |>
+  ggplot() +
+  geom_tile(aes(x = col, y = -row, fill = data), size = 2)
+```
+
 ## Part 2
 
 Okay. I need to get the highest row, I can't just make a massive matrix. Then
@@ -141,5 +151,15 @@ while (cave[1,startCol] != "o") {
 }
 which(cave == "o") |>
   length()
+```
+
+```{r}
+matrix_to_coords(cave) |>
+  data.frame() |>
+  filter(data != " ") |>
+  mutate(row = as.integer(row), col = as.integer(col)) |>
+  filter(row <= maxRow) |>
+  ggplot() +
+  geom_tile(aes(x = col, y = -row, fill = data), size = 2)
 ```
 
