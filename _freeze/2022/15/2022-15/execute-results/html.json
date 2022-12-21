@@ -1,0 +1,14 @@
+{
+  "hash": "c44680b4729f337651348e5d1555d5c1",
+  "result": {
+    "markdown": "---\ntitle: \"2022-15: Beacon Exclusion Zone\"\nformat: html\n---\n\n::: {.cell hash='2022-15_cache/html/unnamed-chunk-1_2d4026b0f2de1d9e6dc6077bcce7d56c'}\n\n```{.r .cell-code}\nlibrary(mistlecode)\n```\n\n::: {.cell-output .cell-output-stdout}\n```\nTo install `mistlecode` yourself, run `devtools::install_github('guslipkin/mistlecode')`.\n\n Also loading:  cipheR data.table dplyr purrr slider stringr tidyverse\n```\n:::\n\n```{.r .cell-code}\noptions(scipen = 999)\n```\n:::\n\n::: {.cell hash='2022-15_cache/html/unnamed-chunk-2_c1ab3e9eb487c76296dea89ef5e577f9'}\n\n```{.r .cell-code}\ndt <-\n  readLines(\"input2.txt\") |>\n  str_match(\"(Sensor at x=)(-?\\\\d+)(, y=)(-?\\\\d+)(: closest beacon is at x=)(-?\\\\d+)(, y=)(-?\\\\d+)\") |>\n  `colnames<-`(c(\"input\", \"burn\", \"xS\", \"burn\", \"yS\", \"burn\", \"xB\", \"burn\", \"yB\")) |>\n  data.frame() |>\n  select(xS, yS, xB, yB) |>\n  lapply(as.integer) |>\n  data.frame() |>\n  as.matrix()\n```\n:::\n\n\n## Part 1\n\n\n::: {.cell hash='2022-15_cache/html/unnamed-chunk-3_142bbdc0c925dc5af189f9ecce6657d3'}\n\n:::\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

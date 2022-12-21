@@ -1,6 +1,7 @@
 ---
 title: "2022-12: Hill Climbing Algorithm"
 format: html
+eval: false
 ---
 
 ```{r}
@@ -25,13 +26,25 @@ e <- which(m == length(lettersE), arr.ind = TRUE)[1,]
   if (is.null(paths)) { 
     paths <- matrix(0, nrow(.data), ncol(.data))
     pts <- which(.data == min(.data), arr.ind = TRUE)[1,]
-    paths[pts["row"], pts["col"]] <- max(paths + 1)
+    paths[pts["row"], pts["col"]] <- 1
     return(.lee(.data, row, col, paths))
   } else {
     mPaths <- max(paths)
-    pts <- which(.data == mPaths, arr.ind = TRUE)
-    for(i in 1:nrow(pts)) { paths[pts[i,"row"], pts[i,"col"]] <- mPaths + 1 }
+    which(.data == mPaths, arr.ind = TRUE)
+    pts <- 
+      which(.data == mPaths, arr.ind = TRUE) |>
+      apply(1, \(x) {
+        get_adjacent_coords(x["row"], x["col"], data = .data)
+      }) %>%
+      do.call(rbind, .) |>
+      unique()
+      merge(which(.data == mPaths + 1, arr.ind = TRUE)) |>
+      as.matrix()
+    if (nrow(pts) > 0) {
+      for(i in 1:nrow(pts)) { paths[pts[i,"row"], pts[i,"col"]] <- mPaths + 1 }
+    }
   }
+  print(paths)
   if (paths[row, col] != 0) { return(paths) }
   else { return(.lee(.data, row, col, paths)) }
 }
@@ -39,6 +52,17 @@ e <- which(m == length(lettersE), arr.ind = TRUE)[1,]
 l <- .lee(m, e["row"], e["col"])
 which(l == max(l), arr.ind = TRUE)
 max(l)
+
+which(m == 2, arr.ind = TRUE) |>
+  apply(1, \(x) {
+    get_adjacent_coords(x["row"], x["col"], data = m)
+  }) %>%
+  do.call(rbind, .) |>
+  unique()
+
+get_adjacent_coords(1,1,data = m) |>
+  merge(which(m == 2, arr.ind = TRUE)) |>
+  as.matrix()
 ```
 
 53

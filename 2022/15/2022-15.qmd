@@ -1,0 +1,30 @@
+---
+title: "2022-15: Beacon Exclusion Zone"
+format: html
+---
+
+```{r}
+#| message: false
+library(mistlecode)
+
+options(scipen = 999)
+```
+
+```{r}
+dt <-
+  readLines("input2.txt") |>
+  str_match("(Sensor at x=)(-?\\d+)(, y=)(-?\\d+)(: closest beacon is at x=)(-?\\d+)(, y=)(-?\\d+)") |>
+  `colnames<-`(c("input", "burn", "xS", "burn", "yS", "burn", "xB", "burn", "yB")) |>
+  data.frame() |>
+  select(xS, yS, xB, yB) |>
+  lapply(as.integer) |>
+  data.frame() |>
+  as.matrix()
+```
+
+## Part 1
+
+```{r}
+
+```
+

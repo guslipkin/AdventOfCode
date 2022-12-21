@@ -269,6 +269,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <a href="../../2022/14/2022-14.html" class="sidebar-item-text sidebar-link active">2022-14: Regolith Reservoir</a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../2022/21/2022-21.html" class="sidebar-item-text sidebar-link">2022-21: Monkey Math</a>
+  </div>
+</li>
       </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
@@ -670,18 +675,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <pre><code>[1] 961</code></pre>
 </div>
 </div>
-<div class="cell" data-hash="2022-14_cache/html/unnamed-chunk-5_182d2d650e78937ae39fccaeec3abb90">
+<div class="cell" data-hash="2022-14_cache/html/unnamed-chunk-5_2fb9db6f8757876446926514e5a83c70">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a><span class="fu">matrix_to_coords</span>(cave) <span class="sc">|&gt;</span></span>
 <span id="cb7-2"><a href="#cb7-2"></a>  <span class="fu">data.frame</span>() <span class="sc">|&gt;</span></span>
 <span id="cb7-3"><a href="#cb7-3"></a>  <span class="fu">filter</span>(data <span class="sc">!=</span> <span class="st">" "</span>) <span class="sc">|&gt;</span></span>
 <span id="cb7-4"><a href="#cb7-4"></a>  <span class="fu">mutate</span>(<span class="at">row =</span> <span class="fu">as.integer</span>(row), <span class="at">col =</span> <span class="fu">as.integer</span>(col)) <span class="sc">|&gt;</span></span>
 <span id="cb7-5"><a href="#cb7-5"></a>  <span class="fu">filter</span>(row <span class="sc">&lt;=</span> <span class="dv">200</span>) <span class="sc">|&gt;</span></span>
 <span id="cb7-6"><a href="#cb7-6"></a>  <span class="fu">ggplot</span>() <span class="sc">+</span></span>
-<span id="cb7-7"><a href="#cb7-7"></a>  <span class="fu">geom_tile</span>(<span class="fu">aes</span>(<span class="at">x =</span> col, <span class="at">y =</span> <span class="sc">-</span>row, <span class="at">fill =</span> data), <span class="at">size =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning: Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.
-ℹ Please use `linewidth` instead.</code></pre>
-</div>
+<span id="cb7-7"><a href="#cb7-7"></a>  <span class="fu">geom_tile</span>(<span class="fu">aes</span>(<span class="at">x =</span> col, <span class="at">y =</span> <span class="sc">-</span>row, <span class="at">fill =</span> data))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="2022-14_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="672"></p>
 </div>
@@ -691,59 +692,59 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h2 class="anchored" data-anchor-id="part-2">Part 2</h2>
 <p>Okay. I need to get the highest row, I can’t just make a massive matrix. Then add another row on top of where everything was drawn that will capture the top of the pyramid. Also, make a new column placeholder that can be added if I need to expand to the left or right. Because of that, I also need to track where column 500 is. If I’m going to have a column collision, I need to expand in that direction. Then, it’s business as usual, but now I’m checking to see if that original start point is full, no matter where it is. Lastly, don’t subtract one because the top grain does count now.</p>
 <div class="cell" data-hash="2022-14_cache/html/unnamed-chunk-6_79b2c6d244ec677f6417c717ca325e1c">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a>maxRow <span class="ot">&lt;-</span></span>
-<span id="cb9-2"><a href="#cb9-2"></a>  dt <span class="sc">|&gt;</span></span>
-<span id="cb9-3"><a href="#cb9-3"></a>  <span class="fu">str_extract_all</span>(<span class="st">",[0-9]{1,3}"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb9-4"><a href="#cb9-4"></a>  <span class="fu">suppressWarnings</span>() <span class="sc">|&gt;</span></span>
-<span id="cb9-5"><a href="#cb9-5"></a>  <span class="fu">unlist</span>() <span class="sc">|&gt;</span></span>
-<span id="cb9-6"><a href="#cb9-6"></a>  <span class="fu">str_remove_all</span>(<span class="st">","</span>) <span class="sc">|&gt;</span></span>
-<span id="cb9-7"><a href="#cb9-7"></a>  <span class="fu">as.numeric</span>() <span class="sc">|&gt;</span></span>
-<span id="cb9-8"><a href="#cb9-8"></a>  <span class="fu">max</span>()</span>
-<span id="cb9-9"><a href="#cb9-9"></a>cave <span class="ot">&lt;-</span> <span class="fu">createCave</span>(maxRow <span class="sc">+</span> <span class="dv">1</span>, maxCol)</span>
-<span id="cb9-10"><a href="#cb9-10"></a>cave <span class="ot">&lt;-</span> <span class="fu">rbind</span>(<span class="fu">matrix</span>(<span class="st">" "</span>, <span class="dv">1</span>, <span class="fu">ncol</span>(cave)), cave)</span>
-<span id="cb9-11"><a href="#cb9-11"></a>newCol <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="st">" "</span>, <span class="fu">nrow</span>(cave), <span class="dv">1</span>)</span>
-<span id="cb9-12"><a href="#cb9-12"></a>startCol <span class="ot">&lt;-</span> <span class="dv">500</span></span>
-<span id="cb9-13"><a href="#cb9-13"></a><span class="cf">while</span> (cave[<span class="dv">1</span>,startCol] <span class="sc">!=</span> <span class="st">"o"</span>) {</span>
-<span id="cb9-14"><a href="#cb9-14"></a>  col <span class="ot">&lt;-</span> startCol</span>
-<span id="cb9-15"><a href="#cb9-15"></a>  row <span class="ot">&lt;-</span> <span class="fu">which</span>(cave[,col] <span class="sc">!=</span> <span class="st">" "</span>)[<span class="dv">1</span>] <span class="sc">-</span> <span class="dv">1</span></span>
-<span id="cb9-16"><a href="#cb9-16"></a>  breakFlag <span class="ot">&lt;-</span> <span class="cn">FALSE</span></span>
-<span id="cb9-17"><a href="#cb9-17"></a>  <span class="cf">repeat</span> {</span>
-<span id="cb9-18"><a href="#cb9-18"></a>    <span class="cf">if</span> (col <span class="sc">==</span> <span class="dv">2</span>) { </span>
-<span id="cb9-19"><a href="#cb9-19"></a>      cave <span class="ot">&lt;-</span> <span class="fu">cbind</span>(newCol, cave)</span>
-<span id="cb9-20"><a href="#cb9-20"></a>      startCol <span class="ot">&lt;-</span> startCol <span class="sc">+</span> <span class="dv">1</span></span>
-<span id="cb9-21"><a href="#cb9-21"></a>    } <span class="cf">else</span> <span class="cf">if</span> (col <span class="sc">==</span> <span class="fu">ncol</span>(cave) <span class="sc">-</span> <span class="dv">1</span>) { cave <span class="ot">&lt;-</span> <span class="fu">cbind</span>(cave, newCol) }</span>
-<span id="cb9-22"><a href="#cb9-22"></a>    </span>
-<span id="cb9-23"><a href="#cb9-23"></a>    <span class="cf">if</span> (row <span class="sc">+</span> <span class="dv">1</span> <span class="sc">&gt;</span> <span class="fu">nrow</span>(cave)) { </span>
-<span id="cb9-24"><a href="#cb9-24"></a>      breakFlag <span class="ot">&lt;-</span> <span class="cn">TRUE</span> </span>
-<span id="cb9-25"><a href="#cb9-25"></a>    } <span class="cf">else</span> {</span>
-<span id="cb9-26"><a href="#cb9-26"></a>      <span class="cf">if</span> (cave[row <span class="sc">+</span> <span class="dv">1</span>, col] <span class="sc">==</span> <span class="st">" "</span>) {</span>
-<span id="cb9-27"><a href="#cb9-27"></a>        row <span class="ot">&lt;-</span> row <span class="sc">+</span> <span class="dv">1</span></span>
-<span id="cb9-28"><a href="#cb9-28"></a>      } <span class="cf">else</span> <span class="cf">if</span> (col <span class="sc">&gt;=</span> <span class="dv">2</span> <span class="sc">&amp;</span> cave[row <span class="sc">+</span> <span class="dv">1</span>, col <span class="sc">-</span> <span class="dv">1</span>] <span class="sc">==</span> <span class="st">" "</span>) {</span>
-<span id="cb9-29"><a href="#cb9-29"></a>        row <span class="ot">&lt;-</span> row <span class="sc">+</span> <span class="dv">1</span>; col <span class="ot">&lt;-</span> col <span class="sc">-</span> <span class="dv">1</span></span>
-<span id="cb9-30"><a href="#cb9-30"></a>      } <span class="cf">else</span> <span class="cf">if</span> (col <span class="sc">&lt;</span> <span class="fu">ncol</span>(cave) <span class="sc">&amp;</span> cave[row <span class="sc">+</span> <span class="dv">1</span>, col <span class="sc">+</span> <span class="dv">1</span>] <span class="sc">==</span> <span class="st">" "</span>) {</span>
-<span id="cb9-31"><a href="#cb9-31"></a>        row <span class="ot">&lt;-</span> row <span class="sc">+</span> <span class="dv">1</span>; col <span class="ot">&lt;-</span> col <span class="sc">+</span> <span class="dv">1</span></span>
-<span id="cb9-32"><a href="#cb9-32"></a>      } <span class="cf">else</span> { breakFlag <span class="ot">&lt;-</span> <span class="cn">TRUE</span> }</span>
-<span id="cb9-33"><a href="#cb9-33"></a>    }</span>
-<span id="cb9-34"><a href="#cb9-34"></a>    <span class="cf">if</span> (breakFlag) {</span>
-<span id="cb9-35"><a href="#cb9-35"></a>      cave[row, col] <span class="ot">&lt;-</span> <span class="st">"o"</span></span>
-<span id="cb9-36"><a href="#cb9-36"></a>      <span class="cf">break</span></span>
-<span id="cb9-37"><a href="#cb9-37"></a>    }</span>
-<span id="cb9-38"><a href="#cb9-38"></a>  }</span>
-<span id="cb9-39"><a href="#cb9-39"></a>}</span>
-<span id="cb9-40"><a href="#cb9-40"></a><span class="fu">which</span>(cave <span class="sc">==</span> <span class="st">"o"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb9-41"><a href="#cb9-41"></a>  <span class="fu">length</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a>maxRow <span class="ot">&lt;-</span></span>
+<span id="cb8-2"><a href="#cb8-2"></a>  dt <span class="sc">|&gt;</span></span>
+<span id="cb8-3"><a href="#cb8-3"></a>  <span class="fu">str_extract_all</span>(<span class="st">",[0-9]{1,3}"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb8-4"><a href="#cb8-4"></a>  <span class="fu">suppressWarnings</span>() <span class="sc">|&gt;</span></span>
+<span id="cb8-5"><a href="#cb8-5"></a>  <span class="fu">unlist</span>() <span class="sc">|&gt;</span></span>
+<span id="cb8-6"><a href="#cb8-6"></a>  <span class="fu">str_remove_all</span>(<span class="st">","</span>) <span class="sc">|&gt;</span></span>
+<span id="cb8-7"><a href="#cb8-7"></a>  <span class="fu">as.numeric</span>() <span class="sc">|&gt;</span></span>
+<span id="cb8-8"><a href="#cb8-8"></a>  <span class="fu">max</span>()</span>
+<span id="cb8-9"><a href="#cb8-9"></a>cave <span class="ot">&lt;-</span> <span class="fu">createCave</span>(maxRow <span class="sc">+</span> <span class="dv">1</span>, maxCol)</span>
+<span id="cb8-10"><a href="#cb8-10"></a>cave <span class="ot">&lt;-</span> <span class="fu">rbind</span>(<span class="fu">matrix</span>(<span class="st">" "</span>, <span class="dv">1</span>, <span class="fu">ncol</span>(cave)), cave)</span>
+<span id="cb8-11"><a href="#cb8-11"></a>newCol <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="st">" "</span>, <span class="fu">nrow</span>(cave), <span class="dv">1</span>)</span>
+<span id="cb8-12"><a href="#cb8-12"></a>startCol <span class="ot">&lt;-</span> <span class="dv">500</span></span>
+<span id="cb8-13"><a href="#cb8-13"></a><span class="cf">while</span> (cave[<span class="dv">1</span>,startCol] <span class="sc">!=</span> <span class="st">"o"</span>) {</span>
+<span id="cb8-14"><a href="#cb8-14"></a>  col <span class="ot">&lt;-</span> startCol</span>
+<span id="cb8-15"><a href="#cb8-15"></a>  row <span class="ot">&lt;-</span> <span class="fu">which</span>(cave[,col] <span class="sc">!=</span> <span class="st">" "</span>)[<span class="dv">1</span>] <span class="sc">-</span> <span class="dv">1</span></span>
+<span id="cb8-16"><a href="#cb8-16"></a>  breakFlag <span class="ot">&lt;-</span> <span class="cn">FALSE</span></span>
+<span id="cb8-17"><a href="#cb8-17"></a>  <span class="cf">repeat</span> {</span>
+<span id="cb8-18"><a href="#cb8-18"></a>    <span class="cf">if</span> (col <span class="sc">==</span> <span class="dv">2</span>) { </span>
+<span id="cb8-19"><a href="#cb8-19"></a>      cave <span class="ot">&lt;-</span> <span class="fu">cbind</span>(newCol, cave)</span>
+<span id="cb8-20"><a href="#cb8-20"></a>      startCol <span class="ot">&lt;-</span> startCol <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb8-21"><a href="#cb8-21"></a>    } <span class="cf">else</span> <span class="cf">if</span> (col <span class="sc">==</span> <span class="fu">ncol</span>(cave) <span class="sc">-</span> <span class="dv">1</span>) { cave <span class="ot">&lt;-</span> <span class="fu">cbind</span>(cave, newCol) }</span>
+<span id="cb8-22"><a href="#cb8-22"></a>    </span>
+<span id="cb8-23"><a href="#cb8-23"></a>    <span class="cf">if</span> (row <span class="sc">+</span> <span class="dv">1</span> <span class="sc">&gt;</span> <span class="fu">nrow</span>(cave)) { </span>
+<span id="cb8-24"><a href="#cb8-24"></a>      breakFlag <span class="ot">&lt;-</span> <span class="cn">TRUE</span> </span>
+<span id="cb8-25"><a href="#cb8-25"></a>    } <span class="cf">else</span> {</span>
+<span id="cb8-26"><a href="#cb8-26"></a>      <span class="cf">if</span> (cave[row <span class="sc">+</span> <span class="dv">1</span>, col] <span class="sc">==</span> <span class="st">" "</span>) {</span>
+<span id="cb8-27"><a href="#cb8-27"></a>        row <span class="ot">&lt;-</span> row <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb8-28"><a href="#cb8-28"></a>      } <span class="cf">else</span> <span class="cf">if</span> (col <span class="sc">&gt;=</span> <span class="dv">2</span> <span class="sc">&amp;</span> cave[row <span class="sc">+</span> <span class="dv">1</span>, col <span class="sc">-</span> <span class="dv">1</span>] <span class="sc">==</span> <span class="st">" "</span>) {</span>
+<span id="cb8-29"><a href="#cb8-29"></a>        row <span class="ot">&lt;-</span> row <span class="sc">+</span> <span class="dv">1</span>; col <span class="ot">&lt;-</span> col <span class="sc">-</span> <span class="dv">1</span></span>
+<span id="cb8-30"><a href="#cb8-30"></a>      } <span class="cf">else</span> <span class="cf">if</span> (col <span class="sc">&lt;</span> <span class="fu">ncol</span>(cave) <span class="sc">&amp;</span> cave[row <span class="sc">+</span> <span class="dv">1</span>, col <span class="sc">+</span> <span class="dv">1</span>] <span class="sc">==</span> <span class="st">" "</span>) {</span>
+<span id="cb8-31"><a href="#cb8-31"></a>        row <span class="ot">&lt;-</span> row <span class="sc">+</span> <span class="dv">1</span>; col <span class="ot">&lt;-</span> col <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb8-32"><a href="#cb8-32"></a>      } <span class="cf">else</span> { breakFlag <span class="ot">&lt;-</span> <span class="cn">TRUE</span> }</span>
+<span id="cb8-33"><a href="#cb8-33"></a>    }</span>
+<span id="cb8-34"><a href="#cb8-34"></a>    <span class="cf">if</span> (breakFlag) {</span>
+<span id="cb8-35"><a href="#cb8-35"></a>      cave[row, col] <span class="ot">&lt;-</span> <span class="st">"o"</span></span>
+<span id="cb8-36"><a href="#cb8-36"></a>      <span class="cf">break</span></span>
+<span id="cb8-37"><a href="#cb8-37"></a>    }</span>
+<span id="cb8-38"><a href="#cb8-38"></a>  }</span>
+<span id="cb8-39"><a href="#cb8-39"></a>}</span>
+<span id="cb8-40"><a href="#cb8-40"></a><span class="fu">which</span>(cave <span class="sc">==</span> <span class="st">"o"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb8-41"><a href="#cb8-41"></a>  <span class="fu">length</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 26375</code></pre>
 </div>
 </div>
-<div class="cell" data-hash="2022-14_cache/html/unnamed-chunk-7_c8f391dcc42be3b603f5e17f8835c676">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a><span class="fu">matrix_to_coords</span>(cave) <span class="sc">|&gt;</span></span>
-<span id="cb11-2"><a href="#cb11-2"></a>  <span class="fu">data.frame</span>() <span class="sc">|&gt;</span></span>
-<span id="cb11-3"><a href="#cb11-3"></a>  <span class="fu">filter</span>(data <span class="sc">!=</span> <span class="st">" "</span>) <span class="sc">|&gt;</span></span>
-<span id="cb11-4"><a href="#cb11-4"></a>  <span class="fu">mutate</span>(<span class="at">row =</span> <span class="fu">as.integer</span>(row), <span class="at">col =</span> <span class="fu">as.integer</span>(col)) <span class="sc">|&gt;</span></span>
-<span id="cb11-5"><a href="#cb11-5"></a>  <span class="fu">filter</span>(row <span class="sc">&lt;=</span> maxRow) <span class="sc">|&gt;</span></span>
-<span id="cb11-6"><a href="#cb11-6"></a>  <span class="fu">ggplot</span>() <span class="sc">+</span></span>
-<span id="cb11-7"><a href="#cb11-7"></a>  <span class="fu">geom_tile</span>(<span class="fu">aes</span>(<span class="at">x =</span> col, <span class="at">y =</span> <span class="sc">-</span>row, <span class="at">fill =</span> data), <span class="at">size =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-hash="2022-14_cache/html/unnamed-chunk-7_41d517a6ac5f71c051a38400954bffb7">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a><span class="fu">matrix_to_coords</span>(cave) <span class="sc">|&gt;</span></span>
+<span id="cb10-2"><a href="#cb10-2"></a>  <span class="fu">data.frame</span>() <span class="sc">|&gt;</span></span>
+<span id="cb10-3"><a href="#cb10-3"></a>  <span class="fu">filter</span>(data <span class="sc">!=</span> <span class="st">" "</span>) <span class="sc">|&gt;</span></span>
+<span id="cb10-4"><a href="#cb10-4"></a>  <span class="fu">mutate</span>(<span class="at">row =</span> <span class="fu">as.integer</span>(row), <span class="at">col =</span> <span class="fu">as.integer</span>(col)) <span class="sc">|&gt;</span></span>
+<span id="cb10-5"><a href="#cb10-5"></a>  <span class="fu">filter</span>(row <span class="sc">&lt;=</span> maxRow) <span class="sc">|&gt;</span></span>
+<span id="cb10-6"><a href="#cb10-6"></a>  <span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb10-7"><a href="#cb10-7"></a>  <span class="fu">geom_tile</span>(<span class="fu">aes</span>(<span class="at">x =</span> col, <span class="at">y =</span> <span class="sc">-</span>row, <span class="at">fill =</span> data))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="2022-14_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="672"></p>
 </div>

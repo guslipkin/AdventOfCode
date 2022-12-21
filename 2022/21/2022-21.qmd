@@ -1,0 +1,169 @@
+---
+title: "2022-21: Monkey Math"
+format: html
+---
+
+This...doesn't actually look too bad. Part 2 will probably be a nightmare.
+
+```{r}
+#| message: false
+library(mistlecode)
+#remotes::install_github("rconsortium/OOP-WG")
+library(R7)
+options(scipen = 999)
+```
+
+```{r}
+dt <- 
+  readLines("input.txt") |>
+  str_split(": ")
+```
+
+## Part 1
+
+Let's take a chance to use [R7](https://rconsortium.github.io/OOP-WG/) for the
+first time! I can build on the bits I learned with S3 in
+[2022-11](/2022/11/2022-11.html). The idea to use a vector of monkey names
+(`index`) made it really easy to make sure I was pulling info from the right
+monkeys, rather than needing to iterate over the entire list. There's probably a
+better approach overall with a more recursive solution, but this seems to work
+fine for Part 1, although I'm worried about Part 2.
+
+```{r}
+monkey <- new_class(
+  name = "monkey",
+  properties = list(
+    name = class_character,
+    val = class_any,
+    op = class_character
+  )
+)
+
+new_monkey <- function(x) {
+  if (!is.na(suppressWarnings(as.numeric(x[2])))) {
+    val <- as.numeric(x[2])
+    op <- NA_character_
+  } else {
+    val <- NA
+    op <- x[2]
+  }
+  monkey(
+    name = x[1],
+    val = val,
+    op = op
+  )
+}
+
+monkeys <- lapply(dt, new_monkey)
+masterMonkeys <- monkeys
+index <- sapply(monkeys, \(x) x@name)
+
+monkey_math <- function(monkeys, op) {
+  m1 <- monkeys[[which(index == op[1])]]@val
+  m2 <- monkeys[[which(index == op[3])]]@val
+  
+  if (!is.na(m1) & !is.na(m2)) {
+    if (op[2] == "+") { m1 + m2 }
+    else if (op[2] == "-") { m1 - m2 }
+    else if (op[2] == "*") { m1 * m2 }
+    else if (op[2] == "/") { m1 / m2 }
+  } else { return(NA_integer_) }
+}
+
+process_monkeys <- function(monkeys, n = 1) {
+  if (n > length(monkeys)) { return(monkeys) }
+  if (is.na(monkeys[[n]]@val)) {
+    val <- str_split_1(monkeys[[n]]@op, " ")
+    monkeys[[n]]@val <- monkey_math(monkeys, val)
+  }
+  if (monkeys[[n]]@name == "root" & !is.na(monkeys[[n]]@val)) { 
+    return(monkeys[[n]]@val) 
+  }
+  process_monkeys(monkeys, n + 1)
+}
+
+m <- monkeys
+while(is.list(m)) { m <- process_monkeys(m) }
+m
+```
+
+## Part 2
+
+I tried brute-forcing it... It took a while to fully figure out what I wanted to
+do, but the idea behind just making a giant equation then solving for `humn` was
+there early on. I started by expanding the input by replacing monkeys with their
+value if they had one or operation if they didn't. I then replaced all the
+monkeys with their values, just like in Part 1. This left me with a giant
+expression where the only variable was `humn`. I just wasn't sure how to
+actually solve equations in R so I kept trying to brute-force it, which kept on
+not working. I eventually found the `Ryacas` package which made quick work of
+everything.
+
+```{r}
+monkeys <- lapply(dt, new_monkey)
+
+root_op <- 
+  str_extract(monkeys[[which(index == "root")]]@op, "(\\+|\\-|\\*|\\/)")
+monkeys[[which(index == "root")]]@op <- 
+  gsub(paste0("\\", root_op), "=", monkeys[[which(index == "root")]]@op)
+
+m1 <- str_split_1(monkeys[[which(index == "root")]]@op, " = ")
+m2 <- m1[2]
+m1 <- m1[1]
+
+replace_monkey <- function(m) {
+  w <- which(index == m)
+  if (length(w) == 0) { return(m) }
+  v <- monkeys[[w]]@val
+  if (is.na(v)) { return(paste0("( ", monkeys[[which(index == m)]]@op, " )")) }
+  return(paste0("( ", v, " )"))
+}
+
+# https://stackoverflow.com/a/14838753
+quotemeta <- function(string) { str_replace_all(string, "(\\W)", "\\\\\\1") }
+
+reduce_string <- function(mm, pattern) {
+  r <-
+    str_extract_all(mm, pattern) |>
+    unlist() |>
+    sapply(\(r) {
+      if (grepl("h", r)) { return(r) }
+      else { eval(parse(text = r)) }
+    })
+  
+  for (i in 1:length(r)) {
+    mm <- str_replace_all(mm, quotemeta(names(r)[i]), as.character(r[i]))
+  }
+  return(mm)
+}
+
+process_string <- function(m) {
+  while (any(grepl("([^(h)][a-z])", m))) {
+    m <- 
+      sapply(m, \(mm) { replace_monkey(mm) }) |>
+      paste0(collapse = " ") |>
+      str_split_1(" ")
+  }
+  m <- paste0(m, collapse = "")
+  oldM <- 0
+  while (length(m) == 1 && oldM != m) {
+    oldM <- m
+    m <- reduce_string(m, "\\((\\d+|h)\\)[\\+|\\-|\\*|\\/]\\((\\d+|h)\\)")
+  }
+  return(oldM)
+}
+
+monkeys[[which(index == "humn")]]@val <- "h"
+mm1 <- process_string(m1)
+mm2 <- process_string(m2)
+
+paste(
+    reduce_string(mm1, "\\((\\d+|h)\\)"), 
+    "==", 
+    reduce_string(mm2, "\\((\\d+|h)\\)")
+  ) %>%
+  Ryacas::y_fn("Solve", "h") |>
+  Ryacas::yac_str() |>
+  str_extract("\\d+") |>
+  as.numeric()
+```

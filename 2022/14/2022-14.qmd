@@ -95,7 +95,7 @@ matrix_to_coords(cave) |>
   mutate(row = as.integer(row), col = as.integer(col)) |>
   filter(row <= 200) |>
   ggplot() +
-  geom_tile(aes(x = col, y = -row, fill = data), size = 2)
+  geom_tile(aes(x = col, y = -row, fill = data))
 ```
 
 ## Part 2
@@ -160,6 +160,6 @@ matrix_to_coords(cave) |>
   mutate(row = as.integer(row), col = as.integer(col)) |>
   filter(row <= maxRow) |>
   ggplot() +
-  geom_tile(aes(x = col, y = -row, fill = data), size = 2)
+  geom_tile(aes(x = col, y = -row, fill = data))
 ```
 

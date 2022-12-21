@@ -269,6 +269,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <a href="../../2022/14/2022-14.html" class="sidebar-item-text sidebar-link">2022-14: Regolith Reservoir</a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../2022/21/2022-21.html" class="sidebar-item-text sidebar-link">2022-21: Monkey Math</a>
+  </div>
+</li>
       </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
@@ -588,48 +593,64 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 </header>
 
-<div class="cell" data-hash="2022-12_cache/html/unnamed-chunk-1_7bd787420ab75a34675b2994e6b1d83a">
+<div class="cell" data-hash="2022-12_cache/html/unnamed-chunk-1_91492c5b05cb40d610ed5869e2994667">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">library</span>(mistlecode)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell" data-hash="2022-12_cache/html/unnamed-chunk-2_21c419f56838dfa18b73dce60316e0cd">
+<div class="cell" data-hash="2022-12_cache/html/unnamed-chunk-2_a37ccac33c309c510a5e9c0c2a8defbe">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a>dt <span class="ot">&lt;-</span> </span>
 <span id="cb2-2"><a href="#cb2-2"></a>  <span class="fu">readLines</span>(<span class="st">"input2.txt"</span>) <span class="sc">|&gt;</span></span>
 <span id="cb2-3"><a href="#cb2-3"></a>  <span class="fu">str_split</span>(<span class="st">""</span>, <span class="at">simplify =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell" data-hash="2022-12_cache/html/unnamed-chunk-3_92c8c8dfe5af04cb2498b46286d8eabc">
+<div class="cell" data-hash="2022-12_cache/html/unnamed-chunk-3_e965e7a3c612a5084d33448b5f2aa5b7">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>lettersE <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"S"</span>, letters, <span class="st">"E"</span>)</span>
 <span id="cb3-2"><a href="#cb3-2"></a>m <span class="ot">&lt;-</span> <span class="fu">apply</span>(dt, <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>), \(l) <span class="fu">which</span>(lettersE <span class="sc">==</span> l))</span>
 <span id="cb3-3"><a href="#cb3-3"></a>e <span class="ot">&lt;-</span> <span class="fu">which</span>(m <span class="sc">==</span> <span class="fu">length</span>(lettersE), <span class="at">arr.ind =</span> <span class="cn">TRUE</span>)[<span class="dv">1</span>,]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell" data-hash="2022-12_cache/html/unnamed-chunk-4_e2c1749ebfe1b250b470b34b9e523c04">
+<div class="cell" data-hash="2022-12_cache/html/unnamed-chunk-4_fb48477617dc7e58f8e7354760dabf7b">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>.lee <span class="ot">&lt;-</span> <span class="cf">function</span>(.data, row, col, <span class="at">paths =</span> <span class="cn">NULL</span>) {</span>
 <span id="cb4-2"><a href="#cb4-2"></a>  <span class="cf">if</span> (<span class="fu">is.null</span>(paths)) { </span>
 <span id="cb4-3"><a href="#cb4-3"></a>    paths <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">0</span>, <span class="fu">nrow</span>(.data), <span class="fu">ncol</span>(.data))</span>
 <span id="cb4-4"><a href="#cb4-4"></a>    pts <span class="ot">&lt;-</span> <span class="fu">which</span>(.data <span class="sc">==</span> <span class="fu">min</span>(.data), <span class="at">arr.ind =</span> <span class="cn">TRUE</span>)[<span class="dv">1</span>,]</span>
-<span id="cb4-5"><a href="#cb4-5"></a>    paths[pts[<span class="st">"row"</span>], pts[<span class="st">"col"</span>]] <span class="ot">&lt;-</span> <span class="fu">max</span>(paths <span class="sc">+</span> <span class="dv">1</span>)</span>
+<span id="cb4-5"><a href="#cb4-5"></a>    paths[pts[<span class="st">"row"</span>], pts[<span class="st">"col"</span>]] <span class="ot">&lt;-</span> <span class="dv">1</span></span>
 <span id="cb4-6"><a href="#cb4-6"></a>    <span class="fu">return</span>(<span class="fu">.lee</span>(.data, row, col, paths))</span>
 <span id="cb4-7"><a href="#cb4-7"></a>  } <span class="cf">else</span> {</span>
 <span id="cb4-8"><a href="#cb4-8"></a>    mPaths <span class="ot">&lt;-</span> <span class="fu">max</span>(paths)</span>
-<span id="cb4-9"><a href="#cb4-9"></a>    pts <span class="ot">&lt;-</span> <span class="fu">which</span>(.data <span class="sc">==</span> mPaths, <span class="at">arr.ind =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb4-10"><a href="#cb4-10"></a>    <span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(pts)) { paths[pts[i,<span class="st">"row"</span>], pts[i,<span class="st">"col"</span>]] <span class="ot">&lt;-</span> mPaths <span class="sc">+</span> <span class="dv">1</span> }</span>
-<span id="cb4-11"><a href="#cb4-11"></a>  }</span>
-<span id="cb4-12"><a href="#cb4-12"></a>  <span class="cf">if</span> (paths[row, col] <span class="sc">!=</span> <span class="dv">0</span>) { <span class="fu">return</span>(paths) }</span>
-<span id="cb4-13"><a href="#cb4-13"></a>  <span class="cf">else</span> { <span class="fu">return</span>(<span class="fu">.lee</span>(.data, row, col, paths)) }</span>
-<span id="cb4-14"><a href="#cb4-14"></a>}</span>
-<span id="cb4-15"><a href="#cb4-15"></a></span>
-<span id="cb4-16"><a href="#cb4-16"></a>l <span class="ot">&lt;-</span> <span class="fu">.lee</span>(m, e[<span class="st">"row"</span>], e[<span class="st">"col"</span>])</span>
-<span id="cb4-17"><a href="#cb4-17"></a><span class="fu">which</span>(l <span class="sc">==</span> <span class="fu">max</span>(l), <span class="at">arr.ind =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>     row col
-[1,]   3   6</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="fu">max</span>(l)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 29</code></pre>
-</div>
+<span id="cb4-9"><a href="#cb4-9"></a>    <span class="fu">which</span>(.data <span class="sc">==</span> mPaths, <span class="at">arr.ind =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb4-10"><a href="#cb4-10"></a>    pts <span class="ot">&lt;-</span> </span>
+<span id="cb4-11"><a href="#cb4-11"></a>      <span class="fu">which</span>(.data <span class="sc">==</span> mPaths, <span class="at">arr.ind =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span></span>
+<span id="cb4-12"><a href="#cb4-12"></a>      <span class="fu">apply</span>(<span class="dv">1</span>, \(x) {</span>
+<span id="cb4-13"><a href="#cb4-13"></a>        <span class="fu">get_adjacent_coords</span>(x[<span class="st">"row"</span>], x[<span class="st">"col"</span>], <span class="at">data =</span> .data)</span>
+<span id="cb4-14"><a href="#cb4-14"></a>      }) <span class="sc">%&gt;%</span></span>
+<span id="cb4-15"><a href="#cb4-15"></a>      <span class="fu">do.call</span>(rbind, .) <span class="sc">|&gt;</span></span>
+<span id="cb4-16"><a href="#cb4-16"></a>      <span class="fu">unique</span>()</span>
+<span id="cb4-17"><a href="#cb4-17"></a>      <span class="fu">merge</span>(<span class="fu">which</span>(.data <span class="sc">==</span> mPaths <span class="sc">+</span> <span class="dv">1</span>, <span class="at">arr.ind =</span> <span class="cn">TRUE</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb4-18"><a href="#cb4-18"></a>      <span class="fu">as.matrix</span>()</span>
+<span id="cb4-19"><a href="#cb4-19"></a>    <span class="cf">if</span> (<span class="fu">nrow</span>(pts) <span class="sc">&gt;</span> <span class="dv">0</span>) {</span>
+<span id="cb4-20"><a href="#cb4-20"></a>      <span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(pts)) { paths[pts[i,<span class="st">"row"</span>], pts[i,<span class="st">"col"</span>]] <span class="ot">&lt;-</span> mPaths <span class="sc">+</span> <span class="dv">1</span> }</span>
+<span id="cb4-21"><a href="#cb4-21"></a>    }</span>
+<span id="cb4-22"><a href="#cb4-22"></a>  }</span>
+<span id="cb4-23"><a href="#cb4-23"></a>  <span class="fu">print</span>(paths)</span>
+<span id="cb4-24"><a href="#cb4-24"></a>  <span class="cf">if</span> (paths[row, col] <span class="sc">!=</span> <span class="dv">0</span>) { <span class="fu">return</span>(paths) }</span>
+<span id="cb4-25"><a href="#cb4-25"></a>  <span class="cf">else</span> { <span class="fu">return</span>(<span class="fu">.lee</span>(.data, row, col, paths)) }</span>
+<span id="cb4-26"><a href="#cb4-26"></a>}</span>
+<span id="cb4-27"><a href="#cb4-27"></a></span>
+<span id="cb4-28"><a href="#cb4-28"></a>l <span class="ot">&lt;-</span> <span class="fu">.lee</span>(m, e[<span class="st">"row"</span>], e[<span class="st">"col"</span>])</span>
+<span id="cb4-29"><a href="#cb4-29"></a><span class="fu">which</span>(l <span class="sc">==</span> <span class="fu">max</span>(l), <span class="at">arr.ind =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb4-30"><a href="#cb4-30"></a><span class="fu">max</span>(l)</span>
+<span id="cb4-31"><a href="#cb4-31"></a></span>
+<span id="cb4-32"><a href="#cb4-32"></a><span class="fu">which</span>(m <span class="sc">==</span> <span class="dv">2</span>, <span class="at">arr.ind =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span></span>
+<span id="cb4-33"><a href="#cb4-33"></a>  <span class="fu">apply</span>(<span class="dv">1</span>, \(x) {</span>
+<span id="cb4-34"><a href="#cb4-34"></a>    <span class="fu">get_adjacent_coords</span>(x[<span class="st">"row"</span>], x[<span class="st">"col"</span>], <span class="at">data =</span> m)</span>
+<span id="cb4-35"><a href="#cb4-35"></a>  }) <span class="sc">%&gt;%</span></span>
+<span id="cb4-36"><a href="#cb4-36"></a>  <span class="fu">do.call</span>(rbind, .) <span class="sc">|&gt;</span></span>
+<span id="cb4-37"><a href="#cb4-37"></a>  <span class="fu">unique</span>()</span>
+<span id="cb4-38"><a href="#cb4-38"></a></span>
+<span id="cb4-39"><a href="#cb4-39"></a><span class="fu">get_adjacent_coords</span>(<span class="dv">1</span>,<span class="dv">1</span>,<span class="at">data =</span> m) <span class="sc">|&gt;</span></span>
+<span id="cb4-40"><a href="#cb4-40"></a>  <span class="fu">merge</span>(<span class="fu">which</span>(m <span class="sc">==</span> <span class="dv">2</span>, <span class="at">arr.ind =</span> <span class="cn">TRUE</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb4-41"><a href="#cb4-41"></a>  <span class="fu">as.matrix</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>53 29</p>
-<div class="cell" data-hash="2022-12_cache/html/unnamed-chunk-5_9b1d75820f1775319641a13b80ad19e1">
+<div class="cell" data-hash="2022-12_cache/html/unnamed-chunk-5_f0bacb59e070cccd9da87fbf4060346d">
 
 </div>
 
