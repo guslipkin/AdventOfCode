@@ -1,0 +1,70 @@
+---
+title: "2022-20: Grove Positioning System"
+format: html
+---
+
+This looks too good to be true!
+
+```{r}
+#| message: false
+library(mistlecode)
+options(scipen = 999)
+```
+
+```{r}
+dt <- 
+  readLines("input.txt") |>
+  as.numeric()
+```
+
+## Part 1
+
+Pretty straightforward, all things considered. Getting vectors to wrap is always
+a pain. I also missed the bit about the numbers being after zero, but a quick
+`which` took care of that.
+
+```{r}
+pos <- 1:length(dt)
+
+shift <- function(pos, x, shift) {
+  if (x == 0) { return(pos) }
+  p <- which(pos == x)
+  pos <- pos[-p]
+  after <- (p - 1 + shift) %% length(pos)
+  after <- ifelse(after == 0, length(pos), after)
+  append(pos, x, after = after)
+}
+
+for(i in 1:length(dt)) { pos <- shift(pos, i, dt[i]) }
+
+get_sum <- function(dt, pos) {
+  zero <- which(dt[pos] == 0)
+  sapply(c(1e3, 2e3, 3e3), \(x) {
+    x <- (x + zero) %% length(pos)
+    x <- ifelse(x == 0, length(pos), x)
+    dt[pos[x]]
+  }) |>
+    sum()
+}
+
+get_sum(dt, pos)
+```
+
+## Part 2
+
+Basically the same as Part 1. I was blessed with no integer overflows so that's
+nice. Just multiply the vector by a constant, nest the for loop, then get the
+sum using the function from Part 1.
+
+```{r}
+key <- 811589153
+dt2 <- dt * key
+pos2 <- 1:length(dt)
+
+for(j in 1:10) {
+  for (i in 1:length(dt2)) { pos2 <- shift(pos2, i, dt2[i]) }
+}
+
+get_sum(dt2, pos2)
+```
+

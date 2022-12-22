@@ -271,6 +271,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="../../2022/20/2022-20.html" class="sidebar-item-text sidebar-link">2022-20: Grove Positioning System</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="../../2022/21/2022-21.html" class="sidebar-item-text sidebar-link active">2022-21: Monkey Math</a>
   </div>
 </li>
@@ -684,7 +689,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <section id="part-2" class="level2">
 <h2 class="anchored" data-anchor-id="part-2">Part 2</h2>
 <p>I tried brute-forcing it… It took a while to fully figure out what I wanted to do, but the idea behind just making a giant equation then solving for <code>humn</code> was there early on. I started by expanding the input by replacing monkeys with their value if they had one or operation if they didn’t. I then replaced all the monkeys with their values, just like in Part 1. This left me with a giant expression where the only variable was <code>humn</code>. I just wasn’t sure how to actually solve equations in R so I kept trying to brute-force it, which kept on not working. I eventually found the <code>Ryacas</code> package which made quick work of everything.</p>
-<div class="cell" data-hash="2022-21_cache/html/unnamed-chunk-4_0058b452026165589acb84319b7b4a14">
+<div class="cell" data-hash="2022-21_cache/html/unnamed-chunk-4_3731db3526e8bb24d78938e19c3c35b8">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a>monkeys <span class="ot">&lt;-</span> <span class="fu">lapply</span>(dt, new_monkey)</span>
 <span id="cb7-2"><a href="#cb7-2"></a></span>
 <span id="cb7-3"><a href="#cb7-3"></a>root_op <span class="ot">&lt;-</span> </span>
@@ -707,58 +712,50 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb7-20"><a href="#cb7-20"></a><span class="co"># https://stackoverflow.com/a/14838753</span></span>
 <span id="cb7-21"><a href="#cb7-21"></a>quotemeta <span class="ot">&lt;-</span> <span class="cf">function</span>(string) { <span class="fu">str_replace_all</span>(string, <span class="st">"(</span><span class="sc">\\</span><span class="st">W)"</span>, <span class="st">"</span><span class="sc">\\\\\\</span><span class="st">1"</span>) }</span>
 <span id="cb7-22"><a href="#cb7-22"></a></span>
-<span id="cb7-23"><a href="#cb7-23"></a>process_string <span class="ot">&lt;-</span> <span class="cf">function</span>(m) {</span>
-<span id="cb7-24"><a href="#cb7-24"></a>  <span class="cf">while</span> (<span class="fu">any</span>(<span class="fu">grepl</span>(<span class="st">"([^(h)][a-z])"</span>, m))) {</span>
-<span id="cb7-25"><a href="#cb7-25"></a>    m <span class="ot">&lt;-</span> </span>
-<span id="cb7-26"><a href="#cb7-26"></a>      <span class="fu">sapply</span>(m, \(mm) { <span class="fu">replace_monkey</span>(mm) }) <span class="sc">|&gt;</span></span>
-<span id="cb7-27"><a href="#cb7-27"></a>      <span class="fu">paste0</span>(<span class="at">collapse =</span> <span class="st">" "</span>) <span class="sc">|&gt;</span></span>
-<span id="cb7-28"><a href="#cb7-28"></a>      <span class="fu">str_split_1</span>(<span class="st">" "</span>)</span>
-<span id="cb7-29"><a href="#cb7-29"></a>  }</span>
-<span id="cb7-30"><a href="#cb7-30"></a>  m <span class="ot">&lt;-</span> <span class="fu">paste0</span>(m, <span class="at">collapse =</span> <span class="st">""</span>)</span>
-<span id="cb7-31"><a href="#cb7-31"></a>  oldM <span class="ot">&lt;-</span> <span class="dv">0</span></span>
-<span id="cb7-32"><a href="#cb7-32"></a>  <span class="cf">while</span> (<span class="fu">length</span>(m) <span class="sc">==</span> <span class="dv">1</span> <span class="sc">&amp;&amp;</span> oldM <span class="sc">!=</span> m) {</span>
-<span id="cb7-33"><a href="#cb7-33"></a>    oldM <span class="ot">&lt;-</span> m</span>
-<span id="cb7-34"><a href="#cb7-34"></a>    r <span class="ot">&lt;-</span></span>
-<span id="cb7-35"><a href="#cb7-35"></a>      m <span class="sc">|&gt;</span></span>
-<span id="cb7-36"><a href="#cb7-36"></a>      <span class="fu">str_extract_all</span>(<span class="st">"</span><span class="sc">\\</span><span class="st">((</span><span class="sc">\\</span><span class="st">d+|h)</span><span class="sc">\\</span><span class="st">)[</span><span class="sc">\\</span><span class="st">+|</span><span class="sc">\\</span><span class="st">-|</span><span class="sc">\\</span><span class="st">*|</span><span class="sc">\\</span><span class="st">/]</span><span class="sc">\\</span><span class="st">((</span><span class="sc">\\</span><span class="st">d+|h)</span><span class="sc">\\</span><span class="st">)"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb7-37"><a href="#cb7-37"></a>      <span class="fu">unlist</span>() <span class="sc">|&gt;</span></span>
-<span id="cb7-38"><a href="#cb7-38"></a>      <span class="fu">sapply</span>(\(r) {</span>
-<span id="cb7-39"><a href="#cb7-39"></a>        <span class="cf">if</span> (<span class="fu">grepl</span>(<span class="st">"h"</span>, r)) { <span class="fu">return</span>(r) }</span>
-<span id="cb7-40"><a href="#cb7-40"></a>        <span class="cf">else</span> { <span class="fu">eval</span>(<span class="fu">parse</span>(<span class="at">text =</span> r)) }</span>
-<span id="cb7-41"><a href="#cb7-41"></a>      })</span>
-<span id="cb7-42"><a href="#cb7-42"></a>    </span>
-<span id="cb7-43"><a href="#cb7-43"></a>    <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(r)) {</span>
-<span id="cb7-44"><a href="#cb7-44"></a>      m <span class="ot">&lt;-</span></span>
-<span id="cb7-45"><a href="#cb7-45"></a>        <span class="fu">str_replace_all</span>(m, <span class="fu">quotemeta</span>(<span class="fu">names</span>(r)[i]), <span class="fu">as.character</span>(r[i]))</span>
-<span id="cb7-46"><a href="#cb7-46"></a>    }</span>
-<span id="cb7-47"><a href="#cb7-47"></a>  }</span>
-<span id="cb7-48"><a href="#cb7-48"></a>  <span class="fu">return</span>(oldM)</span>
-<span id="cb7-49"><a href="#cb7-49"></a>}</span>
-<span id="cb7-50"><a href="#cb7-50"></a></span>
-<span id="cb7-51"><a href="#cb7-51"></a>monkeys[[<span class="fu">which</span>(index <span class="sc">==</span> <span class="st">"humn"</span>)]]<span class="sc">@</span>val <span class="ot">&lt;-</span> <span class="st">"h"</span></span>
-<span id="cb7-52"><a href="#cb7-52"></a>mm1 <span class="ot">&lt;-</span> <span class="fu">process_string</span>(m1)</span>
-<span id="cb7-53"><a href="#cb7-53"></a>mm2 <span class="ot">&lt;-</span> <span class="fu">process_string</span>(m2)</span>
-<span id="cb7-54"><a href="#cb7-54"></a></span>
-<span id="cb7-55"><a href="#cb7-55"></a>reduce_string <span class="ot">&lt;-</span> <span class="cf">function</span>(mm) {</span>
-<span id="cb7-56"><a href="#cb7-56"></a>  r <span class="ot">&lt;-</span></span>
-<span id="cb7-57"><a href="#cb7-57"></a>    <span class="fu">str_extract_all</span>(mm, <span class="st">"</span><span class="sc">\\</span><span class="st">((</span><span class="sc">\\</span><span class="st">d+|h)</span><span class="sc">\\</span><span class="st">)"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb7-58"><a href="#cb7-58"></a>    <span class="fu">unlist</span>() <span class="sc">|&gt;</span></span>
-<span id="cb7-59"><a href="#cb7-59"></a>    <span class="fu">sapply</span>(\(r) {</span>
-<span id="cb7-60"><a href="#cb7-60"></a>      <span class="cf">if</span> (<span class="fu">grepl</span>(<span class="st">"h"</span>, r)) { <span class="fu">return</span>(r) }</span>
-<span id="cb7-61"><a href="#cb7-61"></a>      <span class="cf">else</span> { <span class="fu">eval</span>(<span class="fu">parse</span>(<span class="at">text =</span> r)) }</span>
-<span id="cb7-62"><a href="#cb7-62"></a>    })</span>
-<span id="cb7-63"><a href="#cb7-63"></a>  </span>
-<span id="cb7-64"><a href="#cb7-64"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(r)) {</span>
-<span id="cb7-65"><a href="#cb7-65"></a>    mm <span class="ot">&lt;-</span> <span class="fu">str_replace_all</span>(mm, <span class="fu">quotemeta</span>(<span class="fu">names</span>(r)[i]), <span class="fu">as.character</span>(r[i]))</span>
-<span id="cb7-66"><a href="#cb7-66"></a>  }</span>
-<span id="cb7-67"><a href="#cb7-67"></a>  <span class="fu">return</span>(mm)</span>
-<span id="cb7-68"><a href="#cb7-68"></a>}</span>
-<span id="cb7-69"><a href="#cb7-69"></a></span>
-<span id="cb7-70"><a href="#cb7-70"></a><span class="fu">paste</span>(<span class="fu">reduce_string</span>(mm1), <span class="st">"=="</span>, <span class="fu">reduce_string</span>(mm2)) <span class="sc">%&gt;%</span></span>
-<span id="cb7-71"><a href="#cb7-71"></a>  Ryacas<span class="sc">::</span><span class="fu">y_fn</span>(<span class="st">"Solve"</span>, <span class="st">"h"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb7-72"><a href="#cb7-72"></a>  Ryacas<span class="sc">::</span><span class="fu">yac_str</span>() <span class="sc">|&gt;</span></span>
-<span id="cb7-73"><a href="#cb7-73"></a>  <span class="fu">str_extract</span>(<span class="st">"</span><span class="sc">\\</span><span class="st">d+"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb7-74"><a href="#cb7-74"></a>  <span class="fu">as.numeric</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb7-23"><a href="#cb7-23"></a>reduce_string <span class="ot">&lt;-</span> <span class="cf">function</span>(mm, pattern) {</span>
+<span id="cb7-24"><a href="#cb7-24"></a>  r <span class="ot">&lt;-</span></span>
+<span id="cb7-25"><a href="#cb7-25"></a>    <span class="fu">str_extract_all</span>(mm, pattern) <span class="sc">|&gt;</span></span>
+<span id="cb7-26"><a href="#cb7-26"></a>    <span class="fu">unlist</span>() <span class="sc">|&gt;</span></span>
+<span id="cb7-27"><a href="#cb7-27"></a>    <span class="fu">sapply</span>(\(r) {</span>
+<span id="cb7-28"><a href="#cb7-28"></a>      <span class="cf">if</span> (<span class="fu">grepl</span>(<span class="st">"h"</span>, r)) { <span class="fu">return</span>(r) }</span>
+<span id="cb7-29"><a href="#cb7-29"></a>      <span class="cf">else</span> { <span class="fu">eval</span>(<span class="fu">parse</span>(<span class="at">text =</span> r)) }</span>
+<span id="cb7-30"><a href="#cb7-30"></a>    })</span>
+<span id="cb7-31"><a href="#cb7-31"></a>  </span>
+<span id="cb7-32"><a href="#cb7-32"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(r)) {</span>
+<span id="cb7-33"><a href="#cb7-33"></a>    mm <span class="ot">&lt;-</span> <span class="fu">str_replace_all</span>(mm, <span class="fu">quotemeta</span>(<span class="fu">names</span>(r)[i]), <span class="fu">as.character</span>(r[i]))</span>
+<span id="cb7-34"><a href="#cb7-34"></a>  }</span>
+<span id="cb7-35"><a href="#cb7-35"></a>  <span class="fu">return</span>(mm)</span>
+<span id="cb7-36"><a href="#cb7-36"></a>}</span>
+<span id="cb7-37"><a href="#cb7-37"></a></span>
+<span id="cb7-38"><a href="#cb7-38"></a>process_string <span class="ot">&lt;-</span> <span class="cf">function</span>(m) {</span>
+<span id="cb7-39"><a href="#cb7-39"></a>  <span class="cf">while</span> (<span class="fu">any</span>(<span class="fu">grepl</span>(<span class="st">"([^(h)][a-z])"</span>, m))) {</span>
+<span id="cb7-40"><a href="#cb7-40"></a>    m <span class="ot">&lt;-</span> </span>
+<span id="cb7-41"><a href="#cb7-41"></a>      <span class="fu">sapply</span>(m, \(mm) { <span class="fu">replace_monkey</span>(mm) }) <span class="sc">|&gt;</span></span>
+<span id="cb7-42"><a href="#cb7-42"></a>      <span class="fu">paste0</span>(<span class="at">collapse =</span> <span class="st">" "</span>) <span class="sc">|&gt;</span></span>
+<span id="cb7-43"><a href="#cb7-43"></a>      <span class="fu">str_split_1</span>(<span class="st">" "</span>)</span>
+<span id="cb7-44"><a href="#cb7-44"></a>  }</span>
+<span id="cb7-45"><a href="#cb7-45"></a>  m <span class="ot">&lt;-</span> <span class="fu">paste0</span>(m, <span class="at">collapse =</span> <span class="st">""</span>)</span>
+<span id="cb7-46"><a href="#cb7-46"></a>  oldM <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb7-47"><a href="#cb7-47"></a>  <span class="cf">while</span> (<span class="fu">length</span>(m) <span class="sc">==</span> <span class="dv">1</span> <span class="sc">&amp;&amp;</span> oldM <span class="sc">!=</span> m) {</span>
+<span id="cb7-48"><a href="#cb7-48"></a>    oldM <span class="ot">&lt;-</span> m</span>
+<span id="cb7-49"><a href="#cb7-49"></a>    m <span class="ot">&lt;-</span> <span class="fu">reduce_string</span>(m, <span class="st">"</span><span class="sc">\\</span><span class="st">((</span><span class="sc">\\</span><span class="st">d+|h)</span><span class="sc">\\</span><span class="st">)[</span><span class="sc">\\</span><span class="st">+|</span><span class="sc">\\</span><span class="st">-|</span><span class="sc">\\</span><span class="st">*|</span><span class="sc">\\</span><span class="st">/]</span><span class="sc">\\</span><span class="st">((</span><span class="sc">\\</span><span class="st">d+|h)</span><span class="sc">\\</span><span class="st">)"</span>)</span>
+<span id="cb7-50"><a href="#cb7-50"></a>  }</span>
+<span id="cb7-51"><a href="#cb7-51"></a>  <span class="fu">return</span>(oldM)</span>
+<span id="cb7-52"><a href="#cb7-52"></a>}</span>
+<span id="cb7-53"><a href="#cb7-53"></a></span>
+<span id="cb7-54"><a href="#cb7-54"></a>monkeys[[<span class="fu">which</span>(index <span class="sc">==</span> <span class="st">"humn"</span>)]]<span class="sc">@</span>val <span class="ot">&lt;-</span> <span class="st">"h"</span></span>
+<span id="cb7-55"><a href="#cb7-55"></a>mm1 <span class="ot">&lt;-</span> <span class="fu">process_string</span>(m1)</span>
+<span id="cb7-56"><a href="#cb7-56"></a>mm2 <span class="ot">&lt;-</span> <span class="fu">process_string</span>(m2)</span>
+<span id="cb7-57"><a href="#cb7-57"></a></span>
+<span id="cb7-58"><a href="#cb7-58"></a><span class="fu">paste</span>(</span>
+<span id="cb7-59"><a href="#cb7-59"></a>    <span class="fu">reduce_string</span>(mm1, <span class="st">"</span><span class="sc">\\</span><span class="st">((</span><span class="sc">\\</span><span class="st">d+|h)</span><span class="sc">\\</span><span class="st">)"</span>), </span>
+<span id="cb7-60"><a href="#cb7-60"></a>    <span class="st">"=="</span>, </span>
+<span id="cb7-61"><a href="#cb7-61"></a>    <span class="fu">reduce_string</span>(mm2, <span class="st">"</span><span class="sc">\\</span><span class="st">((</span><span class="sc">\\</span><span class="st">d+|h)</span><span class="sc">\\</span><span class="st">)"</span>)</span>
+<span id="cb7-62"><a href="#cb7-62"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb7-63"><a href="#cb7-63"></a>  Ryacas<span class="sc">::</span><span class="fu">y_fn</span>(<span class="st">"Solve"</span>, <span class="st">"h"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb7-64"><a href="#cb7-64"></a>  Ryacas<span class="sc">::</span><span class="fu">yac_str</span>() <span class="sc">|&gt;</span></span>
+<span id="cb7-65"><a href="#cb7-65"></a>  <span class="fu">str_extract</span>(<span class="st">"</span><span class="sc">\\</span><span class="st">d+"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb7-66"><a href="#cb7-66"></a>  <span class="fu">as.numeric</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 3910938071092</code></pre>
 </div>
