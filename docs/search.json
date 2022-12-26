@@ -1372,6 +1372,27 @@
     "text": "Part 2\nI tried brute-forcing it… It took a while to fully figure out what I wanted to do, but the idea behind just making a giant equation then solving for humn was there early on. I started by expanding the input by replacing monkeys with their value if they had one or operation if they didn’t. I then replaced all the monkeys with their values, just like in Part 1. This left me with a giant expression where the only variable was humn. I just wasn’t sure how to actually solve equations in R so I kept trying to brute-force it, which kept on not working. I eventually found the Ryacas package which made quick work of everything.\n\nmonkeys <- lapply(dt, new_monkey)\n\nroot_op <- \n  str_extract(monkeys[[which(index == \"root\")]]@op, \"(\\\\+|\\\\-|\\\\*|\\\\/)\")\nmonkeys[[which(index == \"root\")]]@op <- \n  gsub(paste0(\"\\\\\", root_op), \"=\", monkeys[[which(index == \"root\")]]@op)\n\nm1 <- str_split_1(monkeys[[which(index == \"root\")]]@op, \" = \")\nm2 <- m1[2]\nm1 <- m1[1]\n\nreplace_monkey <- function(m) {\n  w <- which(index == m)\n  if (length(w) == 0) { return(m) }\n  v <- monkeys[[w]]@val\n  if (is.na(v)) { return(paste0(\"( \", monkeys[[which(index == m)]]@op, \" )\")) }\n  return(paste0(\"( \", v, \" )\"))\n}\n\n# https://stackoverflow.com/a/14838753\nquotemeta <- function(string) { str_replace_all(string, \"(\\\\W)\", \"\\\\\\\\\\\\1\") }\n\nreduce_string <- function(mm, pattern) {\n  r <-\n    str_extract_all(mm, pattern) |>\n    unlist() |>\n    sapply(\\(r) {\n      if (grepl(\"h\", r)) { return(r) }\n      else { eval(parse(text = r)) }\n    })\n  \n  for (i in 1:length(r)) {\n    mm <- str_replace_all(mm, quotemeta(names(r)[i]), as.character(r[i]))\n  }\n  return(mm)\n}\n\nprocess_string <- function(m) {\n  while (any(grepl(\"([^(h)][a-z])\", m))) {\n    m <- \n      sapply(m, \\(mm) { replace_monkey(mm) }) |>\n      paste0(collapse = \" \") |>\n      str_split_1(\" \")\n  }\n  m <- paste0(m, collapse = \"\")\n  oldM <- 0\n  while (length(m) == 1 && oldM != m) {\n    oldM <- m\n    m <- reduce_string(m, \"\\\\((\\\\d+|h)\\\\)[\\\\+|\\\\-|\\\\*|\\\\/]\\\\((\\\\d+|h)\\\\)\")\n  }\n  return(oldM)\n}\n\nmonkeys[[which(index == \"humn\")]]@val <- \"h\"\nmm1 <- process_string(m1)\nmm2 <- process_string(m2)\n\npaste(\n    reduce_string(mm1, \"\\\\((\\\\d+|h)\\\\)\"), \n    \"==\", \n    reduce_string(mm2, \"\\\\((\\\\d+|h)\\\\)\")\n  ) %>%\n  Ryacas::y_fn(\"Solve\", \"h\") |>\n  Ryacas::yac_str() |>\n  str_extract(\"\\\\d+\") |>\n  as.numeric()\n\n[1] 3910938071092"
   },
   {
+    "objectID": "2022/25/2022-25.html",
+    "href": "2022/25/2022-25.html",
+    "title": "2022-25: Full of Hot Air",
+    "section": "",
+    "text": "This doesn’t look too terrible. The numbering system is weird, but I can work with it. It seems too easy for Day 25."
+  },
+  {
+    "objectID": "2022/25/2022-25.html#part-1",
+    "href": "2022/25/2022-25.html#part-1",
+    "title": "2022-25: Full of Hot Air",
+    "section": "Part 1",
+    "text": "Part 1\nI was able to get Bob’s number pretty quickly. Then I realized I hadn’t fully read the question and I had to translate Bob’s number back into SNAFU. I had a few ideas on how to do it, but really struggled for some reason. I tried a recursive method first, but quickly hit C stack limits and couldn’t quite wrap my mind around how to brute-force it. I did realize that I could jump start the guessing by finding the smallest number greater than Bob’s that’s made entirely out of 2s. By starting there, I could subtract towards my goal, rather than trying to add, which would have been much more difficult. It was then just a matter of getting the code straight in my head, and using the un_snafu function to check my values every cycle.\n\nun_snafu <- function(x) {\n  x <- \n    x |>\n    str_split_1(\"\") |>\n    rev()\n\n  x <- case_when(\n    x == \"-\" ~ -1,\n    x == \"=\" ~ -2,\n    TRUE ~ as.numeric(x)\n  )\n\n  sum((5 ^ (0:(length(x)-1))) * x)\n}\n\nbob <- \n  dt |>\n  sapply(un_snafu) |>\n  suppressWarnings() |>\n  sum()\n\nsubtract <- function(x) {\n  case_when(\n    x == \"2\" ~ \"1\",\n    x == \"1\" ~ \"0\",\n    x == \"0\" ~ \"-\",\n    x == \"-\" ~ \"=\"\n  )\n}\n\nmax_places <-\n  sapply(1:100, \\(x) paste0(rep(\"2\", x), collapse = \"\")) |>\n  sapply(un_snafu)\nx <- names(which(max_places > bob)[1])\nplace <- 1\n\nrepeat {\n  x2 <- x\n  \n  s <- substr(x2, place, place)\n  if (s != \"=\") { substr(x2, place, place) <- subtract(s) } \n  else { place <- place + 1 }\n  \n  u <- un_snafu(x2)\n  if (u > bob) { x <- x2 }\n  else if (u < bob) { place <- place + 1 }\n  else { print(x2); break }\n} |>\n  suppressWarnings()\n\n[1] \"2-02===-21---2002==0\""
+  },
+  {
+    "objectID": "2022/25/2022-25.html#part-2",
+    "href": "2022/25/2022-25.html#part-2",
+    "title": "2022-25: Full of Hot Air",
+    "section": "Part 2",
+    "text": "Part 2\n\n\n\n\n\n\nDanger\n\n\n\nThis puzzle does not unlock until you have completed the rest of the year. I’ll be back one day…"
+  },
+  {
     "objectID": "index.html",
     "href": "index.html",
     "title": "Welcome!",

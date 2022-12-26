@@ -1,0 +1,93 @@
+---
+title: "2022-25: Full of Hot Air"
+format: html
+---
+
+This doesn't look too terrible. The numbering system is weird, but I can work with it. It seems too easy for Day 25.
+
+```{r}
+#| message: false
+library(mistlecode)
+
+options(scipen = 999)
+```
+
+```{r}
+dt <- readLines("input.txt")
+```
+
+## Part 1
+
+I was able to get Bob's number pretty quickly. Then I realized I hadn't fully
+read the question and I had to translate Bob's number back into SNAFU. I had a
+few ideas on how to do it, but really struggled for some reason. I tried a
+recursive method first, but quickly hit C stack limits and couldn't quite wrap
+my mind around how to brute-force it. I did realize that I could jump start the
+guessing by finding the smallest number greater than Bob's that's made entirely
+out of `2`s. By starting there, I could subtract towards my goal, rather than
+trying to add, which would have been much more difficult. It was then just a
+matter of getting the code straight in my head, and using the `un_snafu`
+function to check my values every cycle.
+
+```{r}
+un_snafu <- function(x) {
+  x <- 
+    x |>
+    str_split_1("") |>
+    rev()
+
+  x <- case_when(
+    x == "-" ~ -1,
+    x == "=" ~ -2,
+    TRUE ~ as.numeric(x)
+  )
+
+  sum((5 ^ (0:(length(x)-1))) * x)
+}
+
+bob <- 
+  dt |>
+  sapply(un_snafu) |>
+  suppressWarnings() |>
+  sum()
+
+subtract <- function(x) {
+  case_when(
+    x == "2" ~ "1",
+    x == "1" ~ "0",
+    x == "0" ~ "-",
+    x == "-" ~ "="
+  )
+}
+
+max_places <-
+  sapply(1:100, \(x) paste0(rep("2", x), collapse = "")) |>
+  sapply(un_snafu)
+x <- names(which(max_places > bob)[1])
+place <- 1
+
+repeat {
+  x2 <- x
+  
+  s <- substr(x2, place, place)
+  if (s != "=") { substr(x2, place, place) <- subtract(s) } 
+  else { place <- place + 1 }
+  
+  u <- un_snafu(x2)
+  if (u > bob) { x <- x2 }
+  else if (u < bob) { place <- place + 1 }
+  else { print(x2); break }
+} |>
+  suppressWarnings()
+```
+
+## Part 2
+
+::: {.callout-caution}
+
+This puzzle does not unlock until you have completed the rest of the year. I'll
+be back one day...
+
+:::
+
+
