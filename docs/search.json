@@ -569,14 +569,14 @@
   {
     "objectID": "2019/02/2019-02.html#part-1",
     "href": "2019/02/2019-02.html#part-1",
-    "title": "Day 2: 1202 Program Alarm",
+    "title": "2019-02: 1202 Program Alarm",
     "section": "Part 1",
     "text": "Part 1\n\ndt <- dtM\ndt[1 + 1] <- 12\ndt[2 + 1] <- 2\nd <- 0\nx <- 1\nwhile(d != 99) {\n  if (dt[x] == 1) { dt[dt[x + 3] + 1] <- dt[dt[x + 1] + 1] + dt[dt[x + 2] + 1] }\n  else if (dt[x] == 2) { dt[dt[x + 3] + 1] <- dt[dt[x + 1] + 1] * dt[dt[x + 2] + 1] }\n  x <- x + 4\n  d <- dt[x]\n}\ndt[1]\n\n[1] 3706713\n\nx\n\n[1] 125"
   },
   {
     "objectID": "2019/02/2019-02.html#part-2",
     "href": "2019/02/2019-02.html#part-2",
-    "title": "Day 2: 1202 Program Alarm",
+    "title": "2019-02: 1202 Program Alarm",
     "section": "Part 2",
     "text": "Part 2\n\nbreakFlag <- FALSE\nfor (i in 0:99) {\n  for (j in 0:99) {\n    dt <- dtM\n    dt[1 + 1] <- i\n    dt[2 + 1] <- j\n    d <- 0\n    x <- 1\n    while (d != 99) {\n      if (dt[x] == 1) {\n        dt[dt[x + 3] + 1] <- dt[dt[x + 1] + 1] + dt[dt[x + 2] + 1]\n      }\n      else if (dt[x] == 2) {\n        dt[dt[x + 3] + 1] <- dt[dt[x + 1] + 1] * dt[dt[x + 2] + 1]\n      }\n      x <- x + 4\n      d <- dt[x]\n    }\n    if (dt[1] == 19690720) {\n      breakFlag <- TRUE\n      break\n    }\n  }\n  if (breakFlag) { break }\n}\n100 * dt[1 + 1] + dt[2 + 1]\n\n[1] 8609"
   },
@@ -887,5 +887,19 @@
     "title": "2015-08: Matchsticks",
     "section": "Part 2",
     "text": "Part 2\nTurns out R also auto-converts double spaces to tabs so to get two characters, you need three spaces…\n\ntotal_length <-\n  dt |>\n  str_escape() |>\n  str_replace_all('^\"|\"$', '   ') |>\n  str_replace_all('\\\\\\\\x[0-9a-f]{2}', '    ') |>\n  str_replace_all('\\\\\\\\\\\\\"', '   ') |>\n  str_replace_all('\\\\\\\\', ' ') |>\n  nchar() |>\n  sum()\ntotal_length - literal_length\n\n[1] 2117"
+  },
+  {
+    "objectID": "2015/09/2015-09.html#part-1",
+    "href": "2015/09/2015-09.html#part-1",
+    "title": "2015-09: All in a Single Night",
+    "section": "Part 1",
+    "text": "Part 1\nI figured with R the way it is, there had to be a package that can solve it. Sure enough, TSP exists. Creating the symmetric matrix was a bit of a pain, but then I was getting solutions for the test input but not the real input. Ugh. I slept on the problem then tried replacing the diagonal with NA, rather than zeroes. That seemed to do the trick.\n\nm <-\n  expand.grid(stops, stops) |>\n  data.table() |>\n  `colnames<-`(c(\"start\", \"end\")) |>\n  left_join(dt, by = c(\"start\", \"end\")) |>\n  mutate(dist = ifelse(start == end, NA_integer_, dist)) |>\n  dcast(start ~ end, value.var = \"dist\") |>\n  data.frame() |>\n  `rownames<-`(stops) |>\n  select(-start) |>\n  as.matrix()\n\nm <-\n  map2_dbl(m, t(m), \\(x, y) {\n    if(is.na(x) & !is.na(y)) return(y) else return(x)\n  }) |>\n  matrix(length(stops), length(stops)) |>\n  `colnames<-`(stops) |>\n  `rownames<-`(stops) |>\n  as.matrix() \n\nstops <- get_stops(m)\n\nWarning: executing %dopar% sequentially: no parallel backend registered\n\nget_dist(m, stops)\n\n[1] 251"
+  },
+  {
+    "objectID": "2015/09/2015-09.html#part-2",
+    "href": "2015/09/2015-09.html#part-2",
+    "title": "2015-09: All in a Single Night",
+    "section": "Part 2",
+    "text": "Part 2\nOh boy. I think I have an easy solution for this! If I can re-scale the values so that the smallest numbers are biggest and the biggest numbers are smallest, I can just re-run to get the cities in order, then use the original distances. A quick apply with \\(\\frac{1}{x}\\) and I’m on my way. Just need to throw everything into functions and there we go!\n\nstops <-\n  m |>\n  apply(c(1, 2), \\(x) 1 / x) |>\n  get_stops()\nget_dist(m, stops)\n\n[1] 898"
   }
 ]
