@@ -1,0 +1,68 @@
+---
+title: "2015-09: All in a Single Night"
+---
+
+```{r}
+library(mistlecode)
+dt <- 
+  fread("input.txt") |>
+  `colnames<-`(c("start", "to", "end", "eq", "dist")) |>
+  select(start, end, dist) |>
+  arrange(start, end)
+```
+
+## Part 1
+
+```{r}
+stops <- 
+  unique(c(dt$start, dt$end)) |>
+  sort()
+m <-
+  expand.grid(stops, stops) |>
+  data.table() |>
+  `colnames<-`(c("start", "end")) |>
+  left_join(dt, by = c("start", "end")) |>
+  mutate(dist = ifelse(start == end, 0, dist)) |>
+  dcast(start ~ end, value.var = "dist") |>
+  data.frame() |>
+  `rownames<-`(stops) |>
+  select(-start) |>
+  as.matrix()
+
+m <-
+  map2_dbl(m, t(m), \(x, y) {
+    if(is.na(x) & !is.na(y)) return(y) else return(x)
+  }) |>
+  matrix(length(stops), length(stops)) |>
+  `colnames<-`(stops) |>
+  `rownames<-`(stops) |>
+  dist(method = "maximum") |>
+  as.matrix() 
+
+stops <-
+  m |>
+  TSP::as.TSP() |>
+  TSP::insert_dummy(label = "dummy") |>
+  TSP::solve_TSP(method = "nn", control = list("rep" = 1000)) |>
+  TSP::cut_tour('dummy') |>
+  names()
+
+m |>
+  data.frame() |>
+  rownames_to_column() |>
+  pivot_longer(!c("rowname")) |>
+  `colnames<-`(c("start", "end", "dist")) |>
+  right_join(
+    data.frame(
+      "start" = stops,
+      "end" = lead(stops)
+    ) |>
+    filter(!is.na(end)),
+    by = c("start", "end")
+  ) |>
+  pull(dist) |>
+  sum()
+```
+
+< 368
+

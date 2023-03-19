@@ -21,8 +21,6 @@ website:
         icon: linkedin
       - href: https://www.github.com/guslipkin
         icon: github
-      - href: https://www.twitter.com/GusLipkin
-        icon: twitter
   sidebar:
     style: "floating"
     collapse-level: 1
@@ -103,6 +101,8 @@ website:
           - 2015/04/2015-04.qmd
           - 2015/05/2015-05.qmd
           - 2015/06/2015-06.qmd
+          - 2015/07/2015-07.qmd
+          - 2015/08/2015-08.qmd
 
 format:
   html:

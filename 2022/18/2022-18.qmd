@@ -1,0 +1,46 @@
+---
+title: "2022-18: Boiling Boulders"
+format: html
+---
+
+```{r}
+#| message: false
+library(mistlecode)
+
+options(scipen = 999)
+```
+
+```{r}
+dt <- 
+  fread("input2.txt") |>
+  `colnames<-`(letters[24:26])
+```
+
+## Part 1
+
+```{r}
+dt |>
+  mutate(
+    xx = paste0(x, x),
+    xy = paste0(x, y),
+    xz = paste0(x, z),
+    yy = paste0(y, y),
+    yz = paste0(y, z),
+    zz = paste0(z, z)
+  ) |>
+  select(-"xx", -"yy", -"zz") |>
+  pivot_longer(cols = c("xy", "xz", "yz")) |>
+  group_by(name) |>
+  mutate(
+    minX = min(x), maxX = max(x),
+    minY = min(y), maxY = max(y),
+    minZ = min(z), maxZ = max(z)
+  ) |>
+  # pull(value) |>
+  unique() |>
+  length()
+
+# (nrow(dt) * 6) - x + 1
+```
+
+< 12211

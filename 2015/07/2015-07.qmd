@@ -1,21 +1,97 @@
 ---
-title: "2017-07: Some Assembly Required"
+title: "2015-07: Some Assembly Required"
 format: html
 ---
 
 ```{r}
-library(data.table)
-library(stringi)
+library(mistlecode)
+dt <- readLines("input.txt")
 ```
 
+I've looked at this one before and it's a bit messy. I had a few false starts, especially in regards to parsing the input, but eventually settled on using function factories to build the bitwise function calls and some gross regex to get the rest of it in line for that to happen.
+
 ```{r}
-dt <- readLines("test.txt")
-dt[1:6]
+gate <-   c("AND",      "OR",     "NOT",     "LSHIFT",     "RSHIFT")
+gate_r <- c("bitwAnd",  "bitwOr", "bitwNot", "bitwShiftL", "bitwShiftR")
+
+operation <- function(op) {
+  if (is.na(op)) {
+    function(x, y) { glue::glue("{x} -> {y}") }
+  }
+  else {
+    function(x, y, z) {
+      op <- which(gate == op)
+      if (gate[op] == "NOT") { glue::glue("{gate_r[op]}({y}) -> {z}") } 
+      else { glue::glue("{gate_r[op]}({x}, {y}) -> {z}") }
+    }
+  }
+}
+
+process <- function(x) {
+  x <- str_replace(x, "NOT", "zzz NOT")
+  op <- lapply(str_match(x, "[A-Z]+"), operation)
+  
+  x |>
+    str_replace_all("([a-z]+)", "x\\1") |>
+    str_match_all(
+      "(([a-z0-9]+) [A-Z]+ ([a-z0-9]+) -> ([a-z]+))|(([a-z0-9]+) -> ([a-z]+))"
+    ) |>
+    map2_chr(op, \(y, o) {
+      y <- as.vector(y)
+      is_not_gate <- sum(is.na(y)) == 4
+      y <- 
+        y |>
+        na.omit() |>
+        as.vector()
+      if (is_not_gate) {
+        y <- tail(y, 2) 
+        o(y[1], y[2])
+      } else {
+        y <- tail(y, 3)
+        o(y[1], y[2], y[3])
+      }
+    })
+}
 ```
+
+This was originally the solution to part 1, but since it's reusable for part 2, I put it into a function.
+
+```{r}
+run <- function(dt) {
+  dt2 <- process(dt)
+  len_dt2 <<- length(dt2)
+  env <- new.env()
+  while(len_dt2 > 0) {
+    for (i in seq_len(len_dt2)) {
+      tryCatch({
+        eval(parse(text = dt2[i]), envir = env)
+        dt2 <- dt2[-i]
+      }, error = function(e) {} )
+    }
+    len_dt2 <<- length(dt2)
+  }
+  a <- get("xa", envir = env)
+  rm(list = grep("x[a-z]+", ls(), value = TRUE), envir = env)
+  a
+}
+```
+
 
 ## Part 1
 
-```{r}
+I initially tried just writing to a file then sourcing it, but quickly discovered that my statements were out of order. I figured a loop would be fast enough, then I can use a `tryCatch` to skip over any errors, paring down the statements until they all run. I had a bit of trouble with my eval statement until I remembered I have to parse the dang thing first.
 
+```{r}
+(a <- run(dt))
+```
+
+## Part 2
+
+This bit was easy. Just had to copy to a new object for some reason then it was a simple replacement with the value from part 1.
+
+```{r}
+dt2 <- dt
+dt2[str_detect(dt2, "-> b$")] <- glue::glue("{a} -> b")
+run(dt2)
 ```
 

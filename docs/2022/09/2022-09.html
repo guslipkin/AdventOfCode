@@ -168,11 +168,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </i> 
  <span class="menu-text"></span></a>
   </li>  
-  <li class="nav-item compact">
-    <a class="nav-link" href="https://www.twitter.com/GusLipkin"><i class="bi bi-twitter" role="img">
-</i> 
- <span class="menu-text"></span></a>
-  </li>  
 </ul>
               <div class="quarto-toggle-container">
                   <a href="" class="quarto-color-scheme-toggle nav-link" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
@@ -574,6 +569,16 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <a href="../../2015/06/2015-06.html" class="sidebar-item-text sidebar-link">2015-06: Probably a Fire Hazard</a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../2015/07/2015-07.html" class="sidebar-item-text sidebar-link">2015-07: Some Assembly Required</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../2015/08/2015-08.html" class="sidebar-item-text sidebar-link">2015-08: Matchsticks</a>
+  </div>
+</li>
       </ul>
   </li>
     </ul>
@@ -636,87 +641,102 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <section id="part-1" class="level1">
 <h1>Part 1</h1>
-<div class="cell" data-hash="2022-09_cache/html/unnamed-chunk-3_2c8f98706c885cd691aa355aa0034012">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>size <span class="ot">&lt;-</span> <span class="dv">13</span></span>
-<span id="cb4-2"><a href="#cb4-2"></a><span class="co">#   dt |&gt;</span></span>
-<span id="cb4-3"><a href="#cb4-3"></a><span class="co">#   group_by(dir) |&gt;</span></span>
-<span id="cb4-4"><a href="#cb4-4"></a><span class="co">#   summarise(mag = sum(mag)) |&gt;</span></span>
-<span id="cb4-5"><a href="#cb4-5"></a><span class="co">#   pull(mag) |&gt;</span></span>
-<span id="cb4-6"><a href="#cb4-6"></a><span class="co">#   max()</span></span>
-<span id="cb4-7"><a href="#cb4-7"></a><span class="co"># size &lt;- 3144</span></span>
-<span id="cb4-8"><a href="#cb4-8"></a>hM <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="cn">NA</span>, size, size)</span>
-<span id="cb4-9"><a href="#cb4-9"></a>tM <span class="ot">&lt;-</span> hM</span>
+<div class="cell" data-hash="2022-09_cache/html/unnamed-chunk-3_084d15889e23fd444b20dd535b7325ff">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>dt <span class="ot">&lt;-</span> </span>
+<span id="cb4-2"><a href="#cb4-2"></a>  dt <span class="sc">|&gt;</span></span>
+<span id="cb4-3"><a href="#cb4-3"></a>  <span class="fu">mutate</span>(<span class="at">step =</span> <span class="fu">rleid</span>(dir)) <span class="sc">|&gt;</span> </span>
+<span id="cb4-4"><a href="#cb4-4"></a>  <span class="fu">follow_directions</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="at">preserve_data =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span></span>
+<span id="cb4-5"><a href="#cb4-5"></a>  <span class="fu">mutate</span>(<span class="at">row =</span> row <span class="sc">*</span> <span class="sc">-</span><span class="dv">1</span>)</span>
+<span id="cb4-6"><a href="#cb4-6"></a></span>
+<span id="cb4-7"><a href="#cb4-7"></a>m <span class="ot">&lt;-</span> <span class="fu">coords_to_matrix</span>(dt<span class="sc">$</span>step, dt<span class="sc">$</span>row, dt<span class="sc">$</span>col)</span>
+<span id="cb4-8"><a href="#cb4-8"></a></span>
+<span id="cb4-9"><a href="#cb4-9"></a>rope <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"row"</span> <span class="ot">=</span> <span class="dv">0</span>, <span class="st">"col"</span> <span class="ot">=</span> <span class="dv">0</span>)</span>
 <span id="cb4-10"><a href="#cb4-10"></a></span>
-<span id="cb4-11"><a href="#cb4-11"></a>size <span class="ot">&lt;-</span> <span class="fu">ceiling</span>(size <span class="sc">/</span> <span class="dv">2</span>)</span>
-<span id="cb4-12"><a href="#cb4-12"></a>hR <span class="ot">&lt;-</span> size; hC <span class="ot">&lt;-</span> size; tR <span class="ot">&lt;-</span> size; tC <span class="ot">&lt;-</span> size</span>
-<span id="cb4-13"><a href="#cb4-13"></a></span>
-<span id="cb4-14"><a href="#cb4-14"></a>move_h <span class="ot">&lt;-</span> <span class="cf">function</span>(dir, mag, row, col) {</span>
-<span id="cb4-15"><a href="#cb4-15"></a>  <span class="cf">if</span> (dir <span class="sc">==</span> <span class="st">"R"</span>) { <span class="fu">return</span>(<span class="fu">list</span>(<span class="st">"row"</span> <span class="ot">=</span> row, <span class="st">"col"</span> <span class="ot">=</span> col <span class="sc">+</span> mag)) }</span>
-<span id="cb4-16"><a href="#cb4-16"></a>  <span class="cf">if</span> (dir <span class="sc">==</span> <span class="st">"L"</span>) { <span class="fu">return</span>(<span class="fu">list</span>(<span class="st">"row"</span> <span class="ot">=</span> row, <span class="st">"col"</span> <span class="ot">=</span> col <span class="sc">-</span> mag)) }</span>
-<span id="cb4-17"><a href="#cb4-17"></a>  <span class="cf">if</span> (dir <span class="sc">==</span> <span class="st">"U"</span>) { <span class="fu">return</span>(<span class="fu">list</span>(<span class="st">"row"</span> <span class="ot">=</span> row <span class="sc">-</span> mag, <span class="st">"col"</span> <span class="ot">=</span> col)) }</span>
-<span id="cb4-18"><a href="#cb4-18"></a>  <span class="cf">if</span> (dir <span class="sc">==</span> <span class="st">"D"</span>) { <span class="fu">return</span>(<span class="fu">list</span>(<span class="st">"row"</span> <span class="ot">=</span> row <span class="sc">+</span> mag, <span class="st">"col"</span> <span class="ot">=</span> col)) }</span>
-<span id="cb4-19"><a href="#cb4-19"></a>}</span>
-<span id="cb4-20"><a href="#cb4-20"></a></span>
-<span id="cb4-21"><a href="#cb4-21"></a>move_t <span class="ot">&lt;-</span> <span class="cf">function</span>(hR, hC, row, col) {</span>
-<span id="cb4-22"><a href="#cb4-22"></a>  <span class="fu">return</span>(<span class="fu">list</span>(<span class="st">"row"</span> <span class="ot">=</span> hR, <span class="st">"col"</span> <span class="ot">=</span> hC))</span>
-<span id="cb4-23"><a href="#cb4-23"></a>}</span>
-<span id="cb4-24"><a href="#cb4-24"></a></span>
-<span id="cb4-25"><a href="#cb4-25"></a>hM[hR,hC] <span class="ot">&lt;-</span> <span class="dv">1</span></span>
-<span id="cb4-26"><a href="#cb4-26"></a></span>
-<span id="cb4-27"><a href="#cb4-27"></a>hR1 <span class="ot">&lt;-</span> hR; hC1 <span class="ot">&lt;-</span> hC</span>
-<span id="cb4-28"><a href="#cb4-28"></a>m <span class="ot">&lt;-</span> <span class="fu">move_h</span>(dt<span class="sc">$</span>dir[<span class="dv">1</span>], dt<span class="sc">$</span>mag[<span class="dv">1</span>], hR, hC)</span>
-<span id="cb4-29"><a href="#cb4-29"></a>hR <span class="ot">&lt;-</span> m<span class="sc">$</span>row; hC <span class="ot">&lt;-</span> m<span class="sc">$</span>col</span>
-<span id="cb4-30"><a href="#cb4-30"></a></span>
-<span id="cb4-31"><a href="#cb4-31"></a>m <span class="ot">&lt;-</span> <span class="fu">move_t</span>(hR, hC, tR, tC)</span>
-<span id="cb4-32"><a href="#cb4-32"></a>tR <span class="ot">&lt;-</span> m<span class="sc">$</span>row; tC <span class="ot">&lt;-</span> m<span class="sc">$</span>col</span>
-<span id="cb4-33"><a href="#cb4-33"></a></span>
-<span id="cb4-34"><a href="#cb4-34"></a>hR1 <span class="ot">&lt;-</span> hR; hC1 <span class="ot">&lt;-</span> hC</span>
-<span id="cb4-35"><a href="#cb4-35"></a>m <span class="ot">&lt;-</span> <span class="fu">move_h</span>(dt<span class="sc">$</span>dir[<span class="dv">2</span>], dt<span class="sc">$</span>mag[<span class="dv">2</span>], hR, hC)</span>
-<span id="cb4-36"><a href="#cb4-36"></a>hR <span class="ot">&lt;-</span> m<span class="sc">$</span>row; hC <span class="ot">&lt;-</span> m<span class="sc">$</span>col</span>
-<span id="cb4-37"><a href="#cb4-37"></a></span>
-<span id="cb4-38"><a href="#cb4-38"></a>plane <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"R"</span> <span class="ot">=</span> <span class="st">"c"</span>, <span class="st">"L"</span> <span class="ot">=</span> <span class="st">"c"</span>, <span class="st">"U"</span> <span class="ot">=</span> <span class="st">"r"</span>, <span class="st">"D"</span> <span class="ot">=</span> <span class="st">"r"</span>)</span>
-<span id="cb4-39"><a href="#cb4-39"></a></span>
-<span id="cb4-40"><a href="#cb4-40"></a>get_h_plane <span class="ot">&lt;-</span> <span class="cf">function</span>(hR, hC, hR1, hC1) {</span>
-<span id="cb4-41"><a href="#cb4-41"></a>  <span class="cf">if</span> (hR <span class="sc">==</span> hR1 <span class="sc">&amp;</span> hC <span class="sc">!=</span> hC1) { <span class="fu">return</span>(<span class="st">"r"</span>) }</span>
-<span id="cb4-42"><a href="#cb4-42"></a>  <span class="cf">else</span> <span class="cf">if</span> (hR <span class="sc">!=</span> hR1 <span class="sc">&amp;</span> hC <span class="sc">==</span> hC1) { <span class="fu">return</span>(<span class="st">"c"</span>) }</span>
-<span id="cb4-43"><a href="#cb4-43"></a>}</span>
-<span id="cb4-44"><a href="#cb4-44"></a></span>
-<span id="cb4-45"><a href="#cb4-45"></a>get_t_plane <span class="ot">&lt;-</span> <span class="cf">function</span>(hR, hC, tR, tC) {</span>
-<span id="cb4-46"><a href="#cb4-46"></a>  <span class="cf">if</span> (tR <span class="sc">==</span> hR <span class="sc">&amp;</span> tC <span class="sc">!=</span> hC) { <span class="fu">return</span>(<span class="st">"r"</span>) }</span>
-<span id="cb4-47"><a href="#cb4-47"></a>  <span class="cf">else</span> <span class="cf">if</span> (tR <span class="sc">!=</span> hR1<span class="sc">&amp;</span> tC <span class="sc">==</span> hC) { <span class="fu">return</span>(<span class="st">"c"</span>) }</span>
-<span id="cb4-48"><a href="#cb4-48"></a>  <span class="cf">else</span> { <span class="fu">return</span>(<span class="st">"rc"</span>) }</span>
-<span id="cb4-49"><a href="#cb4-49"></a>}</span>
-<span id="cb4-50"><a href="#cb4-50"></a></span>
-<span id="cb4-51"><a href="#cb4-51"></a>stops <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="st">"row"</span> <span class="ot">=</span> <span class="fu">c</span>(), <span class="st">"col"</span> <span class="ot">=</span> <span class="fu">c</span>())</span>
-<span id="cb4-52"><a href="#cb4-52"></a></span>
-<span id="cb4-53"><a href="#cb4-53"></a><span class="fu">sapply</span>(<span class="dv">3</span><span class="sc">:</span><span class="dv">8</span>, \(i) {</span>
-<span id="cb4-54"><a href="#cb4-54"></a>  hM[hR,hC] <span class="ot">&lt;&lt;-</span> i</span>
-<span id="cb4-55"><a href="#cb4-55"></a>  tM[tR,tC] <span class="ot">&lt;&lt;-</span> i</span>
-<span id="cb4-56"><a href="#cb4-56"></a></span>
-<span id="cb4-57"><a href="#cb4-57"></a>  m <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
-<span id="cb4-58"><a href="#cb4-58"></a>  </span>
-<span id="cb4-59"><a href="#cb4-59"></a>  <span class="co"># if directly diagonal</span></span>
-<span id="cb4-60"><a href="#cb4-60"></a>  rChange <span class="ot">&lt;-</span> <span class="fu">abs</span>(tR <span class="sc">-</span> hR); cChange <span class="ot">&lt;-</span> <span class="fu">abs</span>(tC <span class="sc">-</span> hC)</span>
-<span id="cb4-61"><a href="#cb4-61"></a>  <span class="cf">if</span> (<span class="fu">get_t_plane</span>(hR, hC, tR, tC) <span class="sc">==</span> <span class="st">"rc"</span>) {</span>
-<span id="cb4-62"><a href="#cb4-62"></a>    </span>
-<span id="cb4-63"><a href="#cb4-63"></a>  } <span class="cf">else</span> {</span>
-<span id="cb4-64"><a href="#cb4-64"></a>    m <span class="ot">&lt;-</span> <span class="fu">move_t</span>(hR, hC, tR, tC)</span>
-<span id="cb4-65"><a href="#cb4-65"></a>  }</span>
-<span id="cb4-66"><a href="#cb4-66"></a>  <span class="cf">if</span> (<span class="sc">!</span><span class="fu">is.null</span>(m)) {</span>
-<span id="cb4-67"><a href="#cb4-67"></a>    tR <span class="ot">&lt;&lt;-</span> m<span class="sc">$</span>row; tC <span class="ot">&lt;&lt;-</span> m<span class="sc">$</span>col</span>
-<span id="cb4-68"><a href="#cb4-68"></a>    stops <span class="ot">&lt;&lt;-</span> <span class="fu">rbind</span>(stops, <span class="fu">data.frame</span>(<span class="st">"row"</span> <span class="ot">=</span> tR, <span class="st">"col"</span> <span class="ot">=</span> tC))</span>
-<span id="cb4-69"><a href="#cb4-69"></a>  }</span>
-<span id="cb4-70"><a href="#cb4-70"></a>  </span>
-<span id="cb4-71"><a href="#cb4-71"></a>  <span class="co"># print(i)</span></span>
-<span id="cb4-72"><a href="#cb4-72"></a>  <span class="co"># print(get_t_plane(hR, hC, tR, tC) == "rc" &amp; sqrt((tR-hR)^2 + (tC-hC)^2) == 1)</span></span>
-<span id="cb4-73"><a href="#cb4-73"></a>  </span>
-<span id="cb4-74"><a href="#cb4-74"></a>  hR1 <span class="ot">&lt;&lt;-</span> hR; hC1 <span class="ot">&lt;&lt;-</span> hC</span>
-<span id="cb4-75"><a href="#cb4-75"></a>  m <span class="ot">&lt;-</span> <span class="fu">move_h</span>(dt<span class="sc">$</span>dir[i], dt<span class="sc">$</span>mag[i], hR, hC)</span>
-<span id="cb4-76"><a href="#cb4-76"></a>  hR <span class="ot">&lt;&lt;-</span> m<span class="sc">$</span>row; hC <span class="ot">&lt;&lt;-</span> m<span class="sc">$</span>col</span>
-<span id="cb4-77"><a href="#cb4-77"></a>  <span class="fu">return</span>(<span class="dv">1</span>)</span>
-<span id="cb4-78"><a href="#cb4-78"></a>}) <span class="sc">|&gt;</span> <span class="fu">invisible</span>()</span>
-<span id="cb4-79"><a href="#cb4-79"></a></span>
-<span id="cb4-80"><a href="#cb4-80"></a><span class="fu">print</span>(tM[<span class="dv">1</span><span class="sc">:</span><span class="dv">7</span>,<span class="sc">-</span><span class="dv">1</span><span class="sc">:-</span><span class="dv">6</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb4-11"><a href="#cb4-11"></a><span class="co"># for(i in 1:nrow(dt)) {</span></span>
+<span id="cb4-12"><a href="#cb4-12"></a><span class="co">#   get_adjacent_values(rope["col"], rope["row"], )</span></span>
+<span id="cb4-13"><a href="#cb4-13"></a><span class="co"># }</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-hash="2022-09_cache/html/unnamed-chunk-4_a287d604f6dfcfb6b1bbc9860b9a9e4c">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>size <span class="ot">&lt;-</span> <span class="dv">13</span></span>
+<span id="cb5-2"><a href="#cb5-2"></a><span class="co">#   dt |&gt;</span></span>
+<span id="cb5-3"><a href="#cb5-3"></a><span class="co">#   group_by(dir) |&gt;</span></span>
+<span id="cb5-4"><a href="#cb5-4"></a><span class="co">#   summarise(mag = sum(mag)) |&gt;</span></span>
+<span id="cb5-5"><a href="#cb5-5"></a><span class="co">#   pull(mag) |&gt;</span></span>
+<span id="cb5-6"><a href="#cb5-6"></a><span class="co">#   max()</span></span>
+<span id="cb5-7"><a href="#cb5-7"></a><span class="co"># size &lt;- 3144</span></span>
+<span id="cb5-8"><a href="#cb5-8"></a>hM <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="cn">NA</span>, size, size)</span>
+<span id="cb5-9"><a href="#cb5-9"></a>tM <span class="ot">&lt;-</span> hM</span>
+<span id="cb5-10"><a href="#cb5-10"></a></span>
+<span id="cb5-11"><a href="#cb5-11"></a>size <span class="ot">&lt;-</span> <span class="fu">ceiling</span>(size <span class="sc">/</span> <span class="dv">2</span>)</span>
+<span id="cb5-12"><a href="#cb5-12"></a>hR <span class="ot">&lt;-</span> size; hC <span class="ot">&lt;-</span> size; tR <span class="ot">&lt;-</span> size; tC <span class="ot">&lt;-</span> size</span>
+<span id="cb5-13"><a href="#cb5-13"></a></span>
+<span id="cb5-14"><a href="#cb5-14"></a>move_h <span class="ot">&lt;-</span> <span class="cf">function</span>(dir, mag, row, col) {</span>
+<span id="cb5-15"><a href="#cb5-15"></a>  <span class="cf">if</span> (dir <span class="sc">==</span> <span class="st">"R"</span>) { <span class="fu">return</span>(<span class="fu">list</span>(<span class="st">"row"</span> <span class="ot">=</span> row, <span class="st">"col"</span> <span class="ot">=</span> col <span class="sc">+</span> mag)) }</span>
+<span id="cb5-16"><a href="#cb5-16"></a>  <span class="cf">if</span> (dir <span class="sc">==</span> <span class="st">"L"</span>) { <span class="fu">return</span>(<span class="fu">list</span>(<span class="st">"row"</span> <span class="ot">=</span> row, <span class="st">"col"</span> <span class="ot">=</span> col <span class="sc">-</span> mag)) }</span>
+<span id="cb5-17"><a href="#cb5-17"></a>  <span class="cf">if</span> (dir <span class="sc">==</span> <span class="st">"U"</span>) { <span class="fu">return</span>(<span class="fu">list</span>(<span class="st">"row"</span> <span class="ot">=</span> row <span class="sc">-</span> mag, <span class="st">"col"</span> <span class="ot">=</span> col)) }</span>
+<span id="cb5-18"><a href="#cb5-18"></a>  <span class="cf">if</span> (dir <span class="sc">==</span> <span class="st">"D"</span>) { <span class="fu">return</span>(<span class="fu">list</span>(<span class="st">"row"</span> <span class="ot">=</span> row <span class="sc">+</span> mag, <span class="st">"col"</span> <span class="ot">=</span> col)) }</span>
+<span id="cb5-19"><a href="#cb5-19"></a>}</span>
+<span id="cb5-20"><a href="#cb5-20"></a></span>
+<span id="cb5-21"><a href="#cb5-21"></a>move_t <span class="ot">&lt;-</span> <span class="cf">function</span>(hR, hC, row, col) {</span>
+<span id="cb5-22"><a href="#cb5-22"></a>  <span class="fu">return</span>(<span class="fu">list</span>(<span class="st">"row"</span> <span class="ot">=</span> hR, <span class="st">"col"</span> <span class="ot">=</span> hC))</span>
+<span id="cb5-23"><a href="#cb5-23"></a>}</span>
+<span id="cb5-24"><a href="#cb5-24"></a></span>
+<span id="cb5-25"><a href="#cb5-25"></a>hM[hR,hC] <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb5-26"><a href="#cb5-26"></a></span>
+<span id="cb5-27"><a href="#cb5-27"></a>hR1 <span class="ot">&lt;-</span> hR; hC1 <span class="ot">&lt;-</span> hC</span>
+<span id="cb5-28"><a href="#cb5-28"></a>m <span class="ot">&lt;-</span> <span class="fu">move_h</span>(dt<span class="sc">$</span>dir[<span class="dv">1</span>], dt<span class="sc">$</span>mag[<span class="dv">1</span>], hR, hC)</span>
+<span id="cb5-29"><a href="#cb5-29"></a>hR <span class="ot">&lt;-</span> m<span class="sc">$</span>row; hC <span class="ot">&lt;-</span> m<span class="sc">$</span>col</span>
+<span id="cb5-30"><a href="#cb5-30"></a></span>
+<span id="cb5-31"><a href="#cb5-31"></a>m <span class="ot">&lt;-</span> <span class="fu">move_t</span>(hR, hC, tR, tC)</span>
+<span id="cb5-32"><a href="#cb5-32"></a>tR <span class="ot">&lt;-</span> m<span class="sc">$</span>row; tC <span class="ot">&lt;-</span> m<span class="sc">$</span>col</span>
+<span id="cb5-33"><a href="#cb5-33"></a></span>
+<span id="cb5-34"><a href="#cb5-34"></a>hR1 <span class="ot">&lt;-</span> hR; hC1 <span class="ot">&lt;-</span> hC</span>
+<span id="cb5-35"><a href="#cb5-35"></a>m <span class="ot">&lt;-</span> <span class="fu">move_h</span>(dt<span class="sc">$</span>dir[<span class="dv">2</span>], dt<span class="sc">$</span>mag[<span class="dv">2</span>], hR, hC)</span>
+<span id="cb5-36"><a href="#cb5-36"></a>hR <span class="ot">&lt;-</span> m<span class="sc">$</span>row; hC <span class="ot">&lt;-</span> m<span class="sc">$</span>col</span>
+<span id="cb5-37"><a href="#cb5-37"></a></span>
+<span id="cb5-38"><a href="#cb5-38"></a>plane <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"R"</span> <span class="ot">=</span> <span class="st">"c"</span>, <span class="st">"L"</span> <span class="ot">=</span> <span class="st">"c"</span>, <span class="st">"U"</span> <span class="ot">=</span> <span class="st">"r"</span>, <span class="st">"D"</span> <span class="ot">=</span> <span class="st">"r"</span>)</span>
+<span id="cb5-39"><a href="#cb5-39"></a></span>
+<span id="cb5-40"><a href="#cb5-40"></a>get_h_plane <span class="ot">&lt;-</span> <span class="cf">function</span>(hR, hC, hR1, hC1) {</span>
+<span id="cb5-41"><a href="#cb5-41"></a>  <span class="cf">if</span> (hR <span class="sc">==</span> hR1 <span class="sc">&amp;</span> hC <span class="sc">!=</span> hC1) { <span class="fu">return</span>(<span class="st">"r"</span>) }</span>
+<span id="cb5-42"><a href="#cb5-42"></a>  <span class="cf">else</span> <span class="cf">if</span> (hR <span class="sc">!=</span> hR1 <span class="sc">&amp;</span> hC <span class="sc">==</span> hC1) { <span class="fu">return</span>(<span class="st">"c"</span>) }</span>
+<span id="cb5-43"><a href="#cb5-43"></a>}</span>
+<span id="cb5-44"><a href="#cb5-44"></a></span>
+<span id="cb5-45"><a href="#cb5-45"></a>get_t_plane <span class="ot">&lt;-</span> <span class="cf">function</span>(hR, hC, tR, tC) {</span>
+<span id="cb5-46"><a href="#cb5-46"></a>  <span class="cf">if</span> (tR <span class="sc">==</span> hR <span class="sc">&amp;</span> tC <span class="sc">!=</span> hC) { <span class="fu">return</span>(<span class="st">"r"</span>) }</span>
+<span id="cb5-47"><a href="#cb5-47"></a>  <span class="cf">else</span> <span class="cf">if</span> (tR <span class="sc">!=</span> hR1<span class="sc">&amp;</span> tC <span class="sc">==</span> hC) { <span class="fu">return</span>(<span class="st">"c"</span>) }</span>
+<span id="cb5-48"><a href="#cb5-48"></a>  <span class="cf">else</span> { <span class="fu">return</span>(<span class="st">"rc"</span>) }</span>
+<span id="cb5-49"><a href="#cb5-49"></a>}</span>
+<span id="cb5-50"><a href="#cb5-50"></a></span>
+<span id="cb5-51"><a href="#cb5-51"></a>stops <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="st">"row"</span> <span class="ot">=</span> <span class="fu">c</span>(), <span class="st">"col"</span> <span class="ot">=</span> <span class="fu">c</span>())</span>
+<span id="cb5-52"><a href="#cb5-52"></a></span>
+<span id="cb5-53"><a href="#cb5-53"></a><span class="fu">sapply</span>(<span class="dv">3</span><span class="sc">:</span><span class="dv">8</span>, \(i) {</span>
+<span id="cb5-54"><a href="#cb5-54"></a>  hM[hR,hC] <span class="ot">&lt;&lt;-</span> i</span>
+<span id="cb5-55"><a href="#cb5-55"></a>  tM[tR,tC] <span class="ot">&lt;&lt;-</span> i</span>
+<span id="cb5-56"><a href="#cb5-56"></a></span>
+<span id="cb5-57"><a href="#cb5-57"></a>  m <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
+<span id="cb5-58"><a href="#cb5-58"></a>  </span>
+<span id="cb5-59"><a href="#cb5-59"></a>  <span class="co"># if directly diagonal</span></span>
+<span id="cb5-60"><a href="#cb5-60"></a>  rChange <span class="ot">&lt;-</span> <span class="fu">abs</span>(tR <span class="sc">-</span> hR); cChange <span class="ot">&lt;-</span> <span class="fu">abs</span>(tC <span class="sc">-</span> hC)</span>
+<span id="cb5-61"><a href="#cb5-61"></a>  <span class="cf">if</span> (<span class="fu">get_t_plane</span>(hR, hC, tR, tC) <span class="sc">==</span> <span class="st">"rc"</span>) {</span>
+<span id="cb5-62"><a href="#cb5-62"></a>    </span>
+<span id="cb5-63"><a href="#cb5-63"></a>  } <span class="cf">else</span> {</span>
+<span id="cb5-64"><a href="#cb5-64"></a>    m <span class="ot">&lt;-</span> <span class="fu">move_t</span>(hR, hC, tR, tC)</span>
+<span id="cb5-65"><a href="#cb5-65"></a>  }</span>
+<span id="cb5-66"><a href="#cb5-66"></a>  <span class="cf">if</span> (<span class="sc">!</span><span class="fu">is.null</span>(m)) {</span>
+<span id="cb5-67"><a href="#cb5-67"></a>    tR <span class="ot">&lt;&lt;-</span> m<span class="sc">$</span>row; tC <span class="ot">&lt;&lt;-</span> m<span class="sc">$</span>col</span>
+<span id="cb5-68"><a href="#cb5-68"></a>    stops <span class="ot">&lt;&lt;-</span> <span class="fu">rbind</span>(stops, <span class="fu">data.frame</span>(<span class="st">"row"</span> <span class="ot">=</span> tR, <span class="st">"col"</span> <span class="ot">=</span> tC))</span>
+<span id="cb5-69"><a href="#cb5-69"></a>  }</span>
+<span id="cb5-70"><a href="#cb5-70"></a>  </span>
+<span id="cb5-71"><a href="#cb5-71"></a>  <span class="co"># print(i)</span></span>
+<span id="cb5-72"><a href="#cb5-72"></a>  <span class="co"># print(get_t_plane(hR, hC, tR, tC) == "rc" &amp; sqrt((tR-hR)^2 + (tC-hC)^2) == 1)</span></span>
+<span id="cb5-73"><a href="#cb5-73"></a>  </span>
+<span id="cb5-74"><a href="#cb5-74"></a>  hR1 <span class="ot">&lt;&lt;-</span> hR; hC1 <span class="ot">&lt;&lt;-</span> hC</span>
+<span id="cb5-75"><a href="#cb5-75"></a>  m <span class="ot">&lt;-</span> <span class="fu">move_h</span>(dt<span class="sc">$</span>dir[i], dt<span class="sc">$</span>mag[i], hR, hC)</span>
+<span id="cb5-76"><a href="#cb5-76"></a>  hR <span class="ot">&lt;&lt;-</span> m<span class="sc">$</span>row; hC <span class="ot">&lt;&lt;-</span> m<span class="sc">$</span>col</span>
+<span id="cb5-77"><a href="#cb5-77"></a>  <span class="fu">return</span>(<span class="dv">1</span>)</span>
+<span id="cb5-78"><a href="#cb5-78"></a>}) <span class="sc">|&gt;</span> <span class="fu">invisible</span>()</span>
+<span id="cb5-79"><a href="#cb5-79"></a></span>
+<span id="cb5-80"><a href="#cb5-80"></a><span class="fu">print</span>(tM[<span class="dv">1</span><span class="sc">:</span><span class="dv">7</span>,<span class="sc">-</span><span class="dv">1</span><span class="sc">:-</span><span class="dv">6</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>     [,1] [,2] [,3] [,4] [,5] [,6] [,7]
 [1,]   NA   NA   NA   NA   NA   NA   NA
@@ -727,7 +747,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 [6,]   NA   NA   NA   NA   NA   NA   NA
 [7,]   NA    3    4    5    7   NA   NA</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="fu">print</span>(hM[<span class="dv">1</span><span class="sc">:</span><span class="dv">7</span>,<span class="sc">-</span><span class="dv">1</span><span class="sc">:-</span><span class="dv">6</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a><span class="fu">print</span>(hM[<span class="dv">1</span><span class="sc">:</span><span class="dv">7</span>,<span class="sc">-</span><span class="dv">1</span><span class="sc">:-</span><span class="dv">6</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>     [,1] [,2] [,3] [,4] [,5] [,6] [,7]
 [1,]   NA   NA   NA   NA   NA   NA   NA
@@ -738,111 +758,111 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 [6,]   NA   NA   NA   NA    6   NA   NA
 [7,]    1   NA    3    4    5   NA   NA</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a>tM <span class="ot">&lt;-</span> <span class="fu">matrix_to_coords</span>(tM) <span class="sc">|&gt;</span> <span class="fu">data.frame</span>() <span class="sc">|&gt;</span> <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(data))</span>
-<span id="cb8-2"><a href="#cb8-2"></a>hM <span class="ot">&lt;-</span> <span class="fu">matrix_to_coords</span>(hM) <span class="sc">|&gt;</span> <span class="fu">data.frame</span>() <span class="sc">|&gt;</span> <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(data))</span>
-<span id="cb8-3"><a href="#cb8-3"></a></span>
-<span id="cb8-4"><a href="#cb8-4"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
-<span id="cb8-5"><a href="#cb8-5"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x =</span> hM<span class="sc">$</span>col, <span class="at">y =</span> <span class="sc">-</span>hM<span class="sc">$</span>row), <span class="at">size =</span> <span class="dv">15</span>, <span class="at">color =</span> <span class="st">"blue"</span>) <span class="sc">+</span></span>
-<span id="cb8-6"><a href="#cb8-6"></a>  <span class="fu">geom_label</span>(<span class="fu">aes</span>(<span class="at">x =</span> hM<span class="sc">$</span>col, <span class="at">y =</span> <span class="sc">-</span>hM<span class="sc">$</span>row, <span class="at">label =</span> hM<span class="sc">$</span>data), <span class="at">size =</span> <span class="dv">5</span>, <span class="at">fill =</span> <span class="st">"blue"</span>) <span class="sc">+</span></span>
-<span id="cb8-7"><a href="#cb8-7"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x =</span> tM<span class="sc">$</span>col, <span class="at">y =</span> <span class="sc">-</span>tM<span class="sc">$</span>row), <span class="at">size =</span> <span class="dv">10</span>, <span class="at">color =</span> <span class="st">"yellow"</span>) <span class="sc">+</span></span>
-<span id="cb8-8"><a href="#cb8-8"></a>  <span class="fu">geom_label</span>(<span class="fu">aes</span>(<span class="at">x =</span> tM<span class="sc">$</span>col, <span class="at">y =</span> <span class="sc">-</span>tM<span class="sc">$</span>row, <span class="at">label =</span> tM<span class="sc">$</span>data), <span class="at">size =</span> <span class="dv">5</span>, <span class="at">fill =</span> <span class="st">"yellow"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a>tM <span class="ot">&lt;-</span> <span class="fu">matrix_to_coords</span>(tM) <span class="sc">|&gt;</span> <span class="fu">data.frame</span>() <span class="sc">|&gt;</span> <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(data))</span>
+<span id="cb9-2"><a href="#cb9-2"></a>hM <span class="ot">&lt;-</span> <span class="fu">matrix_to_coords</span>(hM) <span class="sc">|&gt;</span> <span class="fu">data.frame</span>() <span class="sc">|&gt;</span> <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(data))</span>
+<span id="cb9-3"><a href="#cb9-3"></a></span>
+<span id="cb9-4"><a href="#cb9-4"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb9-5"><a href="#cb9-5"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x =</span> hM<span class="sc">$</span>col, <span class="at">y =</span> <span class="sc">-</span>hM<span class="sc">$</span>row), <span class="at">size =</span> <span class="dv">15</span>, <span class="at">color =</span> <span class="st">"blue"</span>) <span class="sc">+</span></span>
+<span id="cb9-6"><a href="#cb9-6"></a>  <span class="fu">geom_label</span>(<span class="fu">aes</span>(<span class="at">x =</span> hM<span class="sc">$</span>col, <span class="at">y =</span> <span class="sc">-</span>hM<span class="sc">$</span>row, <span class="at">label =</span> hM<span class="sc">$</span>data), <span class="at">size =</span> <span class="dv">5</span>, <span class="at">fill =</span> <span class="st">"blue"</span>) <span class="sc">+</span></span>
+<span id="cb9-7"><a href="#cb9-7"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x =</span> tM<span class="sc">$</span>col, <span class="at">y =</span> <span class="sc">-</span>tM<span class="sc">$</span>row), <span class="at">size =</span> <span class="dv">10</span>, <span class="at">color =</span> <span class="st">"yellow"</span>) <span class="sc">+</span></span>
+<span id="cb9-8"><a href="#cb9-8"></a>  <span class="fu">geom_label</span>(<span class="fu">aes</span>(<span class="at">x =</span> tM<span class="sc">$</span>col, <span class="at">y =</span> <span class="sc">-</span>tM<span class="sc">$</span>row, <span class="at">label =</span> tM<span class="sc">$</span>data), <span class="at">size =</span> <span class="dv">5</span>, <span class="at">fill =</span> <span class="st">"yellow"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="2022-09_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid" width="672"></p>
+<p><img src="2022-09_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid" width="672"></p>
 </div>
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="fu">nrow</span>(tM)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a><span class="fu">nrow</span>(tM)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 5</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a><span class="co"># stops |&gt;</span></span>
-<span id="cb11-2"><a href="#cb11-2"></a><span class="co">#   unique() |&gt;</span></span>
-<span id="cb11-3"><a href="#cb11-3"></a><span class="co">#   nrow()</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a><span class="co"># stops |&gt;</span></span>
+<span id="cb12-2"><a href="#cb12-2"></a><span class="co">#   unique() |&gt;</span></span>
+<span id="cb12-3"><a href="#cb12-3"></a><span class="co">#   nrow()</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell" data-hash="2022-09_cache/html/unnamed-chunk-4_7fc3dcdcc5c342147cf0c870222011e9">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a>size <span class="ot">&lt;-</span> <span class="dv">13</span></span>
-<span id="cb12-2"><a href="#cb12-2"></a><span class="co">#   dt |&gt;</span></span>
-<span id="cb12-3"><a href="#cb12-3"></a><span class="co">#   group_by(dir) |&gt;</span></span>
-<span id="cb12-4"><a href="#cb12-4"></a><span class="co">#   summarise(mag = sum(mag)) |&gt;</span></span>
-<span id="cb12-5"><a href="#cb12-5"></a><span class="co">#   pull(mag) |&gt;</span></span>
-<span id="cb12-6"><a href="#cb12-6"></a><span class="co">#   max()</span></span>
-<span id="cb12-7"><a href="#cb12-7"></a><span class="co"># size &lt;- 3144</span></span>
-<span id="cb12-8"><a href="#cb12-8"></a>hM <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="cn">NA</span>, size, size)</span>
-<span id="cb12-9"><a href="#cb12-9"></a>tM <span class="ot">&lt;-</span> hM</span>
-<span id="cb12-10"><a href="#cb12-10"></a></span>
-<span id="cb12-11"><a href="#cb12-11"></a>size <span class="ot">&lt;-</span> <span class="fu">ceiling</span>(size <span class="sc">/</span> <span class="dv">2</span>)</span>
-<span id="cb12-12"><a href="#cb12-12"></a>hR <span class="ot">&lt;-</span> size; hC <span class="ot">&lt;-</span> size; </span>
-<span id="cb12-13"><a href="#cb12-13"></a>tR <span class="ot">&lt;-</span> size; tC <span class="ot">&lt;-</span> size</span>
-<span id="cb12-14"><a href="#cb12-14"></a></span>
-<span id="cb12-15"><a href="#cb12-15"></a>move_h <span class="ot">&lt;-</span> <span class="cf">function</span>(dir, mag, row, col) {</span>
-<span id="cb12-16"><a href="#cb12-16"></a>  <span class="cf">if</span> (dir <span class="sc">==</span> <span class="st">"R"</span>) { <span class="fu">return</span>(<span class="fu">list</span>(<span class="st">"row"</span> <span class="ot">=</span> row, <span class="st">"col"</span> <span class="ot">=</span> col <span class="sc">+</span> mag)) }</span>
-<span id="cb12-17"><a href="#cb12-17"></a>  <span class="cf">if</span> (dir <span class="sc">==</span> <span class="st">"L"</span>) { <span class="fu">return</span>(<span class="fu">list</span>(<span class="st">"row"</span> <span class="ot">=</span> row, <span class="st">"col"</span> <span class="ot">=</span> col <span class="sc">-</span> mag)) }</span>
-<span id="cb12-18"><a href="#cb12-18"></a>  <span class="cf">if</span> (dir <span class="sc">==</span> <span class="st">"U"</span>) { <span class="fu">return</span>(<span class="fu">list</span>(<span class="st">"row"</span> <span class="ot">=</span> row <span class="sc">-</span> mag, <span class="st">"col"</span> <span class="ot">=</span> col)) }</span>
-<span id="cb12-19"><a href="#cb12-19"></a>  <span class="cf">if</span> (dir <span class="sc">==</span> <span class="st">"D"</span>) { <span class="fu">return</span>(<span class="fu">list</span>(<span class="st">"row"</span> <span class="ot">=</span> row <span class="sc">+</span> mag, <span class="st">"col"</span> <span class="ot">=</span> col)) }</span>
-<span id="cb12-20"><a href="#cb12-20"></a>}</span>
-<span id="cb12-21"><a href="#cb12-21"></a></span>
-<span id="cb12-22"><a href="#cb12-22"></a>hM[hR,hC] <span class="ot">&lt;-</span> <span class="dv">1</span></span>
-<span id="cb12-23"><a href="#cb12-23"></a></span>
-<span id="cb12-24"><a href="#cb12-24"></a>hR1 <span class="ot">&lt;-</span> hR; hC1 <span class="ot">&lt;-</span> hC</span>
-<span id="cb12-25"><a href="#cb12-25"></a>m <span class="ot">&lt;-</span> <span class="fu">move_h</span>(dt<span class="sc">$</span>dir[<span class="dv">1</span>], dt<span class="sc">$</span>mag[<span class="dv">1</span>], hR, hC)</span>
-<span id="cb12-26"><a href="#cb12-26"></a>hR <span class="ot">&lt;-</span> m<span class="sc">$</span>row; hC <span class="ot">&lt;-</span> m<span class="sc">$</span>col</span>
-<span id="cb12-27"><a href="#cb12-27"></a></span>
-<span id="cb12-28"><a href="#cb12-28"></a>plane <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"R"</span> <span class="ot">=</span> <span class="st">"c"</span>, <span class="st">"L"</span> <span class="ot">=</span> <span class="st">"c"</span>, <span class="st">"U"</span> <span class="ot">=</span> <span class="st">"r"</span>, <span class="st">"D"</span> <span class="ot">=</span> <span class="st">"r"</span>)</span>
-<span id="cb12-29"><a href="#cb12-29"></a></span>
-<span id="cb12-30"><a href="#cb12-30"></a>move_t <span class="ot">&lt;-</span> <span class="cf">function</span>(hR, hC, row, col) {</span>
-<span id="cb12-31"><a href="#cb12-31"></a>  <span class="fu">return</span>(<span class="fu">list</span>(<span class="st">"row"</span> <span class="ot">=</span> hR, <span class="st">"col"</span> <span class="ot">=</span> hC))</span>
-<span id="cb12-32"><a href="#cb12-32"></a>}</span>
-<span id="cb12-33"><a href="#cb12-33"></a></span>
-<span id="cb12-34"><a href="#cb12-34"></a>is_diag <span class="ot">&lt;-</span> <span class="cf">function</span>(hR, hC, tR, tC) {</span>
-<span id="cb12-35"><a href="#cb12-35"></a>  <span class="cf">if</span> ((hR <span class="sc">==</span> tR <span class="sc">&amp;</span> hC <span class="sc">!=</span> tC) <span class="sc">|</span> (hR <span class="sc">!=</span> tR <span class="sc">&amp;</span> hC <span class="sc">==</span> tC)) {</span>
-<span id="cb12-36"><a href="#cb12-36"></a>    <span class="fu">return</span>(<span class="cn">TRUE</span>)</span>
-<span id="cb12-37"><a href="#cb12-37"></a>  }</span>
-<span id="cb12-38"><a href="#cb12-38"></a>  <span class="co"># if(abs(tR - hR) == abs(tC - hC)) { return(FALSE) }</span></span>
-<span id="cb12-39"><a href="#cb12-39"></a>  <span class="fu">return</span>(<span class="cn">FALSE</span>)</span>
-<span id="cb12-40"><a href="#cb12-40"></a>}</span>
-<span id="cb12-41"><a href="#cb12-41"></a></span>
-<span id="cb12-42"><a href="#cb12-42"></a>tR1 <span class="ot">&lt;-</span> tR; tC1 <span class="ot">&lt;-</span> tC</span>
-<span id="cb12-43"><a href="#cb12-43"></a></span>
-<span id="cb12-44"><a href="#cb12-44"></a><span class="co"># for(i in 2:nrow(dt)) {</span></span>
-<span id="cb12-45"><a href="#cb12-45"></a><span class="fu">sapply</span>(<span class="dv">2</span><span class="sc">:</span><span class="dv">7</span>, \(i) {</span>
-<span id="cb12-46"><a href="#cb12-46"></a>  hM[hR,hC] <span class="ot">&lt;&lt;-</span> i</span>
-<span id="cb12-47"><a href="#cb12-47"></a>  tM[tR,tC] <span class="ot">&lt;&lt;-</span> i</span>
-<span id="cb12-48"><a href="#cb12-48"></a>  </span>
-<span id="cb12-49"><a href="#cb12-49"></a>  <span class="fu">print</span>(i)</span>
-<span id="cb12-50"><a href="#cb12-50"></a></span>
-<span id="cb12-51"><a href="#cb12-51"></a>  m <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
-<span id="cb12-52"><a href="#cb12-52"></a></span>
-<span id="cb12-53"><a href="#cb12-53"></a>  <span class="co"># if ((sqrt(abs(tC - hC)^2 + abs(tR - hR)^2) &gt; 2)) {</span></span>
-<span id="cb12-54"><a href="#cb12-54"></a>  <span class="co">#   m &lt;- move_t(hR1, hC1, tR, tC)</span></span>
-<span id="cb12-55"><a href="#cb12-55"></a>  <span class="co">#   tR &lt;&lt;- m$row; tC &lt;&lt;- m$col</span></span>
-<span id="cb12-56"><a href="#cb12-56"></a>  <span class="co">#   stops &lt;&lt;- rbind(stops, data.frame("row" = tR, "col" = tC))</span></span>
-<span id="cb12-57"><a href="#cb12-57"></a>  <span class="co">#   tM[tR,tC] &lt;&lt;- i</span></span>
-<span id="cb12-58"><a href="#cb12-58"></a>  <span class="co">#   m &lt;- move_t(hR, hC, tR, tC)</span></span>
-<span id="cb12-59"><a href="#cb12-59"></a>  <span class="co"># } else if (plane[dt$dir[i]] == plane[dt$dir[i-1]]) {</span></span>
-<span id="cb12-60"><a href="#cb12-60"></a>  <span class="co">#   m &lt;- move_t(hR, hC, tR, tC)</span></span>
-<span id="cb12-61"><a href="#cb12-61"></a>  <span class="co"># } else if ((sqrt(abs(tC - hC)^2 + abs(tR - hR)^2) &gt; 1)) {</span></span>
-<span id="cb12-62"><a href="#cb12-62"></a>  <span class="co">#   m &lt;- move_t(hR1, hC1, tR, tC)</span></span>
-<span id="cb12-63"><a href="#cb12-63"></a>  <span class="co"># }</span></span>
-<span id="cb12-64"><a href="#cb12-64"></a>  <span class="co"># # if (abs(hR - tR) == abs(hC - tC)) { m &lt;- NULL }</span></span>
-<span id="cb12-65"><a href="#cb12-65"></a>  adj <span class="ot">&lt;-</span> <span class="fu">get_adjacent_values</span>(tR, tC, hM)[<span class="sc">-</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">3</span>,<span class="dv">7</span>,<span class="dv">9</span>)]</span>
-<span id="cb12-66"><a href="#cb12-66"></a>  adj <span class="ot">&lt;-</span> adj[<span class="sc">!</span><span class="fu">is.na</span>(adj)]</span>
-<span id="cb12-67"><a href="#cb12-67"></a>  j <span class="ot">&lt;-</span> i <span class="sc">-</span> <span class="dv">1</span></span>
-<span id="cb12-68"><a href="#cb12-68"></a>  <span class="fu">print</span>(adj)</span>
-<span id="cb12-69"><a href="#cb12-69"></a>  <span class="cf">if</span> (<span class="fu">length</span>(adj) <span class="sc">&gt;</span> <span class="dv">0</span> <span class="sc">&amp;</span> <span class="sc">!</span>(j <span class="sc">%in%</span> adj)) {</span>
-<span id="cb12-70"><a href="#cb12-70"></a>    <span class="fu">print</span>(<span class="st">"here"</span>)</span>
-<span id="cb12-71"><a href="#cb12-71"></a>    <span class="co"># m &lt;- move_t(hR1, hC1, tR, tC)</span></span>
-<span id="cb12-72"><a href="#cb12-72"></a>    m <span class="ot">&lt;-</span> <span class="fu">move_t</span>(hR, hC, tR, tC)</span>
-<span id="cb12-73"><a href="#cb12-73"></a>  } <span class="cf">else</span> {</span>
-<span id="cb12-74"><a href="#cb12-74"></a>    <span class="co"># m &lt;- move_h(dt$dir[i-1], dt$mag[i-1], tR, tC)</span></span>
-<span id="cb12-75"><a href="#cb12-75"></a>  }</span>
-<span id="cb12-76"><a href="#cb12-76"></a>  <span class="cf">if</span> (<span class="sc">!</span><span class="fu">is.null</span>(m)) {</span>
-<span id="cb12-77"><a href="#cb12-77"></a>  tR <span class="ot">&lt;&lt;-</span> m<span class="sc">$</span>row; tC <span class="ot">&lt;&lt;-</span> m<span class="sc">$</span>col</span>
-<span id="cb12-78"><a href="#cb12-78"></a>  tM[tR, tC] <span class="ot">&lt;&lt;-</span> i</span>
-<span id="cb12-79"><a href="#cb12-79"></a>  }</span>
-<span id="cb12-80"><a href="#cb12-80"></a>  </span>
-<span id="cb12-81"><a href="#cb12-81"></a>  hR1 <span class="ot">&lt;&lt;-</span> hR; hC1 <span class="ot">&lt;&lt;-</span> hC</span>
-<span id="cb12-82"><a href="#cb12-82"></a>  m <span class="ot">&lt;-</span> <span class="fu">move_h</span>(dt<span class="sc">$</span>dir[i], dt<span class="sc">$</span>mag[i], hR, hC)</span>
-<span id="cb12-83"><a href="#cb12-83"></a>  hR <span class="ot">&lt;&lt;-</span> m<span class="sc">$</span>row; hC <span class="ot">&lt;&lt;-</span> m<span class="sc">$</span>col</span>
-<span id="cb12-84"><a href="#cb12-84"></a>  <span class="fu">return</span>(<span class="dv">1</span>)</span>
-<span id="cb12-85"><a href="#cb12-85"></a>}) <span class="sc">|&gt;</span> <span class="fu">invisible</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-hash="2022-09_cache/html/unnamed-chunk-5_c7653b5fe9c50b954f8c9e4182360636">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a>size <span class="ot">&lt;-</span> <span class="dv">13</span></span>
+<span id="cb13-2"><a href="#cb13-2"></a><span class="co">#   dt |&gt;</span></span>
+<span id="cb13-3"><a href="#cb13-3"></a><span class="co">#   group_by(dir) |&gt;</span></span>
+<span id="cb13-4"><a href="#cb13-4"></a><span class="co">#   summarise(mag = sum(mag)) |&gt;</span></span>
+<span id="cb13-5"><a href="#cb13-5"></a><span class="co">#   pull(mag) |&gt;</span></span>
+<span id="cb13-6"><a href="#cb13-6"></a><span class="co">#   max()</span></span>
+<span id="cb13-7"><a href="#cb13-7"></a><span class="co"># size &lt;- 3144</span></span>
+<span id="cb13-8"><a href="#cb13-8"></a>hM <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="cn">NA</span>, size, size)</span>
+<span id="cb13-9"><a href="#cb13-9"></a>tM <span class="ot">&lt;-</span> hM</span>
+<span id="cb13-10"><a href="#cb13-10"></a></span>
+<span id="cb13-11"><a href="#cb13-11"></a>size <span class="ot">&lt;-</span> <span class="fu">ceiling</span>(size <span class="sc">/</span> <span class="dv">2</span>)</span>
+<span id="cb13-12"><a href="#cb13-12"></a>hR <span class="ot">&lt;-</span> size; hC <span class="ot">&lt;-</span> size; </span>
+<span id="cb13-13"><a href="#cb13-13"></a>tR <span class="ot">&lt;-</span> size; tC <span class="ot">&lt;-</span> size</span>
+<span id="cb13-14"><a href="#cb13-14"></a></span>
+<span id="cb13-15"><a href="#cb13-15"></a>move_h <span class="ot">&lt;-</span> <span class="cf">function</span>(dir, mag, row, col) {</span>
+<span id="cb13-16"><a href="#cb13-16"></a>  <span class="cf">if</span> (dir <span class="sc">==</span> <span class="st">"R"</span>) { <span class="fu">return</span>(<span class="fu">list</span>(<span class="st">"row"</span> <span class="ot">=</span> row, <span class="st">"col"</span> <span class="ot">=</span> col <span class="sc">+</span> mag)) }</span>
+<span id="cb13-17"><a href="#cb13-17"></a>  <span class="cf">if</span> (dir <span class="sc">==</span> <span class="st">"L"</span>) { <span class="fu">return</span>(<span class="fu">list</span>(<span class="st">"row"</span> <span class="ot">=</span> row, <span class="st">"col"</span> <span class="ot">=</span> col <span class="sc">-</span> mag)) }</span>
+<span id="cb13-18"><a href="#cb13-18"></a>  <span class="cf">if</span> (dir <span class="sc">==</span> <span class="st">"U"</span>) { <span class="fu">return</span>(<span class="fu">list</span>(<span class="st">"row"</span> <span class="ot">=</span> row <span class="sc">-</span> mag, <span class="st">"col"</span> <span class="ot">=</span> col)) }</span>
+<span id="cb13-19"><a href="#cb13-19"></a>  <span class="cf">if</span> (dir <span class="sc">==</span> <span class="st">"D"</span>) { <span class="fu">return</span>(<span class="fu">list</span>(<span class="st">"row"</span> <span class="ot">=</span> row <span class="sc">+</span> mag, <span class="st">"col"</span> <span class="ot">=</span> col)) }</span>
+<span id="cb13-20"><a href="#cb13-20"></a>}</span>
+<span id="cb13-21"><a href="#cb13-21"></a></span>
+<span id="cb13-22"><a href="#cb13-22"></a>hM[hR,hC] <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb13-23"><a href="#cb13-23"></a></span>
+<span id="cb13-24"><a href="#cb13-24"></a>hR1 <span class="ot">&lt;-</span> hR; hC1 <span class="ot">&lt;-</span> hC</span>
+<span id="cb13-25"><a href="#cb13-25"></a>m <span class="ot">&lt;-</span> <span class="fu">move_h</span>(dt<span class="sc">$</span>dir[<span class="dv">1</span>], dt<span class="sc">$</span>mag[<span class="dv">1</span>], hR, hC)</span>
+<span id="cb13-26"><a href="#cb13-26"></a>hR <span class="ot">&lt;-</span> m<span class="sc">$</span>row; hC <span class="ot">&lt;-</span> m<span class="sc">$</span>col</span>
+<span id="cb13-27"><a href="#cb13-27"></a></span>
+<span id="cb13-28"><a href="#cb13-28"></a>plane <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"R"</span> <span class="ot">=</span> <span class="st">"c"</span>, <span class="st">"L"</span> <span class="ot">=</span> <span class="st">"c"</span>, <span class="st">"U"</span> <span class="ot">=</span> <span class="st">"r"</span>, <span class="st">"D"</span> <span class="ot">=</span> <span class="st">"r"</span>)</span>
+<span id="cb13-29"><a href="#cb13-29"></a></span>
+<span id="cb13-30"><a href="#cb13-30"></a>move_t <span class="ot">&lt;-</span> <span class="cf">function</span>(hR, hC, row, col) {</span>
+<span id="cb13-31"><a href="#cb13-31"></a>  <span class="fu">return</span>(<span class="fu">list</span>(<span class="st">"row"</span> <span class="ot">=</span> hR, <span class="st">"col"</span> <span class="ot">=</span> hC))</span>
+<span id="cb13-32"><a href="#cb13-32"></a>}</span>
+<span id="cb13-33"><a href="#cb13-33"></a></span>
+<span id="cb13-34"><a href="#cb13-34"></a>is_diag <span class="ot">&lt;-</span> <span class="cf">function</span>(hR, hC, tR, tC) {</span>
+<span id="cb13-35"><a href="#cb13-35"></a>  <span class="cf">if</span> ((hR <span class="sc">==</span> tR <span class="sc">&amp;</span> hC <span class="sc">!=</span> tC) <span class="sc">|</span> (hR <span class="sc">!=</span> tR <span class="sc">&amp;</span> hC <span class="sc">==</span> tC)) {</span>
+<span id="cb13-36"><a href="#cb13-36"></a>    <span class="fu">return</span>(<span class="cn">TRUE</span>)</span>
+<span id="cb13-37"><a href="#cb13-37"></a>  }</span>
+<span id="cb13-38"><a href="#cb13-38"></a>  <span class="co"># if(abs(tR - hR) == abs(tC - hC)) { return(FALSE) }</span></span>
+<span id="cb13-39"><a href="#cb13-39"></a>  <span class="fu">return</span>(<span class="cn">FALSE</span>)</span>
+<span id="cb13-40"><a href="#cb13-40"></a>}</span>
+<span id="cb13-41"><a href="#cb13-41"></a></span>
+<span id="cb13-42"><a href="#cb13-42"></a>tR1 <span class="ot">&lt;-</span> tR; tC1 <span class="ot">&lt;-</span> tC</span>
+<span id="cb13-43"><a href="#cb13-43"></a></span>
+<span id="cb13-44"><a href="#cb13-44"></a><span class="co"># for(i in 2:nrow(dt)) {</span></span>
+<span id="cb13-45"><a href="#cb13-45"></a><span class="fu">sapply</span>(<span class="dv">2</span><span class="sc">:</span><span class="dv">7</span>, \(i) {</span>
+<span id="cb13-46"><a href="#cb13-46"></a>  hM[hR,hC] <span class="ot">&lt;&lt;-</span> i</span>
+<span id="cb13-47"><a href="#cb13-47"></a>  tM[tR,tC] <span class="ot">&lt;&lt;-</span> i</span>
+<span id="cb13-48"><a href="#cb13-48"></a>  </span>
+<span id="cb13-49"><a href="#cb13-49"></a>  <span class="fu">print</span>(i)</span>
+<span id="cb13-50"><a href="#cb13-50"></a></span>
+<span id="cb13-51"><a href="#cb13-51"></a>  m <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
+<span id="cb13-52"><a href="#cb13-52"></a></span>
+<span id="cb13-53"><a href="#cb13-53"></a>  <span class="co"># if ((sqrt(abs(tC - hC)^2 + abs(tR - hR)^2) &gt; 2)) {</span></span>
+<span id="cb13-54"><a href="#cb13-54"></a>  <span class="co">#   m &lt;- move_t(hR1, hC1, tR, tC)</span></span>
+<span id="cb13-55"><a href="#cb13-55"></a>  <span class="co">#   tR &lt;&lt;- m$row; tC &lt;&lt;- m$col</span></span>
+<span id="cb13-56"><a href="#cb13-56"></a>  <span class="co">#   stops &lt;&lt;- rbind(stops, data.frame("row" = tR, "col" = tC))</span></span>
+<span id="cb13-57"><a href="#cb13-57"></a>  <span class="co">#   tM[tR,tC] &lt;&lt;- i</span></span>
+<span id="cb13-58"><a href="#cb13-58"></a>  <span class="co">#   m &lt;- move_t(hR, hC, tR, tC)</span></span>
+<span id="cb13-59"><a href="#cb13-59"></a>  <span class="co"># } else if (plane[dt$dir[i]] == plane[dt$dir[i-1]]) {</span></span>
+<span id="cb13-60"><a href="#cb13-60"></a>  <span class="co">#   m &lt;- move_t(hR, hC, tR, tC)</span></span>
+<span id="cb13-61"><a href="#cb13-61"></a>  <span class="co"># } else if ((sqrt(abs(tC - hC)^2 + abs(tR - hR)^2) &gt; 1)) {</span></span>
+<span id="cb13-62"><a href="#cb13-62"></a>  <span class="co">#   m &lt;- move_t(hR1, hC1, tR, tC)</span></span>
+<span id="cb13-63"><a href="#cb13-63"></a>  <span class="co"># }</span></span>
+<span id="cb13-64"><a href="#cb13-64"></a>  <span class="co"># # if (abs(hR - tR) == abs(hC - tC)) { m &lt;- NULL }</span></span>
+<span id="cb13-65"><a href="#cb13-65"></a>  adj <span class="ot">&lt;-</span> <span class="fu">get_adjacent_values</span>(tR, tC, hM)[<span class="sc">-</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">3</span>,<span class="dv">7</span>,<span class="dv">9</span>)]</span>
+<span id="cb13-66"><a href="#cb13-66"></a>  adj <span class="ot">&lt;-</span> adj[<span class="sc">!</span><span class="fu">is.na</span>(adj)]</span>
+<span id="cb13-67"><a href="#cb13-67"></a>  j <span class="ot">&lt;-</span> i <span class="sc">-</span> <span class="dv">1</span></span>
+<span id="cb13-68"><a href="#cb13-68"></a>  <span class="fu">print</span>(adj)</span>
+<span id="cb13-69"><a href="#cb13-69"></a>  <span class="cf">if</span> (<span class="fu">length</span>(adj) <span class="sc">&gt;</span> <span class="dv">0</span> <span class="sc">&amp;</span> <span class="sc">!</span>(j <span class="sc">%in%</span> adj)) {</span>
+<span id="cb13-70"><a href="#cb13-70"></a>    <span class="fu">print</span>(<span class="st">"here"</span>)</span>
+<span id="cb13-71"><a href="#cb13-71"></a>    <span class="co"># m &lt;- move_t(hR1, hC1, tR, tC)</span></span>
+<span id="cb13-72"><a href="#cb13-72"></a>    m <span class="ot">&lt;-</span> <span class="fu">move_t</span>(hR, hC, tR, tC)</span>
+<span id="cb13-73"><a href="#cb13-73"></a>  } <span class="cf">else</span> {</span>
+<span id="cb13-74"><a href="#cb13-74"></a>    <span class="co"># m &lt;- move_h(dt$dir[i-1], dt$mag[i-1], tR, tC)</span></span>
+<span id="cb13-75"><a href="#cb13-75"></a>  }</span>
+<span id="cb13-76"><a href="#cb13-76"></a>  <span class="cf">if</span> (<span class="sc">!</span><span class="fu">is.null</span>(m)) {</span>
+<span id="cb13-77"><a href="#cb13-77"></a>  tR <span class="ot">&lt;&lt;-</span> m<span class="sc">$</span>row; tC <span class="ot">&lt;&lt;-</span> m<span class="sc">$</span>col</span>
+<span id="cb13-78"><a href="#cb13-78"></a>  tM[tR, tC] <span class="ot">&lt;&lt;-</span> i</span>
+<span id="cb13-79"><a href="#cb13-79"></a>  }</span>
+<span id="cb13-80"><a href="#cb13-80"></a>  </span>
+<span id="cb13-81"><a href="#cb13-81"></a>  hR1 <span class="ot">&lt;&lt;-</span> hR; hC1 <span class="ot">&lt;&lt;-</span> hC</span>
+<span id="cb13-82"><a href="#cb13-82"></a>  m <span class="ot">&lt;-</span> <span class="fu">move_h</span>(dt<span class="sc">$</span>dir[i], dt<span class="sc">$</span>mag[i], hR, hC)</span>
+<span id="cb13-83"><a href="#cb13-83"></a>  hR <span class="ot">&lt;&lt;-</span> m<span class="sc">$</span>row; hC <span class="ot">&lt;&lt;-</span> m<span class="sc">$</span>col</span>
+<span id="cb13-84"><a href="#cb13-84"></a>  <span class="fu">return</span>(<span class="dv">1</span>)</span>
+<span id="cb13-85"><a href="#cb13-85"></a>}) <span class="sc">|&gt;</span> <span class="fu">invisible</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 2
 [1] 1 2
@@ -859,7 +879,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 [1] 3 4 5
 [1] "here"</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a><span class="fu">print</span>(tM[<span class="dv">1</span><span class="sc">:</span><span class="dv">7</span>,<span class="sc">-</span><span class="dv">1</span><span class="sc">:-</span><span class="dv">6</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a><span class="fu">print</span>(tM[<span class="dv">1</span><span class="sc">:</span><span class="dv">7</span>,<span class="sc">-</span><span class="dv">1</span><span class="sc">:-</span><span class="dv">6</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>     [,1] [,2] [,3] [,4] [,5] [,6] [,7]
 [1,]   NA   NA   NA   NA   NA   NA   NA
@@ -870,7 +890,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 [6,]   NA   NA   NA   NA   NA   NA   NA
 [7,]    4   NA   NA    7   NA   NA   NA</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a><span class="fu">print</span>(hM[<span class="dv">1</span><span class="sc">:</span><span class="dv">7</span>,<span class="sc">-</span><span class="dv">1</span><span class="sc">:-</span><span class="dv">6</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a><span class="fu">print</span>(hM[<span class="dv">1</span><span class="sc">:</span><span class="dv">7</span>,<span class="sc">-</span><span class="dv">1</span><span class="sc">:-</span><span class="dv">6</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>     [,1] [,2] [,3] [,4] [,5] [,6] [,7]
 [1,]   NA   NA   NA   NA   NA   NA   NA
@@ -881,34 +901,34 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 [6,]   NA   NA   NA   NA    6   NA   NA
 [7,]    1    2    3    4    5   NA   NA</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1"></a>tM <span class="ot">&lt;-</span> <span class="fu">matrix_to_coords</span>(tM) <span class="sc">|&gt;</span> <span class="fu">data.frame</span>() <span class="sc">|&gt;</span> <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(data))</span>
-<span id="cb18-2"><a href="#cb18-2"></a>hM <span class="ot">&lt;-</span> <span class="fu">matrix_to_coords</span>(hM) <span class="sc">|&gt;</span> <span class="fu">data.frame</span>() <span class="sc">|&gt;</span> <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(data))</span>
-<span id="cb18-3"><a href="#cb18-3"></a></span>
-<span id="cb18-4"><a href="#cb18-4"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
-<span id="cb18-5"><a href="#cb18-5"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x =</span> hM<span class="sc">$</span>col, <span class="at">y =</span> <span class="sc">-</span>hM<span class="sc">$</span>row), <span class="at">size =</span> <span class="dv">20</span>, <span class="at">color =</span> <span class="st">"blue"</span>) <span class="sc">+</span></span>
-<span id="cb18-6"><a href="#cb18-6"></a>  <span class="fu">geom_label</span>(<span class="fu">aes</span>(<span class="at">x =</span> hM<span class="sc">$</span>col, <span class="at">y =</span> <span class="sc">-</span>hM<span class="sc">$</span>row, <span class="at">label =</span> hM<span class="sc">$</span>data), <span class="at">size =</span> <span class="dv">5</span>, <span class="at">fill =</span> <span class="st">"blue"</span>) <span class="sc">+</span></span>
-<span id="cb18-7"><a href="#cb18-7"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x =</span> tM<span class="sc">$</span>col, <span class="at">y =</span> <span class="sc">-</span>tM<span class="sc">$</span>row), <span class="at">size =</span> <span class="dv">10</span>, <span class="at">color =</span> <span class="st">"yellow"</span>) <span class="sc">+</span></span>
-<span id="cb18-8"><a href="#cb18-8"></a>  <span class="fu">geom_label</span>(<span class="fu">aes</span>(<span class="at">x =</span> tM<span class="sc">$</span>col, <span class="at">y =</span> <span class="sc">-</span>tM<span class="sc">$</span>row, <span class="at">label =</span> tM<span class="sc">$</span>data), <span class="at">size =</span> <span class="dv">5</span>, <span class="at">fill =</span> <span class="st">"yellow"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1"></a>tM <span class="ot">&lt;-</span> <span class="fu">matrix_to_coords</span>(tM) <span class="sc">|&gt;</span> <span class="fu">data.frame</span>() <span class="sc">|&gt;</span> <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(data))</span>
+<span id="cb19-2"><a href="#cb19-2"></a>hM <span class="ot">&lt;-</span> <span class="fu">matrix_to_coords</span>(hM) <span class="sc">|&gt;</span> <span class="fu">data.frame</span>() <span class="sc">|&gt;</span> <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(data))</span>
+<span id="cb19-3"><a href="#cb19-3"></a></span>
+<span id="cb19-4"><a href="#cb19-4"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb19-5"><a href="#cb19-5"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x =</span> hM<span class="sc">$</span>col, <span class="at">y =</span> <span class="sc">-</span>hM<span class="sc">$</span>row), <span class="at">size =</span> <span class="dv">20</span>, <span class="at">color =</span> <span class="st">"blue"</span>) <span class="sc">+</span></span>
+<span id="cb19-6"><a href="#cb19-6"></a>  <span class="fu">geom_label</span>(<span class="fu">aes</span>(<span class="at">x =</span> hM<span class="sc">$</span>col, <span class="at">y =</span> <span class="sc">-</span>hM<span class="sc">$</span>row, <span class="at">label =</span> hM<span class="sc">$</span>data), <span class="at">size =</span> <span class="dv">5</span>, <span class="at">fill =</span> <span class="st">"blue"</span>) <span class="sc">+</span></span>
+<span id="cb19-7"><a href="#cb19-7"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x =</span> tM<span class="sc">$</span>col, <span class="at">y =</span> <span class="sc">-</span>tM<span class="sc">$</span>row), <span class="at">size =</span> <span class="dv">10</span>, <span class="at">color =</span> <span class="st">"yellow"</span>) <span class="sc">+</span></span>
+<span id="cb19-8"><a href="#cb19-8"></a>  <span class="fu">geom_label</span>(<span class="fu">aes</span>(<span class="at">x =</span> tM<span class="sc">$</span>col, <span class="at">y =</span> <span class="sc">-</span>tM<span class="sc">$</span>row, <span class="at">label =</span> tM<span class="sc">$</span>data), <span class="at">size =</span> <span class="dv">5</span>, <span class="at">fill =</span> <span class="st">"yellow"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="2022-09_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid" width="672"></p>
+<p><img src="2022-09_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="672"></p>
 </div>
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1"></a><span class="fu">nrow</span>(tM)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1"></a><span class="fu">nrow</span>(tM)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 3</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1"></a><span class="co"># stops |&gt;</span></span>
-<span id="cb21-2"><a href="#cb21-2"></a><span class="co">#   unique() |&gt;</span></span>
-<span id="cb21-3"><a href="#cb21-3"></a><span class="co">#   nrow()</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1"></a><span class="co"># stops |&gt;</span></span>
+<span id="cb22-2"><a href="#cb22-2"></a><span class="co">#   unique() |&gt;</span></span>
+<span id="cb22-3"><a href="#cb22-3"></a><span class="co">#   nrow()</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <blockquote class="blockquote">
 <p>5491 6798 8032</p>
 </blockquote>
-<div class="cell" data-hash="2022-09_cache/html/unnamed-chunk-5_22716b9c4a56e1e9857eea0a4628210a">
+<div class="cell" data-hash="2022-09_cache/html/unnamed-chunk-6_0cc8a6fe1ed36f4a03ae6f71d70c278b">
 
 </div>
 <section id="part-2" class="level2">
 <h2 class="anchored" data-anchor-id="part-2">Part 2</h2>
-<div class="cell" data-hash="2022-09_cache/html/unnamed-chunk-6_0cc8a6fe1ed36f4a03ae6f71d70c278b">
+<div class="cell" data-hash="2022-09_cache/html/unnamed-chunk-7_5e91fa618f4688d3eae713999f389968">
 
 </div>
 

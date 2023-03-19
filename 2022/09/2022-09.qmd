@@ -26,6 +26,23 @@ dt <-
 # Part 1
 
 ```{r}
+dt <- 
+  dt |>
+  mutate(step = rleid(dir)) |> 
+  follow_directions(0, 0, preserve_data = TRUE) |>
+  mutate(row = row * -1)
+
+m <- coords_to_matrix(dt$step, dt$row, dt$col)
+
+rope <- c("row" = 0, "col" = 0)
+
+# for(i in 1:nrow(dt)) {
+#   get_adjacent_values(rope["col"], rope["row"], )
+# }
+```
+
+
+```{r}
 size <- 13
 #   dt |>
 #   group_by(dir) |>

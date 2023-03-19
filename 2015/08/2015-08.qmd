@@ -1,0 +1,50 @@
+---
+title: "2015-08: Matchsticks"
+---
+
+```{r}
+library(mistlecode)
+dt <- readLines("input.txt")
+```
+
+This doesn't look too bad. Dealing with R's `\\` nonsense is going to be a pain.
+
+## Part 1
+
+Getting the regex right was the worst part, just like I thought. `\\` is the worst part about R.
+
+```{r}
+literal_length <- 
+  dt |>
+  nchar() |>
+  sum()
+
+memory_length <-
+  dt |>
+  str_sub(start = 2) |>
+  str_sub(end = -2) |>
+  str_replace_all('\\\\x[0-9a-f]{2}', ' ') |>
+  str_replace_all('\\\\\\"', ' ') |>
+  str_replace_all('\\\\\\\\', ' ') |>
+  nchar() |>
+  sum()
+
+literal_length - memory_length
+```
+
+## Part 2
+
+Turns out R also auto-converts double spaces to tabs so to get two characters, you need three spaces...
+
+```{r}
+total_length <-
+  dt |>
+  str_escape() |>
+  str_replace_all('^"|"$', '   ') |>
+  str_replace_all('\\\\x[0-9a-f]{2}', '    ') |>
+  str_replace_all('\\\\\\"', '   ') |>
+  str_replace_all('\\\\', ' ') |>
+  nchar() |>
+  sum()
+total_length - literal_length
+```

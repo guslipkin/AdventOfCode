@@ -1,0 +1,14 @@
+{
+  "hash": "7c55f982f964c62cb9ab6b5885f9c38d",
+  "result": {
+    "markdown": "---\ntitle: \"2015-09: All in a Single Night\"\n---\n\n::: {.cell hash='2015-09_cache/html/unnamed-chunk-1_088907d989540e4d8dcf3b2729205bbe'}\n\n```{.r .cell-code}\nlibrary(mistlecode)\ndt <- \n  fread(\"input.txt\") |>\n  `colnames<-`(c(\"start\", \"to\", \"end\", \"eq\", \"dist\")) |>\n  select(start, end, dist) |>\n  arrange(start, end)\n```\n:::\n\n\n## Part 1\n\n\n::: {.cell hash='2015-09_cache/html/unnamed-chunk-2_f5c3d9e96ec6b298fd47173ea6f14c04'}\n\n```{.r .cell-code}\nstops <- \n  unique(c(dt$start, dt$end)) |>\n  sort()\nm <-\n  expand.grid(stops, stops) |>\n  data.table() |>\n  `colnames<-`(c(\"start\", \"end\")) |>\n  left_join(dt, by = c(\"start\", \"end\")) |>\n  mutate(dist = ifelse(start == end, 0, dist)) |>\n  dcast(start ~ end, value.var = \"dist\") |>\n  data.frame() |>\n  `rownames<-`(stops) |>\n  select(-start) |>\n  as.matrix()\n\nm <-\n  map2_dbl(m, t(m), \\(x, y) {\n    if(is.na(x) & !is.na(y)) return(y) else return(x)\n  }) |>\n  matrix(length(stops), length(stops)) |>\n  `colnames<-`(stops) |>\n  `rownames<-`(stops) |>\n  dist(method = \"maximum\") |>\n  as.matrix() \n\nstops <-\n  m |>\n  TSP::as.TSP() |>\n  TSP::insert_dummy(label = \"dummy\") |>\n  TSP::solve_TSP(method = \"nn\", control = list(\"rep\" = 1000)) |>\n  TSP::cut_tour('dummy') |>\n  names()\n```\n\n::: {.cell-output .cell-output-stderr}\n```\nWarning: executing %dopar% sequentially: no parallel backend registered\n```\n:::\n\n```{.r .cell-code}\nm |>\n  data.frame() |>\n  rownames_to_column() |>\n  pivot_longer(!c(\"rowname\")) |>\n  `colnames<-`(c(\"start\", \"end\", \"dist\")) |>\n  right_join(\n    data.frame(\n      \"start\" = stops,\n      \"end\" = lead(stops)\n    ) |>\n    filter(!is.na(end)),\n    by = c(\"start\", \"end\")\n  ) |>\n  pull(dist) |>\n  sum()\n```\n\n::: {.cell-output .cell-output-stdout}\n```\n[1] 682\n```\n:::\n:::\n\n\n< 368\n\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}
