@@ -3,6 +3,7 @@ title: "2015-08: Matchsticks"
 ---
 
 ```{r}
+#| message: false
 library(mistlecode)
 dt <- readLines("input.txt")
 ```

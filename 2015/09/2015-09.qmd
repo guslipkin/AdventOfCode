@@ -3,6 +3,7 @@ title: "2015-09: All in a Single Night"
 ---
 
 ```{r}
+#| message: false
 library(mistlecode)
 dt <- 
   fread("input.txt") |>
