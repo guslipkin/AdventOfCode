@@ -1,0 +1,100 @@
+---
+title: "2015-11: Corporate Policy"
+---
+
+```{r}
+#| message: false
+library(mistlecode)
+library(runner)
+# dt <- "hxbaxwxba"
+dt <- "abcdefgh"
+```
+
+## Part 1
+
+```{r}
+# dt <- "ay"
+check_consecutive <- function(x) {
+  x <- paste0(x, collapse = "")
+  abc <- runner(letters, k = 3, f = paste0, collapse = "")[-1:-2]
+  map_lgl(abc, ~ str_detect(x, .x)) |>
+    any()
+}
+
+check_confusing <- function(x) {
+  !any(c("i", "o", "l") %in% x)
+}
+
+check_pairs <- function(x) {
+  x <- 
+    data.frame(
+      "a" = x,
+      "b" = lead(x)
+    ) |>
+    filter(a == b) |>
+    group_by(a, b) |>
+    count() |>
+    nrow()
+  return(x >= 2)
+}
+
+replace <- function(x) {
+  no_iol <- letters[!(letters %in% c("i", "o", "l"))]
+  x <- which(no_iol == x) + 1
+  if (x > length(no_iol)) "a" else no_iol[x]
+}
+
+check <- function(x) {
+  y <- x >= split_dt
+  (
+    check_consecutive(x) & 
+    check_confusing(x) & 
+    check_pairs(x) & 
+    (
+      (y[1] & !y[length(y)] & length(unique(rleid(diff(y)))) == 2) | 
+      all(y)
+    )
+  )
+}
+
+split_dt <-
+  dt |>
+  str_split("") |>
+  unlist()
+
+increment <- function(x, left_index, right_index, pos) {
+  
+  x[pos] <- replace(x[pos])
+  
+  if (!check(x)) {
+    if (left_index == right_index & pos == left_index) {
+      if (x[pos] == split_dt[pos]) {
+        left_index <- left_index - 1
+        x[pos-1] <- replace(x[pos-1])
+      }
+      right_index <- length(x)
+      pos <- right_index
+    } else if (pos == right_index) {
+      right_index <- right_index - 1
+      pos <- length(x)
+    } else if (x[pos] == split_dt[pos]) {
+      pos <- pos - 1
+    }
+  }
+  
+  return(list(x, left_index, right_index, pos))
+}
+
+len <- length(split_dt)
+inc <- list(split_dt, len, len, len)
+
+repeat {
+  x <- inc[[1]]
+  message('\r', x, appendLF = FALSE)
+  if (check(x)) {
+    break
+  }
+  inc <- increment(inc[[1]], inc[[2]], inc[[3]], inc[[4]])
+}
+```
+

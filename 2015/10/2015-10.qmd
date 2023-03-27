@@ -1,0 +1,54 @@
+---
+title: "2015-10: Elves Look, Elves Say"
+---
+
+```{r}
+#| message: false
+library(mistlecode)
+library(progressr)
+dt <- "1113222113"
+```
+
+## Part 1
+
+I got stuck trying to think of the smart way to do this so I'm brute-forcing it with recursion instead.
+
+```{r}
+expand <- function(x, max, i = 1) {
+  if (i == (max + 1)) { return(nchar(x)) }
+  x <-
+    x |>
+    strsplit("") |>
+    unlist() |>
+    data.table() |>
+    `colnames<-`("input") |>
+    mutate(group = rleid(input)) |>
+    group_by(group, input) |>
+    summarise(count = n(), .groups = "drop") |>
+    mutate(string = glue::glue("{count}{input}")) |>
+    pull(string) |>
+    paste0(collapse = "")
+  p()
+  return(expand(x, max, i + 1))
+}
+
+times <- 40
+with_progress({ 
+  p <- progressor(steps = times)
+  expand(dt, times) 
+})
+```
+
+## Part 2
+
+I thought it was going to be 100 iterations. I can't believe I'm glad for just 50... But I think I can brute-force this too. I definitely have enough RAM. I just modified the function a bit to take a max iteration input argument as well.
+
+```{r}
+times <- 50
+with_progress({ 
+  p <- progressor(steps = times)
+  expand(dt, times) 
+})
+```
+
+
