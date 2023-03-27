@@ -6,24 +6,24 @@ title: "2015-11: Corporate Policy"
 #| message: false
 library(mistlecode)
 library(runner)
-# dt <- "hxbaxwxba"
-dt <- "abcdefgh"
+dt <- "hxbxwxba"
 ```
 
 ## Part 1
 
+I struggled for so long with some half-baked quasi-recursive solution that worked on one of the test inputs. I eventually realized that I needed my replacement function to be recursive (I was working with string indexes before) and then it all fell into place. Not my fastest computationally, but it gets the job done.
+
 ```{r}
-# dt <- "ay"
 check_consecutive <- function(x) {
   x <- paste0(x, collapse = "")
-  abc <- runner(letters, k = 3, f = paste0, collapse = "")[-1:-2]
-  map_lgl(abc, ~ str_detect(x, .x)) |>
+  letters |>
+    runner(k = 3, f = paste0, collapse = "") |>
+    tail(-2) |>
+    map_lgl(~ str_detect(x, .x)) |>
     any()
 }
 
-check_confusing <- function(x) {
-  !any(c("i", "o", "l") %in% x)
-}
+check_confusing <- function(x) { !any(c("i", "o", "l") %in% x) }
 
 check_pairs <- function(x) {
   x <- 
@@ -38,63 +38,42 @@ check_pairs <- function(x) {
   return(x >= 2)
 }
 
-replace <- function(x) {
-  no_iol <- letters[!(letters %in% c("i", "o", "l"))]
-  x <- which(no_iol == x) + 1
-  if (x > length(no_iol)) "a" else no_iol[x]
-}
-
 check <- function(x) {
-  y <- x >= split_dt
-  (
+  return(
     check_consecutive(x) & 
-    check_confusing(x) & 
-    check_pairs(x) & 
-    (
-      (y[1] & !y[length(y)] & length(unique(rleid(diff(y)))) == 2) | 
-      all(y)
-    )
+    check_confusing(x) &
+    check_pairs(x)
   )
 }
 
-split_dt <-
-  dt |>
-  str_split("") |>
-  unlist()
+no_iol <- letters[!(letters %in% c("i", "o", "l"))]
 
-increment <- function(x, left_index, right_index, pos) {
-  
-  x[pos] <- replace(x[pos])
-  
-  if (!check(x)) {
-    if (left_index == right_index & pos == left_index) {
-      if (x[pos] == split_dt[pos]) {
-        left_index <- left_index - 1
-        x[pos-1] <- replace(x[pos-1])
-      }
-      right_index <- length(x)
-      pos <- right_index
-    } else if (pos == right_index) {
-      right_index <- right_index - 1
-      pos <- length(x)
-    } else if (x[pos] == split_dt[pos]) {
-      pos <- pos - 1
-    }
+replace <- function(x, pos) {
+  l <- which(no_iol == x[pos]) + 1
+  if (l > length(no_iol)) {
+    x[pos] <- "a"
+    x <- replace(x, pos - 1)
+  } else {
+    x[pos] <- no_iol[l]
   }
-  
-  return(list(x, left_index, right_index, pos))
+  return(x)
 }
 
-len <- length(split_dt)
-inc <- list(split_dt, len, len, len)
+split_dt <- str_split(dt, "")[[1]]
 
 repeat {
-  x <- inc[[1]]
-  message('\r', x, appendLF = FALSE)
-  if (check(x)) {
-    break
-  }
-  inc <- increment(inc[[1]], inc[[2]], inc[[3]], inc[[4]])
+  message('\r', split_dt, appendLF = FALSE)
+  if (check(split_dt)) { break }
+  split_dt <- replace(split_dt, length(split_dt))
 }
 ```
 
+## Part 2
+
+Hmmm. I suppose my solution from part 1 wouldn't work right away. That would be too easy. I could just say that's no longer a valid solution then it'll keep going. Kinda dumb but it should work. 
+
+It's me. I'm back. It was taking too long. I think I can speed this up just by thinking about it. If `xx` changes to `xy`, that whole branch becomes invalid no matter what comes after because it won't have a sequence available. Same with `yy` or `zz`. So that means that `b` has to increase to `c`. Here we have some more options. In fact, we have a whole alphabet's worth. We want to minimize the value so let's go with `a`. Same for the next character. Now we only have three spots left and we need to complete our sequence of three letters and get another double. If we do `bbc`, we don't have the sequence so we have to do `bcc` to complete the sequence and get the last double.
+
+```{r}
+message("hxcaabcc")
+```
