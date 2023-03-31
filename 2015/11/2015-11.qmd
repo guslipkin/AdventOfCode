@@ -62,10 +62,10 @@ replace <- function(x, pos) {
 split_dt <- str_split(dt, "")[[1]]
 
 repeat {
-  message('\r', split_dt, appendLF = FALSE)
   if (check(split_dt)) { break }
   split_dt <- replace(split_dt, length(split_dt))
 }
+split_dt
 ```
 
 ## Part 2
@@ -75,5 +75,5 @@ Hmmm. I suppose my solution from part 1 wouldn't work right away. That would be 
 It's me. I'm back. It was taking too long. I think I can speed this up just by thinking about it. If `xx` changes to `xy`, that whole branch becomes invalid no matter what comes after because it won't have a sequence available. Same with `yy` or `zz`. So that means that `b` has to increase to `c`. Here we have some more options. In fact, we have a whole alphabet's worth. We want to minimize the value so let's go with `a`. Same for the next character. Now we only have three spots left and we need to complete our sequence of three letters and get another double. If we do `bbc`, we don't have the sequence so we have to do `bcc` to complete the sequence and get the last double.
 
 ```{r}
-message("hxcaabcc")
+"hxcaabcc"
 ```
