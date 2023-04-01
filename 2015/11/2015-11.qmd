@@ -65,7 +65,7 @@ repeat {
   if (check(split_dt)) { break }
   split_dt <- replace(split_dt, length(split_dt))
 }
-split_dt
+paste0(split_dt, collapse = "")
 ```
 
 ## Part 2

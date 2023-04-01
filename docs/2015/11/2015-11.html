@@ -649,7 +649,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <section id="part-1" class="level2">
 <h2 class="anchored" data-anchor-id="part-1">Part 1</h2>
 <p>I struggled for so long with some half-baked quasi-recursive solution that worked on one of the test inputs. I eventually realized that I needed my replacement function to be recursive (I was working with string indexes before) and then it all fell into place. Not my fastest computationally, but it gets the job done.</p>
-<div class="cell" data-hash="2015-11_cache/html/unnamed-chunk-2_bc113819665f5dfb0588c59954b41869">
+<div class="cell" data-hash="2015-11_cache/html/unnamed-chunk-2_bbe0c32dac3049f4ed2e111cd1adfee8">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>check_consecutive <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
 <span id="cb4-2"><a href="#cb4-2"></a>  x <span class="ot">&lt;-</span> <span class="fu">paste0</span>(x, <span class="at">collapse =</span> <span class="st">""</span>)</span>
 <span id="cb4-3"><a href="#cb4-3"></a>  letters <span class="sc">|&gt;</span></span>
@@ -701,9 +701,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb4-49"><a href="#cb4-49"></a>  <span class="cf">if</span> (<span class="fu">check</span>(split_dt)) { <span class="cf">break</span> }</span>
 <span id="cb4-50"><a href="#cb4-50"></a>  split_dt <span class="ot">&lt;-</span> <span class="fu">replace</span>(split_dt, <span class="fu">length</span>(split_dt))</span>
 <span id="cb4-51"><a href="#cb4-51"></a>}</span>
-<span id="cb4-52"><a href="#cb4-52"></a>split_dt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb4-52"><a href="#cb4-52"></a><span class="fu">paste0</span>(split_dt, <span class="at">collapse =</span> <span class="st">""</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] "h" "x" "b" "x" "x" "y" "z" "z"</code></pre>
+<pre><code>[1] "hxbxxyzz"</code></pre>
 </div>
 </div>
 </section>
