@@ -23,21 +23,19 @@ dt |>
 
 ## Part 2
 
-```{r}
-replace <- function(x) {
-  y <- str_remove_all(x, "(\\{[a-z:,0-9\\-\\[\\]\\{\\}]+:red[a-z:,0-9\\-\\[\\]\\{\\}]+\\})")
-  if (x == y) { return(y) } else { return(replace(y)) }
-}
+What a nightmare! I got the answer wrong 16 times and tried so many things. String replacement, string reduction, listing, unlisting, whatever I could think of. I eventually remembered rrapply and had a wacky solution that didn't work at all. I took a break for a few days and really read the documentation on `how = "recurse"`. Then it was just a matter of realizing that `.xname` in the documentation is not the same as `names(x)` and I was good to go!
 
+```{r}
 dt |>
-# '{e:green,a:77,d:{c:violet,a:yellow,b:violet},c:yellow,h:red,b:144,g:{a:[yellow,-48,72,87,,,orange,171,162]},f:orange,i:orange},49,[{c:{e:violet,a:-44,d:115,c:117,h:194,b:{e:-17,a:172,d:green,c:197,h:53,b:106,g:violet,f:-10},g:red,f:orange}' |>
-  str_remove_all('"') |>
-  replace() |>
-  str_extract_all("(-?[0-9]+)") |>
+  parse_json() |>
+  list() |>
+  rrapply::rrapply(
+    \(o) { any(o == "red") & any(names(o) %in% letters) },
+    \(x) { return(list("a" = "red")) }, 
+    how = "recurse",
+    classes = "list") |>
   unlist() |>
   as.numeric() |>
+  suppressWarnings() |>
   sum(na.rm = TRUE)
 ```
-
-> 186
-< 164496

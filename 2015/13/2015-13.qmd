@@ -1,0 +1,76 @@
+---
+title: "2015-13: Knights of the Dinner Table"
+---
+
+```{r}
+#| message: false
+library(mistlecode)
+dt <- 
+  fread("input.txt") |>
+  select(V1, V3, V4, V11) |>
+  `colnames<-`(c("origin", "direction", "units", "subject")) |>
+  mutate(
+    units = ifelse(direction == "lose", units * -1, units),
+    subject = str_remove(subject, "\\.")
+  ) |>
+  select(-direction)
+```
+
+## Part 1
+
+Honestly, not a clue.
+
+```{r}
+m <- 
+  dt |>
+  dcast(origin ~ subject, value.var = "units", fill = 0) |>
+  column_to_rownames("origin") |>
+  as.matrix()
+
+m <- m + t(m)
+
+m[!upper.tri(m)] <- 0
+
+m
+map2_int(
+  apply(m, 1, max),
+  apply(m, 2, max),
+  \(x, y) {
+    max(x, y)
+  }
+) |>
+  sum()
+```
+
+
+```{r}
+people <- 
+  dt$origin |>
+  unique() %>%
+  `names<-`(c(.))
+
+dt |>
+  rowwise() |>
+    mutate(pair = paste0(sort(c(people[origin], people[subject])), collapse = '-')) |>
+  ungroup() |>
+  summarise(units = sum(units), .by = pair) |>
+  arrange(desc(units)) |>
+  separate(pair, into = c("person", "subject")) |>
+  mutate(pair = row_number()) |>
+  pivot_longer(cols = c(person, subject), names_to = "position", values_to = "name") |>
+  mutate(
+    count = row_number(), 
+    count = ifelse(count <= 3, 3, count),
+    .by = name
+  ) |>
+  pivot_wider(id_cols = c(units, pair), names_from = position, values_from = count) |>
+  filter(person == 3 & subject == 3) |>
+  arrange(desc(units)) |>
+  head(length(people)) |>
+  pull(units) |>
+  sum()
+```
+
+> 445
+< 683
+! 645

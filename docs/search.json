@@ -943,5 +943,19 @@
     "title": "2015-11: Corporate Policy",
     "section": "Part 2",
     "text": "Part 2\nHmmm. I suppose my solution from part 1 wouldn’t work right away. That would be too easy. I could just say that’s no longer a valid solution then it’ll keep going. Kinda dumb but it should work.\nIt’s me. I’m back. It was taking too long. I think I can speed this up just by thinking about it. If xx changes to xy, that whole branch becomes invalid no matter what comes after because it won’t have a sequence available. Same with yy or zz. So that means that b has to increase to c. Here we have some more options. In fact, we have a whole alphabet’s worth. We want to minimize the value so let’s go with a. Same for the next character. Now we only have three spots left and we need to complete our sequence of three letters and get another double. If we do bbc, we don’t have the sequence so we have to do bcc to complete the sequence and get the last double.\n\n\"hxcaabcc\"\n\n[1] \"hxcaabcc\""
+  },
+  {
+    "objectID": "2015/12/2015-12.html#part-1",
+    "href": "2015/12/2015-12.html#part-1",
+    "title": "2015-12: JSAbacusFramework.io",
+    "section": "Part 1",
+    "text": "Part 1\nSurprisingly easy. Just had a small regex typo with ? instead of +.\n\ndt |>\n  str_extract_all(\"(-?[0-9]+)\") |>\n  unlist() |>\n  as.numeric() |>\n  sum(na.rm = TRUE)\n\n[1] 191164"
+  },
+  {
+    "objectID": "2015/12/2015-12.html#part-2",
+    "href": "2015/12/2015-12.html#part-2",
+    "title": "2015-12: JSAbacusFramework.io",
+    "section": "Part 2",
+    "text": "Part 2\nWhat a nightmare! I got the answer wrong 16 times and tried so many things. String replacement, string reduction, listing, unlisting, whatever I could think of. I eventually remembered rrapply and had a wacky solution that didn’t work at all. I took a break for a few days and really read the documentation on how = \"recurse\". Then it was just a matter of realizing that .xname in the documentation is not the same as names(x) and I was good to go!\n\ndt |>\n  parse_json() |>\n  list() |>\n  rrapply::rrapply(\n    \\(o) { any(o == \"red\") & any(names(o) %in% letters) },\n    \\(x) { return(list(\"a\" = \"red\")) }, \n    how = \"recurse\",\n    classes = \"list\") |>\n  unlist() |>\n  as.numeric() |>\n  suppressWarnings() |>\n  sum(na.rm = TRUE)\n\n[1] 87842"
   }
 ]
