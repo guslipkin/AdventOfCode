@@ -1,0 +1,47 @@
+---
+title: "2015-17: No Such Thing as Too Much"
+---
+
+```{r}
+#| message: false
+library(mistlecode)
+
+dt <- 
+  readLines("input.txt") |>
+  as.integer() |>
+  sort(decreasing = TRUE)
+
+buckets <-
+  dt |>
+  seq_along() |>
+  map_int(\(x) {
+    x <-
+      dt |>
+      combn(x) |>
+      data.frame() |>
+      map_int(sum)
+    x <- sum(x == 150)
+    if (x == 0) NA else x
+  })
+```
+
+`buckets` was made for part 1, but is used in part 2 as well.
+
+## Part 1
+
+This was surprisingly easy. I thought for sure I was going to have to run stuff in parallel.
+
+```{r}
+sum(buckets, na.rm = TRUE)
+```
+
+## Part 2
+
+Also weirdly easy. Especially since I set myself up for that with part 1.
+
+```{r}
+buckets |>
+  na.omit() |>
+  head(1)
+```
+

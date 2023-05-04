@@ -1,0 +1,45 @@
+---
+title: "2015-15: Science for Hungry People"
+---
+
+```{r}
+#| message: false
+library(mistlecode)
+library(rlang)
+library(ROI)
+library(ROI.plugin.quadprog)
+library(ompr)
+dt <-
+  fread("input2.txt", sep = " ") |>
+  select(seq(1, 11, by = 2)) |>
+  `colnames<-`(
+    c("candy", "capacity", "durability", "flavor", "texture", "calories")
+  ) |>
+  mutate(
+    across(everything(), ~ str_remove_all(.x, "\\W")),
+    across(-candy, as.integer)
+  )
+```
+
+## Part 1
+
+```{r}
+add_candy_vars <- function(model, candy_var) {
+  if (length(candy_var) == 0) { return(model) }
+  model |>
+    add_variable(!!(candy_var[1]), type = "integer") |>
+    add_candy_vars(candy_var[-1])
+}
+candy_string <- 
+  dt$candy |>
+  paste(collapse = " + ") |>
+  as.expression()
+MIPModel() |>
+  add_candy_vars(c(dt$candy, colnames(dt)[-1])) |>
+  set_objective(sum_over(), "max") |>
+  add_constraint(Butterscotch + Cinnamon == 100) |>
+  add_constraint(Butterscotch >= 0) |>
+  add_constraint(Cinnamon >= 0) |>
+  solve_model(with_ROI(solver = "quadprog"))
+```
+

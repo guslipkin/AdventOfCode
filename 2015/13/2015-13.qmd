@@ -27,19 +27,34 @@ m <-
   column_to_rownames("origin") |>
   as.matrix()
 
-m <- m + t(m)
-
-m[!upper.tri(m)] <- 0
-
-m
-map2_int(
-  apply(m, 1, max),
-  apply(m, 2, max),
-  \(x, y) {
-    max(x, y)
-  }
-) |>
-  sum()
+future::plan(future::multisession, workers = future::availableCores())
+progressr::with_progress({
+  setups <-
+    m |>
+    colnames() |>
+    combinat::permn()
+  p <- progressr::progressor(steps = length(setups))
+  
+  setups |>
+    furrr::future_map_int(\(n) {
+      p()
+      m <- m[,n]
+      m <- m + t(m)
+      m[!upper.tri(m)] <- 0
+      map(seq_len(ncol(m)) - 1, \(i) {
+        i <- m[row(m) == col(m) - i]
+        data.frame("s" = sum(i))
+      }) |>
+        bind_rows() |>
+        mutate(group = rep(1:(max(row_number()) / 2), 2)) |>
+        summarise(s = sum(s), .by = group) |>
+        pull(s) |>
+        max()
+    }) |>
+    unique() |>
+    sort()
+})
+future::plan(future::sequential)
 ```
 
 
@@ -74,3 +89,6 @@ dt |>
 > 445
 < 683
 ! 645
+! 585
+! 621
+! 676

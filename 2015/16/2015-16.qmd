@@ -1,0 +1,67 @@
+---
+title: "2015-16: Aunt Sue"
+---
+
+```{r}
+#| message: false
+library(mistlecode)
+
+ticker <- 
+  fread("ticker.txt", sep = ":") |>
+  `colnames<-`(c("item", "qty")) |>
+  deframe()
+sue <-
+  readLines("input.txt") |>
+  map(\(x) {
+    x |>
+      str_split_1("[:, ]+") |>
+      t() |>
+      data.frame()
+  }) |>
+  bind_rows() |>
+  select(-X1) |>
+  `colnames<-`(
+    c("sue", "item_1", "qty_1", "item_2", "qty_2", "item_3", "qty_3")
+  ) |>
+  mutate(across(c(sue, starts_with("qty_")), as.integer)) |>
+  pivot_longer(
+    cols = c(starts_with("item_"), starts_with("qty_")), 
+    names_pattern = "(item|qty)_(.+)",
+    names_to = c(".value", "sue_item")
+  ) |>
+  mutate(ticker_qty = ticker[item])
+```
+
+Hmmm. Just need to get the data in longer format then I can group by sue and filter as needed.
+
+## Part 1
+
+Only tricky bit was remembering how to pivot longer with multiple columns.
+
+```{r}
+sue |>
+  filter(qty == ticker_qty) |>
+  filter(n() == 3, .by = sue) |>
+  pull(sue) |>
+  unique()
+```
+
+## Part 2
+
+Not too bad. Just a gross filter and we're good to go. Oh and don't forget to put your `!` in the right spot :).
+
+```{r}
+sue |>
+  filter(
+    (item %in% c("cats", "trees") & qty > ticker_qty) |
+      (item %in% c("pomeranians", "goldfish") & qty < ticker_qty) |
+      (
+        (!item %in% c("cats", "trees", "pomeranians", "goldfish") & 
+            qty == ticker_qty)
+      )
+  ) |>
+  filter(n() == 3, .by = sue) |>
+  pull(sue) |>
+  unique()
+```
+

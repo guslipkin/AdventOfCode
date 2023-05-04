@@ -1,0 +1,92 @@
+---
+title: "2015-14: Reindeer Olympics"
+---
+
+```{r}
+#| message: false
+library(mistlecode)
+dt <- 
+  fread("input2.txt", sep = " ") |>
+  select(V1, V4, V7, V14) |>
+  `colnames<-`(c("reindeer", "speed", "flight_time", "rest_time"))
+sec <- 2503
+```
+
+This bit was added after Part 1 was completed because it's reused in Part 2.
+
+```{r}
+do_part <- function(dt) {
+  dt |>
+  uncount(speed, .remove = FALSE, .id = "distance") |>
+  filter(distance <= flight_time) |>
+  mutate(total_time = flight_time + rest_time) |>
+  uncount(total_time, .id = "total_time") |>
+  filter(distance == 1) |>
+  mutate(distance = ifelse(total_time <= flight_time, speed, 0)) |>
+  pivot_wider(
+    id_cols = total_time,
+    names_from = reindeer,
+    values_from = distance
+  ) |>
+  bind_rows(data.frame(
+    "total_time" = rep(NA_integer_, sec - max(dt$flight_time + dt$rest_time))
+  )) |>
+  mutate(
+    total_time = row_number(),
+    across(
+      -total_time, 
+      \(x) {
+        len_x <- length(x)
+        x <- na.omit(x)
+        rep(x, ceiling(sec / length(x)))[1:sec]
+      }
+    )
+  )
+}
+```
+
+
+## Part 1
+
+This was super annoying. My first version of my `.qmd` file was corrupted
+somehow so I could only run anything once after restarting RStudio. I thought it
+was because I had just updated to R 4.3 but deleting the old file and pasting
+everything into a new one seems to have fixed it.
+
+Anyways, easy enough. Just a little annoying to get the vector recycling to line
+up how I wanted it to.
+
+```{r}
+dt |>
+  do_part() |>
+  select(-total_time) |>
+  map_int(sum, na.rm = TRUE) |>
+  max()
+```
+
+## Part 2
+
+This looks simple enough to change Part 1.
+
+I ended up not changing the parts I thought I would
+
+```{r}
+dt |>
+  do_part() |>
+  pivot_longer(
+    cols = -total_time,
+    names_to = "reindeer",
+    values_to = "distance"
+  ) |>
+  arrange(reindeer, total_time) |>
+  mutate(total_distance = cumsum(distance), .by = reindeer) |>
+  mutate(
+    points = ifelse(total_distance == max(total_distance), 1, 0), 
+    .by = total_time
+  ) |>
+  mutate(total_points = cumsum(points), .by = reindeer) |>
+  filter(total_time == sec) |>
+  pull(total_points) |>
+  max()
+```
+

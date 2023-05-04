@@ -9,7 +9,7 @@ This...doesn't actually look too bad. Part 2 will probably be a nightmare.
 #| message: false
 library(mistlecode)
 #remotes::install_github("rconsortium/OOP-WG")
-library(R7)
+library(S7)
 options(scipen = 999)
 ```
 
@@ -21,13 +21,19 @@ dt <-
 
 ## Part 1
 
-Let's take a chance to use [R7](https://rconsortium.github.io/OOP-WG/) for the
-first time! I can build on the bits I learned with S3 in
-[2022-11](/2022/11/2022-11.html). The idea to use a vector of monkey names
-(`index`) made it really easy to make sure I was pulling info from the right
-monkeys, rather than needing to iterate over the entire list. There's probably a
-better approach overall with a more recursive solution, but this seems to work
-fine for Part 1, although I'm worried about Part 2.
+Let's take a chance to use [S7](https://rconsortium.github.io/OOP-WG/)
+for the first time! I can build on the bits I learned with S3 in
+[2022-11](/2022/11/2022-11.html). The idea to use a vector of monkey
+names (`index`) made it really easy to make sure I was pulling info from
+the right monkeys, rather than needing to iterate over the entire list.
+There's probably a better approach overall with a more recursive
+solution, but this seems to work fine for Part 1, although I'm worried
+about Part 2.
+
+Note (2023-04-23): I just updated to R 4.3 and the latest version of R7
+which is now S7 and I was unable to run the previous version which used
+recursion due to a C-stack error. I swapped over to a while loop based
+version and that seems to be working fine.
 
 ```{r}
 monkey <- new_class(
@@ -70,21 +76,23 @@ monkey_math <- function(monkeys, op) {
   } else { return(NA_integer_) }
 }
 
-process_monkeys <- function(monkeys, n = 1) {
-  if (n > length(monkeys)) { return(monkeys) }
-  if (is.na(monkeys[[n]]@val)) {
-    val <- str_split_1(monkeys[[n]]@op, " ")
-    monkeys[[n]]@val <- monkey_math(monkeys, val)
-  }
-  if (monkeys[[n]]@name == "root" & !is.na(monkeys[[n]]@val)) { 
-    return(monkeys[[n]]@val) 
-  }
-  process_monkeys(monkeys, n + 1)
-}
-
 m <- monkeys
-while(is.list(m)) { m <- process_monkeys(m) }
-m
+breakFlag <- FALSE
+while(!breakFlag) {
+  n <- 1
+  while (n <= length(monkeys)) {
+    if (is.na(monkeys[[n]]@val)) {
+      val <- str_split_1(monkeys[[n]]@op, " ")
+      monkeys[[n]]@val <- monkey_math(monkeys, val)
+    }
+    if (monkeys[[n]]@name == "root" & !is.na(monkeys[[n]]@val)) {
+      breakFlag <- TRUE
+      break
+    }
+    n <- n + 1
+  }
+}
+monkeys[[n]]@val
 ```
 
 ## Part 2

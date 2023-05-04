@@ -1,0 +1,14 @@
+{
+  "hash": "68aab148febff3e30f1cc435b8d01ab7",
+  "result": {
+    "markdown": "---\ntitle: \"2015-17: No Such Thing as Too Much\"\n---\n\n::: {.cell hash='2015-17_cache/html/unnamed-chunk-1_af739629baddb2b8bda72e677a4ca1a7'}\n\n```{.r .cell-code}\nlibrary(mistlecode)\n```\n\n::: {.cell-output .cell-output-stdout}\n```\nTo install `mistlecode` yourself, run `devtools::install_github('guslipkin/mistlecode')`.\n\n Also loading:  cipheR data.table dplyr purrr slider stringr tidyverse glue\n```\n:::\n\n```{.r .cell-code}\ndt <- \n  readLines(\"input.txt\") |>\n  as.integer() |>\n  sort(decreasing = TRUE)\n\nbuckets <-\n  dt |>\n  seq_along() |>\n  map_int(\\(x) {\n    x <-\n      dt |>\n      combn(x) |>\n      data.frame() |>\n      map_int(sum)\n    x <- sum(x == 150)\n    if (x == 0) NA else x\n  })\n```\n:::\n\n\n`buckets` was made for part 1, but is used in part 2 as well.\n\n## Part 1\n\nThis was surprisingly easy. I thought for sure I was going to have to run stuff in parallel.\n\n\n::: {.cell hash='2015-17_cache/html/unnamed-chunk-2_c790ebf1c0c52e493212b315d7ba3c01'}\n\n```{.r .cell-code}\nsum(buckets, na.rm = TRUE)\n```\n\n::: {.cell-output .cell-output-stdout}\n```\n[1] 4372\n```\n:::\n:::\n\n\n## Part 2\n\nAlso weirdly easy. Especially since I set myself up for that with part 1.\n\n\n::: {.cell hash='2015-17_cache/html/unnamed-chunk-3_962ddbc51d646e9293038e46e116ef29'}\n\n```{.r .cell-code}\nbuckets |>\n  na.omit() |>\n  head(1)\n```\n\n::: {.cell-output .cell-output-stdout}\n```\n[1] 4\n```\n:::\n:::\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}
