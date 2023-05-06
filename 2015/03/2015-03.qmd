@@ -1,5 +1,5 @@
 ---
-title: "2015-03: Perfectly Spherical Houses in a Vacuum"
+title: "03: Perfectly Spherical Houses in a Vacuum"
 format: html
 ---
 

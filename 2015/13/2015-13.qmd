@@ -1,5 +1,5 @@
 ---
-title: "2015-13: Knights of the Dinner Table"
+title: "13: Knights of the Dinner Table"
 ---
 
 ```{r}
@@ -16,79 +16,72 @@ dt <-
   select(-direction)
 ```
 
+```{r}
+solve <- function(m) {
+  m <- m + t(m)
+  m2 <- 1 / scales::rescale(m)
+  
+  stops <-
+    m2 |>
+    TSP::as.TSP() |>
+    TSP::insert_dummy(label = "dummy") |>
+    TSP::solve_TSP(method = "nn", control = list(rep = 1000)) |>
+    TSP::cut_tour("dummy") |>
+    names() |>
+    data.frame() |>
+    `colnames<-`(c("start")) |>
+    mutate(end = lead(start),
+           end = ifelse(is.na(end), start[1], end))
+  
+  m |>
+    data.frame() |>
+    rownames_to_column() |>
+    pivot_longer(!c("rowname")) |>
+    filter(!is.na(value)) |>
+    `colnames<-`(c("start", "end", "dist")) |>
+    right_join(stops, by = c("start", "end")) |>
+    pull(dist) |>
+    sum()
+}
+```
+
+As usual, this was moved into a function after part 1 because I reused it in part 2.
+
+
 ## Part 1
 
 Honestly, not a clue.
+
+Okay. I'm back. It's been a few weeks but I had a stroke of inspiration last night. I had started out trying a bunch of longer data and filtering, brute forcing, and anything else I could think of. BUT. Last night I realized this is just a circular traveling salesman problem. After a bit of fiddling with my solution from [2015-09](/2015/09/2015-09.html) I was able to get it. Some key things were rescaling from 0-1 so that I don't have both positive and negative numbers, then using the $\frac{1}{x}$ trick to get longest distances instead of shortest.
 
 ```{r}
 m <- 
   dt |>
   dcast(origin ~ subject, value.var = "units", fill = 0) |>
   column_to_rownames("origin") |>
-  as.matrix()
+  as.matrix() |>
+  `diag<-`(NA_integer_)
 
-future::plan(future::multisession, workers = future::availableCores())
-progressr::with_progress({
-  setups <-
-    m |>
-    colnames() |>
-    combinat::permn()
-  p <- progressr::progressor(steps = length(setups))
-  
-  setups |>
-    furrr::future_map_int(\(n) {
-      p()
-      m <- m[,n]
-      m <- m + t(m)
-      m[!upper.tri(m)] <- 0
-      map(seq_len(ncol(m)) - 1, \(i) {
-        i <- m[row(m) == col(m) - i]
-        data.frame("s" = sum(i))
-      }) |>
-        bind_rows() |>
-        mutate(group = rep(1:(max(row_number()) / 2), 2)) |>
-        summarise(s = sum(s), .by = group) |>
-        pull(s) |>
-        max()
-    }) |>
-    unique() |>
-    sort()
-})
-future::plan(future::sequential)
+solve(m)
 ```
 
+## Part 2
+
+I always knew my relationships had a happiness score of zero, but I didn't need to be reminded of it :(.
 
 ```{r}
-people <- 
-  dt$origin |>
-  unique() %>%
-  `names<-`(c(.))
+m <-
+  dt |>
+  bind_rows(expand.grid(
+    "origin" = "Gus",
+    "units" = 0,
+    "subject" = c("Gus", unique(dt$origin))
+  )) |>
+  dcast(origin ~ subject, value.var = "units", fill = 0) |>
+  column_to_rownames("origin") |>
+  as.matrix() |>
+  `diag<-`(NA_integer_)
 
-dt |>
-  rowwise() |>
-    mutate(pair = paste0(sort(c(people[origin], people[subject])), collapse = '-')) |>
-  ungroup() |>
-  summarise(units = sum(units), .by = pair) |>
-  arrange(desc(units)) |>
-  separate(pair, into = c("person", "subject")) |>
-  mutate(pair = row_number()) |>
-  pivot_longer(cols = c(person, subject), names_to = "position", values_to = "name") |>
-  mutate(
-    count = row_number(), 
-    count = ifelse(count <= 3, 3, count),
-    .by = name
-  ) |>
-  pivot_wider(id_cols = c(units, pair), names_from = position, values_from = count) |>
-  filter(person == 3 & subject == 3) |>
-  arrange(desc(units)) |>
-  head(length(people)) |>
-  pull(units) |>
-  sum()
+solve(m)
 ```
 
-> 445
-< 683
-! 645
-! 585
-! 621
-! 676

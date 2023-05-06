@@ -1,0 +1,8 @@
+---
+title: "2015-19: Medicine for Rudolph"
+---
+
+```{r}
+#| message: false
+library(mistlecode)
+```

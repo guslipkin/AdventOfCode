@@ -1,5 +1,5 @@
 ---
-title: "2015-17: No Such Thing as Too Much"
+title: "17: No Such Thing as Too Much"
 ---
 
 ```{r}

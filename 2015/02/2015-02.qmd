@@ -1,5 +1,5 @@
 ---
-title: "2015-02: I Was Told There Would Be No Math"
+title: "02: I Was Told There Would Be No Math"
 format: html
 ---
 

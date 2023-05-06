@@ -1,5 +1,5 @@
 ---
-title: "2015-12: JSAbacusFramework.io"
+title: "12: JSAbacusFramework.io"
 ---
 
 ```{r}

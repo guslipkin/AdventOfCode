@@ -1,5 +1,5 @@
 ---
-title: "2015-01: Not Quite Lisp"
+title: "01: Not Quite Lisp"
 format: html
 ---
 

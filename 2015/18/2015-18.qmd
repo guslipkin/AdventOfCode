@@ -1,0 +1,127 @@
+---
+title: "2015-18: Like a GIF For Your Yard"
+---
+
+```{r}
+#| message: false
+library(mistlecode)
+dt <-
+  readLines("input.txt") |>
+  str_split("") |>
+  map(\(x) {
+    x |>
+      matrix(nrow = 1) |>
+      data.frame() 
+  }) |>
+  bind_rows() |>
+  as.matrix()
+```
+
+## Part 1
+
+I've got a plan this time...
+
+Ugh. I need to find a way to make this faster.
+
+```{r}
+process_light <- function(y, x, m) {
+  state <- m[y,x]
+  m[y,x] <- ""
+  val <- get_adjacent_values(y, x, m)
+  if (state == "#") {
+    if (sum(val == "#") %in% 2:3) {
+      return("#")
+    } else {
+      return(".")
+    }
+  } else if (state == ".") {
+    if (sum(val == "#") == 3) {
+      return("#")
+    } else {
+      return(".")
+    }
+  }
+}
+
+do_flash <- function(dt, flash, i) {
+  while (i > 0) {
+    p()
+    dt <- 
+      expand.grid(
+        "y" = seq_len(nrow(dt)),
+        "x" = seq_len(ncol(dt))
+      ) |>
+      furrr::future_pmap_chr(\(y, x) {
+        rlang::exec(quote(flash), y, x, dt)
+      }) |>
+      matrix(nrow = nrow(dt), byrow = FALSE)
+    i <- i - 1
+  }
+  return(dt)
+}
+
+future::plan(future::multicore, workers = future::availableCores())
+progressr::with_progress({
+  i <- 100
+  p <- progressr::progressor(steps = i)
+  do_flash(dt, process_light, i) |>
+    map_int( ~ .x == "#") |>
+    sum()
+})
+future::plan(future::sequential)
+```
+
+## Part 2
+
+At least it's not like 1000 iterations. Just some small changes and a long wait and we're good to go.
+
+```{r}
+process_light <- function(y, x, m) {
+  m[1,1] <- m[nrow(m),1] <- m[1,ncol(m)] <- m[nrow(m), ncol(m)] <- "#"
+  state <- m[y,x]
+  m[y,x] <- ""
+  val <- get_adjacent_values(y, x, m)
+  if (state == "#") {
+    if (sum(val == "#") %in% 2:3) {
+      return("#")
+    } else {
+      return(".")
+    }
+  } else if (state == ".") {
+    if (sum(val == "#") == 3) {
+      return("#")
+    } else {
+      return(".")
+    }
+  }
+}
+
+do_flash <- function(dt, flash, i) {
+  while (i > 0) {
+    p()
+    dt <- 
+      expand.grid(
+        "y" = seq_len(nrow(dt)),
+        "x" = seq_len(ncol(dt))
+      ) |>
+      furrr::future_pmap_chr(\(y, x) {
+        rlang::exec(quote(flash), y, x, dt)
+      }) |>
+      matrix(nrow = nrow(dt), byrow = FALSE)
+    i <- i - 1
+  }
+  dt[1,1] <- dt[nrow(dt),1] <- dt[1,ncol(dt)] <- dt[nrow(dt), ncol(dt)] <- "#"
+  return(dt)
+}
+
+future::plan(future::multicore, workers = future::availableCores())
+progressr::with_progress({
+  i <- 100
+  p <- progressr::progressor(steps = i)
+  do_flash(dt, process_light, i) |>
+    map_int( ~ .x == "#") |>
+    sum()
+})
+future::plan(future::sequential)
+```
+

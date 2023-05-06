@@ -793,211 +793,239 @@
   {
     "objectID": "2015/01/2015-01.html#part-1",
     "href": "2015/01/2015-01.html#part-1",
-    "title": "2015-01: Not Quite Lisp",
+    "title": "01: Not Quite Lisp",
     "section": "Part 1",
     "text": "Part 1\n\nstr_count(dt, \"\\\\(\") - str_count(dt, \"\\\\)\")\n\n[1] 138"
   },
   {
     "objectID": "2015/01/2015-01.html#part-2",
     "href": "2015/01/2015-01.html#part-2",
-    "title": "2015-01: Not Quite Lisp",
+    "title": "01: Not Quite Lisp",
     "section": "Part 2",
     "text": "Part 2\n\ndt &lt;- data.frame(\"paren\" = t(str_split_fixed(dt, \"\", nchar(dt))))\ndt$val &lt;- ifelse(dt$paren == \"(\", 1, -1)\nwhich(cumsum(dt$val) == -1)[1]\n\n[1] 1771"
   },
   {
     "objectID": "2015/02/2015-02.html#part-1",
     "href": "2015/02/2015-02.html#part-1",
-    "title": "2015-02: I Was Told There Would Be No Math",
+    "title": "02: I Was Told There Would Be No Math",
     "section": "Part 1",
     "text": "Part 1\n\n# part 1\ntmp &lt;- dt %&gt;%\n  .[, c(\"l\", \"w\", \"h\") := .(V1 * V2, V2 * V3, V1 * V3)] %&gt;%\n  .[, min := ifelse(l &lt;= w & l &lt;= h, l, \n                    ifelse(w &lt;= l & w &lt;= h, w, h))] %&gt;%\n  .[, sq := 2*l + 2*w + 2*h + min]\nsum(tmp$sq, na.rm = TRUE)\n\n[1] 1598415"
   },
   {
     "objectID": "2015/02/2015-02.html#part-2",
     "href": "2015/02/2015-02.html#part-2",
-    "title": "2015-02: I Was Told There Would Be No Math",
+    "title": "02: I Was Told There Would Be No Math",
     "section": "Part 2",
     "text": "Part 2\n\ntmp &lt;- dt %&gt;%\n  .[, c(\"l\", \"w\", \"h\") := .(V1 * V2, V2 * V3, V1 * V3)]\ntmp &lt;- tmp[, c(\"l\", \"w\", \"h\") := .(V1, V2, V3)] %&gt;%\n  .[, max := apply(dt[, .(l, w, h)], 1, max)] %&gt;%\n  rowwise() %&gt;%\n  mutate(test = list(c(l, w, h)))\ntmp$min1 &lt;- t(data.frame(sapply(tmp$test, sort)))[,1]\ntmp$min2 &lt;- t(data.frame(sapply(tmp$test, sort)))[,2]\n\ntmp &lt;- data.table::data.table(tmp)[,rib := ((2*min1 + 2*min2) + (V1 * V2 * V3))]\nsum(tmp$rib, na.rm = TRUE)\n\n[1] 3812909"
   },
   {
     "objectID": "2015/03/2015-03.html#part-1",
     "href": "2015/03/2015-03.html#part-1",
-    "title": "2015-03: Perfectly Spherical Houses in a Vacuum",
+    "title": "03: Perfectly Spherical Houses in a Vacuum",
     "section": "Part 1",
     "text": "Part 1\n\ndirX &lt;- function(x) {\n  case_when(\n    x == \"^\" ~ 0,\n    x == \"&gt;\" ~ 1,\n    x == \"&lt;\" ~ -1,\n    x == \"v\" ~ 0\n  )\n}\ndirY &lt;- function(x) {\n  case_when(\n    x == \"^\" ~ 1,\n    x == \"&gt;\" ~ 0,\n    x == \"&lt;\" ~ 0,\n    x == \"v\" ~ -1\n  )\n}\n\ndf &lt;- data.frame(\"x\" = 0, \"y\" = 0)\nfor(i in 1:nchar(dt))\n  df &lt;- rbind(df, data.frame(\"x\" = dirX(substr(dt, i, i)),\n                             \"y\" = dirY(substr(dt, i, i))))\ndf &lt;- data.table::data.table(df)\ndf$cumX &lt;- cumsum(df$x)\ndf$cumY &lt;- cumsum(df$y)\ndf &lt;- df[, .(cumX, cumY)]\nnrow(unique(df))\n\n[1] 2565"
   },
   {
     "objectID": "2015/03/2015-03.html#part-2",
     "href": "2015/03/2015-03.html#part-2",
-    "title": "2015-03: Perfectly Spherical Houses in a Vacuum",
+    "title": "03: Perfectly Spherical Houses in a Vacuum",
     "section": "Part 2",
     "text": "Part 2\n\ndfR &lt;- data.frame(\"x\" = 0, \"y\" = 0)\ndfS &lt;- data.frame(\"x\" = 0, \"y\" = 0)\nfor(i in seq(1, nchar(dt), 2))\n  dfS &lt;- rbind(dfS, data.frame(\"x\" = dirX(substr(dt, i, i)),\n                               \"y\" = dirY(substr(dt, i, i))))\nfor(i in seq(2, nchar(dt), 2))\n  dfR &lt;- rbind(dfR, data.frame(\"x\" = dirX(substr(dt, i, i)),\n                               \"y\" = dirY(substr(dt, i, i))))\n\ndts &lt;- data.table::data.table(dfS)\ndts$cumX &lt;- cumsum(dts$x)\ndts$cumY &lt;- cumsum(dts$y)\ndtr &lt;- data.table::data.table(dfR)\ndtr$cumX &lt;- cumsum(dtr$x)\ndtr$cumY &lt;- cumsum(dtr$y)\n\ndf &lt;- data.table::data.table(rbind(dts, dtr))\n\ndf &lt;- df[, .(cumX, cumY)]\nnrow(unique(df))\n\n[1] 2639"
   },
   {
     "objectID": "2015/04/2015-04.html#part-1",
     "href": "2015/04/2015-04.html#part-1",
-    "title": "2015-04: The Ideal Stocking Stuffer",
+    "title": "04: The Ideal Stocking Stuffer",
     "section": "Part 1",
     "text": "Part 1\n\ni &lt;- 0\nwhile(substr(digest(paste0(dt, i), algo = \"md5\", serialize = FALSE), 1, 5) != \"00000\")\n  i &lt;- i + 1\ndigest(paste0(dt, i), algo = \"md5\", serialize = FALSE)\n\n[1] \"000004b30d481662b9cb0c105f6549b2\"\n\ni\n\n[1] 254575"
   },
   {
     "objectID": "2015/04/2015-04.html#part-2",
     "href": "2015/04/2015-04.html#part-2",
-    "title": "2015-04: The Ideal Stocking Stuffer",
+    "title": "04: The Ideal Stocking Stuffer",
     "section": "Part 2",
     "text": "Part 2\n\ni &lt;- 0\nwhile(substr(digest(paste0(dt, i), algo = \"md5\", serialize = FALSE), 1, 6) != \"000000\")\n  i &lt;- i + 1\ndigest(paste0(dt, i), algo = \"md5\", serialize = FALSE)\n\n[1] \"000000b1b64bf5eb55aad89986126953\"\n\ni\n\n[1] 1038736"
   },
   {
     "objectID": "2015/05/2015-05.html#part-1",
     "href": "2015/05/2015-05.html#part-1",
-    "title": "2015-05: Doesn’t He Have Intern-Elves For This?",
+    "title": "05: Doesn’t He Have Intern-Elves For This?",
     "section": "Part 1",
     "text": "Part 1\n\ndt &lt;- df\ndt &lt;- dt[!grepl(\"(ab)|(cd)|(pq)|(xy)\", dt)]\ndt &lt;- dt[grepl(\"(\\\\w*[aeuio]\\\\w*){3,}\", dt)]\ndt &lt;- dt[grepl(\"(.)\\\\1+\", dt)]\nlength(dt)\n\n[1] 255"
   },
   {
     "objectID": "2015/05/2015-05.html#part-2",
     "href": "2015/05/2015-05.html#part-2",
-    "title": "2015-05: Doesn’t He Have Intern-Elves For This?",
+    "title": "05: Doesn’t He Have Intern-Elves For This?",
     "section": "Part 2",
     "text": "Part 2\n\ndt &lt;- df\ndt &lt;- dt[grepl(\"(..).*(\\\\1)\", dt, perl = TRUE)]\ndt &lt;- dt[grepl(\"(.)(.)(\\\\1)\", dt, perl = TRUE)]\nlength(dt)\n\n[1] 55"
   },
   {
     "objectID": "2015/06/2015-06.html#part-1",
     "href": "2015/06/2015-06.html#part-1",
-    "title": "2015-06: Probably a Fire Hazard",
+    "title": "06: Probably a Fire Hazard",
     "section": "Part 1",
     "text": "Part 1\n\ndt &lt;- data.frame(\"dir\" = str_extract(dt, \"off|on|toggle\"),\n                 \"from\" = str_extract(dt, \"[0-9]{1,3},[0-9]{1,3}\"),\n                 \"to\" = str_extract(dt, \"[0-9]{1,3},[0-9]{1,3}$\"))\nfrom &lt;- str_split(dt$from, \",\", simplify = TRUE)\ndt$fromX &lt;- as.numeric(from[,1]) + 1\ndt$fromY &lt;- as.numeric(from[,2]) + 1\n\nto &lt;- str_split(dt$to, \",\", simplify = TRUE)\ndt$toX &lt;- as.numeric(to[,1]) + 1\ndt$toY &lt;- as.numeric(to[,2]) + 1\n\nlights &lt;- data.frame(\"x\" = rep(1:1000, 1000), \n                     \"y\" = rep(1:1000, each = 1000),\n                     \"stat\" = as.integer(0))\n\nfor(i in 1:nrow(dt)) {\n  if(dt$dir[i] == \"on\") {\n    lights$stat[dt$fromX[i] &lt;= lights$x & \n                  dt$toX[i] &gt;= lights$x & \n                  dt$fromY[i] &lt;= lights$y & \n                  dt$toY[i] &gt;= lights$y] &lt;- 1\n  }\n  if(dt$dir[i] == \"off\") {\n    lights$stat[dt$fromX[i] &lt;= lights$x & \n                  dt$toX[i] &gt;= lights$x & \n                  dt$fromY[i] &lt;= lights$y & \n                  dt$toY[i] &gt;= lights$y] &lt;- 0\n  }\n  if(dt$dir[i] == \"toggle\") {\n    lights$stat[dt$fromX[i] &lt;= lights$x & dt$toX[i] &gt;= lights$x & \n                  dt$fromY[i] &lt;= lights$y & dt$toY[i] &gt;= lights$y] &lt;- \n      ifelse(lights$stat[dt$fromX[i] &lt;= lights$x & dt$toX[i] &gt;= lights$x & \n                  dt$fromY[i] &lt;= lights$y & dt$toY[i] &gt;= lights$y] == 1, 0, 1)\n  }\n}\n\nnrow(lights[lights$stat == 1,])\n\n[1] 400410"
   },
   {
     "objectID": "2015/06/2015-06.html#part-2",
     "href": "2015/06/2015-06.html#part-2",
-    "title": "2015-06: Probably a Fire Hazard",
+    "title": "06: Probably a Fire Hazard",
     "section": "Part 2",
     "text": "Part 2\n\n# part 2\nlights &lt;- data.frame(\"x\" = rep(1:1000, 1000), \n                     \"y\" = rep(1:1000, each = 1000),\n                     \"stat\" = as.integer(0))\n\nfor(i in 1:nrow(dt)) {\n  if(dt$dir[i] == \"on\") {\n    lights$stat[dt$fromX[i] &lt;= lights$x & \n                  dt$toX[i] &gt;= lights$x & \n                  dt$fromY[i] &lt;= lights$y & \n                  dt$toY[i] &gt;= lights$y] &lt;- lights$stat[dt$fromX[i] &lt;= lights$x & \n                  dt$toX[i] &gt;= lights$x & \n                  dt$fromY[i] &lt;= lights$y & \n                  dt$toY[i] &gt;= lights$y] + 1\n  }\n  if(dt$dir[i] == \"off\") {\n    lights$stat[dt$fromX[i] &lt;= lights$x & dt$toX[i] &gt;= lights$x & \n                  dt$fromY[i] &lt;= lights$y & dt$toY[i] &gt;= lights$y] &lt;- \n      ifelse(lights$stat[dt$fromX[i] &lt;= lights$x & dt$toX[i] &gt;= lights$x & \n                  dt$fromY[i] &lt;= lights$y & dt$toY[i] &gt;= lights$y] == 0, \n             lights$stat[dt$fromX[i] &lt;= lights$x & dt$toX[i] &gt;= lights$x & \n                  dt$fromY[i] &lt;= lights$y & dt$toY[i] &gt;= lights$y], \n             lights$stat[dt$fromX[i] &lt;= lights$x & dt$toX[i] &gt;= lights$x & \n                  dt$fromY[i] &lt;= lights$y & dt$toY[i] &gt;= lights$y] - 1)\n  }\n  if(dt$dir[i] == \"toggle\") {\n    lights$stat[dt$fromX[i] &lt;= lights$x & \n                  dt$toX[i] &gt;= lights$x & \n                  dt$fromY[i] &lt;= lights$y & \n                  dt$toY[i] &gt;= lights$y] &lt;- lights$stat[dt$fromX[i] &lt;= lights$x & \n                  dt$toX[i] &gt;= lights$x & \n                  dt$fromY[i] &lt;= lights$y & \n                  dt$toY[i] &gt;= lights$y] + 2\n  }\n}\n\nsum(lights$stat)\n\n[1] 15343601"
   },
   {
     "objectID": "2015/07/2015-07.html#part-1",
     "href": "2015/07/2015-07.html#part-1",
-    "title": "2015-07: Some Assembly Required",
+    "title": "07: Some Assembly Required",
     "section": "Part 1",
     "text": "Part 1\nI initially tried just writing to a file then sourcing it, but quickly discovered that my statements were out of order. I figured a loop would be fast enough, then I can use a tryCatch to skip over any errors, paring down the statements until they all run. I had a bit of trouble with my eval statement until I remembered I have to parse the dang thing first.\n\n(a &lt;- run(dt))\n\n[1] 3176"
   },
   {
     "objectID": "2015/07/2015-07.html#part-2",
     "href": "2015/07/2015-07.html#part-2",
-    "title": "2015-07: Some Assembly Required",
+    "title": "07: Some Assembly Required",
     "section": "Part 2",
     "text": "Part 2\nThis bit was easy. Just had to copy to a new object for some reason then it was a simple replacement with the value from part 1.\n\ndt2 &lt;- dt\ndt2[str_detect(dt2, \"-&gt; b$\")] &lt;- glue::glue(\"{a} -&gt; b\")\nrun(dt2)\n\n[1] 14710"
   },
   {
     "objectID": "2015/08/2015-08.html#part-1",
     "href": "2015/08/2015-08.html#part-1",
-    "title": "2015-08: Matchsticks",
+    "title": "08: Matchsticks",
     "section": "Part 1",
     "text": "Part 1\nGetting the regex right was the worst part, just like I thought. \\\\ is the worst part about R.\n\nliteral_length &lt;- \n  dt |&gt;\n  nchar() |&gt;\n  sum()\n\nmemory_length &lt;-\n  dt |&gt;\n  str_sub(start = 2) |&gt;\n  str_sub(end = -2) |&gt;\n  str_replace_all('\\\\\\\\x[0-9a-f]{2}', ' ') |&gt;\n  str_replace_all('\\\\\\\\\\\\\"', ' ') |&gt;\n  str_replace_all('\\\\\\\\\\\\\\\\', ' ') |&gt;\n  nchar() |&gt;\n  sum()\n\nliteral_length - memory_length\n\n[1] 1371"
   },
   {
     "objectID": "2015/08/2015-08.html#part-2",
     "href": "2015/08/2015-08.html#part-2",
-    "title": "2015-08: Matchsticks",
+    "title": "08: Matchsticks",
     "section": "Part 2",
     "text": "Part 2\nTurns out R also auto-converts double spaces to tabs so to get two characters, you need three spaces…\n\ntotal_length &lt;-\n  dt |&gt;\n  str_escape() |&gt;\n  str_replace_all('^\"|\"$', '   ') |&gt;\n  str_replace_all('\\\\\\\\x[0-9a-f]{2}', '    ') |&gt;\n  str_replace_all('\\\\\\\\\\\\\"', '   ') |&gt;\n  str_replace_all('\\\\\\\\', ' ') |&gt;\n  nchar() |&gt;\n  sum()\ntotal_length - literal_length\n\n[1] 2117"
   },
   {
     "objectID": "2015/09/2015-09.html#part-1",
     "href": "2015/09/2015-09.html#part-1",
-    "title": "2015-09: All in a Single Night",
+    "title": "09: All in a Single Night",
     "section": "Part 1",
     "text": "Part 1\nI figured with R the way it is, there had to be a package that can solve it. Sure enough, TSP exists. Creating the symmetric matrix was a bit of a pain, but then I was getting solutions for the test input but not the real input. Ugh. I slept on the problem then tried replacing the diagonal with NA, rather than zeroes. That seemed to do the trick.\n\nm &lt;-\n  expand.grid(stops, stops) |&gt;\n  data.table() |&gt;\n  `colnames&lt;-`(c(\"start\", \"end\")) |&gt;\n  left_join(dt, by = c(\"start\", \"end\")) |&gt;\n  mutate(dist = ifelse(start == end, NA_integer_, dist)) |&gt;\n  dcast(start ~ end, value.var = \"dist\") |&gt;\n  data.frame() |&gt;\n  `rownames&lt;-`(stops) |&gt;\n  select(-start) |&gt;\n  as.matrix()\n\nm &lt;-\n  map2_dbl(m, t(m), \\(x, y) {\n    if(is.na(x) & !is.na(y)) return(y) else return(x)\n  }) |&gt;\n  matrix(length(stops), length(stops)) |&gt;\n  `colnames&lt;-`(stops) |&gt;\n  `rownames&lt;-`(stops) |&gt;\n  as.matrix() \n\nstops &lt;- get_stops(m)\n\nWarning: executing %dopar% sequentially: no parallel backend registered\n\nget_dist(m, stops)\n\n[1] 251"
   },
   {
     "objectID": "2015/09/2015-09.html#part-2",
     "href": "2015/09/2015-09.html#part-2",
-    "title": "2015-09: All in a Single Night",
+    "title": "09: All in a Single Night",
     "section": "Part 2",
     "text": "Part 2\nOh boy. I think I have an easy solution for this! If I can re-scale the values so that the smallest numbers are biggest and the biggest numbers are smallest, I can just re-run to get the cities in order, then use the original distances. A quick apply with \\(\\frac{1}{x}\\) and I’m on my way. Just need to throw everything into functions and there we go!\n\nstops &lt;-\n  m |&gt;\n  apply(c(1, 2), \\(x) 1 / x) |&gt;\n  get_stops()\nget_dist(m, stops)\n\n[1] 898"
   },
   {
     "objectID": "2015/10/2015-10.html#part-1",
     "href": "2015/10/2015-10.html#part-1",
-    "title": "2015-10: Elves Look, Elves Say",
+    "title": "10: Elves Look, Elves Say",
     "section": "Part 1",
     "text": "Part 1\nI got stuck trying to think of the smart way to do this so I’m brute-forcing it with recursion instead.\n\nexpand &lt;- function(x, max, i = 1) {\n  if (i == (max + 1)) { return(nchar(x)) }\n  x &lt;-\n    x |&gt;\n    strsplit(\"\") |&gt;\n    unlist() |&gt;\n    data.table() |&gt;\n    `colnames&lt;-`(\"input\") |&gt;\n    mutate(group = rleid(input)) |&gt;\n    group_by(group, input) |&gt;\n    summarise(count = n(), .groups = \"drop\") |&gt;\n    mutate(string = glue::glue(\"{count}{input}\")) |&gt;\n    pull(string) |&gt;\n    paste0(collapse = \"\")\n  p()\n  return(expand(x, max, i + 1))\n}\n\ntimes &lt;- 40\nwith_progress({ \n  p &lt;- progressor(steps = times)\n  expand(dt, times) \n})\n\n[1] 252594"
   },
   {
     "objectID": "2015/10/2015-10.html#part-2",
     "href": "2015/10/2015-10.html#part-2",
-    "title": "2015-10: Elves Look, Elves Say",
+    "title": "10: Elves Look, Elves Say",
     "section": "Part 2",
     "text": "Part 2\nI thought it was going to be 100 iterations. I can’t believe I’m glad for just 50… But I think I can brute-force this too. I definitely have enough RAM. I just modified the function a bit to take a max iteration input argument as well.\n\ntimes &lt;- 50\nwith_progress({ \n  p &lt;- progressor(steps = times)\n  expand(dt, times) \n})\n\n[1] 3579328"
   },
   {
     "objectID": "2015/11/2015-11.html#part-1",
     "href": "2015/11/2015-11.html#part-1",
-    "title": "2015-11: Corporate Policy",
+    "title": "11: Corporate Policy",
     "section": "Part 1",
     "text": "Part 1\nI struggled for so long with some half-baked quasi-recursive solution that worked on one of the test inputs. I eventually realized that I needed my replacement function to be recursive (I was working with string indexes before) and then it all fell into place. Not my fastest computationally, but it gets the job done.\n\ncheck_consecutive &lt;- function(x) {\n  x &lt;- paste0(x, collapse = \"\")\n  letters |&gt;\n    runner(k = 3, f = paste0, collapse = \"\") |&gt;\n    tail(-2) |&gt;\n    map_lgl(~ str_detect(x, .x)) |&gt;\n    any()\n}\n\ncheck_confusing &lt;- function(x) { !any(c(\"i\", \"o\", \"l\") %in% x) }\n\ncheck_pairs &lt;- function(x) {\n  x &lt;- \n    data.frame(\n      \"a\" = x,\n      \"b\" = lead(x)\n    ) |&gt;\n    filter(a == b) |&gt;\n    group_by(a, b) |&gt;\n    count() |&gt;\n    nrow()\n  return(x &gt;= 2)\n}\n\ncheck &lt;- function(x) {\n  return(\n    check_consecutive(x) & \n    check_confusing(x) &\n    check_pairs(x)\n  )\n}\n\nno_iol &lt;- letters[!(letters %in% c(\"i\", \"o\", \"l\"))]\n\nreplace &lt;- function(x, pos) {\n  l &lt;- which(no_iol == x[pos]) + 1\n  if (l &gt; length(no_iol)) {\n    x[pos] &lt;- \"a\"\n    x &lt;- replace(x, pos - 1)\n  } else {\n    x[pos] &lt;- no_iol[l]\n  }\n  return(x)\n}\n\nsplit_dt &lt;- str_split(dt, \"\")[[1]]\n\nrepeat {\n  if (check(split_dt)) { break }\n  split_dt &lt;- replace(split_dt, length(split_dt))\n}\npaste0(split_dt, collapse = \"\")\n\n[1] \"hxbxxyzz\""
   },
   {
     "objectID": "2015/11/2015-11.html#part-2",
     "href": "2015/11/2015-11.html#part-2",
-    "title": "2015-11: Corporate Policy",
+    "title": "11: Corporate Policy",
     "section": "Part 2",
     "text": "Part 2\nHmmm. I suppose my solution from part 1 wouldn’t work right away. That would be too easy. I could just say that’s no longer a valid solution then it’ll keep going. Kinda dumb but it should work.\nIt’s me. I’m back. It was taking too long. I think I can speed this up just by thinking about it. If xx changes to xy, that whole branch becomes invalid no matter what comes after because it won’t have a sequence available. Same with yy or zz. So that means that b has to increase to c. Here we have some more options. In fact, we have a whole alphabet’s worth. We want to minimize the value so let’s go with a. Same for the next character. Now we only have three spots left and we need to complete our sequence of three letters and get another double. If we do bbc, we don’t have the sequence so we have to do bcc to complete the sequence and get the last double.\n\n\"hxcaabcc\"\n\n[1] \"hxcaabcc\""
   },
   {
     "objectID": "2015/12/2015-12.html#part-1",
     "href": "2015/12/2015-12.html#part-1",
-    "title": "2015-12: JSAbacusFramework.io",
+    "title": "12: JSAbacusFramework.io",
     "section": "Part 1",
     "text": "Part 1\nSurprisingly easy. Just had a small regex typo with ? instead of +.\n\ndt |&gt;\n  str_extract_all(\"(-?[0-9]+)\") |&gt;\n  unlist() |&gt;\n  as.numeric() |&gt;\n  sum(na.rm = TRUE)\n\n[1] 191164"
   },
   {
     "objectID": "2015/12/2015-12.html#part-2",
     "href": "2015/12/2015-12.html#part-2",
-    "title": "2015-12: JSAbacusFramework.io",
+    "title": "12: JSAbacusFramework.io",
     "section": "Part 2",
     "text": "Part 2\nWhat a nightmare! I got the answer wrong 16 times and tried so many things. String replacement, string reduction, listing, unlisting, whatever I could think of. I eventually remembered rrapply and had a wacky solution that didn’t work at all. I took a break for a few days and really read the documentation on how = \"recurse\". Then it was just a matter of realizing that .xname in the documentation is not the same as names(x) and I was good to go!\n\ndt |&gt;\n  parse_json() |&gt;\n  list() |&gt;\n  rrapply::rrapply(\n    \\(o) { any(o == \"red\") & any(names(o) %in% letters) },\n    \\(x) { return(list(\"a\" = \"red\")) }, \n    how = \"recurse\",\n    classes = \"list\") |&gt;\n  unlist() |&gt;\n  as.numeric() |&gt;\n  suppressWarnings() |&gt;\n  sum(na.rm = TRUE)\n\n[1] 87842"
   },
   {
+    "objectID": "2015/13/2015-13.html#part-1",
+    "href": "2015/13/2015-13.html#part-1",
+    "title": "13: Knights of the Dinner Table",
+    "section": "Part 1",
+    "text": "Part 1\nHonestly, not a clue.\nOkay. I’m back. It’s been a few weeks but I had a stroke of inspiration last night. I had started out trying a bunch of longer data and filtering, brute forcing, and anything else I could think of. BUT. Last night I realized this is just a circular traveling salesman problem. After a bit of fiddling with my solution from 2015-09 I was able to get it. Some key things were rescaling from 0-1 so that I don’t have both positive and negative numbers, then using the \\(\\frac{1}{x}\\) trick to get longest distances instead of shortest.\n\nm &lt;- \n  dt |&gt;\n  dcast(origin ~ subject, value.var = \"units\", fill = 0) |&gt;\n  column_to_rownames(\"origin\") |&gt;\n  as.matrix() |&gt;\n  `diag&lt;-`(NA_integer_)\n\nsolve(m)\n\nWarning: executing %dopar% sequentially: no parallel backend registered\n\n\n[1] 618"
+  },
+  {
+    "objectID": "2015/13/2015-13.html#part-2",
+    "href": "2015/13/2015-13.html#part-2",
+    "title": "13: Knights of the Dinner Table",
+    "section": "Part 2",
+    "text": "Part 2\nI always knew my relationships had a happiness score of zero, but I didn’t need to be reminded of it :(.\n\nm &lt;-\n  dt |&gt;\n  bind_rows(expand.grid(\n    \"origin\" = \"Gus\",\n    \"units\" = 0,\n    \"subject\" = c(\"Gus\", unique(dt$origin))\n  )) |&gt;\n  dcast(origin ~ subject, value.var = \"units\", fill = 0) |&gt;\n  column_to_rownames(\"origin\") |&gt;\n  as.matrix() |&gt;\n  `diag&lt;-`(NA_integer_)\n\nsolve(m)\n\n[1] 601"
+  },
+  {
     "objectID": "2015/14/2015-14.html#part-1",
     "href": "2015/14/2015-14.html#part-1",
-    "title": "2015-14: Reindeer Olympics",
+    "title": "14: Reindeer Olympics",
     "section": "Part 1",
     "text": "Part 1\nThis was super annoying. My first version of my .qmd file was corrupted somehow so I could only run anything once after restarting RStudio. I thought it was because I had just updated to R 4.3 but deleting the old file and pasting everything into a new one seems to have fixed it.\nAnyways, easy enough. Just a little annoying to get the vector recycling to line up how I wanted it to.\n\ndt |&gt;\n  do_part() |&gt;\n  select(-total_time) |&gt;\n  map_int(sum, na.rm = TRUE) |&gt;\n  max()\n\n[1] 2660"
   },
   {
     "objectID": "2015/14/2015-14.html#part-2",
     "href": "2015/14/2015-14.html#part-2",
-    "title": "2015-14: Reindeer Olympics",
+    "title": "14: Reindeer Olympics",
     "section": "Part 2",
     "text": "Part 2\nThis looks simple enough to change Part 1.\nI ended up not changing the parts I thought I would\n\ndt |&gt;\n  do_part() |&gt;\n  pivot_longer(\n    cols = -total_time,\n    names_to = \"reindeer\",\n    values_to = \"distance\"\n  ) |&gt;\n  arrange(reindeer, total_time) |&gt;\n  mutate(total_distance = cumsum(distance), .by = reindeer) |&gt;\n  mutate(\n    points = ifelse(total_distance == max(total_distance), 1, 0), \n    .by = total_time\n  ) |&gt;\n  mutate(total_points = cumsum(points), .by = reindeer) |&gt;\n  filter(total_time == sec) |&gt;\n  pull(total_points) |&gt;\n  max()\n\n[1] 1564"
   },
   {
     "objectID": "2015/16/2015-16.html#part-1",
     "href": "2015/16/2015-16.html#part-1",
-    "title": "2015-16: Aunt Sue",
+    "title": "16: Aunt Sue",
     "section": "Part 1",
     "text": "Part 1\nOnly tricky bit was remembering how to pivot longer with multiple columns.\n\nsue |&gt;\n  filter(qty == ticker_qty) |&gt;\n  filter(n() == 3, .by = sue) |&gt;\n  pull(sue) |&gt;\n  unique()\n\n[1] 373"
   },
   {
     "objectID": "2015/16/2015-16.html#part-2",
     "href": "2015/16/2015-16.html#part-2",
-    "title": "2015-16: Aunt Sue",
+    "title": "16: Aunt Sue",
     "section": "Part 2",
     "text": "Part 2\nNot too bad. Just a gross filter and we’re good to go. Oh and don’t forget to put your ! in the right spot :).\n\nsue |&gt;\n  filter(\n    (item %in% c(\"cats\", \"trees\") & qty &gt; ticker_qty) |\n      (item %in% c(\"pomeranians\", \"goldfish\") & qty &lt; ticker_qty) |\n      (\n        (!item %in% c(\"cats\", \"trees\", \"pomeranians\", \"goldfish\") & \n            qty == ticker_qty)\n      )\n  ) |&gt;\n  filter(n() == 3, .by = sue) |&gt;\n  pull(sue) |&gt;\n  unique()\n\n[1] 260"
   },
   {
     "objectID": "2015/17/2015-17.html#part-1",
     "href": "2015/17/2015-17.html#part-1",
-    "title": "2015-17: No Such Thing as Too Much",
+    "title": "17: No Such Thing as Too Much",
     "section": "Part 1",
     "text": "Part 1\nThis was surprisingly easy. I thought for sure I was going to have to run stuff in parallel.\n\nsum(buckets, na.rm = TRUE)\n\n[1] 4372"
   },
   {
     "objectID": "2015/17/2015-17.html#part-2",
     "href": "2015/17/2015-17.html#part-2",
-    "title": "2015-17: No Such Thing as Too Much",
+    "title": "17: No Such Thing as Too Much",
     "section": "Part 2",
     "text": "Part 2\nAlso weirdly easy. Especially since I set myself up for that with part 1.\n\nbuckets |&gt;\n  na.omit() |&gt;\n  head(1)\n\n[1] 4"
+  },
+  {
+    "objectID": "2015/18/2015-18.html#part-1",
+    "href": "2015/18/2015-18.html#part-1",
+    "title": "2015-18: Like a GIF For Your Yard",
+    "section": "Part 1",
+    "text": "Part 1\nI’ve got a plan this time…\nUgh. I need to find a way to make this faster.\n\nprocess_light &lt;- function(y, x, m) {\n  state &lt;- m[y,x]\n  m[y,x] &lt;- \"\"\n  val &lt;- get_adjacent_values(y, x, m)\n  if (state == \"#\") {\n    if (sum(val == \"#\") %in% 2:3) {\n      return(\"#\")\n    } else {\n      return(\".\")\n    }\n  } else if (state == \".\") {\n    if (sum(val == \"#\") == 3) {\n      return(\"#\")\n    } else {\n      return(\".\")\n    }\n  }\n}\n\ndo_flash &lt;- function(dt, flash, i) {\n  while (i &gt; 0) {\n    p()\n    dt &lt;- \n      expand.grid(\n        \"y\" = seq_len(nrow(dt)),\n        \"x\" = seq_len(ncol(dt))\n      ) |&gt;\n      furrr::future_pmap_chr(\\(y, x) {\n        rlang::exec(quote(flash), y, x, dt)\n      }) |&gt;\n      matrix(nrow = nrow(dt), byrow = FALSE)\n    i &lt;- i - 1\n  }\n  return(dt)\n}\n\nfuture::plan(future::multicore, workers = future::availableCores())\n\nWarning in supportsMulticoreAndRStudio(...): [ONE-TIME WARNING] Forked\nprocessing ('multicore') is not supported when running R from RStudio because\nit is considered unstable. For more details, how to control forked processing\nor not, and how to silence this warning in future R sessions, see\n?parallelly::supportsMulticore\n\nprogressr::with_progress({\n  i &lt;- 100\n  p &lt;- progressr::progressor(steps = i)\n  do_flash(dt, process_light, i) |&gt;\n    map_int( ~ .x == \"#\") |&gt;\n    sum()\n})\n\n[1] 814\n\nfuture::plan(future::sequential)"
+  },
+  {
+    "objectID": "2015/18/2015-18.html#part-2",
+    "href": "2015/18/2015-18.html#part-2",
+    "title": "2015-18: Like a GIF For Your Yard",
+    "section": "Part 2",
+    "text": "Part 2\nAt least it’s not like 1000 iterations. Just some small changes and a long wait and we’re good to go.\n\nprocess_light &lt;- function(y, x, m) {\n  m[1,1] &lt;- m[nrow(m),1] &lt;- m[1,ncol(m)] &lt;- m[nrow(m), ncol(m)] &lt;- \"#\"\n  state &lt;- m[y,x]\n  m[y,x] &lt;- \"\"\n  val &lt;- get_adjacent_values(y, x, m)\n  if (state == \"#\") {\n    if (sum(val == \"#\") %in% 2:3) {\n      return(\"#\")\n    } else {\n      return(\".\")\n    }\n  } else if (state == \".\") {\n    if (sum(val == \"#\") == 3) {\n      return(\"#\")\n    } else {\n      return(\".\")\n    }\n  }\n}\n\ndo_flash &lt;- function(dt, flash, i) {\n  while (i &gt; 0) {\n    p()\n    dt &lt;- \n      expand.grid(\n        \"y\" = seq_len(nrow(dt)),\n        \"x\" = seq_len(ncol(dt))\n      ) |&gt;\n      furrr::future_pmap_chr(\\(y, x) {\n        rlang::exec(quote(flash), y, x, dt)\n      }) |&gt;\n      matrix(nrow = nrow(dt), byrow = FALSE)\n    i &lt;- i - 1\n  }\n  dt[1,1] &lt;- dt[nrow(dt),1] &lt;- dt[1,ncol(dt)] &lt;- dt[nrow(dt), ncol(dt)] &lt;- \"#\"\n  return(dt)\n}\n\nfuture::plan(future::multicore, workers = future::availableCores())\nprogressr::with_progress({\n  i &lt;- 100\n  p &lt;- progressr::progressor(steps = i)\n  do_flash(dt, process_light, i) |&gt;\n    map_int( ~ .x == \"#\") |&gt;\n    sum()\n})\n\n[1] 924\n\nfuture::plan(future::sequential)"
   }
 ]

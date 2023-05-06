@@ -1,5 +1,6 @@
 ---
-title: "2015-06: Probably a Fire Hazard"
+title: "06: Probably a Fire Hazard"
+format: html
 ---
 
 ```{r}
