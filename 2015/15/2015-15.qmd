@@ -6,40 +6,107 @@ title: "15: Science for Hungry People"
 #| message: false
 library(mistlecode)
 library(rlang)
-library(ROI)
-library(ROI.plugin.quadprog)
-library(ompr)
+library(furrr)
+library(progressr)
 dt <-
-  fread("input2.txt", sep = " ") |>
+  fread("input.txt", sep = " ") |>
   select(seq(1, 11, by = 2)) |>
   `colnames<-`(
     c("candy", "capacity", "durability", "flavor", "texture", "calories")
   ) |>
   mutate(
-    across(everything(), ~ str_remove_all(.x, "\\W")),
+    across(everything(), ~ str_remove_all(.x, "[,:]")),
     across(-candy, as.integer)
   )
 ```
 
 ## Part 1
 
+This is super dumb but I don't feel like learning how to use one of the linear programming tools. I'll probably regret it.
+
 ```{r}
-add_candy_vars <- function(model, candy_var) {
-  if (length(candy_var) == 0) { return(model) }
-  model |>
-    add_variable(!!(candy_var[1]), type = "integer") |>
-    add_candy_vars(candy_var[-1])
+cost <-
+  dt |>
+  nrow() |>
+  seq_len() |>
+  map(\(x) {
+    dt[x, ] |>
+      mutate(count = 101) |>
+      uncount(count, .id = "id") |>
+      mutate(id = id - 1)
+  }) |>
+  bind_rows()
+
+combos <-
+  expand.grid(list(1:100)[rep(1,nrow(dt))]) |>
+  `colnames<-`(dt$candy) |>
+  filter(rowSums(across(everything())) == 100)
+
+filter_cookies <- function(...) {
+  p()
+  list2(...) |>
+    imap(\(.x, idx) {
+      filter(cost, id == .x & candy == idx)
+    }) |>
+    bind_rows() |>
+    mutate(across(capacity:calories, ~ .x * id)) |>
+    select(capacity:texture) |>
+    map_int(sum) |>
+    data.frame() |>
+    `colnames<-`("value") |>
+    mutate(value = ifelse(value < 0, 0, value)) |>
+    pull(value) |>
+    prod()
 }
-candy_string <- 
-  dt$candy |>
-  paste(collapse = " + ") |>
-  as.expression()
-MIPModel() |>
-  add_candy_vars(c(dt$candy, colnames(dt)[-1])) |>
-  set_objective(sum_over(), "max") |>
-  add_constraint(Butterscotch + Cinnamon == 100) |>
-  add_constraint(Butterscotch >= 0) |>
-  add_constraint(Cinnamon >= 0) |>
-  solve_model(with_ROI(solver = "quadprog"))
+
+plan(multisession, workers = availableCores())
+with_progress({
+  p <- progressor(steps = nrow(combos))
+  combos |>
+    future_pmap_int(filter_cookies) |>
+    max()
+})
+plan(sequential)
+```
+
+## Part 2
+
+Remember how I said I'd probably regret it? It could've been worse.
+
+```{r}
+check_calories <- function(cal) {
+  if (cal$value[rownames(cal) == "calories"] == 500) {
+    return(data.frame(value = cal[rownames(cal) != "calories",]))
+  } else {
+    return(data.frame(value = 0))
+  }
+}
+
+filter_cookies <- function(...) {
+  p()
+  list2(...) |>
+    imap(\(.x, idx) {
+      filter(cost, id == .x & candy == idx)
+    }) |>
+    bind_rows() |>
+    mutate(across(capacity:calories, ~ .x * id)) |>
+    select(capacity:calories) |>
+    map_int(sum) |>
+    data.frame() |>
+    `colnames<-`("value") |>
+    check_calories() |>
+    mutate(value = ifelse(value < 0, 0, value)) |>
+    pull(value) |>
+    prod()
+}
+
+plan(multisession, workers = availableCores())
+with_progress({
+  p <- progressor(steps = nrow(combos))
+  combos |>
+    future_pmap_int(filter_cookies) |>
+    max()
+})
+plan(sequential)
 ```
 

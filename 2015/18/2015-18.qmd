@@ -1,5 +1,5 @@
 ---
-title: "2015-18: Like a GIF For Your Yard"
+title: "18: Like a GIF For Your Yard"
 ---
 
 ```{r}

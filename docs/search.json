@@ -987,6 +987,20 @@
     "text": "Part 2\nThis looks simple enough to change Part 1.\nI ended up not changing the parts I thought I would\n\ndt |&gt;\n  do_part() |&gt;\n  pivot_longer(\n    cols = -total_time,\n    names_to = \"reindeer\",\n    values_to = \"distance\"\n  ) |&gt;\n  arrange(reindeer, total_time) |&gt;\n  mutate(total_distance = cumsum(distance), .by = reindeer) |&gt;\n  mutate(\n    points = ifelse(total_distance == max(total_distance), 1, 0), \n    .by = total_time\n  ) |&gt;\n  mutate(total_points = cumsum(points), .by = reindeer) |&gt;\n  filter(total_time == sec) |&gt;\n  pull(total_points) |&gt;\n  max()\n\n[1] 1564"
   },
   {
+    "objectID": "2015/15/2015-15.html#part-1",
+    "href": "2015/15/2015-15.html#part-1",
+    "title": "15: Science for Hungry People",
+    "section": "Part 1",
+    "text": "Part 1\nThis is super dumb but I don’t feel like learning how to use one of the linear programming tools. I’ll probably regret it.\n\ncost &lt;-\n  dt |&gt;\n  nrow() |&gt;\n  seq_len() |&gt;\n  map(\\(x) {\n    dt[x, ] |&gt;\n      mutate(count = 101) |&gt;\n      uncount(count, .id = \"id\") |&gt;\n      mutate(id = id - 1)\n  }) |&gt;\n  bind_rows()\n\ncombos &lt;-\n  expand.grid(list(1:100)[rep(1,nrow(dt))]) |&gt;\n  `colnames&lt;-`(dt$candy) |&gt;\n  filter(rowSums(across(everything())) == 100)\n\nfilter_cookies &lt;- function(...) {\n  p()\n  list2(...) |&gt;\n    imap(\\(.x, idx) {\n      filter(cost, id == .x & candy == idx)\n    }) |&gt;\n    bind_rows() |&gt;\n    mutate(across(capacity:calories, ~ .x * id)) |&gt;\n    select(capacity:texture) |&gt;\n    map_int(sum) |&gt;\n    data.frame() |&gt;\n    `colnames&lt;-`(\"value\") |&gt;\n    mutate(value = ifelse(value &lt; 0, 0, value)) |&gt;\n    pull(value) |&gt;\n    prod()\n}\n\nplan(multisession, workers = availableCores())\nwith_progress({\n  p &lt;- progressor(steps = nrow(combos))\n  combos |&gt;\n    future_pmap_int(filter_cookies) |&gt;\n    max()\n})\n\n[1] 13882464\n\nplan(sequential)"
+  },
+  {
+    "objectID": "2015/15/2015-15.html#part-2",
+    "href": "2015/15/2015-15.html#part-2",
+    "title": "15: Science for Hungry People",
+    "section": "Part 2",
+    "text": "Part 2\nRemember how I said I’d probably regret it? It could’ve been worse.\n\ncheck_calories &lt;- function(cal) {\n  if (cal$value[rownames(cal) == \"calories\"] == 500) {\n    return(data.frame(value = cal[rownames(cal) != \"calories\",]))\n  } else {\n    return(data.frame(value = 0))\n  }\n}\n\nfilter_cookies &lt;- function(...) {\n  p()\n  list2(...) |&gt;\n    imap(\\(.x, idx) {\n      filter(cost, id == .x & candy == idx)\n    }) |&gt;\n    bind_rows() |&gt;\n    mutate(across(capacity:calories, ~ .x * id)) |&gt;\n    select(capacity:calories) |&gt;\n    map_int(sum) |&gt;\n    data.frame() |&gt;\n    `colnames&lt;-`(\"value\") |&gt;\n    check_calories() |&gt;\n    mutate(value = ifelse(value &lt; 0, 0, value)) |&gt;\n    pull(value) |&gt;\n    prod()\n}\n\nplan(multisession, workers = availableCores())\nwith_progress({\n  p &lt;- progressor(steps = nrow(combos))\n  combos |&gt;\n    future_pmap_int(filter_cookies) |&gt;\n    max()\n})\n\n[1] 11171160\n\nplan(sequential)"
+  },
+  {
     "objectID": "2015/16/2015-16.html#part-1",
     "href": "2015/16/2015-16.html#part-1",
     "title": "16: Aunt Sue",
@@ -1017,14 +1031,14 @@
   {
     "objectID": "2015/18/2015-18.html#part-1",
     "href": "2015/18/2015-18.html#part-1",
-    "title": "2015-18: Like a GIF For Your Yard",
+    "title": "18: Like a GIF For Your Yard",
     "section": "Part 1",
     "text": "Part 1\nI’ve got a plan this time…\nUgh. I need to find a way to make this faster.\n\nprocess_light &lt;- function(y, x, m) {\n  state &lt;- m[y,x]\n  m[y,x] &lt;- \"\"\n  val &lt;- get_adjacent_values(y, x, m)\n  if (state == \"#\") {\n    if (sum(val == \"#\") %in% 2:3) {\n      return(\"#\")\n    } else {\n      return(\".\")\n    }\n  } else if (state == \".\") {\n    if (sum(val == \"#\") == 3) {\n      return(\"#\")\n    } else {\n      return(\".\")\n    }\n  }\n}\n\ndo_flash &lt;- function(dt, flash, i) {\n  while (i &gt; 0) {\n    p()\n    dt &lt;- \n      expand.grid(\n        \"y\" = seq_len(nrow(dt)),\n        \"x\" = seq_len(ncol(dt))\n      ) |&gt;\n      furrr::future_pmap_chr(\\(y, x) {\n        rlang::exec(quote(flash), y, x, dt)\n      }) |&gt;\n      matrix(nrow = nrow(dt), byrow = FALSE)\n    i &lt;- i - 1\n  }\n  return(dt)\n}\n\nfuture::plan(future::multicore, workers = future::availableCores())\n\nWarning in supportsMulticoreAndRStudio(...): [ONE-TIME WARNING] Forked\nprocessing ('multicore') is not supported when running R from RStudio because\nit is considered unstable. For more details, how to control forked processing\nor not, and how to silence this warning in future R sessions, see\n?parallelly::supportsMulticore\n\nprogressr::with_progress({\n  i &lt;- 100\n  p &lt;- progressr::progressor(steps = i)\n  do_flash(dt, process_light, i) |&gt;\n    map_int( ~ .x == \"#\") |&gt;\n    sum()\n})\n\n[1] 814\n\nfuture::plan(future::sequential)"
   },
   {
     "objectID": "2015/18/2015-18.html#part-2",
     "href": "2015/18/2015-18.html#part-2",
-    "title": "2015-18: Like a GIF For Your Yard",
+    "title": "18: Like a GIF For Your Yard",
     "section": "Part 2",
     "text": "Part 2\nAt least it’s not like 1000 iterations. Just some small changes and a long wait and we’re good to go.\n\nprocess_light &lt;- function(y, x, m) {\n  m[1,1] &lt;- m[nrow(m),1] &lt;- m[1,ncol(m)] &lt;- m[nrow(m), ncol(m)] &lt;- \"#\"\n  state &lt;- m[y,x]\n  m[y,x] &lt;- \"\"\n  val &lt;- get_adjacent_values(y, x, m)\n  if (state == \"#\") {\n    if (sum(val == \"#\") %in% 2:3) {\n      return(\"#\")\n    } else {\n      return(\".\")\n    }\n  } else if (state == \".\") {\n    if (sum(val == \"#\") == 3) {\n      return(\"#\")\n    } else {\n      return(\".\")\n    }\n  }\n}\n\ndo_flash &lt;- function(dt, flash, i) {\n  while (i &gt; 0) {\n    p()\n    dt &lt;- \n      expand.grid(\n        \"y\" = seq_len(nrow(dt)),\n        \"x\" = seq_len(ncol(dt))\n      ) |&gt;\n      furrr::future_pmap_chr(\\(y, x) {\n        rlang::exec(quote(flash), y, x, dt)\n      }) |&gt;\n      matrix(nrow = nrow(dt), byrow = FALSE)\n    i &lt;- i - 1\n  }\n  dt[1,1] &lt;- dt[nrow(dt),1] &lt;- dt[1,ncol(dt)] &lt;- dt[nrow(dt), ncol(dt)] &lt;- \"#\"\n  return(dt)\n}\n\nfuture::plan(future::multicore, workers = future::availableCores())\nprogressr::with_progress({\n  i &lt;- 100\n  p &lt;- progressr::progressor(steps = i)\n  do_flash(dt, process_light, i) |&gt;\n    map_int( ~ .x == \"#\") |&gt;\n    sum()\n})\n\n[1] 924\n\nfuture::plan(future::sequential)"
   }
