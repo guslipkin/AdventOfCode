@@ -1041,5 +1041,33 @@
     "title": "18: Like a GIF For Your Yard",
     "section": "Part 2",
     "text": "Part 2\nAt least it’s not like 1000 iterations. Just some small changes and a long wait and we’re good to go.\n\nprocess_light &lt;- function(y, x, m) {\n  m[1,1] &lt;- m[nrow(m),1] &lt;- m[1,ncol(m)] &lt;- m[nrow(m), ncol(m)] &lt;- \"#\"\n  state &lt;- m[y,x]\n  m[y,x] &lt;- \"\"\n  val &lt;- get_adjacent_values(y, x, m)\n  if (state == \"#\") {\n    if (sum(val == \"#\") %in% 2:3) {\n      return(\"#\")\n    } else {\n      return(\".\")\n    }\n  } else if (state == \".\") {\n    if (sum(val == \"#\") == 3) {\n      return(\"#\")\n    } else {\n      return(\".\")\n    }\n  }\n}\n\ndo_flash &lt;- function(dt, flash, i) {\n  while (i &gt; 0) {\n    p()\n    dt &lt;- \n      expand.grid(\n        \"y\" = seq_len(nrow(dt)),\n        \"x\" = seq_len(ncol(dt))\n      ) |&gt;\n      furrr::future_pmap_chr(\\(y, x) {\n        rlang::exec(quote(flash), y, x, dt)\n      }) |&gt;\n      matrix(nrow = nrow(dt), byrow = FALSE)\n    i &lt;- i - 1\n  }\n  dt[1,1] &lt;- dt[nrow(dt),1] &lt;- dt[1,ncol(dt)] &lt;- dt[nrow(dt), ncol(dt)] &lt;- \"#\"\n  return(dt)\n}\n\nfuture::plan(future::multicore, workers = future::availableCores())\nprogressr::with_progress({\n  i &lt;- 100\n  p &lt;- progressr::progressor(steps = i)\n  do_flash(dt, process_light, i) |&gt;\n    map_int( ~ .x == \"#\") |&gt;\n    sum()\n})\n\n[1] 924\n\nfuture::plan(future::sequential)"
+  },
+  {
+    "objectID": "2015/21/2015-21.html#part-1",
+    "href": "2015/21/2015-21.html#part-1",
+    "title": "21: RPG Simulator 20XX",
+    "section": "Part 1",
+    "text": "Part 1\nUghhh. Not that difficult but I swapped the order of who goes first in my brain then suffered for a long time.\n\ncombinations &lt;- function(shop, n) {\n  n |&gt;\n    map(\\(n) {\n      if (n == 0) return(list(\"V0\" = 0))\n      shop |&gt;\n        length() |&gt;\n        combn(n) |&gt;\n        as.data.frame() |&gt;\n        as.list()\n    }) |&gt;\n    unlist(recursive = FALSE)\n}\nweapons &lt;- combinations(shop$weapons, 1)\narmor &lt;- combinations(shop$armor, 0:1)\nrings &lt;- combinations(shop$rings, 0:2)\n\nexpand.grid(\n  \"w\" = seq_along(weapons),\n  \"a\" = seq_along(armor),\n  \"r\" = seq_along(rings)\n)|&gt;\n  pmap(\\(w, a, r) {\n    w &lt;- as.list(shop$weapons[[weapons[[w]]]])\n    a &lt;- if (armor[[a]] == 0) list(\"cost\" = 0, \"armor\" = 0) else as.list(shop$armor[[armor[[a]]]])\n    r &lt;- if (any(rings[[r]] == 0)) list(list(\"modifier\" = 0, \"cost\" = 0, \"damage\" = 0, \"armor\" = 0)) else map(rings[[r]], ~ as.list(shop$rings[[.x]]))\n    damage &lt;- w$damage + sum(map_dbl(r, ~ .x$damage), na.rm = TRUE)\n    armor &lt;- a$armor + sum(map_dbl(r, ~ .x$armor), na.rm = TRUE)\n    hp &lt;- 100\n    boss_hp &lt;- boss$hp\n    repeat {\n      my_damage &lt;- damage - boss$armor\n      boss_hp &lt;- if (my_damage &lt;= 0) { boss_hp - 1 } else { boss_hp - my_damage }\n      if (boss_hp &lt;= 0) { break }\n      boss_damage &lt;- boss$damage - armor\n      hp &lt;- if (boss_damage &lt;= 0) { hp - 1 } else { hp - boss_damage }\n      if (hp &lt;= 0) { break }\n    }\n    if (hp &gt; 0 & boss_hp &lt;= 0) {\n      return(w$cost + a$cost + sum(map_int(r, ~ .x$cost)))\n    } else {\n      return(NA_integer_)\n    }\n  }) |&gt;\n  unlist() |&gt;\n  min(na.rm = TRUE)\n\n[1] 78"
+  },
+  {
+    "objectID": "2015/21/2015-21.html#part-2",
+    "href": "2015/21/2015-21.html#part-2",
+    "title": "21: RPG Simulator 20XX",
+    "section": "Part 2",
+    "text": "Part 2\nClassic Advent. smh. But super easy.\n\nexpand.grid(\n  \"w\" = seq_along(weapons),\n  \"a\" = seq_along(armor),\n  \"r\" = seq_along(rings)\n)|&gt;\n  pmap(\\(w, a, r) {\n    w &lt;- as.list(shop$weapons[[weapons[[w]]]])\n    a &lt;- if (armor[[a]] == 0) list(\"cost\" = 0, \"armor\" = 0) else as.list(shop$armor[[armor[[a]]]])\n    r &lt;- if (any(rings[[r]] == 0)) list(list(\"modifier\" = 0, \"cost\" = 0, \"damage\" = 0, \"armor\" = 0)) else map(rings[[r]], ~ as.list(shop$rings[[.x]]))\n    damage &lt;- w$damage + sum(map_dbl(r, ~ .x$damage), na.rm = TRUE)\n    armor &lt;- a$armor + sum(map_dbl(r, ~ .x$armor), na.rm = TRUE)\n    hp &lt;- 100\n    boss_hp &lt;- boss$hp\n    repeat {\n      my_damage &lt;- damage - boss$armor\n      boss_hp &lt;- if (my_damage &lt;= 0) { boss_hp - 1 } else { boss_hp - my_damage }\n      if (boss_hp &lt;= 0) { break }\n      boss_damage &lt;- boss$damage - armor\n      hp &lt;- if (boss_damage &lt;= 0) { hp - 1 } else { hp - boss_damage }\n      if (hp &lt;= 0) { break }\n    }\n    if (hp &lt;= 0 & boss_hp &gt; 0) {\n      return(w$cost + a$cost + sum(map_int(r, ~ .x$cost)))\n    } else {\n      return(NA_integer_)\n    }\n  }) |&gt;\n  unlist() |&gt;\n  max(na.rm = TRUE)\n\n[1] 148"
+  },
+  {
+    "objectID": "2015/23/2015-23.html#part-1",
+    "href": "2015/23/2015-23.html#part-1",
+    "title": "23: Opening the Turing Lock",
+    "section": "Part 1",
+    "text": "Part 1\nThis was very annoying. I’m happy I got to use function factories, but I really do need to find a better way to write these “follow instructions” style programs. Maybe something with S4 or S7 so I can self reference?\n\ndt_i &lt;- dt[[1]]$instruction(list(dt, 1, 0, 0))\nrepeat {\n  dt_i &lt;- dt_i[[1]][[dt_i[[2]]]]$instruction(dt_i)\n  if (length(dt_i) == 2) { break }\n}\ndt_i[[2]]\n\n[1] 255"
+  },
+  {
+    "objectID": "2015/23/2015-23.html#part-2",
+    "href": "2015/23/2015-23.html#part-2",
+    "title": "23: Opening the Turing Lock",
+    "section": "Part 2",
+    "text": "Part 2\nOh jeez. A super easy copy/paste part 2!\n\ndt_i &lt;- dt[[1]]$instruction(list(dt, 1, 1, 0))\nrepeat {\n  dt_i &lt;- dt_i[[1]][[dt_i[[2]]]]$instruction(dt_i)\n  if (length(dt_i) == 2) { break }\n}\ndt_i[[2]]\n\n[1] 334"
   }
 ]

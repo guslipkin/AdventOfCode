@@ -1,0 +1,130 @@
+---
+title: "21: RPG Simulator 20XX"
+---
+
+```{r}
+#| message: false
+#| warning: false
+library(mistlecode)
+
+shop <- 
+  c(0, which(readLines("item_shop.txt") == "")) |>
+  map(\(sk) {
+    dt <- 
+      fread("item_shop.txt", skip = sk) |>
+      t() |>
+      as.data.frame() |>
+      janitor::row_to_names(1) |>
+      as.list() |>
+      map(\(x) { 
+        x <- as.numeric(x)
+        if (length(x) == 3) {
+          names(x) <- c("cost", "damage", "armor")
+        } else {
+          names(x) <- c("modifier", "cost", "damage", "armor")
+        }
+        x 
+      })
+  }) |>
+  `names<-`(c("weapons", "armor", "rings"))
+
+boss <-
+  readLines("input.txt") |>
+  str_split(": ") |>
+  map(\(x) {
+    y <- as.numeric(x[2])
+    names(y) <- x[1]
+    as.list(y)
+  }) |>
+  unlist(recursive = FALSE) |>
+  `names<-`(c("hp", "damage", "armor"))
+```
+
+## Part 1
+
+Ughhh. Not that difficult but I swapped the order of who goes first in my brain then suffered for a long time. 
+
+```{r}
+combinations <- function(shop, n) {
+  n |>
+    map(\(n) {
+      if (n == 0) return(list("V0" = 0))
+      shop |>
+        length() |>
+        combn(n) |>
+        as.data.frame() |>
+        as.list()
+    }) |>
+    unlist(recursive = FALSE)
+}
+weapons <- combinations(shop$weapons, 1)
+armor <- combinations(shop$armor, 0:1)
+rings <- combinations(shop$rings, 0:2)
+
+expand.grid(
+  "w" = seq_along(weapons),
+  "a" = seq_along(armor),
+  "r" = seq_along(rings)
+)|>
+  pmap(\(w, a, r) {
+    w <- as.list(shop$weapons[[weapons[[w]]]])
+    a <- if (armor[[a]] == 0) list("cost" = 0, "armor" = 0) else as.list(shop$armor[[armor[[a]]]])
+    r <- if (any(rings[[r]] == 0)) list(list("modifier" = 0, "cost" = 0, "damage" = 0, "armor" = 0)) else map(rings[[r]], ~ as.list(shop$rings[[.x]]))
+    damage <- w$damage + sum(map_dbl(r, ~ .x$damage), na.rm = TRUE)
+    armor <- a$armor + sum(map_dbl(r, ~ .x$armor), na.rm = TRUE)
+    hp <- 100
+    boss_hp <- boss$hp
+    repeat {
+      my_damage <- damage - boss$armor
+      boss_hp <- if (my_damage <= 0) { boss_hp - 1 } else { boss_hp - my_damage }
+      if (boss_hp <= 0) { break }
+      boss_damage <- boss$damage - armor
+      hp <- if (boss_damage <= 0) { hp - 1 } else { hp - boss_damage }
+      if (hp <= 0) { break }
+    }
+    if (hp > 0 & boss_hp <= 0) {
+      return(w$cost + a$cost + sum(map_int(r, ~ .x$cost)))
+    } else {
+      return(NA_integer_)
+    }
+  }) |>
+  unlist() |>
+  min(na.rm = TRUE)
+```
+
+## Part 2
+
+Classic Advent. smh. But super easy.
+
+```{r}
+expand.grid(
+  "w" = seq_along(weapons),
+  "a" = seq_along(armor),
+  "r" = seq_along(rings)
+)|>
+  pmap(\(w, a, r) {
+    w <- as.list(shop$weapons[[weapons[[w]]]])
+    a <- if (armor[[a]] == 0) list("cost" = 0, "armor" = 0) else as.list(shop$armor[[armor[[a]]]])
+    r <- if (any(rings[[r]] == 0)) list(list("modifier" = 0, "cost" = 0, "damage" = 0, "armor" = 0)) else map(rings[[r]], ~ as.list(shop$rings[[.x]]))
+    damage <- w$damage + sum(map_dbl(r, ~ .x$damage), na.rm = TRUE)
+    armor <- a$armor + sum(map_dbl(r, ~ .x$armor), na.rm = TRUE)
+    hp <- 100
+    boss_hp <- boss$hp
+    repeat {
+      my_damage <- damage - boss$armor
+      boss_hp <- if (my_damage <= 0) { boss_hp - 1 } else { boss_hp - my_damage }
+      if (boss_hp <= 0) { break }
+      boss_damage <- boss$damage - armor
+      hp <- if (boss_damage <= 0) { hp - 1 } else { hp - boss_damage }
+      if (hp <= 0) { break }
+    }
+    if (hp <= 0 & boss_hp > 0) {
+      return(w$cost + a$cost + sum(map_int(r, ~ .x$cost)))
+    } else {
+      return(NA_integer_)
+    }
+  }) |>
+  unlist() |>
+  max(na.rm = TRUE)
+```
+

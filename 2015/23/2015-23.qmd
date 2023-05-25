@@ -1,0 +1,81 @@
+---
+title: "23: Opening the Turing Lock"
+---
+
+```{r}
+#| message: false
+library(mistlecode)
+
+instructions <- function(instruction) {
+  force(instruction)
+  function(dt_i) {
+    dt <- dt_i[[1]]; i <- dt_i[[2]]; a <- dt_i[[3]]; b <- dt_i[[4]];
+    if (!is.na(dt[[i]]$register)) {
+      x <- if (dt[[i]]$register == "a") a else b
+      x <- case_match(
+        instruction,
+        "hlf" ~ x / 2,
+        "tpl" ~ x * 3,
+        "inc" ~ x + 1,
+        .default = x
+      )
+      if (dt[[i]]$register == "a") a <- x else b <- x
+    } else { x <- NA }
+    
+    if (instruction == "jmp" | 
+        (instruction == "jio" & x == 1) |
+        (instruction == "jie" & x %% 2 == 0)) {
+      i <- i + dt[[i]]$offset
+    } else {
+      i <- i + 1
+    }
+    
+    if (i > length(dt)) { return(list(a, b)) }
+    return(list(dt, i, a, b))
+  }
+}
+
+dt <-
+  readLines("input.txt") |>
+  str_split("[, \\+]+") |>
+  map(\(x) {
+    if (x[1] == "jmp") {
+      x <- list(x[1], NA, x[2])
+    } else if (length(x) == 2) {
+      x <- list(x[1], x[2], NA)
+    } else {
+      x <- as.list(x)
+    }
+    names(x) <- c("instruction", "register", "offset")
+    x$instruction <- instructions(x$instruction)
+    x$offset <- as.integer(x$offset)
+    return(x)
+  })
+```
+
+## Part 1
+
+This was very annoying. I'm happy I got to use function factories, but I really do need to find a better way to write these "follow instructions" style programs. Maybe something with S4 or S7 so I can self reference?
+
+```{r}
+dt_i <- dt[[1]]$instruction(list(dt, 1, 0, 0))
+repeat {
+  dt_i <- dt_i[[1]][[dt_i[[2]]]]$instruction(dt_i)
+  if (length(dt_i) == 2) { break }
+}
+dt_i[[2]]
+```
+
+## Part 2
+
+Oh jeez. A super easy copy/paste part 2!
+
+```{r}
+dt_i <- dt[[1]]$instruction(list(dt, 1, 1, 0))
+repeat {
+  dt_i <- dt_i[[1]][[dt_i[[2]]]]$instruction(dt_i)
+  if (length(dt_i) == 2) { break }
+}
+dt_i[[2]]
+```
+

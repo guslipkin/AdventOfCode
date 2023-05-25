@@ -24,7 +24,7 @@ I'm still working on getting the 2021 and earlier puzzles converted to Quarto. T
 #| include: false
 library(tidyverse)
 years <- c(2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022)
-stars <- c(  37,    8,    5,   12,    8,   20,   26,   28)
+stars <- c(  41,    8,    5,   12,    8,   20,   26,   28)
 
 mapply(\(y, s) {
   c("star" = 1:s) |>
@@ -54,12 +54,12 @@ mapply(\(y, s) {
   coord_cartesian(clip = "off") +
   geom_label(
     x = .75,
-    y = -2.85, # year tick box
+    y = -3.2, # year tick box
     label = paste(rep(" ", 146), collapse = ""),
     hjust = 0,
     fill = "white"
   ) +
-  geom_label(x = 4.5, y = -4.5, label = "       ") + # year label box
+  geom_label(x = 4.5, y = -5.3, label = "       ") + # year label box
   ggtext::geom_richtext(
     x = .22,
     y = max(stars) / 2 + 2,
