@@ -1,0 +1,49 @@
+---
+title: "06: Signals and Noise"
+---
+
+```{r}
+#| message: false
+library(mistlecode)
+
+dt <-
+  readLines("input.txt") |>
+  str_split("") |>
+  map(~ data.frame(t(.x))) |>
+  bind_rows()
+```
+
+## Part 1
+
+omg. This is gonna be so easy.
+
+Edit: it was!
+
+```{r}
+dt |>
+  map_chr(\(x) {
+    x |>
+      table() |>
+      sort(decreasing = TRUE) |>
+      head(1) |>
+      names()
+  }) |>
+  paste0(collapse = "")
+```
+
+## Part 2
+
+Classic. Just drop `decreasing = TRUE`.
+
+```{r}
+dt |>
+  map_chr(\(x) {
+    x |>
+      table() |>
+      sort() |>
+      head(1) |>
+      names()
+  }) |>
+  paste0(collapse = "")
+```
+

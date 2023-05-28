@@ -1,0 +1,106 @@
+---
+title: "07: Internet Protocol Version 7"
+---
+
+```{r}
+#| message: false
+library(mistlecode)
+
+dt <- readLines("input.txt")
+```
+
+## Part 1
+
+Ugh. A stupid mistake with my variable scoping and a lot of headaches...
+
+```{r}
+find_char <- function(x, char) {
+  x |>
+    str_locate_all(char) |>
+    unlist() |>
+    unique()
+}
+
+find_abba <- function(s) {
+  any(
+    s != lead(s, 1) & s == lead(s, 3) & lead(s, 1) == lead(s, 2), 
+    na.rm = TRUE
+  )
+}
+
+dt |>
+  map_lgl(\(x) {
+    s <- find_char(x, "\\[")
+    e <- find_char(x, "\\]")
+    brackets <-
+      map2_lgl(s, e, \(s, e) {
+        x |>
+          substr(s, e) |>
+          str_split_1("") |>
+          find_abba()
+      }) |>
+      any()
+    if (!brackets) {
+      pat <-
+        map2_chr(s, e, ~ str_sub(x, .x, .y)) |>
+        str_escape() |>
+        paste0(collapse = "|")
+      x <-
+        x |>
+        str_replace_all(pat, " ") |>
+        str_split_1(" ") |>
+        map_lgl(~ find_abba(str_split_1(.x, ""))) |>
+        any()
+      return(x)
+    } else {
+      return(FALSE)
+    }
+  }) |>
+  sum()
+```
+
+## Part 2
+
+Just not my day today, I guess. Spent a bit of time struggling with vector comparison issues that I couldn't find.
+
+```{r}
+find_bab <- function(s) {
+  w <- which(s != lead(s, 1) & s == lead(s, 2))
+  if (length(w) > 0) map(w, ~ paste0(s[.x+1], s[.x], s[.x+1])) else NULL
+}
+
+dt |>
+  map_lgl(\(x) {
+    s <- find_char(x, "\\[")
+    e <- find_char(x, "\\]")
+    brackets <-
+      map2(s, e, \(s, e) {
+        x |>
+          substr(s, e) |>
+          str_split_1("") |>
+          find_bab()
+      }) |>
+      discard(is.null) |>
+      unlist() |>
+      unique()
+    if (length(brackets) > 0) {
+      x <-
+        brackets |>
+        map_lgl(\(aba) {
+          pat <-
+            map2_chr(s, e, ~ str_sub(x, .x, .y)) |>
+            str_escape() |>
+            paste0(collapse = "|")
+          x |>
+            str_replace_all(pat, " ") |>
+            str_detect(aba)
+        }) |>
+        any()
+      return(x)
+    } else {
+      return(FALSE)
+    }
+  }) |>
+  sum()
+```
+

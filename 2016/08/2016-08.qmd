@@ -1,0 +1,64 @@
+---
+title: "08: Two-Factor Authentication"
+---
+
+```{r}
+#| message: false
+library(mistlecode)
+
+dt <- readLines("input.txt")
+```
+
+## Part 1
+
+A short ride on the struggle bus, but I actually really liked this one! And I found a better way to make cyclical vectors which is nice. I'll probably add it to `mistlecode`...
+
+```{r}
+m <- matrix(" ", nrow = 6, ncol = 50)
+
+cycle <- function(x, n) {
+  n <- n %% length(x)
+  if (n == 0) x else c(tail(x, n), head(x, -n))
+}
+
+parse_input <- function(x) {
+  y <-
+    str_match(x, "(\\d+)(x| by )(\\d+)")[1, c(2, 4)] |>
+    as.numeric()
+  a <- y[1]; b <- y[2];
+  if (str_detect(x, "rect")) {
+    x <- \(m) { m[1:b, 1:a] <- "#"; m; }
+  } else {
+    a <- a + 1
+    if (str_detect(x, "rotate row")) {
+      x <- \(m) { m[a,] <- cycle(m[a,], b); m; }
+    } else if (str_detect(x, "rotate col")) {
+      x <- \(m) { m[,a] <- cycle(m[,a], b); m; }
+    }
+  }
+  return(x)
+}
+
+f_dt <- map(dt, parse_input)
+i <- seq_along(f_dt)
+while (length(i) > 0) {
+  m <- f_dt[[i[1]]](m)
+  i <- i[-1]
+}
+sum(m == "#")
+```
+
+## Part 2
+
+Plotting for Advent is always fun! Just need to mess with the scaling a bit.
+
+```{r}
+matrix_to_coords(m) |>
+  data.frame() |>
+  filter(data == "#") |>
+  mutate(across(row:col, as.numeric)) |>
+  ggplot() +
+  geom_tile(aes(x = col, y = -row)) +
+  theme_void() +
+  ylim(-18, 0)
+```

@@ -1,0 +1,43 @@
+---
+ title: "24: It Hangs in the Balance"
+---
+
+```{r}
+#| message: false
+library(mistlecode)
+
+dt <- 
+  readLines("input.txt") |>
+  as.integer()
+dt <- c(1:5, 7:11)
+```
+
+## Part 1
+
+These are primes. There's probably something smart you can do with it.
+
+```{r}
+l <- sum(dt[1:(length(dt) / 2)])
+
+dt |>
+  seq_along() |>
+  # head(5) |>
+  map(\(x) {
+    com <- combn(dt, x)
+    x <- apply(com, 2, sum)
+    com <- com[,which(x == l)]
+    if (length(com) == 0) { return(NULL) }
+    com <- if (!is.vector(com)) apply(com, 2, as.vector) else matrix(t(com))
+    com |>
+      as.data.frame() |>
+      as.list() |>
+      unname() |>
+      map(~ c("prod" = prod(.x), "len" = length(.x)))
+  }, .progress = TRUE) |>
+  discard(is.null) |>
+  bind_rows() |>
+  arrange(len, prod) |>
+  head(1) |> 
+  pull(prod)
+```
+

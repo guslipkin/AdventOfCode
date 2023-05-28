@@ -1,0 +1,14 @@
+{
+  "hash": "f9f6932ac9c8c5a08bfd59260d54820a",
+  "result": {
+    "markdown": "---\ntitle: \"06: Signals and Noise\"\n---\n\n::: {.cell hash='2016-06_cache/html/unnamed-chunk-1_8a76d0c7c23c51dd7c8d7c3e74c91752'}\n\n```{.r .cell-code}\nlibrary(mistlecode)\n```\n\n::: {.cell-output .cell-output-stdout}\n```\nTo install `mistlecode` yourself, run `devtools::install_github('guslipkin/mistlecode')`.\n\n Also loading:  cipheR data.table dplyr purrr slider stringr tidyverse glue\n```\n:::\n\n```{.r .cell-code}\ndt <-\n  readLines(\"input.txt\") |>\n  str_split(\"\") |>\n  map(~ data.frame(t(.x))) |>\n  bind_rows()\n```\n:::\n\n\n## Part 1\n\nomg. This is gonna be so easy.\n\nEdit: it was!\n\n\n::: {.cell hash='2016-06_cache/html/unnamed-chunk-2_1a98b567606651b5c134d73f16d6c01a'}\n\n```{.r .cell-code}\ndt |>\n  map_chr(\\(x) {\n    x |>\n      table() |>\n      sort(decreasing = TRUE) |>\n      head(1) |>\n      names()\n  }) |>\n  paste0(collapse = \"\")\n```\n\n::: {.cell-output .cell-output-stdout}\n```\n[1] \"bjosfbce\"\n```\n:::\n:::\n\n\n## Part 2\n\nClassic. Just drop `decreasing = TRUE`.\n\n\n::: {.cell hash='2016-06_cache/html/unnamed-chunk-3_caef4ed7e52da9c4e94e060a8e4df1b7'}\n\n```{.r .cell-code}\ndt |>\n  map_chr(\\(x) {\n    x |>\n      table() |>\n      sort() |>\n      head(1) |>\n      names()\n  }) |>\n  paste0(collapse = \"\")\n```\n\n::: {.cell-output .cell-output-stdout}\n```\n[1] \"veqfxzfx\"\n```\n:::\n:::\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

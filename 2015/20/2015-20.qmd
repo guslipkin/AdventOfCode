@@ -1,0 +1,114 @@
+---
+title: "20: Infinite Elves and Infinite Houses"
+---
+
+```{r}
+#| message: false
+library(mistlecode)
+library(furrr)
+library(progressr)
+library(dtplyr)
+```
+
+## Part 1
+
+There's something I can do with prime factorization, I just can't figure it out. Ugh.
+
+```{r}
+houses <- 1:9
+
+plan(multisession, workers = availableCores())
+with_progress({
+  p <- progressor(steps = length(houses))
+  presents <-
+    houses |>
+    future_map(\(h) {
+      # p()
+      x <- houses %% h == 0
+      ifelse(x, h * 10, NA_integer_) |>
+        `names<-`(paste0("h_", houses))
+    }) |>
+    bind_rows() |>
+    # as.matrix()
+    janitor::adorn_totals()
+    colSums(na.rm = TRUE)
+})
+plan(sequential)
+
+presents[presents > 36000000]
+
+guess <- function(target, r = c(0, 100)) {
+  x <- round(mean(r))
+  print(x)
+  if (x < target) {
+    guess(round(mean(c(x, r[2]))), c(x, r[2]))
+  } else if (x > target) {
+    guess(round(mean(c(r[1], x))), c(r[1], x))
+  } else {
+    return(x)
+  }
+}
+guess(73)
+
+route <- c()
+guess_house <- function(target, r = c(0, 100)) {
+  houses <- round(mean(r))
+  print(houses)
+  presents <-
+    houses |>
+    seq_len() |>
+    future_map(\(h) {
+      x <- houses %% h == 0
+      ifelse(x, h * 10, NA_integer_) |>
+        `names<-`(paste0("h_", houses))
+    }) |>
+    bind_rows() |>
+    colSums(na.rm = TRUE)
+  print(glue::glue("Presents: {presents}\tHouses: {houses}"))
+  if (presents < target) {
+    guess_house(round(mean(c(presents, r[2]))), c(presents, r[2]))
+  } else {
+    route <<- c(route, houses)
+    print(route)
+    if (any(table(route) > 1)) { return(min(route)) }
+    guess_house(round(mean(c(r[1], presents))), c(r[1], presents))
+  }
+}
+guess_house(36000000, r = c(1e6, 36e6))
+min_houses <- 1
+max_houses <- 1e7
+
+plan(multisession, workers = availableCores())
+with_progress({
+  min_houses <- seq(1e6, 1e7, by = 1e4)
+  p <- progressor(steps = length(min_houses))
+  dt <-
+    data.frame(min_houses = min_houses) |>
+    mutate(max_houses = min_houses + 1e4) |>
+    future_pmap(\(min_houses, max_houses) {
+      p()
+      dt <-
+        data.table::CJ(min_houses:max_houses, min_houses:max_houses) |>
+        lazy_dt(immutable = FALSE) |>
+        filter(V1 %% V2 == 0) |>
+        mutate(V3 = V2 * 10) |>
+        summarise(presents = sum(V3), .by = V1) |> as_tibble()
+        filter(presents > 36000000) |>
+        as_tibble()
+      
+      if (nrow(dt) > 0) {
+        print(dt)
+        break
+        return(dt)
+      } else {
+        return(data.frame("V1" = NA_real_, "presents" = NA_real_))
+      }
+    }) |>
+    bind_rows() |>
+    filter(!is.na(presents))
+})
+plan(sequential)
+print(dt)
+```
+
+< 2825374

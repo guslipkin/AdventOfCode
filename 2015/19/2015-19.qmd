@@ -5,4 +5,141 @@ title: "2015-19: Medicine for Rudolph"
 ```{r}
 #| message: false
 library(mistlecode)
+
+dt <- readLines("input.txt")
+molecule <- tail(dt, 1)
+dt <-
+  dt |>
+  head(-2) |>
+  data.frame() |>
+  `colnames<-`(c("start")) |>
+  separate_wider_delim(start, delim = " => ", names = c("start", "end"))
 ```
+
+## Part 1
+
+This doesn't look too terrible. I just need a way to do replacements one by one instead of all at once like normal. `str_locate_all` and `sub_str` to the rescue!!
+
+```{r}
+dt |>
+  deframe() |>
+  imap(\(x, idx) {
+    molecule |>
+      str_locate_all(idx) |> 
+      data.frame() |>
+      pmap_chr(\(start, end) {
+        str_sub(molecule, start, end) <- x
+        return(molecule)
+      })
+  }) |>
+  unlist() |>
+  unname() |>
+  unique() |>
+  length()
+```
+
+## Part 2
+
+Building forward is definitely not the way to go. That would be a nightmare.
+
+```{r}
+any(duplicated(dt$end))
+
+expand.grid(
+  "a" = dt$end,
+  "b" = dt$end
+) |>
+  filter(a != b) |>
+  mutate(
+    b_in_a = grepl(b, a),
+    a_in_b = grepl(a, b),
+    .by = c("a", "b")
+  ) |>
+  filter(b_in_a | a_in_b) |>
+  nrow()
+```
+
+All ends are unique and there are no subsets of characters between any of them so we should be good to reduce.
+
+```{r}
+mol <- molecule
+i <- 0
+future::plan(future::multisession, workers = future::availableCores())
+repeat {
+  mol <-
+    dt |>
+    arrange(desc(nchar(end))) |>
+    deframe() |>
+    furrr::future_imap(\(x, idx) {
+      map(mol, \(mol) {
+        mol |>
+          str_locate_all(x) |>
+          data.frame() |>
+          pmap_chr(\(start, end) {
+            str_sub(mol, start, end) <- idx
+            return(mol)
+          })
+      })
+    }) |>
+    unlist() |>
+    unique()
+  i <- i + 1
+  if (any(mol == "e")) {
+    break
+  }
+}
+future::plan(future::sequential)
+i
+
+dt_vec <- deframe(dt)
+get_all <- function(dt_vec, look_for) {
+  tmp <- dt_vec[which(names(dt_vec) %in% look_for)]
+  if (all(names(tmp) == look_for)) { return(tmp) }
+  get_all(dt_vec, names(tmp))
+}
+
+get_all(dt_vec, "e")
+
+which(letters %in% c(letters, LETTERS))
+
+which_dt_vec <- function(look_for) {
+  look_for |>
+    map(~ dt_vec[str_detect(dt_vec, .x)]) |>
+    unlist()
+}
+look_for <- "e"
+look_for <- dt_vec[which_dt_vec(look_for)]
+```
+
+
+```{r}
+dt_vec <- deframe(dt)
+mol <- mol2 <- "e"
+i <- 1
+future::plan(future::multicore, workers = future::availableCores())
+repeat {
+  mol2 <-
+    dt_vec |>
+    imap(\(x, idx) {
+      furrr::future_map(mol2, \(mol2) {
+        mol2 |>
+          str_locate_all(idx) |>
+          data.frame() |>
+          pmap_chr(\(start, end) {
+            str_sub(mol2, start, end) <- x
+            return(mol2)
+          })
+      })
+    }) |> 
+    unlist() |>
+    unique()
+  mol2 <- mol <- mol2[!(mol2 %in% mol)]
+  if (any(mol == molecule) | any(nchar(mol) > nchar(molecule))) {
+    print(i)
+    break
+  }
+  i <- i + 1
+}
+future::plan(future::sequential)
+```
+
