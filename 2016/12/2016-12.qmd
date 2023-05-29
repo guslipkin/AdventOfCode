@@ -33,7 +33,7 @@ functions <- list(
     if (x != 0) private$.inc(y) else private$.inc()
   }
 )
-create_basic(registers, functions)$run(dt, target = "a")
+create_assembly(registers, functions)$run(dt, target = "a")
 ```
 
 ## Part 2
@@ -42,6 +42,6 @@ Just a quick change, but oh so slow...
 
 ```{r}
 registers <- list("a" = 0L, "b" = 0L, "c" = 1L, "d" = 0L)
-create_basic(registers, functions)$run(dt, target = "a")
+create_assembly(registers, functions)$run(dt, target = "a")
 ```
 

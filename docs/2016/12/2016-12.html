@@ -678,8 +678,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>dt <span class="ot">&lt;-</span> <span class="fu">readLines</span>(<span class="st">"input.txt"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <section id="part-1" class="level2"><h2 class="anchored" data-anchor-id="part-1">Part 1</h2>
-<p>Okay. I finally had the motivation I needed to write an AoC BASIC compiler/runner. It’s super slow, but it works and I don’t really have to do anything besides define the registers and the functions. If you want to learn more, take a look <a href="https://mistlecode.guslipkin.me/reference/basic">here</a>.</p>
-<div class="cell" data-hash="2016-12_cache/html/unnamed-chunk-2_b3c34bd6aefcbc85932aac3b150859c8">
+<p>Okay. I finally had the motivation I needed to write an AoC BASIC interpreter/runner. It’s super slow, but it works and I don’t really have to do anything besides define the registers and the functions. If you want to learn more, take a look <a href="https://mistlecode.guslipkin.me/reference/basic">here</a>.</p>
+<div class="cell" data-hash="2016-12_cache/html/unnamed-chunk-2_a2bbec16c87c6b10b90f0accb0a602d8">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>registers <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="st">"a"</span> <span class="ot">=</span> 0L, <span class="st">"b"</span> <span class="ot">=</span> 0L, <span class="st">"c"</span> <span class="ot">=</span> 0L, <span class="st">"d"</span> <span class="ot">=</span> 0L)</span>
 <span id="cb4-2"><a href="#cb4-2"></a>functions <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
 <span id="cb4-3"><a href="#cb4-3"></a>  <span class="st">"cpy"</span> <span class="ot">=</span> \(x, y) {</span>
@@ -699,16 +699,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb4-17"><a href="#cb4-17"></a>    <span class="cf">if</span> (x <span class="sc">!=</span> <span class="dv">0</span>) private<span class="sc">$</span><span class="fu">.inc</span>(y) <span class="cf">else</span> private<span class="sc">$</span><span class="fu">.inc</span>()</span>
 <span id="cb4-18"><a href="#cb4-18"></a>  }</span>
 <span id="cb4-19"><a href="#cb4-19"></a>)</span>
-<span id="cb4-20"><a href="#cb4-20"></a><span class="fu">create_basic</span>(registers, functions)<span class="sc">$</span><span class="fu">run</span>(dt, <span class="at">target =</span> <span class="st">"a"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb4-20"><a href="#cb4-20"></a><span class="fu">create_assembly</span>(registers, functions)<span class="sc">$</span><span class="fu">run</span>(dt, <span class="at">target =</span> <span class="st">"a"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 318009</code></pre>
 </div>
 </div>
 </section><section id="part-2" class="level2"><h2 class="anchored" data-anchor-id="part-2">Part 2</h2>
 <p>Just a quick change, but oh so slow…</p>
-<div class="cell" data-hash="2016-12_cache/html/unnamed-chunk-3_3f1b08a9944510b4f88fc3e91fb6ae90">
+<div class="cell" data-hash="2016-12_cache/html/unnamed-chunk-3_077e534516a53ad6592848c45438a2ee">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a>registers <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="st">"a"</span> <span class="ot">=</span> 0L, <span class="st">"b"</span> <span class="ot">=</span> 0L, <span class="st">"c"</span> <span class="ot">=</span> 1L, <span class="st">"d"</span> <span class="ot">=</span> 0L)</span>
-<span id="cb6-2"><a href="#cb6-2"></a><span class="fu">create_basic</span>(registers, functions)<span class="sc">$</span><span class="fu">run</span>(dt, <span class="at">target =</span> <span class="st">"a"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb6-2"><a href="#cb6-2"></a><span class="fu">create_assembly</span>(registers, functions)<span class="sc">$</span><span class="fu">run</span>(dt, <span class="at">target =</span> <span class="st">"a"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 9227663</code></pre>
 </div>

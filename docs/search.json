@@ -851,14 +851,14 @@
     "href": "2016/12/2016-12.html#part-1",
     "title": "12: Leonardo’s Monorail",
     "section": "Part 1",
-    "text": "Part 1\nOkay. I finally had the motivation I needed to write an AoC BASIC compiler/runner. It’s super slow, but it works and I don’t really have to do anything besides define the registers and the functions. If you want to learn more, take a look here.\n\nregisters &lt;- list(\"a\" = 0L, \"b\" = 0L, \"c\" = 0L, \"d\" = 0L)\nfunctions &lt;- list(\n  \"cpy\" = \\(x, y) {\n    self[[y]] &lt;- self$val_or_index(x)\n    private$.inc()\n  },\n  \"inc\" = \\(x, y) {\n    self[[x]] &lt;- self[[x]] + 1\n    private$.inc()\n  },\n  \"dec\" = \\(x, y) {\n    self[[x]] &lt;- self[[x]] - 1\n    private$.inc()\n  },\n  \"jnz\" = \\(x, y) {\n    x &lt;- self$val_or_index(x)\n    if (x != 0) private$.inc(y) else private$.inc()\n  }\n)\ncreate_basic(registers, functions)$run(dt, target = \"a\")\n\n[1] 318009"
+    "text": "Part 1\nOkay. I finally had the motivation I needed to write an AoC BASIC interpreter/runner. It’s super slow, but it works and I don’t really have to do anything besides define the registers and the functions. If you want to learn more, take a look here.\n\nregisters &lt;- list(\"a\" = 0L, \"b\" = 0L, \"c\" = 0L, \"d\" = 0L)\nfunctions &lt;- list(\n  \"cpy\" = \\(x, y) {\n    self[[y]] &lt;- self$val_or_index(x)\n    private$.inc()\n  },\n  \"inc\" = \\(x, y) {\n    self[[x]] &lt;- self[[x]] + 1\n    private$.inc()\n  },\n  \"dec\" = \\(x, y) {\n    self[[x]] &lt;- self[[x]] - 1\n    private$.inc()\n  },\n  \"jnz\" = \\(x, y) {\n    x &lt;- self$val_or_index(x)\n    if (x != 0) private$.inc(y) else private$.inc()\n  }\n)\ncreate_assembly(registers, functions)$run(dt, target = \"a\")\n\n[1] 318009"
   },
   {
     "objectID": "2016/12/2016-12.html#part-2",
     "href": "2016/12/2016-12.html#part-2",
     "title": "12: Leonardo’s Monorail",
     "section": "Part 2",
-    "text": "Part 2\nJust a quick change, but oh so slow…\n\nregisters &lt;- list(\"a\" = 0L, \"b\" = 0L, \"c\" = 1L, \"d\" = 0L)\ncreate_basic(registers, functions)$run(dt, target = \"a\")\n\n[1] 9227663"
+    "text": "Part 2\nJust a quick change, but oh so slow…\n\nregisters &lt;- list(\"a\" = 0L, \"b\" = 0L, \"c\" = 1L, \"d\" = 0L)\ncreate_assembly(registers, functions)$run(dt, target = \"a\")\n\n[1] 9227663"
   },
   {
     "objectID": "2015/01/2015-01.html#part-1",

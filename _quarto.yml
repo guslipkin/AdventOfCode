@@ -128,6 +128,9 @@ format:
       light: flatly
       dark: darkly
     css: styles.css
+    grid: 
+      sidebar-width: 300px
+      body-width: 900px
     toc: true
     code-line-numbers: true
     code-link: true
