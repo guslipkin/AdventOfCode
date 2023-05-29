@@ -1,0 +1,47 @@
+---
+title: "12: Leonardo's Monorail"
+---
+
+```{r}
+#| message: false
+library(mistlecode)
+
+dt <- readLines("input.txt")
+```
+
+## Part 1
+
+Okay. I finally had the motivation I needed to write an AoC BASIC interpreter/runner. It's super slow, but it works and I don't really have to do anything besides define the registers and the functions. If you want to learn more, take a look [here](https://mistlecode.guslipkin.me/reference/basic).
+
+```{r}
+registers <- list("a" = 0L, "b" = 0L, "c" = 0L, "d" = 0L)
+functions <- list(
+  "cpy" = \(x, y) {
+    self[[y]] <- self$val_or_index(x)
+    private$.inc()
+  },
+  "inc" = \(x, y) {
+    self[[x]] <- self[[x]] + 1
+    private$.inc()
+  },
+  "dec" = \(x, y) {
+    self[[x]] <- self[[x]] - 1
+    private$.inc()
+  },
+  "jnz" = \(x, y) {
+    x <- self$val_or_index(x)
+    if (x != 0) private$.inc(y) else private$.inc()
+  }
+)
+create_basic(registers, functions)$run(dt, target = "a")
+```
+
+## Part 2
+
+Just a quick change, but oh so slow...
+
+```{r}
+registers <- list("a" = 0L, "b" = 0L, "c" = 1L, "d" = 0L)
+create_basic(registers, functions)$run(dt, target = "a")
+```
+
