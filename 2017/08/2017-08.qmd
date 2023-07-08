@@ -1,0 +1,60 @@
+---
+title: "08: I Heard You Like Registers"
+---
+
+```{r}
+#| message: false
+#| warning: false
+library(mistlecode)
+
+dt <-
+  readLines("input2.txt") |>
+  str_match("(\\w) (inc|dec) (-?\\d+) (if) (\\w) (>=?|<=?|==) (-?\\d+)") |>
+  _[, c(3, 2, 4:8)] |>
+  t() |>
+  as.data.frame() |>
+  map(paste0, collapse = " ") |>
+  unlist() |>
+  unname()
+```
+
+```{r}
+registers <- 
+  str_split_fixed(dt, " ", n = 3)[,2] |>
+  unique() |>
+  enframe() |>
+  mutate(name = 0L) |>
+  select(2:1) |>
+  deframe() |>
+  as.list()
+
+functions <- list(
+  "parse_if" = \(x, y) {
+    s <- str_match(x, ("(\\w) (>=?|<=?|==) (-?\\d+)"))[1,-1]
+    glue("self[['{s[1]}']] {s[2]} {s[3]}") |>
+      parse(text = _) |>
+      eval()
+  },
+  "inc" = \(x, y) {
+    p <- self$parse_if(x = y, y = NULL)
+    s <- 
+      str_match(x, "(-?\\d+)")[1,2] |>
+      as.integer()
+    if (p) { self[[x]] <- self[[x]] + s }
+    private$.inc()
+  },
+  "dec" = \(x, y) {
+    p <- self$parse_if(x = y, y = NULL)
+    s <- 
+      str_match(dt[[2]][2], "(-?\\d+)")[1,2] |>
+      as.integer()
+    if (p) { self[[x]] <- self[[x]] - s }
+    private$.inc()
+  }
+)
+
+create_assembly(registers, functions, regex = " (inc|dec|if) ", fixed_n = 3)$run(dt)
+
+str_split_fixed(dt, "( | if )", n = 3)
+```
+

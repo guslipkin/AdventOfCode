@@ -9,27 +9,36 @@ library(tibble)
 ```
 
 ```{r}
-x <- list(
-  "hp" = 50,
-  "damage" = 0,
-  "armor" = 0,
-  "mana" = 500
-)
-# spells <- 
-  tribble(
-    ~spell,          ~mana_cost, ~damage, ~armor, ~hp, ~mana, ~duration,
-    "magic_missile", 53,         4,       0,      0,   0,     0,
-    "drain",         73,         2,       0,      2,   0,     0,
-    "shield",        113,        0,       7,      0,   0,     6,
-    "poison",        173,        3,       0,      0,   0,     6,
-    "recharge",      229,        0,       0,      0,   101,   5
-  ) |>
-  apply(1, as.list) |>
-  map(\(x) {
-    (list())[[x$spell]] <- x
-  })
-create_spell <- function(x) {
-  
+create_player <- function(hp, damage = 0, armor = 0, mana = Inf) {
+  as.list(environment())
 }
+
+create_spell <- function(cost, ...) {
+  list("cost" = cost, ...)
+}
+
+create_effect <- function(cost, duration, ...) {
+  list("cost" = cost, "duration" = duration, ...)
+}
+
+create_spell(53, "damage" = 4)
+
+as.list(rlang::rep_named(names(spells), 0))
+
+create_game(
+  players = list(
+    "player" = create_player(50, 0, 0, 500),
+    "boss" = create_player(55, 8)
+  ),
+  spells = list(
+    "magic_missile" = create_spell(53, damage = 4),
+    "drain" = create_spell(73, damage = 2, hp = 2)
+  ),
+  effects = list(
+    "shield" = create_effect(113, 6, armor = 7),
+    "poison" = create_effect(173, 6, damage = 3),
+    "recharge" = create_effect(229, 5, mana = 101)
+  )
+)
 ```
 
