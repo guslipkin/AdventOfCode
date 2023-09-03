@@ -29,6 +29,8 @@ x <-
   `names<-`(NULL) |>
   purrr::discard(\(x) length(x) == 0)
 
+x[order(sapply(x, length))]
+table(sapply(x, length))
 combos <-
   combn(seq_along(x), 3) |>
   as.data.frame() |>

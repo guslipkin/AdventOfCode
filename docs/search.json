@@ -11,7 +11,7 @@
     "href": "index.html#my-favorite-solutions",
     "title": "Gus Lipkin’s Awesome Code",
     "section": "My Favorite Solutions",
-    "text": "My Favorite Solutions\n\n\n2021-09: I used the dbscan clustering method to solve a path finding issue.\n\n2022-04: While not my fastest part 1, part 2 took me just 38 seconds!\n\n2022-11: I used S3 Classes and function factories for the first time, and got just a little bit better at recursion."
+    "text": "My Favorite Solutions\n\n\n2016-12 and 2017-08: I created a small assembly style computer that solves the problems for me given a set of registers and instructions.\n\n2021-09: I used the dbscan clustering method to solve a path finding issue.\n\n2022-04: While not my fastest part 1, part 2 took me just 38 seconds!\n\n2022-11: I used S3 Classes and function factories for the first time, and got just a little bit better at recursion."
   },
   {
     "objectID": "2022/01/2022-01.html#part-1",
@@ -733,6 +733,62 @@
     "title": "2017-02: Corruption Checksum",
     "section": "Part 2",
     "text": "Part 2\n\napply(dt, 1, function(x) {\n  expand.grid(x, x) %&gt;%\n    filter(Var1 != Var2) %&gt;%\n    mutate(\"valid\" = ifelse(Var1 %% Var2 == 0, TRUE, FALSE)) %&gt;%\n    filter(valid) %&gt;%\n    mutate(\"val\" = Var1 / Var2) %&gt;%\n    pull(val)\n}) %&gt;%\n  sum()\n\n[1] 244"
+  },
+  {
+    "objectID": "2017/03/2017-03.html#part-1",
+    "href": "2017/03/2017-03.html#part-1",
+    "title": "03: Spiral Memory",
+    "section": "Part 1",
+    "text": "Part 1\n\ngrid_dim &lt;- ceiling(sqrt(input))\n\ndiff &lt;- (grid_dim ^ 2) - input\n\nside &lt;- case_when(\n  diff &lt; grid_dim ~ \"bottom\",\n  diff &gt;= grid_dim & diff &lt; grid_dim * 2 ~ \"left\",\n  diff &gt;= grid_dim * 2 & diff &lt; grid_dim * 3 ~ \"top\",\n  diff &gt;= grid_dim * 3 & diff &lt; grid_dim * 4 ~ \"right\",\n)\n\nmid &lt;- ((grid_dim - 1) / 2)\nabs((grid_dim - diff) - mid) + mid - 1\n\n[1] 438"
+  },
+  {
+    "objectID": "2017/03/2017-03.html#part-2",
+    "href": "2017/03/2017-03.html#part-2",
+    "title": "03: Spiral Memory",
+    "section": "Part 2",
+    "text": "Part 2\nI don’t know why I struggled. This was actually kinda fun. Getting the logic for the movements was odd.\n\nm &lt;- matrix(1, 1, 1)\npoint = list(x = 1, y = 1)\nrepeat {\n  if (point$y == nrow(m) & point$x == ncol(m)) {\n    tmp &lt;- matrix(NA_integer_, ncol(m) + 2, nrow(m) + 2)\n    tmp[2:(nrow(tmp) - 1), 2:(ncol(tmp) - 1)] &lt;- m\n    m &lt;- tmp\n    point$x &lt;- point$x + 2\n    point$y &lt;- point$y + 1\n  } else if (point$x == ncol(m) & point$y != 1) {\n    point$y &lt;- point$y - 1\n  } else if (point$x &lt;= ncol(m) & point$y == 1 & point$x - 1 &gt;= 1) {\n    point$x &lt;- point$x - 1\n  } else if (point$x == 1 & point$y &gt;= 1 & point$y + 1 &lt;= nrow(m)) {\n    point$y &lt;- point$y + 1\n  } else {\n    point$x &lt;- point$x + 1\n  }\n  m[point$y, point$x] &lt;-\n    sum(get_adjacent_values(point$y, point$x, m), na.rm = TRUE)\n  # print(m)\n  if (m[point$y, point$x] &gt; input) break\n}\nmax(m, na.rm = TRUE)\n\n[1] 266330"
+  },
+  {
+    "objectID": "2017/04/2017-04.html#part-1",
+    "href": "2017/04/2017-04.html#part-1",
+    "title": "04: High-Entropy Passphrases",
+    "section": "Part 1",
+    "text": "Part 1\nEasy enough. I wanted to do it in one pipe-line, but couldn’t think of anything efficient enough.\n\n\"input.txt\" |&gt;\n  readLines() |&gt;\n  map_lgl(\\(x) {\n    x &lt;-\n      x |&gt;\n      str_split_1(\" \") |&gt;\n      table()\n    all(x == 1)\n  }) |&gt;\n  sum()\n\n[1] 477"
+  },
+  {
+    "objectID": "2017/04/2017-04.html#part-2",
+    "href": "2017/04/2017-04.html#part-2",
+    "title": "04: High-Entropy Passphrases",
+    "section": "Part 2",
+    "text": "Part 2\nI thought this would be harder, but then I realized I can just sort each string then use table again.\n\n\"input.txt\" |&gt;\n  readLines() |&gt;\n  map_lgl(\\(x) {\n    x &lt;-\n      x |&gt;\n      str_split_1(\" \") |&gt;\n      map_chr(\\(y) {\n        y |&gt;\n          str_split_1(\"\") |&gt;\n          sort() |&gt;\n          paste0(collapse = \"\")\n      }) |&gt;\n      table()\n    all(x == 1)\n  }) |&gt;\n  sum()\n\n[1] 167"
+  },
+  {
+    "objectID": "2017/05/2017-05.html#part-1",
+    "href": "2017/05/2017-05.html#part-1",
+    "title": "05: A Maze of Twisty Trampolines, All Alike",
+    "section": "Part 1",
+    "text": "Part 1\nI tried recursion first, had a bit of trouble, then got C stack errors. Back to while loops we go…\n\nx &lt;- x2\npos &lt;- 1\ninc &lt;- 0\nwhile(pos &gt;= 1 & pos &lt;= length(x)) {\n  x[pos] &lt;- x[pos] + 1\n  pos &lt;- pos + x[pos] - 1\n  inc &lt;- inc + 1\n}\ninc\n\n[1] 376976"
+  },
+  {
+    "objectID": "2017/05/2017-05.html#part-2",
+    "href": "2017/05/2017-05.html#part-2",
+    "title": "05: A Maze of Twisty Trampolines, All Alike",
+    "section": "Part 2",
+    "text": "Part 2\nFor some reason I struggled with getting the logic in the right order, but a poor night’s sleep does wonders :|\n\nx &lt;- x2\npos &lt;- 1\ninc &lt;- 0\nwhile(pos &gt;= 1 & pos &lt;= length(x)) {\n  jmp &lt;- x[pos]\n  x[pos] &lt;- if(x[pos] &gt;= 3) x[pos] - 1 else x[pos] + 1\n  inc &lt;- inc + 1\n  pos &lt;- pos + jmp\n}\ninc\n\n[1] 29227751"
+  },
+  {
+    "objectID": "2017/08/2017-08.html#part-1",
+    "href": "2017/08/2017-08.html#part-1",
+    "title": "08: I Heard You Like Registers",
+    "section": "Part 1",
+    "text": "Part 1\nThis was so much fun. I like that I had to hack around my computer a bit with the proc function to do the actual processing, but it’s good to keep in my back pocket for later.\n\nregisters &lt;- \n  dt$V1 |&gt;\n  unique() |&gt;\n  sort()\nregisters &lt;- \n  rep(0L, length(registers)) |&gt;\n  as.list() |&gt;\n  `names&lt;-`(registers)\n\nfunctions &lt;- list(\n  \"proc\" = \\(x, y) {\n    x &lt;- str_match(x, \"([a-z]+) (inc|dec) (-?[0-9]+) if (.*)\")[1,-1]\n    iff &lt;- eval(parse(text = glue(\"self${x[4]}\")))\n    if (iff) {\n      self[[x[1]]] &lt;- self[[x[2]]](x[1], as.integer(x[3]))\n    }\n    private$.inc()\n  },\n  \"inc\" = \\(x, y) {\n    self[[x]] &lt;- self[[x]] + y\n  },\n  \"dec\" = \\(x, y) {\n    self[[x]] &lt;- self[[x]] - y\n  }\n)\n\nx &lt;-\n  data.frame(\n    process = \"proc\",\n    instruction = readLines(\"input.txt\")\n    ) |&gt;\n    t() |&gt;\n    as.vector() |&gt;\n    matrix(nrow = 2) |&gt;\n    as.data.frame() |&gt;\n    as.list()\na &lt;- create_assembly(registers, functions)$run(x)\nas.list(a)[names(registers)] |&gt;\n  unlist() |&gt;\n  max()\n\n[1] 2971"
+  },
+  {
+    "objectID": "2017/08/2017-08.html#part-2",
+    "href": "2017/08/2017-08.html#part-2",
+    "title": "08: I Heard You Like Registers",
+    "section": "Part 2",
+    "text": "Part 2\nHmmm. Okay. Small register and function mods and we’re good to go!\n\nregisters$maximum_value &lt;- 0L\n\nfunctions &lt;- list(\n  \"proc\" = \\(x, y) {\n    x &lt;- str_match(x, \"([a-z]+) (inc|dec) (-?[0-9]+) if (.*)\")[1,-1]\n    iff &lt;- eval(parse(text = glue(\"self${x[4]}\")))\n    if (iff) {\n      self[[x[1]]] &lt;- self[[x[2]]](x[1], as.integer(x[3]))\n      if (self[[x[1]]] &gt; self$maximum_value) self$maximum_value &lt;- self[[x[1]]]\n    }\n    private$.inc()\n  },\n  \"inc\" = \\(x, y) {\n    self[[x]] &lt;- self[[x]] + y\n  },\n  \"dec\" = \\(x, y) {\n    self[[x]] &lt;- self[[x]] - y\n  }\n)\n\ncreate_assembly(registers, functions)$run(x, target = \"maximum_value\")\n\n[1] 4254"
   },
   {
     "objectID": "2016/01/2016-01.html#part-1",

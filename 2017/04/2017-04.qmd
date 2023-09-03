@@ -1,0 +1,50 @@
+---
+title: "04: High-Entropy Passphrases"
+---
+
+```{r}
+#| message: false
+#| warning: false
+library(mistlecode)
+```
+
+## Part 1
+
+Easy enough. I wanted to do it in one pipe-line, but couldn't think of anything efficient enough.
+
+```{r}
+"input.txt" |>
+  readLines() |>
+  map_lgl(\(x) {
+    x <-
+      x |>
+      str_split_1(" ") |>
+      table()
+    all(x == 1)
+  }) |>
+  sum()
+```
+
+## Part 2
+
+I thought this would be harder, but then I realized I can just sort each string then use table again.
+
+```{r}
+"input.txt" |>
+  readLines() |>
+  map_lgl(\(x) {
+    x <-
+      x |>
+      str_split_1(" ") |>
+      map_chr(\(y) {
+        y |>
+          str_split_1("") |>
+          sort() |>
+          paste0(collapse = "")
+      }) |>
+      table()
+    all(x == 1)
+  }) |>
+  sum()
+```
+

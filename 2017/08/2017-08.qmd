@@ -1,0 +1,85 @@
+---
+title: "08: I Heard You Like Registers"
+---
+
+```{r}
+#| message: false
+library(mistlecode)
+dt <- fread("input.txt")
+```
+
+## Part 1
+
+This was so much fun. I like that I had to hack around my computer a bit with the `proc` function to do the actual processing, but it's good to keep in my back pocket for later.
+
+```{r}
+registers <- 
+  dt$V1 |>
+  unique() |>
+  sort()
+registers <- 
+  rep(0L, length(registers)) |>
+  as.list() |>
+  `names<-`(registers)
+
+functions <- list(
+  "proc" = \(x, y) {
+    x <- str_match(x, "([a-z]+) (inc|dec) (-?[0-9]+) if (.*)")[1,-1]
+    iff <- eval(parse(text = glue("self${x[4]}")))
+    if (iff) {
+      self[[x[1]]] <- self[[x[2]]](x[1], as.integer(x[3]))
+    }
+    private$.inc()
+  },
+  "inc" = \(x, y) {
+    self[[x]] <- self[[x]] + y
+  },
+  "dec" = \(x, y) {
+    self[[x]] <- self[[x]] - y
+  }
+)
+
+x <-
+  data.frame(
+    process = "proc",
+    instruction = readLines("input.txt")
+    ) |>
+    t() |>
+    as.vector() |>
+    matrix(nrow = 2) |>
+    as.data.frame() |>
+    as.list()
+a <- create_assembly(registers, functions)$run(x)
+as.list(a)[names(registers)] |>
+  unlist() |>
+  max()
+```
+
+## Part 2
+
+Hmmm. Okay. Small register and function mods and we're good to go!
+
+```{r}
+registers$maximum_value <- 0L
+
+functions <- list(
+  "proc" = \(x, y) {
+    x <- str_match(x, "([a-z]+) (inc|dec) (-?[0-9]+) if (.*)")[1,-1]
+    iff <- eval(parse(text = glue("self${x[4]}")))
+    if (iff) {
+      self[[x[1]]] <- self[[x[2]]](x[1], as.integer(x[3]))
+      if (self[[x[1]]] > self$maximum_value) self$maximum_value <- self[[x[1]]]
+    }
+    private$.inc()
+  },
+  "inc" = \(x, y) {
+    self[[x]] <- self[[x]] + y
+  },
+  "dec" = \(x, y) {
+    self[[x]] <- self[[x]] - y
+  }
+)
+
+create_assembly(registers, functions)$run(x, target = "maximum_value")
+```
+
