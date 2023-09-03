@@ -14,6 +14,43 @@ dt <- c(1:5, 7:11)
 
 ## Part 1
 
+```{r}
+target_weight <- sum(dt) / 3
+
+x <-
+  1:(length(dt) / 2) |>
+  map(\(x) {
+    com <- combn(dt, x)
+    com[,apply(com, 2, sum) == target_weight] |>
+      as.data.frame() |>
+      as.list()
+  }, .progress = TRUE) |>
+  unlist(recursive = FALSE) |>
+  `names<-`(NULL) |>
+  purrr::discard(\(x) length(x) == 0)
+
+combos <-
+  combn(seq_along(x), 3) |>
+  as.data.frame() |>
+  as.list()
+
+x <-
+  lapply(combos, \(y) {
+    if (max(table(unlist(x[y]))) != 1) return(NULL)
+    list(
+      set = x[y],
+      min_size = min(sapply(x[y], length)),
+      qe = min(sapply(x[y], prod))
+    )
+  }) |>
+  purrr::discard(is.null)
+
+min_size <- sapply(x, \(x) x$min_size)
+qe <- sapply(x, \(x) x$qe)
+qe[which(min_size == min(min_size))][1]
+```
+
+
 These are primes. There's probably something smart you can do with it.
 
 ```{r}

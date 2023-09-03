@@ -43,6 +43,12 @@ dt |>
 Building forward is definitely not the way to go. That would be a nightmare.
 
 ```{r}
+dt
+molecule
+```
+
+
+```{r}
 any(duplicated(dt$end))
 
 expand.grid(
