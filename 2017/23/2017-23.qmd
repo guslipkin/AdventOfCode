@@ -1,0 +1,61 @@
+---
+title: "23: Coprocessor Conflagration"
+---
+
+```{r}
+#| message: false
+library(mistlecode)
+dt <- readLines("input.txt")
+```
+
+## Part 1
+
+I'm getting pretty good at this, but I want to fix some things in `create_assembly`...
+
+```{r}
+registers <- 
+  rep(0L, 8) |>
+  as.list() |>
+  `names<-`(letters[1:8])
+registers$mul_counter <- 0
+
+functions <- list(
+  "set" = \(x, y) {
+    y <- self$val_or_index(y)
+    self[[x]] <- y
+    private$.inc()
+  },
+  "sub" = \(x, y) {
+    y <- self$val_or_index(y)
+    self[[x]] <- self[[x]] - y
+    private$.inc()
+  },
+  "mul" = \(x, y) {
+    y <- self$val_or_index(y)
+    self[[x]] <- self[[x]] * y
+    self$mul_counter <- self$mul_counter + 1
+    private$.inc()
+  },
+  "jnz" = \(x, y) {
+    x <- self$val_or_index(x)
+    if (x != 0) private$.inc(y) else private$.inc()
+  }
+)
+
+create_assembly(registers, functions)$run(dt, target = "mul_counter")
+```
+
+## Part 2
+
+I don't actually need `registers$mul_counter`, but I didn't want to redefine `mul()` so here we are.
+
+```{r}
+registers <- 
+  c(1L, rep(0L, 7)) |>
+  as.list() |>
+  `names<-`(letters[1:8])
+registers$mul_counter <- 0
+
+create_assembly(registers, functions)$run(dt, target = "h")
+```
+

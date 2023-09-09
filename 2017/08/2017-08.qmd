@@ -39,16 +39,9 @@ functions <- list(
   }
 )
 
-x <-
-  data.frame(
-    process = "proc",
-    instruction = readLines("input.txt")
-    ) |>
-    t() |>
-    as.vector() |>
-    matrix(nrow = 2) |>
-    as.data.frame() |>
-    as.list()
+x <- 
+  readLines("input.txt") |>
+  add_processor()
 a <- create_assembly(registers, functions)$run(x)
 as.list(a)[names(registers)] |>
   unlist() |>
@@ -62,23 +55,15 @@ Hmmm. Okay. Small register and function mods and we're good to go!
 ```{r}
 registers$maximum_value <- 0L
 
-functions <- list(
-  "proc" = \(x, y) {
-    x <- str_match(x, "([a-z]+) (inc|dec) (-?[0-9]+) if (.*)")[1,-1]
+functions$proc <- \(x, y) {
+  x <- str_match(x, "([a-z]+) (inc|dec) (-?[0-9]+) if (.*)")[1,-1]
     iff <- eval(parse(text = glue("self${x[4]}")))
     if (iff) {
       self[[x[1]]] <- self[[x[2]]](x[1], as.integer(x[3]))
       if (self[[x[1]]] > self$maximum_value) self$maximum_value <- self[[x[1]]]
     }
     private$.inc()
-  },
-  "inc" = \(x, y) {
-    self[[x]] <- self[[x]] + y
-  },
-  "dec" = \(x, y) {
-    self[[x]] <- self[[x]] - y
-  }
-)
+}
 
 create_assembly(registers, functions)$run(x, target = "maximum_value")
 ```

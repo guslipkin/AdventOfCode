@@ -47,6 +47,61 @@ dt
 molecule
 ```
 
+```{r}
+m <- molecule
+i <- 0
+future::plan(future::multisession, workers = 2)
+while (!any(m == "e")) {
+  i <- i + 1
+  m <-
+    dt |>
+    deframe() |>
+    imap(\(x, idx) {
+      furrr::future_map(m, \(m) {
+        m |>
+          str_locate_all(x) |>
+          data.frame() |>
+          pmap_chr(\(start, end) {
+            str_sub(m, start, end) <- idx
+            return(m)
+          })
+      })
+    }, .progress = TRUE) |>
+    unlist() |>
+    unname() |>
+    unique()
+}
+i
+```
+
+
+```{r}
+dt <-
+  dt |>
+  mutate(n = ifelse(start == "e", 0, 1)) |>
+  # arrange(desc(end), desc(start))
+  arrange(desc(nchar(end)), start, desc(start))
+m <- molecule
+j <- 0
+breakFlag <- FALSE
+while (m != "e") {
+  for (i in 1:nrow(dt)) {
+    breakFlag <- FALSE
+    if (grepl(dt$end[i], m)) breakFlag <- TRUE
+    m <- str_replace_all(m, dt$end[i], dt$start[i])
+    # j <- j + 1
+    if (breakFlag) { j <- j + 1; break; }
+  }
+  m
+}
+j
+```
+
+< 258
+52
+53
+55
+56
 
 ```{r}
 any(duplicated(dt$end))

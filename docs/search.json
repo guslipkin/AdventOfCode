@@ -709,28 +709,28 @@
   {
     "objectID": "2017/01/2017-01.html#part-1",
     "href": "2017/01/2017-01.html#part-1",
-    "title": "2017-01: Inverse Captcha",
+    "title": "01: Inverse Captcha",
     "section": "Part 1",
     "text": "Part 1\n\ndata.table(\n  \"input\" = c(dt),\n  \"test\" = c(dt[-1], dt[1])\n) %&gt;%\n  .[, \"valid\" := ifelse(input == test, TRUE, FALSE)] %&gt;%\n  .[valid == TRUE, test] %&gt;%\n  sum()\n\n[1] 1031"
   },
   {
     "objectID": "2017/01/2017-01.html#part-2",
     "href": "2017/01/2017-01.html#part-2",
-    "title": "2017-01: Inverse Captcha",
+    "title": "01: Inverse Captcha",
     "section": "Part 2",
     "text": "Part 2\n\nlen &lt;- length(dt) / 2\ndata.table(\n  \"input\" = c(dt),\n  \"test\" = c(dt[(len + 1):length(dt)], dt[1:len])\n) %&gt;%\n  .[, \"valid\" := ifelse(input == test, TRUE, FALSE)] %&gt;%\n  .[valid == TRUE, test] %&gt;%\n  sum()\n\n[1] 1080"
   },
   {
     "objectID": "2017/02/2017-02.html#part-1",
     "href": "2017/02/2017-02.html#part-1",
-    "title": "2017-02: Corruption Checksum",
+    "title": "02: Corruption Checksum",
     "section": "Part 1",
-    "text": "Part 1\n\ndt %&gt;%\n  rowwise() %&gt;%\n  mutate(\n    \"min\" = min(across()),\n    \"max\" = max(across())\n  ) %&gt;%\n  mutate(\"diff\" = max - min) %&gt;%\n  pull(diff) %&gt;%\n  sum()\n\n[1] 36174"
+    "text": "Part 1\n\ndt %&gt;%\n  rowwise() %&gt;%\n  mutate(\n    \"min\" = min(across()),\n    \"max\" = max(across())\n  ) %&gt;%\n  mutate(\"diff\" = max - min) %&gt;%\n  pull(diff) %&gt;%\n  sum()\n\nWarning: There was 1 warning in `mutate()`.\nℹ In argument: `min = min(across())`.\nℹ In row 1.\nCaused by warning:\n! Using `across()` without supplying `.cols` was deprecated in dplyr 1.1.0.\nℹ Please supply `.cols` instead.\n\n\n[1] 36174"
   },
   {
     "objectID": "2017/02/2017-02.html#part-2",
     "href": "2017/02/2017-02.html#part-2",
-    "title": "2017-02: Corruption Checksum",
+    "title": "02: Corruption Checksum",
     "section": "Part 2",
     "text": "Part 2\n\napply(dt, 1, function(x) {\n  expand.grid(x, x) %&gt;%\n    filter(Var1 != Var2) %&gt;%\n    mutate(\"valid\" = ifelse(Var1 %% Var2 == 0, TRUE, FALSE)) %&gt;%\n    filter(valid) %&gt;%\n    mutate(\"val\" = Var1 / Var2) %&gt;%\n    pull(val)\n}) %&gt;%\n  sum()\n\n[1] 244"
   },
@@ -781,14 +781,28 @@
     "href": "2017/08/2017-08.html#part-1",
     "title": "08: I Heard You Like Registers",
     "section": "Part 1",
-    "text": "Part 1\nThis was so much fun. I like that I had to hack around my computer a bit with the proc function to do the actual processing, but it’s good to keep in my back pocket for later.\n\nregisters &lt;- \n  dt$V1 |&gt;\n  unique() |&gt;\n  sort()\nregisters &lt;- \n  rep(0L, length(registers)) |&gt;\n  as.list() |&gt;\n  `names&lt;-`(registers)\n\nfunctions &lt;- list(\n  \"proc\" = \\(x, y) {\n    x &lt;- str_match(x, \"([a-z]+) (inc|dec) (-?[0-9]+) if (.*)\")[1,-1]\n    iff &lt;- eval(parse(text = glue(\"self${x[4]}\")))\n    if (iff) {\n      self[[x[1]]] &lt;- self[[x[2]]](x[1], as.integer(x[3]))\n    }\n    private$.inc()\n  },\n  \"inc\" = \\(x, y) {\n    self[[x]] &lt;- self[[x]] + y\n  },\n  \"dec\" = \\(x, y) {\n    self[[x]] &lt;- self[[x]] - y\n  }\n)\n\nx &lt;-\n  data.frame(\n    process = \"proc\",\n    instruction = readLines(\"input.txt\")\n    ) |&gt;\n    t() |&gt;\n    as.vector() |&gt;\n    matrix(nrow = 2) |&gt;\n    as.data.frame() |&gt;\n    as.list()\na &lt;- create_assembly(registers, functions)$run(x)\nas.list(a)[names(registers)] |&gt;\n  unlist() |&gt;\n  max()\n\n[1] 2971"
+    "text": "Part 1\nThis was so much fun. I like that I had to hack around my computer a bit with the proc function to do the actual processing, but it’s good to keep in my back pocket for later.\n\nregisters &lt;- \n  dt$V1 |&gt;\n  unique() |&gt;\n  sort()\nregisters &lt;- \n  rep(0L, length(registers)) |&gt;\n  as.list() |&gt;\n  `names&lt;-`(registers)\n\nfunctions &lt;- list(\n  \"proc\" = \\(x, y) {\n    x &lt;- str_match(x, \"([a-z]+) (inc|dec) (-?[0-9]+) if (.*)\")[1,-1]\n    iff &lt;- eval(parse(text = glue(\"self${x[4]}\")))\n    if (iff) {\n      self[[x[1]]] &lt;- self[[x[2]]](x[1], as.integer(x[3]))\n    }\n    private$.inc()\n  },\n  \"inc\" = \\(x, y) {\n    self[[x]] &lt;- self[[x]] + y\n  },\n  \"dec\" = \\(x, y) {\n    self[[x]] &lt;- self[[x]] - y\n  }\n)\n\nx &lt;- \n  readLines(\"input.txt\") |&gt;\n  add_processor()\na &lt;- create_assembly(registers, functions)$run(x)\nas.list(a)[names(registers)] |&gt;\n  unlist() |&gt;\n  max()\n\n[1] 2971"
   },
   {
     "objectID": "2017/08/2017-08.html#part-2",
     "href": "2017/08/2017-08.html#part-2",
     "title": "08: I Heard You Like Registers",
     "section": "Part 2",
-    "text": "Part 2\nHmmm. Okay. Small register and function mods and we’re good to go!\n\nregisters$maximum_value &lt;- 0L\n\nfunctions &lt;- list(\n  \"proc\" = \\(x, y) {\n    x &lt;- str_match(x, \"([a-z]+) (inc|dec) (-?[0-9]+) if (.*)\")[1,-1]\n    iff &lt;- eval(parse(text = glue(\"self${x[4]}\")))\n    if (iff) {\n      self[[x[1]]] &lt;- self[[x[2]]](x[1], as.integer(x[3]))\n      if (self[[x[1]]] &gt; self$maximum_value) self$maximum_value &lt;- self[[x[1]]]\n    }\n    private$.inc()\n  },\n  \"inc\" = \\(x, y) {\n    self[[x]] &lt;- self[[x]] + y\n  },\n  \"dec\" = \\(x, y) {\n    self[[x]] &lt;- self[[x]] - y\n  }\n)\n\ncreate_assembly(registers, functions)$run(x, target = \"maximum_value\")\n\n[1] 4254"
+    "text": "Part 2\nHmmm. Okay. Small register and function mods and we’re good to go!\n\nregisters$maximum_value &lt;- 0L\n\nfunctions$proc &lt;- \\(x, y) {\n  x &lt;- str_match(x, \"([a-z]+) (inc|dec) (-?[0-9]+) if (.*)\")[1,-1]\n    iff &lt;- eval(parse(text = glue(\"self${x[4]}\")))\n    if (iff) {\n      self[[x[1]]] &lt;- self[[x[2]]](x[1], as.integer(x[3]))\n      if (self[[x[1]]] &gt; self$maximum_value) self$maximum_value &lt;- self[[x[1]]]\n    }\n    private$.inc()\n}\n\ncreate_assembly(registers, functions)$run(x, target = \"maximum_value\")\n\n[1] 4254"
+  },
+  {
+    "objectID": "2017/16/2017-16.html#part-1",
+    "href": "2017/16/2017-16.html#part-1",
+    "title": "16: Permutation Promenade",
+    "section": "Part 1",
+    "text": "Part 1\nI hate zero indexed stuff… But it’s fun to keep using create_assembly\n\nregisters &lt;-\n  1:16 |&gt;\n  as.list() |&gt;\n  `names&lt;-`(letters[1:16])\n\nfunctions &lt;- list(\n  \"proc\" = \\(x, y) {\n    y &lt;- stringr::str_split_fixed(x, \"/\", 2)\n    yy &lt;- stringr::str_split_fixed(y[,1], \"\", 2)\n    x &lt;- c(yy, y[,-1])\n    \n    x[1] &lt;- case_match(\n      x[1],\n      \"s\" ~ \"spin\",\n      \"x\" ~ \"exchange\",\n      \"p\" ~ \"partner\"\n    )\n    self[[x[1]]](x[2], x[3])\n    \n    private$.inc()\n  },\n  \"spin\" = \\(x, y) {\n    x &lt;- as.integer(x)\n    for (r in letters[1:16]) {\n      self[[r]] &lt;- (self[[r]] + as.integer(x)) %% length(registers)\n      if (self[[r]] == 0) self[[r]] &lt;- length(registers)\n    }\n  },\n  \"exchange\" = \\(x, y) {\n    x &lt;- as.integer(x) + 1\n    y &lt;- as.integer(y) + 1\n    pos &lt;- sapply(letters[1:16], \\(r) self[[r]])\n    x &lt;- names(which(pos == x))\n    y &lt;- names(which(pos == y))\n    self$partner(x, y)\n  },\n  \"partner\" = \\(x, y) {\n    tmp &lt;- self[[y]]\n    self[[y]] &lt;- self[[x]]\n    self[[x]] &lt;- tmp\n  }\n)\n\na &lt;- create_assembly(registers, functions)$run(x)\nas.list(a)[letters[1:16]] |&gt;\n  unlist() |&gt;\n  sort() |&gt;\n  names() |&gt;\n  paste0(collapse = \"\")\n\n[1] \"ceijbfoamgkdnlph\""
+  },
+  {
+    "objectID": "2017/16/2017-16.html#part-2",
+    "href": "2017/16/2017-16.html#part-2",
+    "title": "16: Permutation Promenade",
+    "section": "Part 2",
+    "text": "Part 2\nIt’s going to loop at some point and I need to track that. Ugh. Just track the new ones until it repeats, then modulo. Slow, but it works.\n\nseen &lt;- c()\n\ni &lt;- 0\nrepeat {\n  a &lt;- create_assembly(registers, functions)$run(x)\n  registers &lt;- as.list(a)[letters[1:16]]\n  new_a &lt;-\n    registers |&gt;\n    unlist() |&gt;\n    sort() |&gt;\n    names() |&gt;\n    paste0(collapse = \"\")\n  if (new_a %in% seen) break else seen &lt;- c(seen, new_a)\n  i &lt;- i + 1\n}\n\nseen[1e9 %% i]\n\n[1] \"pnhajoekigcbflmd\""
   },
   {
     "objectID": "2016/01/2016-01.html#part-1",

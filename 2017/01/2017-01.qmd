@@ -1,5 +1,5 @@
 ---
-title: "2017-01: Inverse Captcha"
+title: "01: Inverse Captcha"
 format: html
 ---
 

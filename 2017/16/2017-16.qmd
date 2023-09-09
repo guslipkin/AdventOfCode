@@ -1,0 +1,93 @@
+---
+title: "16: Permutation Promenade"
+---
+
+```{r}
+#| message: false
+library(mistlecode)
+x <-
+  readLines("input.txt") |>
+  str_split_1(",") |>
+  add_processor()
+```
+
+## Part 1
+
+I hate zero indexed stuff... But it's fun to keep using `create_assembly`
+
+```{r}
+registers <-
+  1:16 |>
+  as.list() |>
+  `names<-`(letters[1:16])
+
+functions <- list(
+  "proc" = \(x, y) {
+    y <- stringr::str_split_fixed(x, "/", 2)
+    yy <- stringr::str_split_fixed(y[,1], "", 2)
+    x <- c(yy, y[,-1])
+    
+    x[1] <- case_match(
+      x[1],
+      "s" ~ "spin",
+      "x" ~ "exchange",
+      "p" ~ "partner"
+    )
+    self[[x[1]]](x[2], x[3])
+    
+    private$.inc()
+  },
+  "spin" = \(x, y) {
+    x <- as.integer(x)
+    for (r in letters[1:16]) {
+      self[[r]] <- (self[[r]] + as.integer(x)) %% length(registers)
+      if (self[[r]] == 0) self[[r]] <- length(registers)
+    }
+  },
+  "exchange" = \(x, y) {
+    x <- as.integer(x) + 1
+    y <- as.integer(y) + 1
+    pos <- sapply(letters[1:16], \(r) self[[r]])
+    x <- names(which(pos == x))
+    y <- names(which(pos == y))
+    self$partner(x, y)
+  },
+  "partner" = \(x, y) {
+    tmp <- self[[y]]
+    self[[y]] <- self[[x]]
+    self[[x]] <- tmp
+  }
+)
+
+a <- create_assembly(registers, functions)$run(x)
+as.list(a)[letters[1:16]] |>
+  unlist() |>
+  sort() |>
+  names() |>
+  paste0(collapse = "")
+```
+
+## Part 2
+
+It's going to loop at some point and I need to track that. Ugh. Just track the new ones until it repeats, then modulo. Slow, but it works.
+
+```{r}
+seen <- c()
+
+i <- 0
+repeat {
+  a <- create_assembly(registers, functions)$run(x)
+  registers <- as.list(a)[letters[1:16]]
+  new_a <-
+    registers |>
+    unlist() |>
+    sort() |>
+    names() |>
+    paste0(collapse = "")
+  if (new_a %in% seen) break else seen <- c(seen, new_a)
+  i <- i + 1
+}
+
+seen[1e9 %% i]
+```
+
