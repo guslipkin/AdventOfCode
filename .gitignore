@@ -54,3 +54,6 @@ rsconnect/
 2022/.aocdlconfig
 */.DS_Store
 docs/CNAME
+.aocdlconfig
+aocdl
+downloadScript.sh

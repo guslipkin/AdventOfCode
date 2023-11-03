@@ -23,19 +23,24 @@ I'm still working on getting the 2021 and earlier puzzles converted to Quarto. T
 #| output: false
 #| include: false
 library(tidyverse)
-years <- c(2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022)
-stars <- c(  43,   18,   16,   12,    8,   20,   26,   28)
+years <- c(2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023)
+stars <- c(  43,   18,   16,   12,    8,   20,   26,   28,    0)
 
 mapply(\(y, s) {
-  c("star" = 1:s) |>
-    `names<-`(rep(y, s))
+  c("star" = rev(seq_len(s))) |>
+    `names<-`(rep(y, s)) |>
+    c(setNames(0, y))
 }, years, stars) |>
   unlist() %>%
   data.frame("year" = names(.), "stars" = .) |>
   group_by(year) |>
     mutate(label = max(stars)) |>
     ungroup() |>
-  mutate(label = ifelse(label == stars, label, NA)) |>
+  filter(stars > 0 | dplyr::n() == 1, .by = 'year') |>
+  mutate(
+    label = ifelse(label == stars, label, NA),
+    stars = ifelse(stars == 0, NA, stars)
+  ) |>
   ggplot(aes(x = year, y = stars)) +
   ggstar::geom_star(fill = "gold", size = 5) +
   geom_label(aes(label = label), size = 3) +
@@ -55,11 +60,11 @@ mapply(\(y, s) {
   geom_label(
     x = .75,
     y = -4, # year tick box
-    label = paste(rep(" ", 146), collapse = ""),
+    label = paste(rep(" ", 148), collapse = ""),
     hjust = 0,
     fill = "white"
   ) +
-  geom_label(x = 4.5, y = -5.7, label = "       ") + # year label box
+  geom_label(x = 5, y = -6.3, label = "       ") + # year label box
   ggtext::geom_richtext(
     x = .22,
     y = max(stars) / 2 + 4,
@@ -78,6 +83,7 @@ mapply(\(y, s) {
     ),
     hjust = 0
   ) -> p
+print(p)
 ggsave("stars.png", p, bg = 'transparent')
 ```
 
