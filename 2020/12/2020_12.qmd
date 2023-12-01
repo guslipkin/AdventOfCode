@@ -1,0 +1,108 @@
+---
+title: "12: Rain Risk"
+format: html
+---
+
+```{r}
+#| message: false
+library(mistlecode)
+
+options(scipen = 999)
+```
+
+```{r}
+dt <- readLines("input2.txt")
+```
+
+## Part 1
+
+"Turn right to go left, turn right to go left"
+
+```{r}
+compass = c('N' = 270, 'E' = 0, 'S' = 90, 'W' = 180)
+registers <- list(
+  x = 0L, 
+  y = 0L, 
+  dir = 'E'
+  )
+functions <- list(
+  'N' = \(n) { self$y <- self$y + n },
+  'S' = \(n) { self$y <- self$y - n },
+  'E' = \(n) { self$x <- self$x + n },
+  'W' = \(n) { self$x <- self$x - n },
+  'L' = \(n) {
+    self$R(-n)
+  },
+  'R' = \(n) {
+    self$dir <- self$get_dir((compass[self$dir] + n) %% 360)
+  },
+  'F' = \(n) {
+    self[[self$dir]](n)
+  },
+  'get_dir' = \(deg) {
+    deg <- if (deg == 360) 0 else deg
+    names(which(compass == deg))
+  }
+)
+
+a <- mistlecode::create_assembly2(registers, functions, regex = '[NSEWLRF]|[0-9]+')
+a <- a$run(dt)
+abs(a$x) + abs(a$y)
+```
+
+## Part 2
+
+```{r}
+compass = c('N' = 270, 'E' = 0, 'S' = 90, 'W' = 180)
+registers <- list(
+  x = 0L, 
+  y = 0L, 
+  w_x = 10L, 
+  w_y = 1L,
+  dir = 'E'
+  )
+functions <- list(
+  'N' = \(n) { self$w_y <- self$w_y + n },
+  'S' = \(n) { self$w_y <- self$w_y - n },
+  'E' = \(n) { self$w_x <- self$w_x + n },
+  'W' = \(n) { self$w_x <- self$w_x - n },
+  'L' = \(n) {
+    self$R(360 - n)
+  },
+  'R' = \(n) {
+    if (n == 0) return()
+    # 90
+    old_x <- self$w_x; old_y <- self$w_y;
+    if (self$w_x >= 0 & self$w_y >= 0) {
+      self$w_y <- -old_x; self$w_x <- old_y;
+    } else if (self$w_x >= 0 & self$w_y < 0) {
+      self$w_y <- -old_x; self$w_x <- old_y;
+    } else if (self$w_x < 0 & self$w_y < 0) {
+      self$w_y <- old_x; self$w_x <- -old_y;
+    } else if (self$w_x < 0 & self$w_y >= 0) {
+      self$w_y <- -old_x; self$w_x <- old_y;
+    } else {
+      print('help!')
+    }
+  },
+  'F' = \(n) {
+    print('MOVE')
+    print(glue::glue('x: {self$x}\ty: {self$y}\t\t    w_x: {self$w_x}\tw_y: {self$w_y}'))
+    w_x <- self$w_x - self$x
+    w_y <- self$w_y - self$y
+    self$x <- ((self$w_x - self$x) * n) + self$x
+    self$y <- ((self$w_y - self$y)* n) + self$y
+    self$w_x <- self$x + w_x
+    self$w_y <- self$y + w_y
+    print(glue::glue('x: {self$x}\ty: {self$y}\t\t    w_x: {self$w_x}\tw_y: {self$w_y}'))
+  },
+  'get_dir' = \(deg) {
+    deg <- if (deg == 360) 0 else deg
+    names(which(compass == deg))
+  }
+)
+
+a <- mistlecode::create_assembly2(registers, functions, regex = '[NSEWLRF]|[0-9]+')
+a <- a$run(dt)
+abs(a$x) + abs(a$y)
+```

@@ -1,0 +1,47 @@
+---
+title: "06: Memory Reallocation"
+---
+
+```{r}
+#| message: false
+library(mistlecode)
+
+mdt <- 
+  readLines("input.txt") |>
+  stringr::str_split_1("\t") |>
+  as.integer()
+# mdt <- c(0, 2, 7, 0)
+```
+
+## Part 1
+
+```{r}
+redist <- function(x) {
+  move <- which.max(x)
+  wrapped <-
+    c(
+      rep(NA_integer_, move),
+      rep(1, x[move]),
+      rep(NA_integer_, length(x))
+    ) |>
+      matrix(ncol = length(x), byrow = TRUE) |>
+      suppressWarnings() |>
+      as.data.frame() |>
+      sapply(\(x) sum(head(x, -1), na.rm = TRUE))
+  x[move] <- 0
+  unname(wrapped + x)
+}
+
+i <- 1
+x <- redist(mdt)
+dt <- redist(x)
+repeat {
+  dt <- redist(dt)
+  i <- i + 1
+  if (all(dt == x)) break
+}
+i + 1
+```
+
+> 336
+! 730

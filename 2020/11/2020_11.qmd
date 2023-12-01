@@ -1,0 +1,207 @@
+---
+title: "11: Seating System"
+format: html
+---
+
+```{r}
+#| message: false
+library(mistlecode)
+
+options(scipen = 999)
+```
+
+```{r}
+dt <-
+  readLines("input2.txt") |>
+  str_split("") |>
+  as_tibble(.name_repair = 'universal') |>
+  suppressMessages() |>
+  as.matrix() |>
+  t()
+```
+
+
+## Part 1
+
+This wasn't so bad once I fixed `flash`.
+
+```{r}
+do_flash <- function(dt) {
+  flash(
+    dt,
+    \(y, x, m) { 
+      val <- m[y, x]
+      m[y, x] <- NA
+      adj <- 
+        mistlecode::get_adjacent_values(y, x, m) |>
+        as.vector() |>
+        purrr::discard(is.na)
+      if (val == 'L' & all(adj[adj != '.'] == 'L')) { 
+        return('#')
+      } else if (val == '#' & sum(adj == '#') >= 4) {
+        return('L')
+      } else {
+        return(val)
+      }
+    },
+    i = 1,
+    grid = expand.grid("y" = seq_len(nrow(dt)), "x" = seq_len(ncol(dt)))
+  )
+}
+
+old <- dt
+future::plan(future::multisession, workers = future::availableCores() - 1)
+progressr::with_progress({
+  repeat {
+    p <- progressr::progressor(steps = ncol(dt) * nrow(dt))
+    new <- do_flash(old)
+    if (all(new == old)) break else old <- new
+  }
+})
+future::plan(future::sequential)
+sum(old == '#')
+```
+
+## Part 2
+
+Oh no. It's that treetops one again! (That's probably in a year or two chronologically...)
+
+```{r}
+flash <- function(m, .fn, i = 1, grid = NULL) {
+  if (is.null(grid)) {
+    grid <- expand.grid("y" = seq_len(nrow(m)), "x" = seq_len(ncol(m)))
+  }
+  while (i > 0) {
+    m <-
+      grid |>
+      furrr::future_pmap(\(y, x) {
+        p()
+        .fn(y = y, x = x, m = m)
+      }) |>
+      unlist() |>
+      matrix(nrow = nrow(m), byrow = FALSE)
+    i <- i - 1
+  }
+  return(m)
+}
+```
+
+```{r}
+flash2 <- function(m, .fn_run, i = 1, .fn_check = NULL, grid = NULL, ...) {
+  if (is.null(grid)) {
+    grid <- expand.grid("y" = seq_len(nrow(m)), "x" = seq_len(ncol(m)))
+  }
+  # if (!is.null(.fn_check)) {
+  #   grid <-
+  #     grid |>
+  #     furrr::future_pmap_dfr(\(y, x) {
+  #       p()
+  #       .fn_check(y, x, m = m)
+  #     }) |>
+  #     unique()
+  # }
+  oldM <- m
+  while (i > 0) {
+    m <- 
+      grid |>
+      # furrr::future_pwalk(\(y, x) {
+      purrr::pmap(\(y, x) {
+        p()
+        m[y,x] <<- .fn_run(y, x, m = m)
+      }) |>
+      unlist() |>
+      matrix(nrow = nrow(m), byrow = FALSE)
+    i <- i - 1
+  }
+  print(all(oldM == m))
+  return(m)
+}
+
+get_cardinals_at <- function(m, y, x) {
+  g <- expand.grid(
+    'y' = seq_len(nrow(m)),
+    'x' = seq_len(ncol(m))
+    )
+  not_diagonal <- round(sqrt(abs(y - g$y)^2 + abs(x - g$x)^2) %% sqrt(2), 6) %in% round(c(0, sqrt(2)), 6)
+  north_south <- g$x != x
+  east_west <- g$y != y
+  m[!not_diagonal & north_south & east_west] <- NA
+  d <-
+    m |>
+    mistlecode::matrix_to_coords() |>
+    dplyr::filter(!is.na(.data$data))
+  dplyr::bind_rows(
+    'n'  = d[d$row <  y & d$col == x,],
+    's'  = d[d$row >  y & d$col == x,],
+    'e'  = d[d$row == y & d$col >  x,],
+    'w'  = d[d$row == y & d$col <  x,],
+    'ne' = d[d$row <  y & d$col >  x,],
+    'nw' = d[d$row <  y & d$col <  x,],
+    'se' = d[d$row >  y & d$col >  x,],
+    'sw' = d[d$row >  y & d$col <  x,],
+    .id = 'dir'
+  ) |>
+    dplyr::mutate(
+      'dist' = sqrt(abs(row - y)^2 + abs(col - x)^2)
+    ) |>
+    dplyr::arrange(.data$dir, .data$dist)
+}
+```
+
+
+```{r}
+do_flash <- function(mm) {
+  flash2(
+    mm,
+    \(y, x, m) {
+      val <- m[y, x]
+      m[y, x] <- NA
+      
+      adj <- 
+        m |>
+        get_cardinals_at(y, x) |>
+        dplyr::filter(data != '.') |>
+        dplyr::filter(dist == min(dist), .by = 'dir') |>
+        dplyr::pull(data) |>
+        purrr::discard(is.na) |>
+        unname()
+      
+      adj <- if (length(adj) == 0) '' else adj
+      
+      if (val == 'L' & all(adj == 'L')) { 
+        return('#')
+      } else if (val == '#' & sum(adj == '#') >= 5) {
+        return('L')
+      } else {
+        return(val)
+      }
+    }
+    # i = 1,
+    # \(y, x, m) {
+    #   if (length(y) * length(x) == length(m)) return(data.frame('y' = y, 'x' = x))
+    #   m |>
+    #     get_cardinals_at(y, x) |>
+    #     dplyr::filter(data != '.') |>
+    #     dplyr::select(y = row, x = col)
+    # },
+    # grid = grid
+  )
+}
+
+old <- dt
+# new <- dt
+# grid <- expand.grid("y" = seq_len(nrow(dt)), "x" = seq_len(ncol(dt)))
+progressr::with_progress({
+  repeat {
+    p <- progressr::progressor(steps = ncol(dt) * nrow(dt) * 2)
+    new <- do_flash(old)
+    if (all(new == old)) break
+    # grid <-
+    #   which(new != old, arr.ind = TRUE) |>
+    #   data.frame() |>
+    #   dplyr::rename('y' = 'row', 'x' = 'col')
+    old <- new
+  }
+})
+sum(old == '#')
+```

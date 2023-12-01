@@ -1,0 +1,27 @@
+---
+title: "09: Explosives in Cyberspace"
+---
+
+```{r}
+#| message: false
+library(mistlecode)
+
+dt <- readLines("input.txt")
+```
+
+## Part 1
+
+```{r}
+markers <-
+  dt |>
+  stringr::str_extract_all("\\(\\d+x\\d+\\)") |>
+  unlist() |>
+  stringr::str_remove_all("\\(|\\)") |>
+  stringr::str_split_fixed("x", 2) |>
+  as.integer() |>
+  matrix(ncol = 2)
+
+dt |>
+  stringr::str_replace_all("(\\(\\d+x\\d+\\))", "_")
+```
+
