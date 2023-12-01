@@ -1,0 +1,70 @@
+---
+title: "01: Trebuchet?!"
+format: html
+---
+
+```{r}
+#| message: false
+library(mistlecode)
+
+options(scipen = 999)
+```
+
+```{r}
+dt <- readLines("input.txt")
+```
+
+## Part 1
+
+This wasn't too bad. Just forgot to `unlist` initially.
+
+```{r}
+dt |>
+   sapply(\(x) {
+     x |>
+      str_extract_all('[0-9]') |>
+      unlist() -> y
+    glue::glue('{head(y, 1)}{tail(y, 1)}')
+  }) |>
+  as.numeric() |>
+  sum()
+```
+
+## Part 2
+
+This took way too long and I hate incomplete examples. Absolutely no indication that `oneight` flips for both 1 and 8.
+
+```{r}
+numbers <-
+  c(
+    'one' = 1,
+    'two' = 2,
+    'three' = 3,
+    'four' = 4,
+    'five' = 5,
+    'six' = 6,
+    'seven' = 7,
+    'eight' = 8,
+    'nine' = 9
+  )
+dt |>
+  sapply(\(x) {
+    n <- c(names(numbers), '[1-9]')
+    i <-
+      x |>
+      stringi::stri_locate_all_regex(n, omit_no_match = TRUE) |>
+      lapply(data.frame) |>
+      purrr::list_rbind() |>
+      dplyr::pull(start) |>
+      order()
+    x <-
+      stringi::stri_match_all_regex(x, n) |>
+      unlist() |>
+      purrr::discard(is.na)
+    y <- ifelse(x %in% names(numbers), numbers[x], x)[i]
+    glue::glue('{head(y, 1)}{tail(y, 1)}')
+  }) |>
+  as.numeric() |>
+  sum()
+```
+

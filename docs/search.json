@@ -1223,5 +1223,19 @@
     "title": "23: Opening the Turing Lock",
     "section": "Part 2",
     "text": "Part 2\nOh jeez. A super easy copy/paste part 2!\n\ndt_i &lt;- dt[[1]]$instruction(list(dt, 1, 1, 0))\nrepeat {\n  dt_i &lt;- dt_i[[1]][[dt_i[[2]]]]$instruction(dt_i)\n  if (length(dt_i) == 2) { break }\n}\ndt_i[[2]]\n\n[1] 334"
+  },
+  {
+    "objectID": "2023/01/2023-01.html#part-1",
+    "href": "2023/01/2023-01.html#part-1",
+    "title": "01: Trebuchet?!",
+    "section": "Part 1",
+    "text": "Part 1\nThis wasn’t too bad. Just forgot to unlist initially.\n\ndt |&gt;\n   sapply(\\(x) {\n     x |&gt;\n      str_extract_all('[0-9]') |&gt;\n      unlist() -&gt; y\n    glue::glue('{head(y, 1)}{tail(y, 1)}')\n  }) |&gt;\n  as.numeric() |&gt;\n  sum()\n\n[1] 56397"
+  },
+  {
+    "objectID": "2023/01/2023-01.html#part-2",
+    "href": "2023/01/2023-01.html#part-2",
+    "title": "01: Trebuchet?!",
+    "section": "Part 2",
+    "text": "Part 2\nThis took way too long and I hate incomplete examples. Absolutely no indication that oneight flips for both 1 and 8.\n\nnumbers &lt;-\n  c(\n    'one' = 1,\n    'two' = 2,\n    'three' = 3,\n    'four' = 4,\n    'five' = 5,\n    'six' = 6,\n    'seven' = 7,\n    'eight' = 8,\n    'nine' = 9\n  )\ndt |&gt;\n  sapply(\\(x) {\n    n &lt;- c(names(numbers), '[1-9]')\n    i &lt;-\n      x |&gt;\n      stringi::stri_locate_all_regex(n, omit_no_match = TRUE) |&gt;\n      lapply(data.frame) |&gt;\n      purrr::list_rbind() |&gt;\n      dplyr::pull(start) |&gt;\n      order()\n    x &lt;-\n      stringi::stri_match_all_regex(x, n) |&gt;\n      unlist() |&gt;\n      purrr::discard(is.na)\n    y &lt;- ifelse(x %in% names(numbers), numbers[x], x)[i]\n    glue::glue('{head(y, 1)}{tail(y, 1)}')\n  }) |&gt;\n  as.numeric() |&gt;\n  sum()\n\n[1] 55701"
   }
 ]

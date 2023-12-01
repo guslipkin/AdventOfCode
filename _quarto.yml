@@ -28,6 +28,8 @@ book:
   chapters: 
     - index.qmd
     - part: "2023"
+      chapters: 
+        - 2023/01/2023-01.qmd
     - part: "2022"
       chapters: 
         - 2022/01/2022-01.qmd
