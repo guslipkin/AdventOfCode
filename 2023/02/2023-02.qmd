@@ -13,7 +13,7 @@ options(scipen = 999)
 ```{r}
 dt <-
   readLines("input.txt") |>
-  str_split(": |; ") |>
+  stringr::str_split(": |; ") |>
   purrr::map(\(x) {
     x[-1] |>
       str_split(', ')
@@ -33,7 +33,7 @@ dt |>
       x |>
       purrr::map(\(x2) {
         x2 |>
-          str_split(" ") |>
+          stringr::str_split(" ") |>
           purrr::map(\(y) {
             r <- 1
             if ((y[2] == 'red' & as.numeric(y[1]) > red) |
@@ -61,7 +61,7 @@ dt |>
     x |>
     purrr::map(\(y) {
       y |>
-        str_split_fixed(" ", 2) |>
+        stringr::str_split_fixed(" ", 2) |>
         data.frame() |>
         dplyr::arrange(X2)
     }) |>

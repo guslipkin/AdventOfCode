@@ -28,6 +28,20 @@
     "text": "Part 2\nThis took way too long and I hate incomplete examples. Absolutely no indication that oneight flips for both 1 and 8.\n\nnumbers &lt;-\n  c(\n    'one' = 1,\n    'two' = 2,\n    'three' = 3,\n    'four' = 4,\n    'five' = 5,\n    'six' = 6,\n    'seven' = 7,\n    'eight' = 8,\n    'nine' = 9\n  )\ndt |&gt;\n  sapply(\\(x) {\n    n &lt;- c(names(numbers), '[1-9]')\n    i &lt;-\n      x |&gt;\n      stringi::stri_locate_all_regex(n, omit_no_match = TRUE) |&gt;\n      lapply(data.frame) |&gt;\n      purrr::list_rbind() |&gt;\n      dplyr::pull(start) |&gt;\n      order()\n    x &lt;-\n      stringi::stri_match_all_regex(x, n) |&gt;\n      unlist() |&gt;\n      purrr::discard(is.na)\n    y &lt;- ifelse(x %in% names(numbers), numbers[x], x)[i]\n    glue::glue('{head(y, 1)}{tail(y, 1)}')\n  }) |&gt;\n  as.numeric() |&gt;\n  sum()\n\n[1] 55701"
   },
   {
+    "objectID": "2023/02/2023-02.html#part-1",
+    "href": "2023/02/2023-02.html#part-1",
+    "title": "02: Cube Conundrum",
+    "section": "Part 1",
+    "text": "Part 1\nI’m pretty pleased overall. I got a bit hung up on the if statements because y was originally all the colors, not one color at a time so I had to add the second (actually third) map statement.\n\nred &lt;- 12; green &lt;- 13; blue &lt;- 14;\n\ndt |&gt;\n  purrr::map_lgl(\\(x) {\n    x &lt;-\n      x |&gt;\n      purrr::map(\\(x2) {\n        x2 |&gt;\n          stringr::str_split(\" \") |&gt;\n          purrr::map(\\(y) {\n            r &lt;- 1\n            if ((y[2] == 'red' & as.numeric(y[1]) &gt; red) |\n                (y[2] == 'green' & as.numeric(y[1]) &gt; green) |\n                (y[2] == 'blue' & as.numeric(y[1]) &gt; blue)) {\n              r &lt;- 0\n            }\n            return(r)\n          })\n    }) |&gt;\n      unlist()\n    all(x == 1)\n  }) |&gt;\n  which() |&gt;\n  sum()\n\n[1] 2006"
+  },
+  {
+    "objectID": "2023/02/2023-02.html#part-2",
+    "href": "2023/02/2023-02.html#part-2",
+    "title": "02: Cube Conundrum",
+    "section": "Part 2",
+    "text": "Part 2\nPretty happy with this too. I got pretty stuck on X1 being character because I was casting later but that meant I was finding the max of a character not a numeric. Moved the cast and it works like a dream.\n\ndt |&gt;\n  purrr::map_int(\\(x) {\n    x |&gt;\n    purrr::map(\\(y) {\n      y |&gt;\n        stringr::str_split_fixed(\" \", 2) |&gt;\n        data.frame() |&gt;\n        dplyr::arrange(X2)\n    }) |&gt;\n      purrr::list_rbind() |&gt;\n      dplyr::summarise(count = max(as.numeric(X1)), .by = X2) |&gt;\n      dplyr::pull(count) |&gt;\n      as.numeric() |&gt;\n      prod()\n  }) |&gt;\n  sum()\n\n[1] 84911"
+  },
+  {
     "objectID": "2022/01/2022-01.html#part-1",
     "href": "2022/01/2022-01.html#part-1",
     "title": "2022-01: Calorie Counting",
@@ -1237,19 +1251,5 @@
     "title": "23: Opening the Turing Lock",
     "section": "Part 2",
     "text": "Part 2\nOh jeez. A super easy copy/paste part 2!\n\ndt_i &lt;- dt[[1]]$instruction(list(dt, 1, 1, 0))\nrepeat {\n  dt_i &lt;- dt_i[[1]][[dt_i[[2]]]]$instruction(dt_i)\n  if (length(dt_i) == 2) { break }\n}\ndt_i[[2]]\n\n[1] 334"
-  },
-  {
-    "objectID": "2023/02/2023-02.html#part-1",
-    "href": "2023/02/2023-02.html#part-1",
-    "title": "02: Cube Conundrum",
-    "section": "Part 1",
-    "text": "Part 1\nI’m pretty pleased overall. I got a bit hung up on the if statements because y was originally all the colors, not one color at a time so I had to add the second (actually third) map statement.\n\nred &lt;- 12; green &lt;- 13; blue &lt;- 14;\n\ndt |&gt;\n  purrr::map_lgl(\\(x) {\n    x &lt;-\n      x |&gt;\n      purrr::map(\\(x2) {\n        x2 |&gt;\n          str_split(\" \") |&gt;\n          purrr::map(\\(y) {\n            r &lt;- 1\n            if ((y[2] == 'red' & as.numeric(y[1]) &gt; red) |\n                (y[2] == 'green' & as.numeric(y[1]) &gt; green) |\n                (y[2] == 'blue' & as.numeric(y[1]) &gt; blue)) {\n              r &lt;- 0\n            }\n            return(r)\n          })\n    }) |&gt;\n      unlist()\n    all(x == 1)\n  }) |&gt;\n  which() |&gt;\n  sum()\n\n[1] 2006"
-  },
-  {
-    "objectID": "2023/02/2023-02.html#part-2",
-    "href": "2023/02/2023-02.html#part-2",
-    "title": "02: Cube Conundrum",
-    "section": "Part 2",
-    "text": "Part 2\nPretty happy with this too. I got pretty stuck on X1 being character because I was casting later but that meant I was finding the max of a character not a numeric. Moved the cast and it works like a dream.\n\ndt |&gt;\n  purrr::map_int(\\(x) {\n    x |&gt;\n    purrr::map(\\(y) {\n      y |&gt;\n        str_split_fixed(\" \", 2) |&gt;\n        data.frame() |&gt;\n        dplyr::arrange(X2)\n    }) |&gt;\n      purrr::list_rbind() |&gt;\n      dplyr::summarise(count = max(as.numeric(X1)), .by = X2) |&gt;\n      dplyr::pull(count) |&gt;\n      as.numeric() |&gt;\n      prod()\n  }) |&gt;\n  sum()\n\n[1] 84911"
   }
 ]

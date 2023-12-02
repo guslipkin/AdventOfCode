@@ -725,10 +725,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-2"><a href="#cb1-2"></a></span>
 <span id="cb1-3"><a href="#cb1-3"></a><span class="fu">options</span>(<span class="at">scipen =</span> <span class="dv">999</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell" data-hash="2023-02_cache/html/unnamed-chunk-2_e9fd40dbc42fd312bcd3f35c3b603a44">
+<div class="cell" data-hash="2023-02_cache/html/unnamed-chunk-2_12a180a764ad1f088ab3510a17f450c2">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a>dt <span class="ot">&lt;-</span></span>
 <span id="cb2-2"><a href="#cb2-2"></a>  <span class="fu">readLines</span>(<span class="st">"input.txt"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb2-3"><a href="#cb2-3"></a>  <span class="fu">str_split</span>(<span class="st">": |; "</span>) <span class="sc">|&gt;</span></span>
+<span id="cb2-3"><a href="#cb2-3"></a>  stringr<span class="sc">::</span><span class="fu">str_split</span>(<span class="st">": |; "</span>) <span class="sc">|&gt;</span></span>
 <span id="cb2-4"><a href="#cb2-4"></a>  purrr<span class="sc">::</span><span class="fu">map</span>(\(x) {</span>
 <span id="cb2-5"><a href="#cb2-5"></a>    x[<span class="sc">-</span><span class="dv">1</span>] <span class="sc">|&gt;</span></span>
 <span id="cb2-6"><a href="#cb2-6"></a>      <span class="fu">str_split</span>(<span class="st">', '</span>)</span>
@@ -736,7 +736,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <section id="part-1" class="level2"><h2 class="anchored" data-anchor-id="part-1">Part 1</h2>
 <p>I’m pretty pleased overall. I got a bit hung up on the if statements because <code>y</code> was originally all the colors, not one color at a time so I had to add the second (actually third) <code>map</code> statement.</p>
-<div class="cell" data-hash="2023-02_cache/html/unnamed-chunk-3_36282ecd04c61aa25d639992bbe89963">
+<div class="cell" data-hash="2023-02_cache/html/unnamed-chunk-3_2b296e954e5a37dbb2157cb6773e3ec9">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>red <span class="ot">&lt;-</span> <span class="dv">12</span>; green <span class="ot">&lt;-</span> <span class="dv">13</span>; blue <span class="ot">&lt;-</span> <span class="dv">14</span>;</span>
 <span id="cb3-2"><a href="#cb3-2"></a></span>
 <span id="cb3-3"><a href="#cb3-3"></a>dt <span class="sc">|&gt;</span></span>
@@ -745,7 +745,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb3-6"><a href="#cb3-6"></a>      x <span class="sc">|&gt;</span></span>
 <span id="cb3-7"><a href="#cb3-7"></a>      purrr<span class="sc">::</span><span class="fu">map</span>(\(x2) {</span>
 <span id="cb3-8"><a href="#cb3-8"></a>        x2 <span class="sc">|&gt;</span></span>
-<span id="cb3-9"><a href="#cb3-9"></a>          <span class="fu">str_split</span>(<span class="st">" "</span>) <span class="sc">|&gt;</span></span>
+<span id="cb3-9"><a href="#cb3-9"></a>          stringr<span class="sc">::</span><span class="fu">str_split</span>(<span class="st">" "</span>) <span class="sc">|&gt;</span></span>
 <span id="cb3-10"><a href="#cb3-10"></a>          purrr<span class="sc">::</span><span class="fu">map</span>(\(y) {</span>
 <span id="cb3-11"><a href="#cb3-11"></a>            r <span class="ot">&lt;-</span> <span class="dv">1</span></span>
 <span id="cb3-12"><a href="#cb3-12"></a>            <span class="cf">if</span> ((y[<span class="dv">2</span>] <span class="sc">==</span> <span class="st">'red'</span> <span class="sc">&amp;</span> <span class="fu">as.numeric</span>(y[<span class="dv">1</span>]) <span class="sc">&gt;</span> red) <span class="sc">|</span></span>
@@ -767,13 +767,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </section><section id="part-2" class="level2"><h2 class="anchored" data-anchor-id="part-2">Part 2</h2>
 <p>Pretty happy with this too. I got pretty stuck on <code>X1</code> being character because I was casting later but that meant I was finding the max of a character not a numeric. Moved the cast and it works like a dream.</p>
-<div class="cell" data-hash="2023-02_cache/html/unnamed-chunk-4_ddce73d64c6b30b6a7947ccaaa331a73">
+<div class="cell" data-hash="2023-02_cache/html/unnamed-chunk-4_7b3b802a1a4c6f1468775261cfd4b6ee">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>dt <span class="sc">|&gt;</span></span>
 <span id="cb5-2"><a href="#cb5-2"></a>  purrr<span class="sc">::</span><span class="fu">map_int</span>(\(x) {</span>
 <span id="cb5-3"><a href="#cb5-3"></a>    x <span class="sc">|&gt;</span></span>
 <span id="cb5-4"><a href="#cb5-4"></a>    purrr<span class="sc">::</span><span class="fu">map</span>(\(y) {</span>
 <span id="cb5-5"><a href="#cb5-5"></a>      y <span class="sc">|&gt;</span></span>
-<span id="cb5-6"><a href="#cb5-6"></a>        <span class="fu">str_split_fixed</span>(<span class="st">" "</span>, <span class="dv">2</span>) <span class="sc">|&gt;</span></span>
+<span id="cb5-6"><a href="#cb5-6"></a>        stringr<span class="sc">::</span><span class="fu">str_split_fixed</span>(<span class="st">" "</span>, <span class="dv">2</span>) <span class="sc">|&gt;</span></span>
 <span id="cb5-7"><a href="#cb5-7"></a>        <span class="fu">data.frame</span>() <span class="sc">|&gt;</span></span>
 <span id="cb5-8"><a href="#cb5-8"></a>        dplyr<span class="sc">::</span><span class="fu">arrange</span>(X2)</span>
 <span id="cb5-9"><a href="#cb5-9"></a>    }) <span class="sc">|&gt;</span></span>
