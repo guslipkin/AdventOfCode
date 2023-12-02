@@ -1,0 +1,76 @@
+---
+title: "02: "
+format: html
+---
+
+```{r}
+#| message: false
+library(mistlecode)
+
+options(scipen = 999)
+```
+
+```{r}
+dt <-
+  readLines("input.txt") |>
+  str_split(": |; ") |>
+  purrr::map(\(x) {
+    x[-1] |>
+      str_split(', ')
+  })
+```
+
+## Part 1
+
+I'm pretty pleased overall. I got a bit hung up on the if statements because `y` was originally all the colors, not one color at a time so I had to add the second (actually third) `map` statement.
+
+```{r}
+red <- 12; green <- 13; blue <- 14;
+
+dt |>
+  purrr::map_lgl(\(x) {
+    x <-
+      x |>
+      purrr::map(\(x2) {
+        x2 |>
+          str_split(" ") |>
+          purrr::map(\(y) {
+            r <- 1
+            if ((y[2] == 'red' & as.numeric(y[1]) > red) |
+                (y[2] == 'green' & as.numeric(y[1]) > green) |
+                (y[2] == 'blue' & as.numeric(y[1]) > blue)) {
+              r <- 0
+            }
+            return(r)
+          })
+    }) |>
+      unlist()
+    all(x == 1)
+  }) |>
+  which() |>
+  sum()
+```
+
+## Part 2
+
+Pretty happy with this too. I got pretty stuck on `X1` being character because I was casting later but that meant I was finding the max of a character not a numeric. Moved the cast and it works like a dream.
+
+```{r}
+dt |>
+  purrr::map_int(\(x) {
+    x |>
+    purrr::map(\(y) {
+      y |>
+        str_split_fixed(" ", 2) |>
+        data.frame() |>
+        dplyr::arrange(X2)
+    }) |>
+      purrr::list_rbind() |>
+      dplyr::summarise(count = max(as.numeric(X1)), .by = X2) |>
+      dplyr::pull(count) |>
+      as.numeric() |>
+      prod()
+  }) |>
+  sum()
+```
+
