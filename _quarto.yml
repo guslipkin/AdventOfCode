@@ -30,6 +30,7 @@ book:
     - part: "2023"
       chapters: 
         - 2023/01/2023-01.qmd
+        - 2023/02/2023-02.qmd
     - part: "2022"
       chapters: 
         - 2022/01/2022-01.qmd
