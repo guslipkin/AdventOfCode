@@ -5,31 +5,112 @@ title: "22: Wizard Simulator 20XX"
 ```{r}
 #| message: false
 library(mistlecode)
-library(tibble)
 ```
 
 ```{r}
-x <- list(
-  "hp" = 50,
+boss <- list('hp' = 13, 'damage' = 8)
+player <- list(
+  "hp" = 10,
   "damage" = 0,
   "armor" = 0,
-  "mana" = 500
+  "mana" = 250,
+  "effect" = list('armor' = 0, 'damage' = 0, 'mana' = 0),
+  'spent' = 0
 )
-# spells <- 
-  tribble(
-    ~spell,          ~mana_cost, ~damage, ~armor, ~hp, ~mana, ~duration,
-    "magic_missile", 53,         4,       0,      0,   0,     0,
-    "drain",         73,         2,       0,      2,   0,     0,
-    "shield",        113,        0,       7,      0,   0,     6,
-    "poison",        173,        3,       0,      0,   0,     6,
-    "recharge",      229,        0,       0,      0,   101,   5
+spells <-
+  tibble::tribble(
+    ~spell,          ~mana, ~damage, ~armor, ~hp,
+    "magic_missile", 53,    4,       0,      0,  
+    "drain",         73,    2,       0,      2,  
+    "shield",        113,   0,       7,      0,  
+    "poison",        173,   3,       0,      0,  
+    "recharge",      229,   0,       0,      0,  
   ) |>
-  apply(1, as.list) |>
-  map(\(x) {
-    (list())[[x$spell]] <- x
-  })
-create_spell <- function(x) {
-  
-}
+    apply(1, as.list) |>
+    purrr::map(\(x) {
+      x |>
+        unlist() |>
+        tail(-1) |>
+        as.integer() |>
+        `names<-`(names(x)[-1]) |>
+        as.list() |>
+        list() |>
+        `names<-`(x[1])
+    }) |>
+    unlist(recursive = FALSE)
 ```
+
+## Part 1
+
+```{r}
+player_turn <- function(spell, player, b) {
+  s <- spells[[spell]]
+  p <- player
+  # effect
+  if (spell == 'shield') { p$effect$armor <- c(p$effect$armor, rep(7, 6)) }
+  else if (spell == 'poison') { p$effect$damage <- c(p$effect$damage, rep(3, 6)) }
+  else if (spell == 'recharge') { p$effect$mana <- c(p$effect$mana, rep(101, 5)) }
+  # player
+  p$hp <- p$hp + s$hp
+  p$mana <- p$mana - s$mana + p$effect$mana[1]
+  p$effect$mana <- if (length(p$effect$mana) == 1) 0 else p$effect$mana[-1]
+  # boss
+  b$hp <- b$hp - s$damage - p$effect$damage[1]
+  p$effect$damage <- if (length(p$effect$damage) == 1) 0 else p$effect$damage[-1]
+  
+  player$effect <- p$effect
+  player$mana <- p$mana
+  player$armor <- p$armor
+  player$spent <- player$spent + s$mana
+  list('player' = player, 'boss' = b)
+}
+
+boss_turn <- function(player, b) {
+  # player
+  p <- player
+  p$armor <- p$armor + p$effect$armor[1]
+  p$hp <- p$hp + p$armor - b$damage
+  p$effect$armor <- if (length(p$effect$armor) == 1) 0 else p$effect$armor[-1]
+  b$hp <- b$hp - p$effect$damage[1]
+  p$effect$damage <- if (length(p$effect$damage) == 1) 0 else p$effect$damage[-1]
+  p$mana <- p$mana + p$effect$mana[1]
+  p$effect$mana <- if (length(p$effect$mana) == 1) 0 else p$effect$mana[-1]
+  
+  player$hp <- p$hp
+  player$effect <- p$effect
+  
+  list('player' = player, 'boss' = b)
+}
+
+play_round <- function(spell, player, boss) {
+  # spell <- 'poison'
+  turn_results <- player_turn(spell, player, boss)
+  player <- turn_results$player; boss <- turn_results$boss;
+  turn_results <- boss_turn(player, boss)
+  player <- turn_results$player; boss <- turn_results$boss;
+  
+  if (player$hp <= 0 | player$mana <= 0) 0 else if (boss$hp <= 0) player$spent else turn_results
+}
+
+possible_spells <- function(player) {
+  in_use <-
+    player$effect |>
+    purrr::imap(\(x, idx) if (length(x) > 1) idx else NA_character_) |>
+    `names<-`(c('shield', 'poison', 'recharge')) |>
+    purrr::discard(is.na) |>
+    names()
+  too_expensive <- spells[player$mana < purrr::map_int(spells, \(x) x$mana)]
+    
+  names(spells)[!(names(spells) %in% c(in_use, too_expensive))]
+}
+
+play <- function(player, boss, s = NA) {
+  if (length(s) == 0 | (length(s) == 1 && is.na(s))) s <- possible_spells(player)
+  round_results <- play_round(s[1], player, boss)
+  if (is.list(round_results)) play(round_results$player, round_results$boss, s[-1]) else round_results
+}
+
+play(player, boss)
+```
+
 

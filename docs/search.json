@@ -11,7 +11,7 @@
     "href": "index.html#my-favorite-solutions",
     "title": "Gus Lipkin’s Awesome Code",
     "section": "My Favorite Solutions",
-    "text": "My Favorite Solutions\n\n\n2016-12 and 2017-08: I created a small assembly style computer that solves the problems for me given a set of registers and instructions.\n\n2021-09: I used the dbscan clustering method to solve a path finding issue.\n\n2022-04: While not my fastest part 1, part 2 took me just 38 seconds!\n\n2022-11: I used S3 Classes and function factories for the first time, and got just a little bit better at recursion."
+    "text": "My Favorite Solutions\n\n\n2016-12 and 2017-08: I created a small assembly style computer that solves the problems for me given a set of registers and instructions.\n\n2021-09 and 2023-03: I used the dbscan clustering method to solve a path finding issue.\n\n2022-04: While not my fastest part 1, part 2 took me just 38 seconds!\n\n2022-11: I used S3 Classes and function factories for the first time, and got just a little bit better at recursion."
   },
   {
     "objectID": "2023/01/2023-01.html#part-1",
@@ -40,6 +40,20 @@
     "title": "02: Cube Conundrum",
     "section": "Part 2",
     "text": "Part 2\nPretty happy with this too. I got pretty stuck on X1 being character because I was casting later but that meant I was finding the max of a character not a numeric. Moved the cast and it works like a dream.\n\ndt |&gt;\n  purrr::map_int(\\(x) {\n    x |&gt;\n    purrr::map(\\(y) {\n      y |&gt;\n        stringr::str_split_fixed(\" \", 2) |&gt;\n        data.frame() |&gt;\n        dplyr::arrange(X2)\n    }) |&gt;\n      purrr::list_rbind() |&gt;\n      dplyr::summarise(count = max(as.numeric(X1)), .by = X2) |&gt;\n      dplyr::pull(count) |&gt;\n      as.numeric() |&gt;\n      prod()\n  }) |&gt;\n  sum()\n\n[1] 84911"
+  },
+  {
+    "objectID": "2023/03/2023-03.html#part-1",
+    "href": "2023/03/2023-03.html#part-1",
+    "title": "03:",
+    "section": "Part 1",
+    "text": "Part 1\nThis was so much fun! I love dbscan with all my heart.\n\ndt &lt;- m |&gt; mistlecode::matrix_to_coords()\nclust &lt;-\n  dt |&gt;\n  dplyr::filter(data != \".\") |&gt;\n  dplyr::select(-data) |&gt;\n  dbscan::dbscan(sqrt(2), minPts = 2)\ndt &lt;- \n  dt |&gt;\n  dplyr::filter(data != \".\") |&gt;\n  dplyr::mutate(clust = clust$cluster) |&gt;\n  dplyr::filter(any(!grepl('[0-9]', data)), .by = 'clust')\nmistlecode::coords_to_matrix(dt$data, dt$row, dt$col) |&gt;\n  t() |&gt;\n  as.vector() |&gt;\n  paste0(collapse = \"\") |&gt;\n  str_replace_all('[^0-9]', ' ') |&gt;\n  str_split(' ') |&gt;\n  unlist() |&gt;\n  as.numeric() |&gt;\n  purrr::discard(is.na) |&gt;\n  sum(na.rm = TRUE)\n\n[1] 4361"
+  },
+  {
+    "objectID": "2023/03/2023-03.html#part-2",
+    "href": "2023/03/2023-03.html#part-2",
+    "title": "03:",
+    "section": "Part 2",
+    "text": "Part 2\nThis is really long-winded. I’m sure it could be better functionalized. The hard part wasn’t as much figuring out what goes in a group as much as figuring out what goes in which group.\n\ndo_prod &lt;- function(d) {\n  dd &lt;- d[d != '*']\n  ifelse(length(dd) &gt;= 2, prod(as.numeric(dd), na.rm = TRUE), d)\n}\ndt &lt;- mistlecode::matrix_to_coords(m)\nclust &lt;-\n  dt |&gt;\n  dplyr::filter(data != \".\") |&gt;\n  dplyr::select(-data) |&gt;\n  dbscan::dbscan(sqrt(2), minPts = 2)\nnumber_clust &lt;-\n  dt |&gt;\n  dplyr::filter(grepl('[0-9]', data)) |&gt;\n  dplyr::select(-data) |&gt;\n  dbscan::dbscan(1, minPts = 1)\nnumber_dt &lt;-\n  dt |&gt;\n  dplyr::filter(grepl('[0-9]', data)) |&gt;\n  dplyr::mutate(number_clust = number_clust$cluster)\nclust_dt &lt;- \n  dt |&gt;\n  dplyr::filter(data != \".\") |&gt;\n  dplyr::mutate(clust = clust$cluster) |&gt;\n  dplyr::left_join(number_dt, by = join_by(data, row, col)) |&gt;\n  dplyr::filter(any(!grepl('[0-9]', data)), .by = 'clust') |&gt;\n  dplyr::mutate(\n    has_prod = any(data == '*') & length(unique(number_clust[!is.na(number_clust)])) == 2,\n    prod_group = dplyr::cur_group_id(),\n    .by = 'clust'\n  ) |&gt;\n  dplyr::filter(grepl('[0-9]', data))\nhas_prod &lt;-\n  mistlecode::coords_to_matrix(clust_dt$prod_group, clust_dt$row, clust_dt$col) |&gt;\n  t() |&gt;\n  as.vector() |&gt;\n  data.frame() |&gt;\n  `colnames&lt;-`('has_prod') |&gt;\n  dplyr::mutate(\n    t = cumsum(is.na(has_prod))\n  ) |&gt;\n  dplyr::filter(dplyr::row_number() == dplyr::n() & !is.na(has_prod), .by = 't') |&gt;\n  dplyr::pull(has_prod)\nnumbers &lt;-\n  mistlecode::coords_to_matrix(clust_dt$data, clust_dt$row, clust_dt$col) |&gt;\n  t() |&gt;\n  as.vector() |&gt;\n  paste0(collapse = \"\") |&gt;\n  str_replace_all('[^0-9]', ' ') |&gt;\n  str_split(' ') |&gt;\n  unlist() |&gt;\n  as.numeric() |&gt;\n  purrr::discard(is.na)\n\ndata.frame(\n  has_prod,\n  numbers\n) |&gt;\n  dplyr::filter(dplyr::n() &gt;= 2, .by = has_prod) |&gt;\n  dplyr::summarise(val = prod(numbers), .by = has_prod) |&gt;\n  dplyr::pull(val) |&gt;\n  sum()\n\n[1] 75519888"
   },
   {
     "objectID": "2022/01/2022-01.html#part-1",

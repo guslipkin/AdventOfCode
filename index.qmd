@@ -24,7 +24,7 @@ I'm still working on getting the 2021 and earlier puzzles converted to Quarto. T
 #| include: false
 library(tidyverse)
 years <- c(2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023)
-stars <- c(  43,   18,   16,   12,    8,   22,   26,   28,    4)
+stars <- c(  43,   18,   16,   12,    8,   22,   26,   28,    6)
 
 mapply(\(y, s) {
   c("star" = rev(seq_len(s))) |>
@@ -100,6 +100,6 @@ cat("adventofcode.guslipkin.me", file = "docs/CNAME")
 ## My Favorite Solutions
 
 - [2016-12](2016/12/2016-12.html) and [2017-08](2017/08/2017-08.html): I [created a small assembly style computer](https://mistlecode.guslipkin.me/reference/assembly) that solves the problems for me given a set of registers and instructions.
-- [2021-09](2021/09/2021-09.html): I used the `dbscan` clustering method to solve a path finding issue. 
+- [2021-09](2021/09/2021-09.html) and [2023-03](2023/03/2023-03.html): I used the `dbscan` clustering method to solve a path finding issue. 
 - [2022-04](2022/04/2022-04.html): While not my fastest part 1, part 2 took me just 38 seconds!
 - [2022-11](2022/11/2022-11.html): I used [S3 Classes](https://adv-r.hadley.nz/s3.html#s3) and [function factories](https://adv-r.hadley.nz/function-factories.html?q=function%20fac#function-factories) for the first time, and got just a little bit better at recursion.
