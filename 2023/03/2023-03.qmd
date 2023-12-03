@@ -1,5 +1,5 @@
 ---
-title: "03: "
+title: "03: Gear Ratios"
 format: html
 ---
 
@@ -20,7 +20,7 @@ m <- matrix(unlist(dt), nrow = length(dt), byrow = TRUE)
 
 ## Part 1
 
-This was so much fun! I love dbscan with all my heart.
+This was so much fun! I love `dbscan` with all my heart.
 
 ```{r}
 dt <- m |> mistlecode::matrix_to_coords()
@@ -38,8 +38,8 @@ mistlecode::coords_to_matrix(dt$data, dt$row, dt$col) |>
   t() |>
   as.vector() |>
   paste0(collapse = "") |>
-  str_replace_all('[^0-9]', ' ') |>
-  str_split(' ') |>
+  stringr::str_replace_all('[^0-9]', ' ') |>
+  stringr::str_split(' ') |>
   unlist() |>
   as.numeric() |>
   purrr::discard(is.na) |>
@@ -51,10 +51,6 @@ mistlecode::coords_to_matrix(dt$data, dt$row, dt$col) |>
 This is really long-winded. I'm sure it could be better functionalized. The hard part wasn't as much figuring out what goes in a group as much as figuring out what goes in which group.
 
 ```{r}
-do_prod <- function(d) {
-  dd <- d[d != '*']
-  ifelse(length(dd) >= 2, prod(as.numeric(dd), na.rm = TRUE), d)
-}
 dt <- mistlecode::matrix_to_coords(m)
 clust <-
   dt |>
@@ -74,7 +70,7 @@ clust_dt <-
   dt |>
   dplyr::filter(data != ".") |>
   dplyr::mutate(clust = clust$cluster) |>
-  dplyr::left_join(number_dt, by = join_by(data, row, col)) |>
+  dplyr::left_join(number_dt, by = dplyr::join_by(data, row, col)) |>
   dplyr::filter(any(!grepl('[0-9]', data)), .by = 'clust') |>
   dplyr::mutate(
     has_prod = any(data == '*') & length(unique(number_clust[!is.na(number_clust)])) == 2,
@@ -98,8 +94,8 @@ numbers <-
   t() |>
   as.vector() |>
   paste0(collapse = "") |>
-  str_replace_all('[^0-9]', ' ') |>
-  str_split(' ') |>
+  stringr::str_replace_all('[^0-9]', ' ') |>
+  stringr::str_split(' ') |>
   unlist() |>
   as.numeric() |>
   purrr::discard(is.na)
