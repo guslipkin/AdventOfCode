@@ -20,10 +20,10 @@ m <- matrix(unlist(dt), nrow = length(dt), byrow = TRUE)
 
 ## Part 1
 
-This was so much fun! I love `dbscan` with all my heart.
+This was so much fun! I love `dbscan` with all my heart. I also did something really stupid and submitted the test input then had to wait the longest minute of my life to submit the real answer.
 
 ```{r}
-dt <- m |> mistlecode::matrix_to_coords()
+dt <- mistlecode::matrix_to_coords(m)
 clust <-
   dt |>
   dplyr::filter(data != ".") |>
@@ -34,7 +34,8 @@ dt <-
   dplyr::filter(data != ".") |>
   dplyr::mutate(clust = clust$cluster) |>
   dplyr::filter(any(!grepl('[0-9]', data)), .by = 'clust')
-mistlecode::coords_to_matrix(dt$data, dt$row, dt$col) |>
+numbers <-
+  mistlecode::coords_to_matrix(dt$data, dt$row, dt$col) |>
   t() |>
   as.vector() |>
   paste0(collapse = "") |>
@@ -42,8 +43,8 @@ mistlecode::coords_to_matrix(dt$data, dt$row, dt$col) |>
   stringr::str_split(' ') |>
   unlist() |>
   as.numeric() |>
-  purrr::discard(is.na) |>
-  sum(na.rm = TRUE)
+  purrr::discard(is.na)
+sum(numbers, na.rm = TRUE)
 ```
 
 ## Part 2
@@ -52,11 +53,6 @@ This is really long-winded. I'm sure it could be better functionalized. The hard
 
 ```{r}
 dt <- mistlecode::matrix_to_coords(m)
-clust <-
-  dt |>
-  dplyr::filter(data != ".") |>
-  dplyr::select(-data) |>
-  dbscan::dbscan(sqrt(2), minPts = 2)
 number_clust <-
   dt |>
   dplyr::filter(grepl('[0-9]', data)) |>
@@ -84,21 +80,9 @@ has_prod <-
   as.vector() |>
   data.frame() |>
   `colnames<-`('has_prod') |>
-  dplyr::mutate(
-    t = cumsum(is.na(has_prod))
-  ) |>
+  dplyr::mutate(t = cumsum(is.na(has_prod))) |>
   dplyr::filter(dplyr::row_number() == dplyr::n() & !is.na(has_prod), .by = 't') |>
   dplyr::pull(has_prod)
-numbers <-
-  mistlecode::coords_to_matrix(clust_dt$data, clust_dt$row, clust_dt$col) |>
-  t() |>
-  as.vector() |>
-  paste0(collapse = "") |>
-  stringr::str_replace_all('[^0-9]', ' ') |>
-  stringr::str_split(' ') |>
-  unlist() |>
-  as.numeric() |>
-  purrr::discard(is.na)
 
 data.frame(
   has_prod,

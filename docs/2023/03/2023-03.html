@@ -60,7 +60,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../../">
-<link href="../../2022/01/2022-01.html" rel="next">
+<link href="../../2023/04/2023-04.html" rel="next">
 <link href="../../2023/02/2023-02.html" rel="prev">
 <script src="../../site_libs/quarto-html/quarto.js"></script>
 <script src="../../site_libs/quarto-html/popper.min.js"></script>
@@ -186,6 +186,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../2023/03/2023-03.html" class="sidebar-item-text sidebar-link active"><span class="chapter-title">03: Gear Ratios</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../2023/04/2023-04.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">04: Scratchcards</span></a>
   </div>
 </li>
       </ul>
@@ -738,9 +743,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb2-5"><a href="#cb2-5"></a>m <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">unlist</span>(dt), <span class="at">nrow =</span> <span class="fu">length</span>(dt), <span class="at">byrow =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <section id="part-1" class="level2"><h2 class="anchored" data-anchor-id="part-1">Part 1</h2>
-<p>This was so much fun! I love <code>dbscan</code> with all my heart.</p>
-<div class="cell" data-hash="2023-03_cache/html/unnamed-chunk-3_ca88e194e39c24cf7a3f5eeeab24087d">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>dt <span class="ot">&lt;-</span> m <span class="sc">|&gt;</span> mistlecode<span class="sc">::</span><span class="fu">matrix_to_coords</span>()</span>
+<p>This was so much fun! I love <code>dbscan</code> with all my heart. I also did something really stupid and submitted the test input then had to wait the longest minute of my life to submit the real answer.</p>
+<div class="cell" data-hash="2023-03_cache/html/unnamed-chunk-3_fca136b7dbf35a23f6050b9250d18e04">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>dt <span class="ot">&lt;-</span> mistlecode<span class="sc">::</span><span class="fu">matrix_to_coords</span>(m)</span>
 <span id="cb3-2"><a href="#cb3-2"></a>clust <span class="ot">&lt;-</span></span>
 <span id="cb3-3"><a href="#cb3-3"></a>  dt <span class="sc">|&gt;</span></span>
 <span id="cb3-4"><a href="#cb3-4"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(data <span class="sc">!=</span> <span class="st">"."</span>) <span class="sc">|&gt;</span></span>
@@ -751,80 +756,64 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb3-9"><a href="#cb3-9"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(data <span class="sc">!=</span> <span class="st">"."</span>) <span class="sc">|&gt;</span></span>
 <span id="cb3-10"><a href="#cb3-10"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">clust =</span> clust<span class="sc">$</span>cluster) <span class="sc">|&gt;</span></span>
 <span id="cb3-11"><a href="#cb3-11"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(<span class="fu">any</span>(<span class="sc">!</span><span class="fu">grepl</span>(<span class="st">'[0-9]'</span>, data)), <span class="at">.by =</span> <span class="st">'clust'</span>)</span>
-<span id="cb3-12"><a href="#cb3-12"></a>mistlecode<span class="sc">::</span><span class="fu">coords_to_matrix</span>(dt<span class="sc">$</span>data, dt<span class="sc">$</span>row, dt<span class="sc">$</span>col) <span class="sc">|&gt;</span></span>
-<span id="cb3-13"><a href="#cb3-13"></a>  <span class="fu">t</span>() <span class="sc">|&gt;</span></span>
-<span id="cb3-14"><a href="#cb3-14"></a>  <span class="fu">as.vector</span>() <span class="sc">|&gt;</span></span>
-<span id="cb3-15"><a href="#cb3-15"></a>  <span class="fu">paste0</span>(<span class="at">collapse =</span> <span class="st">""</span>) <span class="sc">|&gt;</span></span>
-<span id="cb3-16"><a href="#cb3-16"></a>  stringr<span class="sc">::</span><span class="fu">str_replace_all</span>(<span class="st">'[^0-9]'</span>, <span class="st">' '</span>) <span class="sc">|&gt;</span></span>
-<span id="cb3-17"><a href="#cb3-17"></a>  stringr<span class="sc">::</span><span class="fu">str_split</span>(<span class="st">' '</span>) <span class="sc">|&gt;</span></span>
-<span id="cb3-18"><a href="#cb3-18"></a>  <span class="fu">unlist</span>() <span class="sc">|&gt;</span></span>
-<span id="cb3-19"><a href="#cb3-19"></a>  <span class="fu">as.numeric</span>() <span class="sc">|&gt;</span></span>
-<span id="cb3-20"><a href="#cb3-20"></a>  purrr<span class="sc">::</span><span class="fu">discard</span>(is.na) <span class="sc">|&gt;</span></span>
-<span id="cb3-21"><a href="#cb3-21"></a>  <span class="fu">sum</span>(<span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb3-12"><a href="#cb3-12"></a>numbers <span class="ot">&lt;-</span></span>
+<span id="cb3-13"><a href="#cb3-13"></a>  mistlecode<span class="sc">::</span><span class="fu">coords_to_matrix</span>(dt<span class="sc">$</span>data, dt<span class="sc">$</span>row, dt<span class="sc">$</span>col) <span class="sc">|&gt;</span></span>
+<span id="cb3-14"><a href="#cb3-14"></a>  <span class="fu">t</span>() <span class="sc">|&gt;</span></span>
+<span id="cb3-15"><a href="#cb3-15"></a>  <span class="fu">as.vector</span>() <span class="sc">|&gt;</span></span>
+<span id="cb3-16"><a href="#cb3-16"></a>  <span class="fu">paste0</span>(<span class="at">collapse =</span> <span class="st">""</span>) <span class="sc">|&gt;</span></span>
+<span id="cb3-17"><a href="#cb3-17"></a>  stringr<span class="sc">::</span><span class="fu">str_replace_all</span>(<span class="st">'[^0-9]'</span>, <span class="st">' '</span>) <span class="sc">|&gt;</span></span>
+<span id="cb3-18"><a href="#cb3-18"></a>  stringr<span class="sc">::</span><span class="fu">str_split</span>(<span class="st">' '</span>) <span class="sc">|&gt;</span></span>
+<span id="cb3-19"><a href="#cb3-19"></a>  <span class="fu">unlist</span>() <span class="sc">|&gt;</span></span>
+<span id="cb3-20"><a href="#cb3-20"></a>  <span class="fu">as.numeric</span>() <span class="sc">|&gt;</span></span>
+<span id="cb3-21"><a href="#cb3-21"></a>  purrr<span class="sc">::</span><span class="fu">discard</span>(is.na)</span>
+<span id="cb3-22"><a href="#cb3-22"></a><span class="fu">sum</span>(numbers, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 520019</code></pre>
 </div>
 </div>
 </section><section id="part-2" class="level2"><h2 class="anchored" data-anchor-id="part-2">Part 2</h2>
 <p>This is really long-winded. I’m sure it could be better functionalized. The hard part wasn’t as much figuring out what goes in a group as much as figuring out what goes in which group.</p>
-<div class="cell" data-hash="2023-03_cache/html/unnamed-chunk-4_aa509fbb4151352c3e327e91c640a7d2">
+<div class="cell" data-hash="2023-03_cache/html/unnamed-chunk-4_648f2c7cfe0ad2e83b153eb23a0531e6">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>dt <span class="ot">&lt;-</span> mistlecode<span class="sc">::</span><span class="fu">matrix_to_coords</span>(m)</span>
-<span id="cb5-2"><a href="#cb5-2"></a>clust <span class="ot">&lt;-</span></span>
+<span id="cb5-2"><a href="#cb5-2"></a>number_clust <span class="ot">&lt;-</span></span>
 <span id="cb5-3"><a href="#cb5-3"></a>  dt <span class="sc">|&gt;</span></span>
-<span id="cb5-4"><a href="#cb5-4"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(data <span class="sc">!=</span> <span class="st">"."</span>) <span class="sc">|&gt;</span></span>
+<span id="cb5-4"><a href="#cb5-4"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(<span class="fu">grepl</span>(<span class="st">'[0-9]'</span>, data)) <span class="sc">|&gt;</span></span>
 <span id="cb5-5"><a href="#cb5-5"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="sc">-</span>data) <span class="sc">|&gt;</span></span>
-<span id="cb5-6"><a href="#cb5-6"></a>  dbscan<span class="sc">::</span><span class="fu">dbscan</span>(<span class="fu">sqrt</span>(<span class="dv">2</span>), <span class="at">minPts =</span> <span class="dv">2</span>)</span>
-<span id="cb5-7"><a href="#cb5-7"></a>number_clust <span class="ot">&lt;-</span></span>
+<span id="cb5-6"><a href="#cb5-6"></a>  dbscan<span class="sc">::</span><span class="fu">dbscan</span>(<span class="dv">1</span>, <span class="at">minPts =</span> <span class="dv">1</span>)</span>
+<span id="cb5-7"><a href="#cb5-7"></a>number_dt <span class="ot">&lt;-</span></span>
 <span id="cb5-8"><a href="#cb5-8"></a>  dt <span class="sc">|&gt;</span></span>
 <span id="cb5-9"><a href="#cb5-9"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(<span class="fu">grepl</span>(<span class="st">'[0-9]'</span>, data)) <span class="sc">|&gt;</span></span>
-<span id="cb5-10"><a href="#cb5-10"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="sc">-</span>data) <span class="sc">|&gt;</span></span>
-<span id="cb5-11"><a href="#cb5-11"></a>  dbscan<span class="sc">::</span><span class="fu">dbscan</span>(<span class="dv">1</span>, <span class="at">minPts =</span> <span class="dv">1</span>)</span>
-<span id="cb5-12"><a href="#cb5-12"></a>number_dt <span class="ot">&lt;-</span></span>
-<span id="cb5-13"><a href="#cb5-13"></a>  dt <span class="sc">|&gt;</span></span>
-<span id="cb5-14"><a href="#cb5-14"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(<span class="fu">grepl</span>(<span class="st">'[0-9]'</span>, data)) <span class="sc">|&gt;</span></span>
-<span id="cb5-15"><a href="#cb5-15"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">number_clust =</span> number_clust<span class="sc">$</span>cluster)</span>
-<span id="cb5-16"><a href="#cb5-16"></a>clust_dt <span class="ot">&lt;-</span> </span>
-<span id="cb5-17"><a href="#cb5-17"></a>  dt <span class="sc">|&gt;</span></span>
-<span id="cb5-18"><a href="#cb5-18"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(data <span class="sc">!=</span> <span class="st">"."</span>) <span class="sc">|&gt;</span></span>
-<span id="cb5-19"><a href="#cb5-19"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">clust =</span> clust<span class="sc">$</span>cluster) <span class="sc">|&gt;</span></span>
-<span id="cb5-20"><a href="#cb5-20"></a>  dplyr<span class="sc">::</span><span class="fu">left_join</span>(number_dt, <span class="at">by =</span> dplyr<span class="sc">::</span><span class="fu">join_by</span>(data, row, col)) <span class="sc">|&gt;</span></span>
-<span id="cb5-21"><a href="#cb5-21"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(<span class="fu">any</span>(<span class="sc">!</span><span class="fu">grepl</span>(<span class="st">'[0-9]'</span>, data)), <span class="at">.by =</span> <span class="st">'clust'</span>) <span class="sc">|&gt;</span></span>
-<span id="cb5-22"><a href="#cb5-22"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(</span>
-<span id="cb5-23"><a href="#cb5-23"></a>    <span class="at">has_prod =</span> <span class="fu">any</span>(data <span class="sc">==</span> <span class="st">'*'</span>) <span class="sc">&amp;</span> <span class="fu">length</span>(<span class="fu">unique</span>(number_clust[<span class="sc">!</span><span class="fu">is.na</span>(number_clust)])) <span class="sc">==</span> <span class="dv">2</span>,</span>
-<span id="cb5-24"><a href="#cb5-24"></a>    <span class="at">prod_group =</span> dplyr<span class="sc">::</span><span class="fu">cur_group_id</span>(),</span>
-<span id="cb5-25"><a href="#cb5-25"></a>    <span class="at">.by =</span> <span class="st">'clust'</span></span>
-<span id="cb5-26"><a href="#cb5-26"></a>  ) <span class="sc">|&gt;</span></span>
-<span id="cb5-27"><a href="#cb5-27"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(<span class="fu">grepl</span>(<span class="st">'[0-9]'</span>, data))</span>
-<span id="cb5-28"><a href="#cb5-28"></a>has_prod <span class="ot">&lt;-</span></span>
-<span id="cb5-29"><a href="#cb5-29"></a>  mistlecode<span class="sc">::</span><span class="fu">coords_to_matrix</span>(clust_dt<span class="sc">$</span>prod_group, clust_dt<span class="sc">$</span>row, clust_dt<span class="sc">$</span>col) <span class="sc">|&gt;</span></span>
-<span id="cb5-30"><a href="#cb5-30"></a>  <span class="fu">t</span>() <span class="sc">|&gt;</span></span>
-<span id="cb5-31"><a href="#cb5-31"></a>  <span class="fu">as.vector</span>() <span class="sc">|&gt;</span></span>
-<span id="cb5-32"><a href="#cb5-32"></a>  <span class="fu">data.frame</span>() <span class="sc">|&gt;</span></span>
-<span id="cb5-33"><a href="#cb5-33"></a>  <span class="st">`</span><span class="at">colnames&lt;-</span><span class="st">`</span>(<span class="st">'has_prod'</span>) <span class="sc">|&gt;</span></span>
-<span id="cb5-34"><a href="#cb5-34"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(</span>
-<span id="cb5-35"><a href="#cb5-35"></a>    <span class="at">t =</span> <span class="fu">cumsum</span>(<span class="fu">is.na</span>(has_prod))</span>
-<span id="cb5-36"><a href="#cb5-36"></a>  ) <span class="sc">|&gt;</span></span>
-<span id="cb5-37"><a href="#cb5-37"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(dplyr<span class="sc">::</span><span class="fu">row_number</span>() <span class="sc">==</span> dplyr<span class="sc">::</span><span class="fu">n</span>() <span class="sc">&amp;</span> <span class="sc">!</span><span class="fu">is.na</span>(has_prod), <span class="at">.by =</span> <span class="st">'t'</span>) <span class="sc">|&gt;</span></span>
-<span id="cb5-38"><a href="#cb5-38"></a>  dplyr<span class="sc">::</span><span class="fu">pull</span>(has_prod)</span>
-<span id="cb5-39"><a href="#cb5-39"></a>numbers <span class="ot">&lt;-</span></span>
-<span id="cb5-40"><a href="#cb5-40"></a>  mistlecode<span class="sc">::</span><span class="fu">coords_to_matrix</span>(clust_dt<span class="sc">$</span>data, clust_dt<span class="sc">$</span>row, clust_dt<span class="sc">$</span>col) <span class="sc">|&gt;</span></span>
-<span id="cb5-41"><a href="#cb5-41"></a>  <span class="fu">t</span>() <span class="sc">|&gt;</span></span>
-<span id="cb5-42"><a href="#cb5-42"></a>  <span class="fu">as.vector</span>() <span class="sc">|&gt;</span></span>
-<span id="cb5-43"><a href="#cb5-43"></a>  <span class="fu">paste0</span>(<span class="at">collapse =</span> <span class="st">""</span>) <span class="sc">|&gt;</span></span>
-<span id="cb5-44"><a href="#cb5-44"></a>  stringr<span class="sc">::</span><span class="fu">str_replace_all</span>(<span class="st">'[^0-9]'</span>, <span class="st">' '</span>) <span class="sc">|&gt;</span></span>
-<span id="cb5-45"><a href="#cb5-45"></a>  stringr<span class="sc">::</span><span class="fu">str_split</span>(<span class="st">' '</span>) <span class="sc">|&gt;</span></span>
-<span id="cb5-46"><a href="#cb5-46"></a>  <span class="fu">unlist</span>() <span class="sc">|&gt;</span></span>
-<span id="cb5-47"><a href="#cb5-47"></a>  <span class="fu">as.numeric</span>() <span class="sc">|&gt;</span></span>
-<span id="cb5-48"><a href="#cb5-48"></a>  purrr<span class="sc">::</span><span class="fu">discard</span>(is.na)</span>
-<span id="cb5-49"><a href="#cb5-49"></a></span>
-<span id="cb5-50"><a href="#cb5-50"></a><span class="fu">data.frame</span>(</span>
-<span id="cb5-51"><a href="#cb5-51"></a>  has_prod,</span>
-<span id="cb5-52"><a href="#cb5-52"></a>  numbers</span>
-<span id="cb5-53"><a href="#cb5-53"></a>) <span class="sc">|&gt;</span></span>
-<span id="cb5-54"><a href="#cb5-54"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(dplyr<span class="sc">::</span><span class="fu">n</span>() <span class="sc">&gt;=</span> <span class="dv">2</span>, <span class="at">.by =</span> has_prod) <span class="sc">|&gt;</span></span>
-<span id="cb5-55"><a href="#cb5-55"></a>  dplyr<span class="sc">::</span><span class="fu">summarise</span>(<span class="at">val =</span> <span class="fu">prod</span>(numbers), <span class="at">.by =</span> has_prod) <span class="sc">|&gt;</span></span>
-<span id="cb5-56"><a href="#cb5-56"></a>  dplyr<span class="sc">::</span><span class="fu">pull</span>(val) <span class="sc">|&gt;</span></span>
-<span id="cb5-57"><a href="#cb5-57"></a>  <span class="fu">sum</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb5-10"><a href="#cb5-10"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">number_clust =</span> number_clust<span class="sc">$</span>cluster)</span>
+<span id="cb5-11"><a href="#cb5-11"></a>clust_dt <span class="ot">&lt;-</span> </span>
+<span id="cb5-12"><a href="#cb5-12"></a>  dt <span class="sc">|&gt;</span></span>
+<span id="cb5-13"><a href="#cb5-13"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(data <span class="sc">!=</span> <span class="st">"."</span>) <span class="sc">|&gt;</span></span>
+<span id="cb5-14"><a href="#cb5-14"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">clust =</span> clust<span class="sc">$</span>cluster) <span class="sc">|&gt;</span></span>
+<span id="cb5-15"><a href="#cb5-15"></a>  dplyr<span class="sc">::</span><span class="fu">left_join</span>(number_dt, <span class="at">by =</span> dplyr<span class="sc">::</span><span class="fu">join_by</span>(data, row, col)) <span class="sc">|&gt;</span></span>
+<span id="cb5-16"><a href="#cb5-16"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(<span class="fu">any</span>(<span class="sc">!</span><span class="fu">grepl</span>(<span class="st">'[0-9]'</span>, data)), <span class="at">.by =</span> <span class="st">'clust'</span>) <span class="sc">|&gt;</span></span>
+<span id="cb5-17"><a href="#cb5-17"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(</span>
+<span id="cb5-18"><a href="#cb5-18"></a>    <span class="at">has_prod =</span> <span class="fu">any</span>(data <span class="sc">==</span> <span class="st">'*'</span>) <span class="sc">&amp;</span> <span class="fu">length</span>(<span class="fu">unique</span>(number_clust[<span class="sc">!</span><span class="fu">is.na</span>(number_clust)])) <span class="sc">==</span> <span class="dv">2</span>,</span>
+<span id="cb5-19"><a href="#cb5-19"></a>    <span class="at">prod_group =</span> dplyr<span class="sc">::</span><span class="fu">cur_group_id</span>(),</span>
+<span id="cb5-20"><a href="#cb5-20"></a>    <span class="at">.by =</span> <span class="st">'clust'</span></span>
+<span id="cb5-21"><a href="#cb5-21"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb5-22"><a href="#cb5-22"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(<span class="fu">grepl</span>(<span class="st">'[0-9]'</span>, data))</span>
+<span id="cb5-23"><a href="#cb5-23"></a>has_prod <span class="ot">&lt;-</span></span>
+<span id="cb5-24"><a href="#cb5-24"></a>  mistlecode<span class="sc">::</span><span class="fu">coords_to_matrix</span>(clust_dt<span class="sc">$</span>prod_group, clust_dt<span class="sc">$</span>row, clust_dt<span class="sc">$</span>col) <span class="sc">|&gt;</span></span>
+<span id="cb5-25"><a href="#cb5-25"></a>  <span class="fu">t</span>() <span class="sc">|&gt;</span></span>
+<span id="cb5-26"><a href="#cb5-26"></a>  <span class="fu">as.vector</span>() <span class="sc">|&gt;</span></span>
+<span id="cb5-27"><a href="#cb5-27"></a>  <span class="fu">data.frame</span>() <span class="sc">|&gt;</span></span>
+<span id="cb5-28"><a href="#cb5-28"></a>  <span class="st">`</span><span class="at">colnames&lt;-</span><span class="st">`</span>(<span class="st">'has_prod'</span>) <span class="sc">|&gt;</span></span>
+<span id="cb5-29"><a href="#cb5-29"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">t =</span> <span class="fu">cumsum</span>(<span class="fu">is.na</span>(has_prod))) <span class="sc">|&gt;</span></span>
+<span id="cb5-30"><a href="#cb5-30"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(dplyr<span class="sc">::</span><span class="fu">row_number</span>() <span class="sc">==</span> dplyr<span class="sc">::</span><span class="fu">n</span>() <span class="sc">&amp;</span> <span class="sc">!</span><span class="fu">is.na</span>(has_prod), <span class="at">.by =</span> <span class="st">'t'</span>) <span class="sc">|&gt;</span></span>
+<span id="cb5-31"><a href="#cb5-31"></a>  dplyr<span class="sc">::</span><span class="fu">pull</span>(has_prod)</span>
+<span id="cb5-32"><a href="#cb5-32"></a></span>
+<span id="cb5-33"><a href="#cb5-33"></a><span class="fu">data.frame</span>(</span>
+<span id="cb5-34"><a href="#cb5-34"></a>  has_prod,</span>
+<span id="cb5-35"><a href="#cb5-35"></a>  numbers</span>
+<span id="cb5-36"><a href="#cb5-36"></a>) <span class="sc">|&gt;</span></span>
+<span id="cb5-37"><a href="#cb5-37"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(dplyr<span class="sc">::</span><span class="fu">n</span>() <span class="sc">&gt;=</span> <span class="dv">2</span>, <span class="at">.by =</span> has_prod) <span class="sc">|&gt;</span></span>
+<span id="cb5-38"><a href="#cb5-38"></a>  dplyr<span class="sc">::</span><span class="fu">summarise</span>(<span class="at">val =</span> <span class="fu">prod</span>(numbers), <span class="at">.by =</span> has_prod) <span class="sc">|&gt;</span></span>
+<span id="cb5-39"><a href="#cb5-39"></a>  dplyr<span class="sc">::</span><span class="fu">pull</span>(val) <span class="sc">|&gt;</span></span>
+<span id="cb5-40"><a href="#cb5-40"></a>  <span class="fu">sum</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 75519888</code></pre>
 </div>
@@ -1184,8 +1173,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../../2022/01/2022-01.html" class="pagination-link">
-        <span class="nav-page-text"><span class="chapter-title">2022-01: Calorie Counting</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../../2023/04/2023-04.html" class="pagination-link">
+        <span class="nav-page-text"><span class="chapter-title">04: Scratchcards</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

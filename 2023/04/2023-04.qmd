@@ -1,0 +1,59 @@
+---
+title: "04: Scratchcards"
+format: html
+---
+
+```{r}
+#| message: false
+library(mistlecode)
+
+options(scipen = 999)
+```
+
+```{r}
+dt <-
+  readLines("input.txt") |>
+  stringr::str_remove_all('Card +\\d+: ') |>
+  stringr::str_split(" \\| ")
+```
+
+## Part 1
+
+This took me longer than it should've, mostly because of the multiplication factor. I'm happy with my code, but disappointed in how long it took.
+
+```{r}
+break_line <- function(x) {
+  x |>
+    stringr::str_split(" +") |> 
+    unlist() |> 
+    as.numeric() |> 
+    purrr::discard(is.na)
+}
+dt |>
+  purrr::map(\(x) {
+    x1 <- break_line(x[1]); x2 <- break_line(x[2]);
+    x <- sum(x1 %in% x2)
+    floor(2^(x-1))
+  }) |>
+  unlist() |>
+  sum()
+```
+
+## Part 2
+
+Part 2 follows the same theme as part 1. I'm ultimately really pleased with my code, but it took way too long and in this case could be faster too. The almost recursion but not quite was quite confusing to figure out and I'm sure my code makes even less sense than the problem does.
+
+```{r}
+dt2 <- list()
+dt |>
+  purrr::iwalk(\(x, idx) {
+    x1 <- break_line(x[1]); x2 <- break_line(x[2]);
+    i <- if (length(dt2) == 0) 1 else (unname(table(unlist(dt2))[idx]) + 1)
+    i <- if (is.na(i)) 1 else i
+    dt2[[idx]] <<- c(idx, rep((idx:(idx + sum(x1 %in% x2)))[-1], i))
+  })
+dt2 |> 
+  unlist() |> 
+  length()
+```
+
