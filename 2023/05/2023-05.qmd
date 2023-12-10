@@ -1,0 +1,76 @@
+---
+title: "05: "
+format: html
+---
+
+```{r}
+#| message: false
+library(mistlecode)
+
+options(scipen = 999)
+```
+
+```{r}
+get_range <- function(x, range) {
+  x:(x+range-1)
+}
+do_join <- function(x, y) {
+  x |>
+    dplyr::full_join(y, by = c('dest' = 'source')) |>
+    dplyr::select(-dest, 'dest' = 'dest.y') |>
+    dplyr::mutate(dest = ifelse(is.na(dest), source, dest))
+}
+# do_join(dt[[1]], dt[[2]])
+dt <-
+  readLines("input2.txt") |>
+  tibble::tibble() |>
+  `colnames<-`('input') |>
+  dplyr::mutate(group = cumsum(grepl('[a-z]', input))) |>
+  dplyr::filter(input != '') |>
+  dplyr::group_split(group) |>
+  tail(-1) |>
+  purrr::imap(\(x, idx) {
+    x <-
+        x |>
+        dplyr::select(-group) |>
+        dplyr::filter(dplyr::row_number() != 1) |>
+        tidyr::separate(input, c('source', 'dest', 'range'), convert = TRUE) |>
+        dplyr::rowwise() |>
+        dplyr::mutate(
+          source = purrr::map(source, get_range, range = range),
+          dest = purrr::map(dest, get_range, range = range)
+        ) |>
+        dplyr::select(-range) |>
+        tidyr::unnest_longer(col = c(source, dest)) |>
+        `colnames<-`(c('dest', 'source'))
+      x |>
+        dplyr::right_join(tibble::tibble('source' = seq_len(max(x$source, na.rm = TRUE))), by = 'source') |>
+        dplyr::arrange(source) |>
+        dplyr::mutate(dest = ifelse(is.na(dest), source, dest))
+  }) |>
+  purrr::reduce(do_join) |>
+  unique()
+
+s <-
+  readLines('input2.txt', n = 1) |>
+  stringr::str_extract_all('\\d+') |>
+  unlist() |>
+  as.numeric()
+
+dt[s,]
+  # dplyr::pull(dest) |>
+  # min()
+```
+
+## Part 1
+
+```{r}
+
+```
+
+## Part 2
+
+```{r}
+
+```
+

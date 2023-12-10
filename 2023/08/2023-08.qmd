@@ -1,0 +1,112 @@
+---
+title: "08: "
+format: html
+---
+
+```{r}
+#| message: false
+library(mistlecode)
+
+options(scipen = 999)
+```
+
+```{r}
+file <- 'input.txt'
+
+rl <- 
+  file |>
+  readLines(n = 1) |>
+  stringr::str_split_1('')
+  
+dt <-
+  file |>
+  readr::read_csv(skip = 2, trim_ws = TRUE, col_names = FALSE) |>
+  tidyr::separate(X1, into = c('start', 'left'), sep = ' = \\(') |>
+  dplyr::mutate('right' = stringr::str_remove_all(X2, '\\)')) |>
+  dplyr::select(-X2) |>
+  readr::write_delim('mod_input.csv', col_names = FALSE)
+```
+
+## Part 1
+
+```{r}
+registers <-
+  dt |>
+  dplyr::pull(start) |>
+  purrr::map(\(x) {
+    list('a' = 0L) |>
+      `names<-`(x)
+  }) |>
+  unlist(recursive = FALSE) |>
+  rlist::list.append('current' = c('-1'))
+
+functions <- list(
+  'L' = \(start, left, right) {
+    if (left == 'ZZZ') print(self[['index']])
+    self[['current']] <- left
+  },
+  'R' = \(start, left, right) {
+    if (right == 'ZZZ') print(self[['index']])
+    self[['current']] <- right
+  }
+)
+
+asm <- mistlecode::create_assembly2(registers, functions)
+ins <- readLines('mod_input.csv')
+i <- 0
+repeat {
+  asm <- asm$run(ins)
+  if (i == 2) break else i <- i + 1
+}
+```
+
+```{r}
+Rcpp::cppFunction('
+String part1(StringVector dir, StringVector start, StringVector left, StringVector right) {
+  int index = 0;
+  int count = 1;
+  int sz = dir.size();
+  std::string x = Rcpp::as<std::string>(start[index]);
+  std::string zzz = "ZZZ";
+  while(x != zzz) {
+    if (dir[(count % sz) + 1] == "L") {
+      x = Rcpp::as<std::string>(left[index]);
+    } else {
+      x = Rcpp::as<std::string>(right[index]);
+    }
+    for(int i = 0; i < sz; i++) {
+      if (Rcpp::as<std::string>(start[i]) == x) {
+        index = i;
+        break;
+      }
+    }
+    count = count + 1;
+  }
+  return(x);
+}
+')
+part1(rl, dt$start, dt$left, dt$right)
+```
+
+
+```{r}
+# do_step <- function(index, count = 1) {
+#   x <- as.list(dt[index,])
+#   x <- if (rl[count %% length(rl) + 1] == 'L') x$left else x$right
+#   if (x == 'ZZZ') print(count + 1) else do_step(which(dt$start == x), count + 1)
+# }
+# 
+# do_step(1, 0)
+
+index <- 1
+count <- 1
+repeat {
+  count <- count + 1
+  x <- as.list(dt[index,])
+  x <- if (rl[count %% length(rl) + 1] == 'L') x$left else x$right
+  if (x == 'ZZZ') break else index <- which(dt$start == x)
+}
+count + 1
+```
+
+113412647

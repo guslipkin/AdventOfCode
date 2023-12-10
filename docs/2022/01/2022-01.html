@@ -756,7 +756,7 @@ The following object is masked from 'package:purrr':
     transpose</code></pre>
 </div>
 </div>
-<p>My initial thought was to use <code><a href="https://Rdatatable.gitlab.io/data.table/reference/fread.html">data.table::fread</a></code> but that skipped the spaces in the input by default. <code>readLines</code> keeps the spaces so I switched to that right away.</p>
+<p>My initial thought was to use <code><a href="https://rdatatable.gitlab.io/data.table/reference/fread.html">data.table::fread</a></code> but that skipped the spaces in the input by default. <code>readLines</code> keeps the spaces so I switched to that right away.</p>
 <div class="cell" data-hash="2022-01_cache/html/unnamed-chunk-2_b16d0eb91423c7d406edddbe458dd68c">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>dt <span class="ot">&lt;-</span> <span class="fu">readLines</span>(<span class="st">"input.txt"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
