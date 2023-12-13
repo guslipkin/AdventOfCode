@@ -70,6 +70,20 @@
     "text": "Part 2\nPart 2 follows the same theme as part 1. I’m ultimately really pleased with my code, but it took way too long and in this case could be faster too. The almost recursion but not quite was quite confusing to figure out and I’m sure my code makes even less sense than the problem does.\n\ndt2 &lt;- list()\ndt |&gt;\n  purrr::iwalk(\\(x, idx) {\n    x1 &lt;- break_line(x[1]); x2 &lt;- break_line(x[2]);\n    i &lt;- if (length(dt2) == 0) 1 else (unname(table(unlist(dt2))[idx]) + 1)\n    i &lt;- if (is.na(i)) 1 else i\n    dt2[[idx]] &lt;&lt;- c(idx, rep((idx:(idx + sum(x1 %in% x2)))[-1], i))\n  })\ndt2 |&gt; \n  unlist() |&gt; \n  length()\n\n[1] 5329815"
   },
   {
+    "objectID": "2023/13/2023-13.html#part-1",
+    "href": "2023/13/2023-13.html#part-1",
+    "title": "13: Point of Incidence",
+    "section": "Part 1",
+    "text": "Part 1\nOkay okay. Not too bad. Just need to make sure I get the line of reflection right.\n\nget_up_down &lt;- function(up, down) {\n  l &lt;- min(c(length(up), length(down)))\n  up &lt;- rev(rev(up)[seq_len(l)]); down &lt;- down[rev(seq_len(l))];\n  list('up' = up, 'down' = down)\n}\nget_seq &lt;- function(s) { s |&gt; seq_len() |&gt; head(-1) }\ncheck_row &lt;- function(x) {\n  x |&gt;\n    nrow() |&gt;\n    get_seq() |&gt;\n    purrr::map_int(\\(r) {\n      up &lt;- seq_len(r); down &lt;- min(c(r+1,nrow(x))):nrow(x)\n      updown &lt;- get_up_down(up, down)\n      up &lt;- x[updown$up,]; down &lt;- x[updown$down,];\n      if (all(up == down)) r * 100 else 0\n    })\n}\ncheck_col &lt;- function(x) {\n  x |&gt;\n    ncol() |&gt;\n    get_seq() |&gt;\n    purrr::map_int(\\(r) {\n      up &lt;- seq_len(r); down &lt;- min(c(r+1,ncol(x))):ncol(x)\n      updown &lt;- get_up_down(up, down)\n      up &lt;- x[,updown$up]; down &lt;- x[,updown$down];\n      if (all(up == down)) r else 0\n    })\n}\ndt |&gt;\n  purrr::map(\\(x) {\n    c(check_row(x), check_col(x))\n  }) |&gt;\n  unlist() |&gt;\n  sum()\n\n[1] 37718"
+  },
+  {
+    "objectID": "2023/13/2023-13.html#part-2",
+    "href": "2023/13/2023-13.html#part-2",
+    "title": "13: Point of Incidence",
+    "section": "Part 2",
+    "text": "Part 2\nomg. This is gonna be easy. I just need to check if all but one are equal instead of all. I got this in well under two minutes!\n\ncheck_row &lt;- function(x) {\n  x |&gt;\n    nrow() |&gt;\n    get_seq() |&gt;\n    purrr::map_int(\\(r) {\n      up &lt;- seq_len(r); down &lt;- min(c(r+1,nrow(x))):nrow(x)\n      updown &lt;- get_up_down(up, down)\n      up &lt;- x[updown$up,]; down &lt;- x[updown$down,];\n      if (sum(up == down) == length(up) - 1) r * 100 else 0\n    })\n}\ncheck_col &lt;- function(x) {\n  x |&gt;\n    ncol() |&gt;\n    get_seq() |&gt;\n    purrr::map_int(\\(r) {\n      up &lt;- seq_len(r); down &lt;- min(c(r+1,ncol(x))):ncol(x)\n      updown &lt;- get_up_down(up, down)\n      up &lt;- x[,updown$up]; down &lt;- x[,updown$down];\n      if (sum(up == down) == length(up) - 1) r else 0\n    })\n}\ndt |&gt;\n  purrr::map(\\(x) {\n    c(check_row(x), check_col(x))\n  }) |&gt;\n  unlist() |&gt;\n  sum()\n\n[1] 40995"
+  },
+  {
     "objectID": "2022/01/2022-01.html#part-1",
     "href": "2022/01/2022-01.html#part-1",
     "title": "2022-01: Calorie Counting",

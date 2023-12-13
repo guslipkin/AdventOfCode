@@ -1,0 +1,102 @@
+---
+title: "13: Point of Incidence"
+format: html
+---
+
+```{r}
+#| message: false
+library(mistlecode)
+
+options(scipen = 999)
+```
+
+```{r}
+dt <-
+  readLines("input.txt") |>
+  tibble::as_tibble() |>
+  dplyr::mutate(group = cumsum(value == "")) |>
+  dplyr::filter(value != "") |>
+  dplyr::group_split(group) |>
+  purrr::map(\(x) {
+    x |>
+      dplyr::pull(value) |>
+      stringr::str_split("", simplify = TRUE)
+  })
+```
+
+## Part 1
+
+Okay okay. Not too bad. Just need to make sure I get the line of reflection right.
+
+```{r}
+get_up_down <- function(up, down) {
+  l <- min(c(length(up), length(down)))
+  up <- rev(rev(up)[seq_len(l)]); down <- down[rev(seq_len(l))];
+  list('up' = up, 'down' = down)
+}
+get_seq <- function(s) { s |> seq_len() |> head(-1) }
+check_row <- function(x) {
+  x |>
+    nrow() |>
+    get_seq() |>
+    purrr::map_int(\(r) {
+      up <- seq_len(r); down <- min(c(r+1,nrow(x))):nrow(x)
+      updown <- get_up_down(up, down)
+      up <- x[updown$up,]; down <- x[updown$down,];
+      if (all(up == down)) r * 100 else 0
+    })
+}
+check_col <- function(x) {
+  x |>
+    ncol() |>
+    get_seq() |>
+    purrr::map_int(\(r) {
+      up <- seq_len(r); down <- min(c(r+1,ncol(x))):ncol(x)
+      updown <- get_up_down(up, down)
+      up <- x[,updown$up]; down <- x[,updown$down];
+      if (all(up == down)) r else 0
+    })
+}
+dt |>
+  purrr::map(\(x) {
+    c(check_row(x), check_col(x))
+  }) |>
+  unlist() |>
+  sum()
+```
+
+## Part 2
+
+omg. This is gonna be easy. I just need to check if all but one are equal instead of all. I got this in well under two minutes!
+
+```{r}
+check_row <- function(x) {
+  x |>
+    nrow() |>
+    get_seq() |>
+    purrr::map_int(\(r) {
+      up <- seq_len(r); down <- min(c(r+1,nrow(x))):nrow(x)
+      updown <- get_up_down(up, down)
+      up <- x[updown$up,]; down <- x[updown$down,];
+      if (sum(up == down) == length(up) - 1) r * 100 else 0
+    })
+}
+check_col <- function(x) {
+  x |>
+    ncol() |>
+    get_seq() |>
+    purrr::map_int(\(r) {
+      up <- seq_len(r); down <- min(c(r+1,ncol(x))):ncol(x)
+      updown <- get_up_down(up, down)
+      up <- x[,updown$up]; down <- x[,updown$down];
+      if (sum(up == down) == length(up) - 1) r else 0
+    })
+}
+dt |>
+  purrr::map(\(x) {
+    c(check_row(x), check_col(x))
+  }) |>
+  unlist() |>
+  sum()
+```
+

@@ -50,7 +50,7 @@ molecule
 ```{r}
 m <- molecule
 i <- 0
-future::plan(future::multisession, workers = 2)
+future::plan(future::multisession, workers = future::availableCores())
 while (!any(m == "e")) {
   i <- i + 1
   m <-

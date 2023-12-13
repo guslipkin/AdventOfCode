@@ -1,0 +1,29 @@
+---
+title: "24: Arithmetic Logic Unit"
+---
+
+```{r}
+#| message: false
+library(mistlecode)
+dt <- readLines("input.txt")
+```
+
+## Part 1
+
+```{r}
+registers <- list("w" = 0, "x" = 0, "y" = 0, "z" = 0)
+functions <- 
+  get_premade(c(
+    "inp" = "set", 
+    "add",
+    "mul" = "multiply", 
+    "div" = "divide", 
+    "mod" = "modulo"
+  ))
+functions$eql <- \(x, y) {
+  self[[x]] <- if (sef[[x]] == self[[y]]) 1 else 0
+}
+a <- create_assembly2(registers, functions)
+a$run(dt[1])
+```
+
