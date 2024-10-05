@@ -1,0 +1,108 @@
+---
+title: "04: Scratchcards"
+format: html
+---
+  
+```{r}
+#| message: false
+library(mistlecode)
+
+options(scipen = 999)
+```
+
+```{r}
+dt <-
+  readLines('input.txt') |>
+  stringr::str_split(' ') |>
+  unlist() |>
+  matrix(ncol = 2, byrow = TRUE) |>
+  `colnames<-`(c('cards', 'bet')) |>
+  tibble::as_tibble()
+```
+
+## Part 1
+
+This wasn't too bad, but I originally used a `dplyr::case_when` instead of my `if...else` chain and because `dplyr::case_when` is vectorized, that wouldn't work. However, when I swapped to my `if...else` chain, I accidentally marked three of a kind as the same value as a full house. Quite annoying, but an easy fix.
+
+```{r}
+rank <- c('A', 'K', 'Q', 'J', 'T', 9:2) |> rev()
+dt |>
+  dplyr::mutate(
+    '.nest' = purrr::map(.data$cards, \(x) {
+      # x <- 'QJJQ2'
+      h <-
+        x |>
+        stringr::str_split_1('') |>
+        table() |>
+        sort(decreasing = TRUE)
+      hand <-
+        if (length(h) == 1 && all(h %in% 5)) 7
+        else if (length(h) == 2 && all(h %in% c(4, 1))) 6
+        else if (length(h) == 2 && all(h %in% c(3, 2))) 5
+        else if (length(h) == 3 && max(h) == 3) 4
+        else if (length(h[h == 2]) == 2 && max(h) == 2) 3
+        else if (length(h[h == 2]) == 1 && max(h) == 2) 2
+        else 1
+      high <-
+        x |> 
+        stringr::str_split_1('') |>
+        purrr::map_int(\(y) which(rank == y)) |>
+        stringr::str_pad(2, pad = '0') |>
+        paste0(collapse = '') |>
+        as.integer()
+      list('hand' = hand, 'high' = high)
+    })
+  ) |>
+  tidyr::unnest_wider('.nest') |>
+  dplyr::arrange(.data$hand, .data$high) |>
+  dplyr::mutate('bid' = as.integer(.data$bet) * dplyr::row_number()) |>
+  dplyr::pull(.data$bid) |>
+  sum()
+```
+
+## Part 2
+
+This took longer than it should've. I had the concept down quick, but was assigning the `Joker` to the highest available card rather than the card with the most occurrences. This is quickly apparent with the example `KTJJT` which with my original method would've become `KTKKT`, a full house, instead of `KTTTT`, four of a kind.
+
+```{r}
+rank <- c('A', 'K', 'Q', 'T', 9:2, 'J') |> rev()
+dt |>
+  dplyr::mutate(
+    '.nest' = purrr::map(.data$cards, \(x) {
+      # x <- 'KTJJT'
+      x <- stringr::str_split_1(x, '')
+      h <-
+        x |>
+        table() |>
+        sort(decreasing = TRUE)
+      if (any(names(h) == 'J') & !all(names(h) == 'J')) {
+        r <- which(rank == names(h[names(h) != 'J'])[1])
+        h[rank[r]] <- h[rank[r]] + h['J']
+      } else if (length(h) == 1 & all(names(h) == 'J')) {
+        h <- c('A' = 5)
+      }
+      h <- h[names(h) != 'J']
+      hand <- {
+        if (length(h) == 1 && all(h %in% 5)) 7
+        else if (length(h) == 2 && all(h %in% c(4, 1))) 6
+        else if (length(h) == 2 && all(h %in% c(3, 2))) 5
+        else if (length(h) == 3 && max(h) == 3) 4
+        else if (length(h[h == 2]) == 2 && max(h) == 2) 3
+        else if (length(h[h == 2]) == 1 && max(h) == 2) 2
+        else 1
+      }
+      high <-
+        x |> 
+        purrr::map_int(\(y) which(rank == y)) |>
+        stringr::str_pad(2, pad = '0') |>
+        paste0(collapse = '') |>
+        as.integer()
+      list('hand' = hand, 'high' = high)
+    })
+  ) |>
+  tidyr::unnest_wider('.nest') |>
+  dplyr::arrange(.data$hand, .data$high) |>
+  dplyr::mutate('bid' = as.integer(.data$bet) * dplyr::row_number()) |>
+  dplyr::pull(.data$bid) |>
+  sum()
+```
