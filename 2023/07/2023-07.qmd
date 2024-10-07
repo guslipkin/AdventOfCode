@@ -1,5 +1,5 @@
 ---
-title: "04: Scratchcards"
+title: "07: Camel Cards"
 format: html
 ---
   

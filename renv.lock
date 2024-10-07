@@ -356,18 +356,6 @@
       ],
       "Hash": "7fba3f587b0f3cb3232d03d540dbf772"
     },
-    "XML": {
-      "Package": "XML",
-      "Version": "3.99-0.17",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Requirements": [
-        "R",
-        "methods",
-        "utils"
-      ],
-      "Hash": "bc2a8a1139d8d4bd9c46086708945124"
-    },
     "abind": {
       "Package": "abind",
       "Version": "1.4-5",
@@ -596,6 +584,18 @@
       ],
       "Hash": "f61dbaec772ccd2e17705c1e872e9e7c"
     },
+    "cheapr": {
+      "Package": "cheapr",
+      "Version": "0.9.8",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Requirements": [
+        "R",
+        "collapse",
+        "cpp11"
+      ],
+      "Hash": "a711f1e9eacea87dbe1b94df40e2e98e"
+    },
     "cipheR": {
       "Package": "cipheR",
       "Version": "1.0.0",
@@ -660,6 +660,17 @@
         "R"
       ],
       "Hash": "61e097f35917d342622f21cdc79c256e"
+    },
+    "collapse": {
+      "Package": "collapse",
+      "Version": "2.0.16",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Requirements": [
+        "R",
+        "Rcpp"
+      ],
+      "Hash": "6c44b359839bd71fc5cc7818e1c4a5bb"
     },
     "colorspace": {
       "Package": "colorspace",
@@ -2456,20 +2467,6 @@
         "utils"
       ],
       "Hash": "3eec01f8b1dee337674b2e34ab1f9bc1"
-    },
-    "rlist": {
-      "Package": "rlist",
-      "Version": "0.4.6.2",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Requirements": [
-        "R",
-        "XML",
-        "data.table",
-        "jsonlite",
-        "yaml"
-      ],
-      "Hash": "290c8ea0700d2e7258082d0025386e68"
     },
     "rmarkdown": {
       "Package": "rmarkdown",
