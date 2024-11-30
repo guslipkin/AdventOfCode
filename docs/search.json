@@ -14,7 +14,7 @@
     "href": "index.html#my-favorite-solutions",
     "title": "Gus Lipkin’s Awesome Code",
     "section": "My Favorite Solutions",
-    "text": "My Favorite Solutions\n\n\n2016-12 and 2017-08: I created a small assembly style computer that solves the problems for me given a set of registers and instructions.\n\n2021-09: I used the dbscan clustering method to solve a path finding issue.\n\n2022-04: While not my fastest part 1, part 2 took me just 38 seconds!\n\n2022-11: I used S3 Classes and function factories for the first time, and got just a little bit better at recursion.",
+    "text": "My Favorite Solutions\n\n2016-12 and 2017-08: I created a small assembly style computer that solves the problems for me given a set of registers and instructions.\n2021-09: I used the dbscan clustering method to solve a path finding issue.\n2022-04: While not my fastest part 1, part 2 took me just 38 seconds!\n2022-11: I used S3 Classes and function factories for the first time, and got just a little bit better at recursion.",
     "crumbs": [
       "<span class='chapter-number'>1</span>  <span class='chapter-title'>Welcome!</span>"
     ]

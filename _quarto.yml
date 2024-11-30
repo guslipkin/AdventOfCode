@@ -27,6 +27,7 @@ book:
     search: true
   chapters: 
     - index.qmd
+    - part: "2024"
     - part: "2023"
       chapters: 
         - 2023/01/2023-01.qmd
