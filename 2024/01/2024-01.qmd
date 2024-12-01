@@ -12,7 +12,8 @@ options(scipen = 999)
 
 ```{r}
 dt <- 
-  readr::read_delim('input.txt', delim = '   ', col_names = FALSE)
+  'input.txt' |>
+  readr::read_delim(delim = '   ', col_names = FALSE, show_col_types = FALSE)
 ```
 
 ## Part 1
