@@ -1,0 +1,79 @@
+---
+title: "10: Balance Bots"
+format: html
+---
+
+```{r}
+#| message: false
+library(mistlecode)
+
+options(scipen = 999)
+```
+
+```{r}
+dt <- readLines("input.txt")
+s <- dt[c(which(grepl('value', dt)), which(!grepl('value', dt)))]
+```
+
+
+
+## Part 1
+
+
+
+```{r}
+registers <-
+  dt |>
+  stringr::str_extract_all('(bot|output) (\\d+)', simplify = TRUE) |>
+  stringr::str_extract_all('\\d+', simplify = TRUE) |>
+  unique() |>
+  as.numeric() |>
+  purrr::discard(is.na) |>
+  sort() |>
+  purrr::map(\(x) {
+    NA_integer_ |>
+      list() |>
+      `names<-`(x)
+  }) |>
+  unlist(recursive = FALSE)
+
+functions <- list(
+  'value' = \(value, .x, .y, .z, bot) {
+    b <- as.character(bot)
+    print(b)
+    self[[b]] <- c(self[[b]], value)
+  },
+  'bot' = \(bot, .b, .c, .d, dest1, low, .f, .g, .h, dest2, high) {
+    b <- as.character(bot)
+    l <- as.character(low)
+    h <- as.character(high)
+    if (length(self[[b]]) == 3) {
+      current <- self[[b]]
+      self[[b]] <- NA_integer_
+      if (dest1 == 'bot') {
+        self[[l]] <- c(self[[l]], min(current, na.rm = TRUE))
+      }
+      if (dest2 == 'bot') {
+        self[[h]] <- c(self[[h]], max(current, na.rm = TRUE))
+      }
+    }
+  }
+)
+
+bots <- mistlecode::create_assembly2(registers, functions)
+
+repeat {
+  (bots <- bots$run(dt))
+  x <-
+    registers |>
+    names() |>
+    purrr::map_int(\(bot) {
+      b <- sort(bots[[bot]], na.last = TRUE)
+      if (length(b) == 3 & b[1] == 17 & b[2] == 61) as.integer(bot) else -1
+    }) |>
+    max()
+  if (x != -1) break
+}
+x
+```
+

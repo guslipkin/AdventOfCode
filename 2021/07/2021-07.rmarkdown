@@ -1,0 +1,167 @@
+---
+title: "2021-07: The Treachery of Whales"
+format: html
+---
+
+```{r}
+library(stringr)
+library(tidyverse)
+library(data.table)
+
+dt <- as.numeric(data.table::fread("input.txt", header = FALSE)[1])
+```
+
+
+## Part 1
+
+
+```{r}
+dt2 <- data.table("start" = dt)
+s <- c()
+for(i in -max(dt):max(dt)) {
+  dt2 <- data.table("start" = dt)
+  dt2[, mean := floor(mean(start))][, diff := abs(start - mean + i)]
+  s <- append(s, sum(dt2$diff))
+}
+min(s)
+```
+
+
+## Part 2
+
+
+```{r}
+dt2 <- data.table("start" = dt)
+s <- c()
+
+for(i in -max(dt):max(dt)) {
+  dt2 <- data.table("start" = dt)
+  dt2[, mean := floor(mean(start))]
+  for(r in 1:nrow(dt2))
+    dt2$diff[r] <- sum(1:(abs(dt2$start[r] - dt2$mean[r] - i)))
+  s <- append(s, sum(dt2$diff))
+}
+min(s)
+```
+
+
+## Speed Edition
+
+Please don't look at this. It's embarrassing.
+
+I only did one rep because my first try is too slow.
+
+### Fastest solution
+
+
+```{r}
+#| message: false
+#| warning: false
+library(stringr)
+library(tidyverse)
+library(data.table)
+
+
+dt <- as.numeric(data.table::fread("input.txt", header = FALSE)[1])
+# part 1
+s <- max(dt) ^ length(dt)
+for (i in-ceiling(max(dt) / 2):ceiling(max(dt) / 2)) {
+  dt2 <-
+    data.table("start" = dt)[, mean := floor(mean(start))][, diff := abs(start - mean - i)]
+  dtDiff <- sum(dt2$diff)
+  s <- data.table::fifelse(dtDiff < s, dtDiff, s)
+}
+s <- c(s)
+
+# part 2
+cSum <- function(y) {
+  eval(parse(text = y))
+}
+dt2 <- data.table("start" = dt)
+dt2[, mean := mean(dt2$start, na.rm = TRUE)]
+dt2$abs <- abs(dt2$start - dt2$mean)
+dt2$meanC <- ceiling(dt2$mean)
+dt2$meanF <- floor(dt2$mean)
+dt2$absC <- abs(dt2$start - dt2$meanC)
+dt2$absF <- abs(dt2$start - dt2$meanF)
+dt2$diffC <- sapply(paste0("sum(1:", dt2$absC, ")"), cSum)
+dt2$diffF <- sapply(paste0("sum(1:", dt2$absF, ")"), cSum)
+s <- min(sum(dt2$diffC), sum(dt2$diffF))
+```
+
+
+### Benchmark
+
+
+```{r}
+#| message: false
+#| warning: false
+bench <- rbenchmark::benchmark(
+  "first" = {
+    library(stringr)
+    library(tidyverse)
+    library(data.table)
+    dt <-
+      as.numeric(data.table::fread("input.txt", header = FALSE)[1])
+    # part 1
+    dt2 <- data.table("start" = dt)
+    s <- c()
+    for (i in-max(dt):max(dt)) {
+      dt2 <- data.table("start" = dt)
+      dt2[, mean := floor(mean(start))][, diff := abs(start - mean + i)]
+      s <- append(s, sum(dt2$diff))
+    }
+    s <- min(s)
+    
+    # part 2
+    dt2 <- data.table("start" = dt)
+    s <- c()
+    
+    for (i in-max(dt):max(dt)) {
+      dt2 <- data.table("start" = dt)
+      dt2[, mean := floor(mean(start))]
+      for (r in 1:nrow(dt2))
+        dt2$diff[r] <- sum(1:(abs(dt2$start[r] - dt2$mean[r] - i)))
+      s <- append(s, sum(dt2$diff))
+    }
+    s <- min(s)
+  },
+  "second" = {
+    library(stringr)
+    library(tidyverse)
+    library(data.table)
+    dt <-
+      as.numeric(data.table::fread("input.txt", header = FALSE)[1])
+    # part 1
+    s <- max(dt) ^ length(dt)
+    for (i in-ceiling(max(dt) / 2):ceiling(max(dt) / 2)) {
+      dt2 <-
+        data.table("start" = dt)[, mean := floor(mean(start))][, diff := abs(start - mean - i)]
+      dtDiff <- sum(dt2$diff)
+      s <- data.table::fifelse(dtDiff < s, dtDiff, s)
+    }
+    s <- c(s)
+    
+    cSum <- function(y) {
+      eval(parse(text = y))
+    }
+    dt2 <- data.table("start" = dt)
+    dt2[, mean := mean(dt2$start, na.rm = TRUE)]
+    dt2$abs <- abs(dt2$start - dt2$mean)
+    dt2$meanC <- ceiling(dt2$mean)
+    dt2$meanF <- floor(dt2$mean)
+    dt2$absC <- abs(dt2$start - dt2$meanC)
+    dt2$absF <- abs(dt2$start - dt2$meanF)
+    dt2$diffC <- sapply(paste0("sum(1:", dt2$absC, ")"), cSum)
+    dt2$diffF <- sapply(paste0("sum(1:", dt2$absF, ")"), cSum)
+    min(sum(dt2$diffC), sum(dt2$diffF))
+  },
+  replications = 1,
+  columns = 1:5,
+  order = "user.self"
+)
+
+bench$per <- bench$user.self / bench$replications
+bench
+```
+

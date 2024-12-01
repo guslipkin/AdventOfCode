@@ -1,0 +1,15 @@
+{
+  "hash": "137c9d882493ad299625aca1ac1fa4d6",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\ntitle: \"01: Historian Hysteria\"\nformat: html\n---\n\n::: {.cell}\n\n```{.r .cell-code}\nlibrary(mistlecode)\n\noptions(scipen = 999)\n```\n:::\n\n::: {.cell}\n\n```{.r .cell-code}\ndt <- \n  readr::read_delim('input.txt', delim = '   ', col_names = FALSE)\n```\n\n::: {.cell-output .cell-output-stderr}\n\n```\nRegistered S3 methods overwritten by 'bit64':\n  method               from  \n  as.double.integer64  cheapr\n  as.integer.integer64 cheapr\n```\n\n\n:::\n\n::: {.cell-output .cell-output-stderr}\n\n```\nRows: 1000 Columns: 2\n── Column specification ────────────────────────────────────────────────────────\nDelimiter: \"   \"\ndbl (2): X1, X2\n\nℹ Use `spec()` to retrieve the full column specification for this data.\nℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.\n```\n\n\n:::\n:::\n\n\n\n\n## Part 1\n\nThis was nice and quick. I'm pretty happy with my global rank 518.\n\n\n\n\n::: {.cell}\n\n```{.r .cell-code}\ndt1 <- dt$X1 |> sort()\ndt2 <- dt$X2 |> sort()\n\nabs(dt1 - dt2) |> sum()\n```\n\n::: {.cell-output .cell-output-stdout}\n\n```\n[1] 1151792\n```\n\n\n:::\n:::\n\n\n\n\n## Part 2\n\nThis took way too long for me. I was really struggling with the counting portion for some reason and it took a long time for me to internalize that `x %in% y` and `which` don't actually count things. Might need to add that to `mistlecode`...\n\n\n\n\n::: {.cell}\n\n```{.r .cell-code}\ndt |>\n  dplyr::mutate('count' = purrr::map_int(.data$X1, \\(x) {\n    which(.data$X2 == x) |> length()\n  })) |>\n  dplyr::mutate('count' = .data$X1 * .data$count) |>\n  dplyr::pull(.data$count) |>\n  sum()\n```\n\n::: {.cell-output .cell-output-stdout}\n\n```\n[1] 21790168\n```\n\n\n:::\n:::\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

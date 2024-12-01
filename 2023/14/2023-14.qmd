@@ -1,0 +1,58 @@
+---
+title: "14: "
+format: html
+---
+
+```{r}
+#| message: false
+library(mistlecode)
+
+options(scipen = 999)
+```
+
+```{r}
+dt <-
+  readLines('input2.txt') |>
+  stringr::str_split('') |>
+  purrr::map(\(x) {
+    x |>
+      t() |>
+      tibble::as_tibble()
+  }) |>
+  purrr::list_rbind() |>
+  as.list() |>
+  purrr::map(\(x) c(x, '#'))
+```
+
+## Part 1
+
+```{r}
+shift <- function(x) {
+  x |>
+    rev() |>
+    tibble::as_tibble() |>
+    dplyr::mutate(
+      square = cumsum(value == '#'),
+      row_zero = dplyr::row_number() == 1
+    ) |>
+    dplyr::mutate(
+      rounds = cumsum(value == 'O'),
+      shifted = dplyr::case_when(
+        value == '#' ~ '#',
+        # row_zero & dplyr::row_number() <= max(rounds) + 1 ~ 'O',
+        dplyr::row_number() != 1 & dplyr::row_number() <= max(rounds) + 1 ~ 'O', 
+        TRUE ~ '.'
+      ),
+      .by = 'square'
+    ) |>
+    tail(-1) |>
+    dplyr::mutate(load = ifelse(shifted == 'O', dplyr::row_number(), 0)) |>
+    print() |>
+    dplyr::pull(load) |>
+    sum()
+}
+
+dt |>
+  purrr::map_int(shift) |>
+  sum()
+```
