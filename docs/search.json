@@ -2141,5 +2141,27 @@
       "2015",
       "<span class='chapter-number'>93</span>  <span class='chapter-title'>23: Opening the Turing Lock</span>"
     ]
+  },
+  {
+    "objectID": "2024/02/2024-02.html",
+    "href": "2024/02/2024-02.html",
+    "title": "02: Red-Nosed Reports",
+    "section": "",
+    "text": "Part 1\nI missed the second condition for a pass at first. Mildly annoying, but not too bad globally.\ndt |&gt;\n  purrr::map_lgl(\\(x) {\n    x &lt;- x - lag(x)\n    x &lt;- x[!is.na(x)]\n    all(abs(x) %in% 1:3) & (all(x &lt; 0) | all(x &gt; 0))\n  }) |&gt; \n  sum()\n\n[1] 686",
+    "crumbs": [
+      "2024",
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>02: Red-Nosed Reports</span>"
+    ]
+  },
+  {
+    "objectID": "2024/02/2024-02.html#part-2",
+    "href": "2024/02/2024-02.html#part-2",
+    "title": "02: Red-Nosed Reports",
+    "section": "Part 2",
+    "text": "Part 2\nI’m really pleased with this. I was trying something more functional, then realized a simple for loop was the way to go and that resulted in a 495 on the leaderboard. It’s also a good example for whatever it’s called that I did with my returns not just being if statements the whole way down.\n\ntest &lt;- function(x) {\n  x &lt;- x - lag(x)\n  x &lt;- x[!is.na(x)]\n  all(abs(x) %in% 1:3) & (all(x &lt; 0) | all(x &gt; 0))\n}\n\ndt |&gt;\n  purrr::map_lgl(\\(x) {\n    if (test(x)) return(TRUE)\n    \n    for(i in seq_along(x)) {\n      if (test(x[-i])) return(TRUE)\n    }\n    return(FALSE)\n  }) |&gt; sum()\n\n[1] 717",
+    "crumbs": [
+      "2024",
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>02: Red-Nosed Reports</span>"
+    ]
   }
 ]

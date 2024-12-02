@@ -1927,7 +1927,7 @@
       "RemoteUsername": "guslipkin",
       "RemoteRepo": "mistlecode",
       "RemoteRef": "master",
-      "RemoteSha": "932213e7d557fb2b65547e81b52c7635c68d1b52",
+      "RemoteSha": "5c6b8d4601db5004cfe7038797b9be9bea6bd019",
       "Requirements": [
         "R",
         "R6",
@@ -1943,7 +1943,7 @@
         "stringr",
         "tidyverse"
       ],
-      "Hash": "4429515a3cc0c1d0f66b3adf8897c15d"
+      "Hash": "242692139d9580d2c0c6d5e9f2c5a6da"
     },
     "modelr": {
       "Package": "modelr",
