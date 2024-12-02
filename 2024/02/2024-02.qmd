@@ -51,6 +51,7 @@ dt |>
       if (test(x[-i])) return(TRUE)
     }
     return(FALSE)
-  }) |> sum()
+  }) |> 
+  sum()
 ```
 
