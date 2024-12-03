@@ -46,7 +46,6 @@ test <- function(x) {
 dt |>
   purrr::map_lgl(\(x) {
     if (test(x)) return(TRUE)
-    
     for(i in seq_along(x)) {
       if (test(x[-i])) return(TRUE)
     }

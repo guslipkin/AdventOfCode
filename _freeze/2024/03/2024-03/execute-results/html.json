@@ -1,0 +1,15 @@
+{
+  "hash": "26f0c08c15770d1ca5fb7249392379db",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\ntitle: \"03: Mull It Over\"\nformat: html\n---\n\n::: {.cell}\n\n```{.r .cell-code}\nlibrary(mistlecode)\n\noptions(scipen = 999)\n```\n:::\n\n::: {.cell}\n\n```{.r .cell-code}\ndt <- readLines(\"input.txt\")\n```\n:::\n\n\n\n\n\n## Part 1\n\nI'm really pleased with this. Doing the `parse() |> eval()` is super super dangerous and should never be done, but it works so I'm happy. I got 343 on the leaderboard which is my best ever.\n\n\n\n\n\n::: {.cell}\n\n```{.r .cell-code}\nmul <- function(x, y) x * y\ndt |>\n  stringr::str_extract_all('mul\\\\(\\\\d+,\\\\d+\\\\)') |>\n  unlist() |>\n  purrr::map_int(\\(x) {\n    x |>\n      parse(text = _) |>\n      eval()\n  }) |>\n  sum()\n```\n\n::: {.cell-output .cell-output-stdout}\n\n```\n[1] 170068701\n```\n\n\n:::\n:::\n\n\n\n\n\n## Part 2\n\nI didn't realize the example input changed which messed me up a bit. Then I just had to get my regex right and I was good to go. I'm also pleased with my little `if...else if` chain. I got an error when `x` was a `mul()` call, but then realized that I didn't have to explicitly check because I was already checking for `do()` and `don't()` and if it's not either of those, then it must be a `mul()`.\n\n\n\n\n\n::: {.cell}\n\n```{.r .cell-code}\ndo <- TRUE\ndt |>\n  stringr::str_extract_all(\"mul\\\\(\\\\d+,\\\\d+\\\\)|do\\\\(\\\\)|don't\\\\(\\\\)\") |>\n  unlist() |>\n  purrr::map_int(\\(x) {\n    if (x == \"don't()\") do <<- FALSE \n    else if (x == \"do()\") do <<- TRUE \n    else if (do) {\n      x <-\n        x |>\n        parse(text = _) |>\n        eval()\n      return(x)\n    }\n    return(0)\n  }) |>\n  sum()\n```\n\n::: {.cell-output .cell-output-stdout}\n\n```\n[1] 78683433\n```\n\n\n:::\n:::\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

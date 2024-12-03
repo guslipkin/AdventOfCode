@@ -1,0 +1,57 @@
+---
+title: "03: Mull It Over"
+format: html
+---
+
+```{r}
+#| message: false
+library(mistlecode)
+
+options(scipen = 999)
+```
+
+```{r}
+dt <- readLines("input.txt")
+```
+
+## Part 1
+
+I'm really pleased with this. Doing the `parse() |> eval()` is super super dangerous and should never be done, but it works so I'm happy. I got 343 on the leaderboard which is my best ever.
+
+```{r}
+mul <- function(x, y) x * y
+dt |>
+  stringr::str_extract_all('mul\\(\\d+,\\d+\\)') |>
+  unlist() |>
+  purrr::map_int(\(x) {
+    x |>
+      parse(text = _) |>
+      eval()
+  }) |>
+  sum()
+```
+
+## Part 2
+
+I didn't realize the example input changed which messed me up a bit. Then I just had to get my regex right and I was good to go. I'm also pleased with my little `if...else if` chain. I got an error when `x` was a `mul()` call, but then realized that I didn't have to explicitly check because I was already checking for `do()` and `don't()` and if it's not either of those, then it must be a `mul()`. Oh, and 502 on the leaderboard for part 2 would've been a best ever if not for part 1!
+
+```{r}
+do <- TRUE
+dt |>
+  stringr::str_extract_all("mul\\(\\d+,\\d+\\)|do\\(\\)|don't\\(\\)") |>
+  unlist() |>
+  purrr::map_int(\(x) {
+    if (x == "don't()") do <<- FALSE 
+    else if (x == "do()") do <<- TRUE 
+    else if (do) {
+      x <-
+        x |>
+        parse(text = _) |>
+        eval()
+      return(x)
+    }
+    return(0)
+  }) |>
+  sum()
+```
+

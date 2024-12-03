@@ -2158,10 +2158,32 @@
     "href": "2024/02/2024-02.html#part-2",
     "title": "02: Red-Nosed Reports",
     "section": "Part 2",
-    "text": "Part 2\nI’m really pleased with this. I was trying something more functional, then realized a simple for loop was the way to go and that resulted in a 495 on the leaderboard. It’s also a good example for whatever it’s called that I did with my returns not just being if statements the whole way down.\n\ntest &lt;- function(x) {\n  x &lt;- x - lag(x)\n  x &lt;- x[!is.na(x)]\n  all(abs(x) %in% 1:3) & (all(x &lt; 0) | all(x &gt; 0))\n}\n\ndt |&gt;\n  purrr::map_lgl(\\(x) {\n    if (test(x)) return(TRUE)\n    \n    for(i in seq_along(x)) {\n      if (test(x[-i])) return(TRUE)\n    }\n    return(FALSE)\n  }) |&gt; \n  sum()\n\n[1] 717",
+    "text": "Part 2\nI’m really pleased with this. I was trying something more functional, then realized a simple for loop was the way to go and that resulted in a 495 on the leaderboard. It’s also a good example for whatever it’s called that I did with my returns not just being if statements the whole way down.\n\ntest &lt;- function(x) {\n  x &lt;- x - lag(x)\n  x &lt;- x[!is.na(x)]\n  all(abs(x) %in% 1:3) & (all(x &lt; 0) | all(x &gt; 0))\n}\n\ndt |&gt;\n  purrr::map_lgl(\\(x) {\n    if (test(x)) return(TRUE)\n    for(i in seq_along(x)) {\n      if (test(x[-i])) return(TRUE)\n    }\n    return(FALSE)\n  }) |&gt; \n  sum()\n\n[1] 717",
     "crumbs": [
       "2024",
       "<span class='chapter-number'>3</span>  <span class='chapter-title'>02: Red-Nosed Reports</span>"
+    ]
+  },
+  {
+    "objectID": "2024/03/2024-03.html",
+    "href": "2024/03/2024-03.html",
+    "title": "03: Mull It Over",
+    "section": "",
+    "text": "Part 1\nI’m really pleased with this. Doing the parse() |&gt; eval() is super super dangerous and should never be done, but it works so I’m happy. I got 343 on the leaderboard which is my best ever.\nmul &lt;- function(x, y) x * y\ndt |&gt;\n  stringr::str_extract_all('mul\\\\(\\\\d+,\\\\d+\\\\)') |&gt;\n  unlist() |&gt;\n  purrr::map_int(\\(x) {\n    x |&gt;\n      parse(text = _) |&gt;\n      eval()\n  }) |&gt;\n  sum()\n\n[1] 170068701",
+    "crumbs": [
+      "2024",
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>03: Mull It Over</span>"
+    ]
+  },
+  {
+    "objectID": "2024/03/2024-03.html#part-2",
+    "href": "2024/03/2024-03.html#part-2",
+    "title": "03: Mull It Over",
+    "section": "Part 2",
+    "text": "Part 2\nI didn’t realize the example input changed which messed me up a bit. Then I just had to get my regex right and I was good to go. I’m also pleased with my little if...else if chain. I got an error when x was a mul() call, but then realized that I didn’t have to explicitly check because I was already checking for do() and don't() and if it’s not either of those, then it must be a mul().\n\ndo &lt;- TRUE\ndt |&gt;\n  stringr::str_extract_all(\"mul\\\\(\\\\d+,\\\\d+\\\\)|do\\\\(\\\\)|don't\\\\(\\\\)\") |&gt;\n  unlist() |&gt;\n  purrr::map_int(\\(x) {\n    if (x == \"don't()\") do &lt;&lt;- FALSE \n    else if (x == \"do()\") do &lt;&lt;- TRUE \n    else if (do) {\n      x &lt;-\n        x |&gt;\n        parse(text = _) |&gt;\n        eval()\n      return(x)\n    }\n    return(0)\n  }) |&gt;\n  sum()\n\n[1] 78683433",
+    "crumbs": [
+      "2024",
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>03: Mull It Over</span>"
     ]
   }
 ]

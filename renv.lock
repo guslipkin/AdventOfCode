@@ -1920,14 +1920,14 @@
     },
     "mistlecode": {
       "Package": "mistlecode",
-      "Version": "0.0.0.9000",
+      "Version": "0.0.0.9002",
       "Source": "GitHub",
       "RemoteType": "github",
       "RemoteHost": "api.github.com",
       "RemoteUsername": "guslipkin",
       "RemoteRepo": "mistlecode",
       "RemoteRef": "master",
-      "RemoteSha": "5c6b8d4601db5004cfe7038797b9be9bea6bd019",
+      "RemoteSha": "b6af264004db8f6cfcd9f1ba3f247dca65249503",
       "Requirements": [
         "R",
         "R6",
@@ -1943,7 +1943,7 @@
         "stringr",
         "tidyverse"
       ],
-      "Hash": "242692139d9580d2c0c6d5e9f2c5a6da"
+      "Hash": "700f633a480428d4183fe07e3bcca15d"
     },
     "modelr": {
       "Package": "modelr",
