@@ -2189,23 +2189,23 @@
   {
     "objectID": "2024/04/2024-04.html",
     "href": "2024/04/2024-04.html",
-    "title": "04:",
+    "title": "04: Ceres Search",
     "section": "",
     "text": "Part 1\nI’m disappointed in myself. I really should have a function to parse input like this by now, but again I sat on my butt and didn’t make one then struggled for it. I also got super duper stuck when my mistlecode::get_diagonal() wasn’t able to pick up diagonals that start in the lower right corner. It’s something I’ll have to go fix. I’ll probably re-do the whole thing to just say ‘top-left’ or ‘bottom-right’ or something to actually say what corner it’s coming off of rather than trying to say how it’s divided. Anyways, I knew I had overlapping diagonals and needed to drop them, but I was dropping them inside count_diag() which wasn’t doing anything except dropping a letter off the diagonals. Once I moved that outside, I was able to recognize my missing corner.\ncount &lt;- function(x) {\n  x |&gt;\n    paste0(collapse = '') |&gt;\n    strg_extract_all('XMAS|SAMX') |&gt;\n    unlist() |&gt;\n    length()\n}\n\ncount_diag &lt;- function(x, dim, dir) {\n  x |&gt;\n    purrr::map_int(\\(x) {\n      mistlecode::get_diagonal(dt, x, dim, dir) |&gt;\n        count()\n    }) |&gt;\n    sum()\n}\n\nrows &lt;- dt |&gt; apply(1, count) |&gt; sum()\ncols &lt;- dt |&gt; apply(2, count) |&gt; sum()\n\ndrow &lt;- dt |&gt; nrow() |&gt; seq_len() |&gt; count_diag('row', 'down')\ndcol &lt;- dt |&gt; ncol() |&gt; seq_len() |&gt; tail(-1) |&gt; count_diag('col', 'down')\n\nurow &lt;-\n  dt |&gt; rev() |&gt; `dim&lt;-`(rev(dim(dt))) |&gt;\n  nrow() |&gt; seq_len() |&gt; count_diag('row', 'up')\nucol &lt;-\n  dt |&gt;  rev() |&gt; `dim&lt;-`(rev(dim(dt))) |&gt;\n  ncol() |&gt; seq_len() |&gt; tail(-1) |&gt; count_diag('col', 'up')\n\nrows + cols + drow + dcol + urow + ucol\n\n[1] 2524",
     "crumbs": [
       "2024",
-      "<span class='chapter-number'>5</span>  <span class='chapter-title'>04:</span>"
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>04: Ceres Search</span>"
     ]
   },
   {
     "objectID": "2024/04/2024-04.html#part-2",
     "href": "2024/04/2024-04.html#part-2",
-    "title": "04:",
+    "title": "04: Ceres Search",
     "section": "Part 2",
-    "text": "Part 2\nThankfully this was much easier. It was a small struggle adapting my count which I really didn’t need to do if I hadn’t been so eager to paste0() in my for loop. But if it works, it works, and it was much much faster than part 1.\n\ndt[dt == 'X'] &lt;- ''\n\ncount &lt;- function(x) {\n  x |&gt;\n    stringr::str_count('MAS|SAM') |&gt;\n    sum()\n}\n\ntally &lt;- logical()\nfor (r in seq_len(nrow(dt) - 2)) {\n  for (c in seq_len(ncol(dt) - 2)) {\n    x &lt;- dt[r:(r+2), c:(c+2)]\n    if (x[2, 2] != 'A') next\n    left_right &lt;- paste0(c(x[1,1], x[2,2], x[3,3]), collapse = '')\n    right_left &lt;- paste0(c(x[1,3], x[2,2], x[3,1]), collapse = '')\n    valid &lt;- count(c(left_right, right_left)) == 2\n    if (valid) tally &lt;- c(tally, valid)\n  }\n}\ntally |&gt;\n  sum()\n\n[1] 1873",
+    "text": "Part 2\nThankfully this was much easier. It was a small struggle adapting my count() which I really didn’t need to do if I hadn’t been so eager to paste0() in my for loop. But if it works, it works, and it was much much faster than part 1.\n\ndt[dt == 'X'] &lt;- ''\n\ncount &lt;- function(x) {\n  x |&gt;\n    stringr::str_count('MAS|SAM') |&gt;\n    sum()\n}\n\ntally &lt;- logical()\nfor (r in seq_len(nrow(dt) - 2)) {\n  for (c in seq_len(ncol(dt) - 2)) {\n    x &lt;- dt[r:(r+2), c:(c+2)]\n    if (x[2, 2] != 'A') next\n    left_right &lt;- paste0(c(x[1,1], x[2,2], x[3,3]), collapse = '')\n    right_left &lt;- paste0(c(x[1,3], x[2,2], x[3,1]), collapse = '')\n    valid &lt;- count(c(left_right, right_left)) == 2\n    if (valid) tally &lt;- c(tally, valid)\n  }\n}\ntally |&gt;\n  sum()\n\n[1] 1873",
     "crumbs": [
       "2024",
-      "<span class='chapter-number'>5</span>  <span class='chapter-title'>04:</span>"
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>04: Ceres Search</span>"
     ]
   }
 ]

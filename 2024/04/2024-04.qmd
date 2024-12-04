@@ -1,5 +1,5 @@
 ---
-title: "04: "
+title: "04: Ceres Search"
 format: html
 ---
 
@@ -61,7 +61,7 @@ rows + cols + drow + dcol + urow + ucol
 
 ## Part 2
 
-Thankfully this was much easier. It was a small struggle adapting my count which I really didn't need to do if I hadn't been so eager to `paste0()` in my `for` loop. But if it works, it works, and it was much much faster than part 1.
+Thankfully this was much easier. It was a small struggle adapting my `count()` which I really didn't need to do if I hadn't been so eager to `paste0()` in my `for` loop. But if it works, it works, and it was much much faster than part 1.
 
 ```{r}
 dt[dt == 'X'] <- ''
