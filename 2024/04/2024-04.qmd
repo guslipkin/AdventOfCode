@@ -10,9 +10,10 @@ library(mistlecode)
 options(scipen = 999)
 ```
 
+
 ```{r}
 dt <-
-  readLines("input.txt") |>
+  readLines("input.txt") |> 
   strsplit('')
 
 dt <-
@@ -29,7 +30,7 @@ I'm disappointed in myself. I really should have a function to parse input like 
 count <- function(x) {
   x |>
     paste0(collapse = '') |>
-    strg_extract_all('XMAS|SAMX') |>
+    mistlecode::strg_extract_all('XMAS|SAMX') |>
     unlist() |>
     length()
 }

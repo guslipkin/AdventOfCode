@@ -2191,7 +2191,7 @@
     "href": "2024/04/2024-04.html",
     "title": "04: Ceres Search",
     "section": "",
-    "text": "Part 1\nI’m disappointed in myself. I really should have a function to parse input like this by now, but again I sat on my butt and didn’t make one then struggled for it. I also got super duper stuck when my mistlecode::get_diagonal() wasn’t able to pick up diagonals that start in the lower right corner. It’s something I’ll have to go fix. I’ll probably re-do the whole thing to just say ‘top-left’ or ‘bottom-right’ or something to actually say what corner it’s coming off of rather than trying to say how it’s divided. Anyways, I knew I had overlapping diagonals and needed to drop them, but I was dropping them inside count_diag() which wasn’t doing anything except dropping a letter off the diagonals. Once I moved that outside, I was able to recognize my missing corner.\ncount &lt;- function(x) {\n  x |&gt;\n    paste0(collapse = '') |&gt;\n    strg_extract_all('XMAS|SAMX') |&gt;\n    unlist() |&gt;\n    length()\n}\n\ncount_diag &lt;- function(x, dim, dir) {\n  x |&gt;\n    purrr::map_int(\\(x) {\n      mistlecode::get_diagonal(dt, x, dim, dir) |&gt;\n        count()\n    }) |&gt;\n    sum()\n}\n\nrows &lt;- dt |&gt; apply(1, count) |&gt; sum()\ncols &lt;- dt |&gt; apply(2, count) |&gt; sum()\n\ndrow &lt;- dt |&gt; nrow() |&gt; seq_len() |&gt; count_diag('row', 'down')\ndcol &lt;- dt |&gt; ncol() |&gt; seq_len() |&gt; tail(-1) |&gt; count_diag('col', 'down')\n\nurow &lt;-\n  dt |&gt; rev() |&gt; `dim&lt;-`(rev(dim(dt))) |&gt;\n  nrow() |&gt; seq_len() |&gt; count_diag('row', 'up')\nucol &lt;-\n  dt |&gt;  rev() |&gt; `dim&lt;-`(rev(dim(dt))) |&gt;\n  ncol() |&gt; seq_len() |&gt; tail(-1) |&gt; count_diag('col', 'up')\n\nrows + cols + drow + dcol + urow + ucol\n\n[1] 2524",
+    "text": "Part 1\nI’m disappointed in myself. I really should have a function to parse input like this by now, but again I sat on my butt and didn’t make one then struggled for it. I also got super duper stuck when my mistlecode::get_diagonal() wasn’t able to pick up diagonals that start in the lower right corner. It’s something I’ll have to go fix. I’ll probably re-do the whole thing to just say ‘top-left’ or ‘bottom-right’ or something to actually say what corner it’s coming off of rather than trying to say how it’s divided. Anyways, I knew I had overlapping diagonals and needed to drop them, but I was dropping them inside count_diag() which wasn’t doing anything except dropping a letter off the diagonals. Once I moved that outside, I was able to recognize my missing corner.\ncount &lt;- function(x) {\n  x |&gt;\n    paste0(collapse = '') |&gt;\n    mistlecode::strg_extract_all('XMAS|SAMX') |&gt;\n    unlist() |&gt;\n    length()\n}\n\ncount_diag &lt;- function(x, dim, dir) {\n  x |&gt;\n    purrr::map_int(\\(x) {\n      mistlecode::get_diagonal(dt, x, dim, dir) |&gt;\n        count()\n    }) |&gt;\n    sum()\n}\n\nrows &lt;- dt |&gt; apply(1, count) |&gt; sum()\ncols &lt;- dt |&gt; apply(2, count) |&gt; sum()\n\ndrow &lt;- dt |&gt; nrow() |&gt; seq_len() |&gt; count_diag('row', 'down')\ndcol &lt;- dt |&gt; ncol() |&gt; seq_len() |&gt; tail(-1) |&gt; count_diag('col', 'down')\n\nurow &lt;-\n  dt |&gt; rev() |&gt; `dim&lt;-`(rev(dim(dt))) |&gt;\n  nrow() |&gt; seq_len() |&gt; count_diag('row', 'up')\nucol &lt;-\n  dt |&gt;  rev() |&gt; `dim&lt;-`(rev(dim(dt))) |&gt;\n  ncol() |&gt; seq_len() |&gt; tail(-1) |&gt; count_diag('col', 'up')\n\nrows + cols + drow + dcol + urow + ucol\n\n[1] 2524",
     "crumbs": [
       "2024",
       "<span class='chapter-number'>5</span>  <span class='chapter-title'>04: Ceres Search</span>"
@@ -2206,6 +2206,28 @@
     "crumbs": [
       "2024",
       "<span class='chapter-number'>5</span>  <span class='chapter-title'>04: Ceres Search</span>"
+    ]
+  },
+  {
+    "objectID": "2024/05/2024-05.html",
+    "href": "2024/05/2024-05.html",
+    "title": "05: Print Queue",
+    "section": "",
+    "text": "Part 1\nLots of minor hiccups leading to a major fizzle. Overall I want to see how everyone else’s solutions look, but I think mine is rather elegant, even if a bit slow.\nThis was really frustrating. I was struggling and eventually found I had lines with even numbers of items. I couldn’t figure out what the heck was up with that and how to get a middle item from an even length set and then eventually realized my input ingestion was messing everything up. Once I switched from read.delim() to readLines(), I was able to clear everything right up.\nmiddle_page &lt;-\n  dt2 |&gt;\n  purrr::map_int(\\(x) {\n    if (length(x) %% 2 == 0) print(x)\n    is_valid &lt;-\n      x |&gt;\n      seq_along() |&gt;\n      purrr::map_lgl(\\(i) {\n        if (i == length(x)) return(TRUE)\n        left &lt;- x[i]; right &lt;- x[(i+1):length(x)];\n        check_right &lt;- dt1$X2[dt1$X1 == left]\n        all(right %in% check_right)\n      }) |&gt;\n      all()\n    if (is_valid) x[ceiling(length(x) / 2)] else 0\n  })\nsum(middle_page)\n\n[1] 7307",
+    "crumbs": [
+      "2024",
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>05: Print Queue</span>"
+    ]
+  },
+  {
+    "objectID": "2024/05/2024-05.html#part-2",
+    "href": "2024/05/2024-05.html#part-2",
+    "title": "05: Print Queue",
+    "section": "Part 2",
+    "text": "Part 2\nThis was just a matter of getting the logic straight in my head then putting it on sreen and getting over silly mistakes like filtering for things that passed the test in part 1 instead of things that failed. Except. I’ve always struggled with recursion but I’m getting better at it and I’m getting better at it and I’m getting better at it and eventually I might be able to solve that stupid bag problem from 2020.\n\nswap &lt;- function(x, i = 1) {\n  left &lt;- x[i]; right &lt;- x[i+1];\n  check_right &lt;- dt1$X2[dt1$X1 == left]\n  if (is.na(right)) return(x)\n  if (!(right %in% check_right)) {\n    x[i+1] &lt;- left; x[i] &lt;- right;\n    swap(x, 1)\n  } else { swap(x, i + 1) }\n}\n\ndt2[middle_page == 0] |&gt;\n  purrr::map_int(\\(x) {\n    x &lt;- swap(x)\n    x[ceiling(length(x) / 2)]\n  }) |&gt;\n  sum()\n\n[1] 4713",
+    "crumbs": [
+      "2024",
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>05: Print Queue</span>"
     ]
   }
 ]

@@ -60,7 +60,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../../">
-<link href="../../2023/01/2023-01.html" rel="next">
+<link href="../../2024/05/2024-05.html" rel="next">
 <link href="../../2024/03/2024-03.html" rel="prev">
 <script src="../../site_libs/quarto-html/quarto.js"></script>
 <script src="../../site_libs/quarto-html/popper.min.js"></script>
@@ -197,6 +197,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../2024/04/2024-04.html" class="sidebar-item-text sidebar-link active"><span class="chapter-title">04: Ceres Search</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../2024/05/2024-05.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">05: Print Queue</span></a>
   </div>
 </li>
       </ul>
@@ -790,7 +795,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a>dt <span class="ot">&lt;-</span></span>
-<span id="cb2-2"><a href="#cb2-2"></a>  <span class="fu">readLines</span>(<span class="st">"input.txt"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb2-2"><a href="#cb2-2"></a>  <span class="fu">readLines</span>(<span class="st">"input.txt"</span>) <span class="sc">|&gt;</span> </span>
 <span id="cb2-3"><a href="#cb2-3"></a>  <span class="fu">strsplit</span>(<span class="st">''</span>)</span>
 <span id="cb2-4"><a href="#cb2-4"></a></span>
 <span id="cb2-5"><a href="#cb2-5"></a>dt <span class="ot">&lt;-</span></span>
@@ -804,7 +809,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>count <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
 <span id="cb3-2"><a href="#cb3-2"></a>  x <span class="sc">|&gt;</span></span>
 <span id="cb3-3"><a href="#cb3-3"></a>    <span class="fu">paste0</span>(<span class="at">collapse =</span> <span class="st">''</span>) <span class="sc">|&gt;</span></span>
-<span id="cb3-4"><a href="#cb3-4"></a>    <span class="fu">strg_extract_all</span>(<span class="st">'XMAS|SAMX'</span>) <span class="sc">|&gt;</span></span>
+<span id="cb3-4"><a href="#cb3-4"></a>    mistlecode<span class="sc">::</span><span class="fu">strg_extract_all</span>(<span class="st">'XMAS|SAMX'</span>) <span class="sc">|&gt;</span></span>
 <span id="cb3-5"><a href="#cb3-5"></a>    <span class="fu">unlist</span>() <span class="sc">|&gt;</span></span>
 <span id="cb3-6"><a href="#cb3-6"></a>    <span class="fu">length</span>()</span>
 <span id="cb3-7"><a href="#cb3-7"></a>}</span>
@@ -1432,8 +1437,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../../2023/01/2023-01.html" class="pagination-link" aria-label="01: Trebuchet?!">
-        <span class="nav-page-text"><span class="chapter-title">01: Trebuchet?!</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../../2024/05/2024-05.html" class="pagination-link" aria-label="05: Print Queue">
+        <span class="nav-page-text"><span class="chapter-title">05: Print Queue</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
