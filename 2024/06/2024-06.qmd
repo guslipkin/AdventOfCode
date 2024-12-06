@@ -54,6 +54,7 @@ sum(visited)
 It's never a good sign when you resort to `{future}`... But also, I figured a path can't cross itself more than five times without being in a loop. Before figuring that out, my estimated run time on a single core was 6-8 hours.
 
 ```{r}
+tictoc::tic()
 start <- which(mat == '^', arr.ind = TRUE)[1,] |> unname()
 future::plan(future::multisession, workers = future::availableCores())
 progressr::with_progress({
@@ -83,4 +84,5 @@ progressr::with_progress({
   sum()
 }, handlers = progressr::handler_cli())
 future::plan(future::sequential())
+tictoc::toc()
 ```

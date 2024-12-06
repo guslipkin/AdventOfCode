@@ -838,38 +838,43 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section><section id="part-2" class="level2"><h2 class="anchored" data-anchor-id="part-2">Part 2</h2>
 <p>It’s never a good sign when you resort to <a href="https://future.futureverse.org">future</a>… But also, I figured a path can’t cross itself more than five times without being in a loop. Before figuring that out, my estimated run time on a single core was 6-8 hours.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a>start <span class="ot">&lt;-</span> <span class="fu">which</span>(mat <span class="sc">==</span> <span class="st">'^'</span>, <span class="at">arr.ind =</span> <span class="cn">TRUE</span>)[<span class="dv">1</span>,] <span class="sc">|&gt;</span> <span class="fu">unname</span>()</span>
-<span id="cb6-2"><a href="#cb6-2"></a>future<span class="sc">::</span><span class="fu">plan</span>(future<span class="sc">::</span>multisession, <span class="at">workers =</span> future<span class="sc">::</span><span class="fu">availableCores</span>())</span>
-<span id="cb6-3"><a href="#cb6-3"></a>progressr<span class="sc">::</span><span class="fu">with_progress</span>({</span>
-<span id="cb6-4"><a href="#cb6-4"></a>  df <span class="ot">&lt;-</span></span>
-<span id="cb6-5"><a href="#cb6-5"></a>    visited <span class="sc">|&gt;</span> </span>
-<span id="cb6-6"><a href="#cb6-6"></a>    mistlecode<span class="sc">::</span><span class="fu">matrix_to_coords</span>() <span class="sc">|&gt;</span> </span>
-<span id="cb6-7"><a href="#cb6-7"></a>    dplyr<span class="sc">::</span><span class="fu">filter</span>(.data<span class="sc">$</span>data) <span class="sc">|&gt;</span></span>
-<span id="cb6-8"><a href="#cb6-8"></a>    dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="sc">-</span><span class="st">'data'</span>)</span>
-<span id="cb6-9"><a href="#cb6-9"></a>  p <span class="ot">&lt;-</span> progressr<span class="sc">::</span><span class="fu">progressor</span>(<span class="at">steps =</span> <span class="fu">nrow</span>(df))</span>
-<span id="cb6-10"><a href="#cb6-10"></a>  df <span class="sc">|&gt;</span></span>
-<span id="cb6-11"><a href="#cb6-11"></a>  furrr<span class="sc">::</span><span class="fu">future_pmap_lgl</span>(\(row, col) {</span>
-<span id="cb6-12"><a href="#cb6-12"></a>    <span class="fu">p</span>()</span>
-<span id="cb6-13"><a href="#cb6-13"></a>    cells <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">0</span>, <span class="fu">nrow</span>(mat), <span class="fu">ncol</span>(mat))</span>
-<span id="cb6-14"><a href="#cb6-14"></a>    dmat <span class="ot">&lt;-</span> mat; dmat[row,col] <span class="ot">&lt;-</span> <span class="st">'#'</span>;</span>
-<span id="cb6-15"><a href="#cb6-15"></a>    guy <span class="ot">&lt;-</span> start; dir <span class="ot">&lt;-</span> <span class="st">'up'</span>; step <span class="ot">&lt;-</span> <span class="dv">0</span>;</span>
-<span id="cb6-16"><a href="#cb6-16"></a>    <span class="cf">repeat</span> {</span>
-<span id="cb6-17"><a href="#cb6-17"></a>      n <span class="ot">&lt;-</span> <span class="fu">adjacent</span>(guy)[[dir]]</span>
-<span id="cb6-18"><a href="#cb6-18"></a>      <span class="cf">if</span> (n[<span class="dv">1</span>] <span class="sc">&lt;</span> <span class="dv">1</span> <span class="sc">||</span> n[<span class="dv">1</span>] <span class="sc">&gt;</span> <span class="fu">nrow</span>(dmat) <span class="sc">||</span> n[<span class="dv">2</span>] <span class="sc">&lt;</span> <span class="dv">1</span> <span class="sc">||</span> n[<span class="dv">2</span>] <span class="sc">&gt;</span> <span class="fu">ncol</span>(dmat)) <span class="fu">return</span>(<span class="cn">FALSE</span>)</span>
-<span id="cb6-19"><a href="#cb6-19"></a>      <span class="cf">if</span> (dmat[n[<span class="dv">1</span>], n[<span class="dv">2</span>]] <span class="sc">!=</span> <span class="st">'#'</span>) {</span>
-<span id="cb6-20"><a href="#cb6-20"></a>        cells[n[<span class="dv">1</span>], n[<span class="dv">2</span>]] <span class="ot">&lt;-</span> cells[n[<span class="dv">1</span>], n[<span class="dv">2</span>]] <span class="sc">+</span> <span class="dv">1</span></span>
-<span id="cb6-21"><a href="#cb6-21"></a>        guy <span class="ot">&lt;-</span> n</span>
-<span id="cb6-22"><a href="#cb6-22"></a>      } <span class="cf">else</span> dir <span class="ot">&lt;-</span> rotate[dir]</span>
-<span id="cb6-23"><a href="#cb6-23"></a>      step <span class="ot">&lt;-</span> step <span class="sc">+</span> <span class="dv">1</span></span>
-<span id="cb6-24"><a href="#cb6-24"></a>      <span class="cf">if</span> (<span class="fu">any</span>(cells <span class="sc">&gt;</span> <span class="dv">5</span>)) <span class="fu">return</span>(<span class="cn">TRUE</span>)</span>
-<span id="cb6-25"><a href="#cb6-25"></a>    }</span>
-<span id="cb6-26"><a href="#cb6-26"></a>  }) <span class="sc">|&gt;</span></span>
-<span id="cb6-27"><a href="#cb6-27"></a>  <span class="fu">sum</span>()</span>
-<span id="cb6-28"><a href="#cb6-28"></a>}, <span class="at">handlers =</span> progressr<span class="sc">::</span><span class="fu">handler_cli</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a>tictoc<span class="sc">::</span><span class="fu">tic</span>()</span>
+<span id="cb6-2"><a href="#cb6-2"></a>start <span class="ot">&lt;-</span> <span class="fu">which</span>(mat <span class="sc">==</span> <span class="st">'^'</span>, <span class="at">arr.ind =</span> <span class="cn">TRUE</span>)[<span class="dv">1</span>,] <span class="sc">|&gt;</span> <span class="fu">unname</span>()</span>
+<span id="cb6-3"><a href="#cb6-3"></a>future<span class="sc">::</span><span class="fu">plan</span>(future<span class="sc">::</span>multisession, <span class="at">workers =</span> future<span class="sc">::</span><span class="fu">availableCores</span>())</span>
+<span id="cb6-4"><a href="#cb6-4"></a>progressr<span class="sc">::</span><span class="fu">with_progress</span>({</span>
+<span id="cb6-5"><a href="#cb6-5"></a>  df <span class="ot">&lt;-</span></span>
+<span id="cb6-6"><a href="#cb6-6"></a>    visited <span class="sc">|&gt;</span> </span>
+<span id="cb6-7"><a href="#cb6-7"></a>    mistlecode<span class="sc">::</span><span class="fu">matrix_to_coords</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb6-8"><a href="#cb6-8"></a>    dplyr<span class="sc">::</span><span class="fu">filter</span>(.data<span class="sc">$</span>data) <span class="sc">|&gt;</span></span>
+<span id="cb6-9"><a href="#cb6-9"></a>    dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="sc">-</span><span class="st">'data'</span>)</span>
+<span id="cb6-10"><a href="#cb6-10"></a>  p <span class="ot">&lt;-</span> progressr<span class="sc">::</span><span class="fu">progressor</span>(<span class="at">steps =</span> <span class="fu">nrow</span>(df))</span>
+<span id="cb6-11"><a href="#cb6-11"></a>  df <span class="sc">|&gt;</span></span>
+<span id="cb6-12"><a href="#cb6-12"></a>  furrr<span class="sc">::</span><span class="fu">future_pmap_lgl</span>(\(row, col) {</span>
+<span id="cb6-13"><a href="#cb6-13"></a>    <span class="fu">p</span>()</span>
+<span id="cb6-14"><a href="#cb6-14"></a>    cells <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">0</span>, <span class="fu">nrow</span>(mat), <span class="fu">ncol</span>(mat))</span>
+<span id="cb6-15"><a href="#cb6-15"></a>    dmat <span class="ot">&lt;-</span> mat; dmat[row,col] <span class="ot">&lt;-</span> <span class="st">'#'</span>;</span>
+<span id="cb6-16"><a href="#cb6-16"></a>    guy <span class="ot">&lt;-</span> start; dir <span class="ot">&lt;-</span> <span class="st">'up'</span>; step <span class="ot">&lt;-</span> <span class="dv">0</span>;</span>
+<span id="cb6-17"><a href="#cb6-17"></a>    <span class="cf">repeat</span> {</span>
+<span id="cb6-18"><a href="#cb6-18"></a>      n <span class="ot">&lt;-</span> <span class="fu">adjacent</span>(guy)[[dir]]</span>
+<span id="cb6-19"><a href="#cb6-19"></a>      <span class="cf">if</span> (n[<span class="dv">1</span>] <span class="sc">&lt;</span> <span class="dv">1</span> <span class="sc">||</span> n[<span class="dv">1</span>] <span class="sc">&gt;</span> <span class="fu">nrow</span>(dmat) <span class="sc">||</span> n[<span class="dv">2</span>] <span class="sc">&lt;</span> <span class="dv">1</span> <span class="sc">||</span> n[<span class="dv">2</span>] <span class="sc">&gt;</span> <span class="fu">ncol</span>(dmat)) <span class="fu">return</span>(<span class="cn">FALSE</span>)</span>
+<span id="cb6-20"><a href="#cb6-20"></a>      <span class="cf">if</span> (dmat[n[<span class="dv">1</span>], n[<span class="dv">2</span>]] <span class="sc">!=</span> <span class="st">'#'</span>) {</span>
+<span id="cb6-21"><a href="#cb6-21"></a>        cells[n[<span class="dv">1</span>], n[<span class="dv">2</span>]] <span class="ot">&lt;-</span> cells[n[<span class="dv">1</span>], n[<span class="dv">2</span>]] <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb6-22"><a href="#cb6-22"></a>        guy <span class="ot">&lt;-</span> n</span>
+<span id="cb6-23"><a href="#cb6-23"></a>      } <span class="cf">else</span> dir <span class="ot">&lt;-</span> rotate[dir]</span>
+<span id="cb6-24"><a href="#cb6-24"></a>      step <span class="ot">&lt;-</span> step <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb6-25"><a href="#cb6-25"></a>      <span class="cf">if</span> (<span class="fu">any</span>(cells <span class="sc">&gt;</span> <span class="dv">5</span>)) <span class="fu">return</span>(<span class="cn">TRUE</span>)</span>
+<span id="cb6-26"><a href="#cb6-26"></a>    }</span>
+<span id="cb6-27"><a href="#cb6-27"></a>  }) <span class="sc">|&gt;</span></span>
+<span id="cb6-28"><a href="#cb6-28"></a>  <span class="fu">sum</span>()</span>
+<span id="cb6-29"><a href="#cb6-29"></a>}, <span class="at">handlers =</span> progressr<span class="sc">::</span><span class="fu">handler_cli</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 1443</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a>future<span class="sc">::</span><span class="fu">plan</span>(future<span class="sc">::</span><span class="fu">sequential</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a>future<span class="sc">::</span><span class="fu">plan</span>(future<span class="sc">::</span><span class="fu">sequential</span>())</span>
+<span id="cb8-2"><a href="#cb8-2"></a>tictoc<span class="sc">::</span><span class="fu">toc</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>159.856 sec elapsed</code></pre>
+</div>
 </div>
 
 
