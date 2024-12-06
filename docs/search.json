@@ -1094,7 +1094,7 @@
     "text": "Part 1\nlongerDF &lt;- data.frame(parent = \"\", nChild = 0, cChild = \"\")\n\nfor(col in seq(3, 9, by = 2)) {\n  for(r in 1:nrow(df)) {\n    if(!is.na(df[r,col-1]))\n      for(i in 1:df[r,col-1]) {\n        longerDF &lt;- rbind(longerDF, data.frame(parent = df[r,1], \n                                               nChild = df[r,col-1], \n                                               cChild = df[r,col]))\n    }\n  }\n}\nlongerDF &lt;- longerDF[-1,]\nshinygoldDF &lt;- \n  longerDF[longerDF$cChild == \"shiny gold\" | longerDF$parent == \"shiny gold\",]\nlevel &lt;- c(\"shiny gold\")\noldRows &lt;- 0\n\nwhile(oldRows != nrow(shinygoldDF)) {\n  oldRows &lt;- nrow(shinygoldDF)\n  level &lt;- unlist(shinygoldDF$parent)\n  shinygoldDF &lt;-\n    df[as.character(df$parent) %in% level |\n         as.character(df$child1C) %in% level |\n         as.character(df$child2C) %in% level |\n         as.character(df$child3C) %in% level |\n         as.character(df$child4C) %in% level, ]\n}\nnrow(shinygoldDF) - 1\n\n[1] 164",
     "crumbs": [
       "2020",
-      "<span class='chapter-number'>47</span>  <span class='chapter-title'>07: Handy Haversacks</span>"
+      "<span class='chapter-number'>48</span>  <span class='chapter-title'>07: Handy Haversacks</span>"
     ]
   },
   {
@@ -1105,7 +1105,7 @@
     "text": "Part 2\nHoly crap. I actually did it. I had some help from ChatGPT because I really struggle with recursion like this where it can’t just be a for loop (and even with the help it took four years…). I think the key point for me here is that I really like to do early returns, and you can’t. The return must be at the bottom and explicit. I also tried really hard not to use a for loop, but that makes it a lot harder and more confusing to iterate through everything. I’m hoping I can learn from this and apply it to future recursion problems.\n\ndf &lt;-\n  'input.txt' |&gt;\n  readLines() |&gt; \n  stringr::str_replace_all(' bags contain ', ',') |&gt;\n  stringr::str_remove_all('(bags?[\\\\. ]?)') |&gt;\n  stringr::str_split(' ?, ?') |&gt;\n  purrr::map(\\(x) {\n    x &lt;-\n      x |&gt;\n      stringr::str_match('([0-9]*) ?([a-z]+ [a-z]+)') |&gt;\n      tibble::as_tibble() |&gt;\n      dplyr::select(-1) |&gt;\n      dplyr::mutate('V2' = as.integer(.data$V2))\n    x |&gt;\n      dplyr::filter(!is.na(.data$V2)) |&gt;\n      tidyr::uncount(weights = .data$V2) |&gt;\n      dplyr::pull(.data$V3) |&gt;\n      list() |&gt;\n      setNames(x$V3[1])\n  }) |&gt;\n  unlist(recursive = FALSE)\n\nWarning: The `x` argument of `as_tibble.matrix()` must have unique column names if\n`.name_repair` is omitted as of tibble 2.0.0.\nℹ Using compatibility `.name_repair`.\n\n\n\ndig &lt;- function(df, bag, bags = c()) {\n  contents &lt;- \n    df[bag] |&gt;\n    unlist() |&gt;\n    unname()\n  bags &lt;- c(bags, bag)\n  if (length(contents) == 0) return(bags)\n  for (bag in contents) {\n    bags &lt;- dig(df, bag, bags)\n  }\n  return(bags)\n}\ndf |&gt;\n  dig('shiny gold') |&gt;\n  tail(-1) |&gt;\n  length()\n\n[1] 7872",
     "crumbs": [
       "2020",
-      "<span class='chapter-number'>47</span>  <span class='chapter-title'>07: Handy Haversacks</span>"
+      "<span class='chapter-number'>48</span>  <span class='chapter-title'>07: Handy Haversacks</span>"
     ]
   },
   {
@@ -2228,6 +2228,28 @@
     "crumbs": [
       "2015",
       "<span class='chapter-number'>97</span>  <span class='chapter-title'>23: Opening the Turing Lock</span>"
+    ]
+  },
+  {
+    "objectID": "2024/06/2024-06.html",
+    "href": "2024/06/2024-06.html",
+    "title": "06: Guard Gallivant",
+    "section": "",
+    "text": "Part 1\nThis wasn’t too bad. I’d been working on the adjacency function earlier trying to figure out an A* method for older puzzles. Just had to trim some fat and it was good enough. For some reason I struggled with getting the break to happen. Initially I just relied on the mat[y,x] reference to fail and that’s how I submitted, but it’s not a good look so I fixed it.\nadjacent &lt;- function(point) {\n  y &lt;- point[1]; x &lt;- point[2];\n  list(\n    'up' = c(y-1,x),\n    'down' = c(y+1,x),\n    'left' = c(y,x-1),\n    'right' = c(y,x+1)\n  )\n}\nguy &lt;- which(mat == '^', arr.ind = TRUE)[1,] |&gt; unname()\nrotate &lt;- c('up' = 'right', 'right' = 'down', 'down' = 'left', 'left' = 'up')\n\ndir &lt;- 'up'\nstep &lt;- 0\nvisited &lt;- matrix(FALSE, nrow(mat), ncol(mat))\nrepeat {\n  visited[guy[1], guy[2]] &lt;- TRUE\n  n &lt;- adjacent(guy)[[dir]]\n  if (!dplyr::between(n[1], 1, nrow(mat)) | !dplyr::between(n[2], 1, ncol(mat))) break\n  if (mat[n[1], n[2]] != '#') guy &lt;- n else dir &lt;- rotate[dir]\n  step &lt;- step + 1\n}\nsum(visited)\n\n[1] 4696",
+    "crumbs": [
+      "2024",
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>06: Guard Gallivant</span>"
+    ]
+  },
+  {
+    "objectID": "2024/06/2024-06.html#part-2",
+    "href": "2024/06/2024-06.html#part-2",
+    "title": "06: Guard Gallivant",
+    "section": "Part 2",
+    "text": "Part 2\nIt’s never a good sign when you resort to future… But also, I figured a path can’t cross itself more than five times without being in a loop. Before figuring that out, my estimated run time on a single core was 6-8 hours.\n\nstart &lt;- which(mat == '^', arr.ind = TRUE)[1,] |&gt; unname()\nfuture::plan(future::multisession, workers = future::availableCores())\nprogressr::with_progress({\n  df &lt;-\n    visited |&gt; \n    mistlecode::matrix_to_coords() |&gt; \n    dplyr::filter(.data$data) |&gt;\n    dplyr::select(-'data')\n  p &lt;- progressr::progressor(steps = nrow(df))\n  df |&gt;\n  furrr::future_pmap_lgl(\\(row, col) {\n    p()\n    cells &lt;- matrix(0, nrow(mat), ncol(mat))\n    dmat &lt;- mat; dmat[row,col] &lt;- '#';\n    guy &lt;- start; dir &lt;- 'up'; step &lt;- 0;\n    repeat {\n      n &lt;- adjacent(guy)[[dir]]\n      if (n[1] &lt; 1 || n[1] &gt; nrow(dmat) || n[2] &lt; 1 || n[2] &gt; ncol(dmat)) return(FALSE)\n      if (dmat[n[1], n[2]] != '#') {\n        cells[n[1], n[2]] &lt;- cells[n[1], n[2]] + 1\n        guy &lt;- n\n      } else dir &lt;- rotate[dir]\n      step &lt;- step + 1\n      if (any(cells &gt; 5)) return(TRUE)\n    }\n  }) |&gt;\n  sum()\n}, handlers = progressr::handler_cli())\n\n[1] 1443\n\nfuture::plan(future::sequential())",
+    "crumbs": [
+      "2024",
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>06: Guard Gallivant</span>"
     ]
   }
 ]

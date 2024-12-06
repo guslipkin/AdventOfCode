@@ -1927,14 +1927,14 @@
     },
     "mistlecode": {
       "Package": "mistlecode",
-      "Version": "0.0.0.9003",
+      "Version": "0.0.0.9004",
       "Source": "GitHub",
       "RemoteType": "github",
       "RemoteHost": "api.github.com",
       "RemoteUsername": "guslipkin",
       "RemoteRepo": "mistlecode",
       "RemoteRef": "master",
-      "RemoteSha": "9e71af25b70dbc6e790afa5b63725abc482157bd",
+      "RemoteSha": "d7c5ec8faea6a8dbc906f223344d9f77787c37f2",
       "Requirements": [
         "R",
         "R6",
@@ -1950,7 +1950,7 @@
         "stringr",
         "tidyverse"
       ],
-      "Hash": "349ef1905a6ce29d31fc98cc3fe2c24e"
+      "Hash": "ad205623c8a703016465af95be72a04f"
     },
     "modelr": {
       "Package": "modelr",
@@ -2398,13 +2398,13 @@
     },
     "renv": {
       "Package": "renv",
-      "Version": "1.0.11",
+      "Version": "1.0.7",
       "Source": "Repository",
-      "Repository": "CRAN",
+      "Repository": "RSPM",
       "Requirements": [
         "utils"
       ],
-      "Hash": "47623f66b4e80b3b0587bc5d7b309888"
+      "Hash": "397b7b2a265bc5a7a06852524dabae20"
     },
     "reprex": {
       "Package": "reprex",
