@@ -184,6 +184,26 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <a href="../../2024/01/2024-01.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">01: Historian Hysteria</span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../2024/02/2024-02.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">02: Red-Nosed Reports</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../2024/03/2024-03.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">03: Mull It Over</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../2024/04/2024-04.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">04: Ceres Search</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../2024/05/2024-05.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">05: Print Queue</span></a>
+  </div>
+</li>
       </ul>
 </li>
         <li class="sidebar-item sidebar-item-section">
@@ -823,81 +843,56 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section><section id="part-2" class="level2"><h2 class="anchored" data-anchor-id="part-2">Part 2</h2>
-<div class="callout callout-style-default callout-caution callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Caution
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>This solution is still under construction.</p>
+<p>Holy crap. I actually did it. I had some help from ChatGPT because I really struggle with recursion like this where it can’t just be a for loop (and even with the help it took four years…). I think the key point for me here is that I really like to do early returns, and you can’t. The return must be at the bottom and explicit. I also tried really hard not to use a <code>for</code> loop, but that makes it a lot harder and more confusing to iterate through everything. I’m hoping I can learn from this and apply it to future recursion problems.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a>df <span class="ot">&lt;-</span></span>
+<span id="cb6-2"><a href="#cb6-2"></a>  <span class="st">'input.txt'</span> <span class="sc">|&gt;</span></span>
+<span id="cb6-3"><a href="#cb6-3"></a>  <span class="fu">readLines</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb6-4"><a href="#cb6-4"></a>  stringr<span class="sc">::</span><span class="fu">str_replace_all</span>(<span class="st">' bags contain '</span>, <span class="st">','</span>) <span class="sc">|&gt;</span></span>
+<span id="cb6-5"><a href="#cb6-5"></a>  stringr<span class="sc">::</span><span class="fu">str_remove_all</span>(<span class="st">'(bags?[</span><span class="sc">\\</span><span class="st">. ]?)'</span>) <span class="sc">|&gt;</span></span>
+<span id="cb6-6"><a href="#cb6-6"></a>  stringr<span class="sc">::</span><span class="fu">str_split</span>(<span class="st">' ?, ?'</span>) <span class="sc">|&gt;</span></span>
+<span id="cb6-7"><a href="#cb6-7"></a>  purrr<span class="sc">::</span><span class="fu">map</span>(\(x) {</span>
+<span id="cb6-8"><a href="#cb6-8"></a>    x <span class="ot">&lt;-</span></span>
+<span id="cb6-9"><a href="#cb6-9"></a>      x <span class="sc">|&gt;</span></span>
+<span id="cb6-10"><a href="#cb6-10"></a>      stringr<span class="sc">::</span><span class="fu">str_match</span>(<span class="st">'([0-9]*) ?([a-z]+ [a-z]+)'</span>) <span class="sc">|&gt;</span></span>
+<span id="cb6-11"><a href="#cb6-11"></a>      tibble<span class="sc">::</span><span class="fu">as_tibble</span>() <span class="sc">|&gt;</span></span>
+<span id="cb6-12"><a href="#cb6-12"></a>      dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="sc">-</span><span class="dv">1</span>) <span class="sc">|&gt;</span></span>
+<span id="cb6-13"><a href="#cb6-13"></a>      dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="st">'V2'</span> <span class="ot">=</span> <span class="fu">as.integer</span>(.data<span class="sc">$</span>V2))</span>
+<span id="cb6-14"><a href="#cb6-14"></a>    x <span class="sc">|&gt;</span></span>
+<span id="cb6-15"><a href="#cb6-15"></a>      dplyr<span class="sc">::</span><span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(.data<span class="sc">$</span>V2)) <span class="sc">|&gt;</span></span>
+<span id="cb6-16"><a href="#cb6-16"></a>      tidyr<span class="sc">::</span><span class="fu">uncount</span>(<span class="at">weights =</span> .data<span class="sc">$</span>V2) <span class="sc">|&gt;</span></span>
+<span id="cb6-17"><a href="#cb6-17"></a>      dplyr<span class="sc">::</span><span class="fu">pull</span>(.data<span class="sc">$</span>V3) <span class="sc">|&gt;</span></span>
+<span id="cb6-18"><a href="#cb6-18"></a>      <span class="fu">list</span>() <span class="sc">|&gt;</span></span>
+<span id="cb6-19"><a href="#cb6-19"></a>      <span class="fu">setNames</span>(x<span class="sc">$</span>V3[<span class="dv">1</span>])</span>
+<span id="cb6-20"><a href="#cb6-20"></a>  }) <span class="sc">|&gt;</span></span>
+<span id="cb6-21"><a href="#cb6-21"></a>  <span class="fu">unlist</span>(<span class="at">recursive =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: The `x` argument of `as_tibble.matrix()` must have unique column names if
+`.name_repair` is omitted as of tibble 2.0.0.
+ℹ Using compatibility `.name_repair`.</code></pre>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a>shorterDF <span class="ot">&lt;-</span></span>
-<span id="cb6-2"><a href="#cb6-2"></a>  longerDF <span class="sc">|&gt;</span></span>
-<span id="cb6-3"><a href="#cb6-3"></a>  dplyr<span class="sc">::</span><span class="fu">summarise</span>(<span class="at">nChild =</span> dplyr<span class="sc">::</span><span class="fu">n</span>(), <span class="at">.by =</span> <span class="fu">c</span>(<span class="st">'parent'</span>, <span class="st">'cChild'</span>))</span>
-<span id="cb6-4"><a href="#cb6-4"></a></span>
-<span id="cb6-5"><a href="#cb6-5"></a>traverse <span class="ot">&lt;-</span> <span class="cf">function</span>(shorterDF, start, <span class="at">i =</span> <span class="dv">0</span>) {</span>
-<span id="cb6-6"><a href="#cb6-6"></a>  <span class="cf">if</span> (<span class="fu">length</span>(start) <span class="sc">==</span> <span class="dv">1</span>) <span class="fu">return</span>(i)</span>
-<span id="cb6-7"><a href="#cb6-7"></a>  tmp <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">filter</span>(shorterDF, parent <span class="sc">==</span> start[<span class="dv">1</span>])</span>
-<span id="cb6-8"><a href="#cb6-8"></a>  <span class="cf">if</span> (<span class="fu">nrow</span>(tmp) <span class="sc">==</span> <span class="dv">0</span>) <span class="fu">return</span>(<span class="fu">traverse</span>(shorterDF, start[<span class="sc">-</span><span class="dv">1</span>], i <span class="sc">+</span> <span class="dv">1</span>))</span>
-<span id="cb6-9"><a href="#cb6-9"></a>  <span class="fu">traverse</span>(shorterDF, tmp<span class="sc">$</span>cChild, i <span class="sc">+</span> <span class="dv">1</span>)</span>
-<span id="cb6-10"><a href="#cb6-10"></a>}</span>
-<span id="cb6-11"><a href="#cb6-11"></a><span class="fu">traverse</span>(shorterDF, <span class="st">'shiny gold'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a>dig <span class="ot">&lt;-</span> <span class="cf">function</span>(df, bag, <span class="at">bags =</span> <span class="fu">c</span>()) {</span>
+<span id="cb8-2"><a href="#cb8-2"></a>  contents <span class="ot">&lt;-</span> </span>
+<span id="cb8-3"><a href="#cb8-3"></a>    df[bag] <span class="sc">|&gt;</span></span>
+<span id="cb8-4"><a href="#cb8-4"></a>    <span class="fu">unlist</span>() <span class="sc">|&gt;</span></span>
+<span id="cb8-5"><a href="#cb8-5"></a>    <span class="fu">unname</span>()</span>
+<span id="cb8-6"><a href="#cb8-6"></a>  bags <span class="ot">&lt;-</span> <span class="fu">c</span>(bags, bag)</span>
+<span id="cb8-7"><a href="#cb8-7"></a>  <span class="cf">if</span> (<span class="fu">length</span>(contents) <span class="sc">==</span> <span class="dv">0</span>) <span class="fu">return</span>(bags)</span>
+<span id="cb8-8"><a href="#cb8-8"></a>  <span class="cf">for</span> (bag <span class="cf">in</span> contents) {</span>
+<span id="cb8-9"><a href="#cb8-9"></a>    bags <span class="ot">&lt;-</span> <span class="fu">dig</span>(df, bag, bags)</span>
+<span id="cb8-10"><a href="#cb8-10"></a>  }</span>
+<span id="cb8-11"><a href="#cb8-11"></a>  <span class="fu">return</span>(bags)</span>
+<span id="cb8-12"><a href="#cb8-12"></a>}</span>
+<span id="cb8-13"><a href="#cb8-13"></a>df <span class="sc">|&gt;</span></span>
+<span id="cb8-14"><a href="#cb8-14"></a>  <span class="fu">dig</span>(<span class="st">'shiny gold'</span>) <span class="sc">|&gt;</span></span>
+<span id="cb8-15"><a href="#cb8-15"></a>  <span class="fu">tail</span>(<span class="sc">-</span><span class="dv">1</span>) <span class="sc">|&gt;</span></span>
+<span id="cb8-16"><a href="#cb8-16"></a>  <span class="fu">length</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0</code></pre>
+<pre><code>[1] 7872</code></pre>
 </div>
 </div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a>tibble<span class="sc">::</span><span class="fu">tibble</span>(</span>
-<span id="cb8-2"><a href="#cb8-2"></a>  <span class="st">'parent'</span> <span class="ot">=</span> <span class="fu">c</span>(<span class="st">'shiny gold'</span>, <span class="st">'red'</span>, <span class="st">'orange'</span>, <span class="st">'yellow'</span>, <span class="st">'green'</span>, <span class="st">'blue'</span>, <span class="st">'violet'</span>),</span>
-<span id="cb8-3"><a href="#cb8-3"></a>  <span class="st">'nChild'</span> <span class="ot">=</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">0</span>),</span>
-<span id="cb8-4"><a href="#cb8-4"></a>  <span class="st">'cChild'</span> <span class="ot">=</span> <span class="fu">c</span>(<span class="st">'red'</span>, <span class="st">'orange'</span>, <span class="st">'yellow'</span>, <span class="st">'green'</span>, <span class="st">'blue'</span>, <span class="st">'violet'</span>, <span class="cn">NA</span>)</span>
-<span id="cb8-5"><a href="#cb8-5"></a>) <span class="sc">|&gt;</span></span>
-<span id="cb8-6"><a href="#cb8-6"></a>  tidyr<span class="sc">::</span><span class="fu">uncount</span>(nChild, <span class="at">.remove =</span> <span class="cn">FALSE</span>) <span class="ot">-&gt;</span> longerDF</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a>shorterDF <span class="ot">&lt;-</span></span>
-<span id="cb9-2"><a href="#cb9-2"></a>  longerDF <span class="sc">|&gt;</span></span>
-<span id="cb9-3"><a href="#cb9-3"></a>  dplyr<span class="sc">::</span><span class="fu">summarise</span>(<span class="at">nChild =</span> dplyr<span class="sc">::</span><span class="fu">n</span>(), <span class="at">.by =</span> <span class="fu">c</span>(<span class="st">'parent'</span>, <span class="st">'cChild'</span>))</span>
-<span id="cb9-4"><a href="#cb9-4"></a>bags <span class="ot">&lt;-</span> </span>
-<span id="cb9-5"><a href="#cb9-5"></a>  <span class="fu">c</span>(longerDF<span class="sc">$</span>parent, longerDF<span class="sc">$</span>cChild) <span class="sc">|&gt;</span></span>
-<span id="cb9-6"><a href="#cb9-6"></a>  <span class="fu">unique</span>() <span class="sc">|&gt;</span></span>
-<span id="cb9-7"><a href="#cb9-7"></a>  <span class="fu">sort</span>() <span class="sc">|&gt;</span></span>
-<span id="cb9-8"><a href="#cb9-8"></a>  <span class="fu">factor</span>()</span>
-<span id="cb9-9"><a href="#cb9-9"></a>bags <span class="sc">|&gt;</span></span>
-<span id="cb9-10"><a href="#cb9-10"></a>  purrr<span class="sc">::</span><span class="fu">map_dbl</span>(\(x) {</span>
-<span id="cb9-11"><a href="#cb9-11"></a>    x <span class="ot">&lt;-</span></span>
-<span id="cb9-12"><a href="#cb9-12"></a>      longerDF <span class="sc">|&gt;</span></span>
-<span id="cb9-13"><a href="#cb9-13"></a>      dplyr<span class="sc">::</span><span class="fu">select</span>(parent, cChild) <span class="sc">|&gt;</span></span>
-<span id="cb9-14"><a href="#cb9-14"></a>      dplyr<span class="sc">::</span><span class="fu">mutate</span>(dplyr<span class="sc">::</span><span class="fu">across</span>(</span>
-<span id="cb9-15"><a href="#cb9-15"></a>        tidyselect<span class="sc">::</span><span class="fu">everything</span>(),</span>
-<span id="cb9-16"><a href="#cb9-16"></a>        \(x) { purrr<span class="sc">::</span><span class="fu">map_dbl</span>(x, \(x) { <span class="fu">which</span>(<span class="fu">levels</span>(bags) <span class="sc">==</span> x) }) }</span>
-<span id="cb9-17"><a href="#cb9-17"></a>      )) <span class="sc">|&gt;</span></span>
-<span id="cb9-18"><a href="#cb9-18"></a>      <span class="fu">as.matrix</span>() <span class="sc">|&gt;</span></span>
-<span id="cb9-19"><a href="#cb9-19"></a>      <span class="fu">t</span>() <span class="sc">|&gt;</span></span>
-<span id="cb9-20"><a href="#cb9-20"></a>      <span class="fu">as.vector</span>() <span class="sc">|&gt;</span></span>
-<span id="cb9-21"><a href="#cb9-21"></a>      igraph<span class="sc">::</span><span class="fu">make_graph</span>(<span class="at">n =</span> <span class="fu">length</span>(bags)) <span class="sc">|&gt;</span></span>
-<span id="cb9-22"><a href="#cb9-22"></a>      igraph<span class="sc">::</span><span class="fu">all_simple_paths</span>(<span class="at">from =</span> <span class="fu">which</span>(bags <span class="sc">==</span> <span class="st">'shiny gold'</span>), <span class="at">to =</span> <span class="fu">which</span>(bags <span class="sc">==</span> x)) <span class="sc">|&gt;</span></span>
-<span id="cb9-23"><a href="#cb9-23"></a>      <span class="fu">unlist</span>()</span>
-<span id="cb9-24"><a href="#cb9-24"></a>    x <span class="ot">&lt;-</span> x[x <span class="sc">!=</span> <span class="fu">which</span>(bags <span class="sc">==</span> <span class="st">'shiny gold'</span>)]</span>
-<span id="cb9-25"><a href="#cb9-25"></a>    shorterDF <span class="sc">|&gt;</span></span>
-<span id="cb9-26"><a href="#cb9-26"></a>      dplyr<span class="sc">::</span><span class="fu">filter</span>(cChild <span class="sc">%in%</span> bags[x]) <span class="sc">|&gt;</span></span>
-<span id="cb9-27"><a href="#cb9-27"></a>      dplyr<span class="sc">::</span><span class="fu">pull</span>(nChild) <span class="sc">|&gt;</span></span>
-<span id="cb9-28"><a href="#cb9-28"></a>      <span class="fu">prod</span>()</span>
-<span id="cb9-29"><a href="#cb9-29"></a>  }, <span class="at">.progress =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span></span>
-<span id="cb9-30"><a href="#cb9-30"></a>  <span class="fu">sum</span>(<span class="sc">-</span><span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 126</code></pre>
-</div>
-</div>
-<blockquote class="blockquote">
-<p>2068 6268 6286 &lt;16014</p>
-</blockquote>
 
 
 </section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">

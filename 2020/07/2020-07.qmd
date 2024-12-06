@@ -61,70 +61,47 @@ nrow(shinygoldDF) - 1
 
 ## Part 2
 
-::: {.callout-caution}
-
-This solution is still under construction.
-
-:::
+Holy crap. I actually did it. I had some help from ChatGPT because I really struggle with recursion like this where it can't just be a for loop (and even with the help it took four years...). I think the key point for me here is that I really like to do early returns, and you can't. The return must be at the bottom and explicit. I also tried really hard not to use a `for` loop, but that makes it a lot harder and more confusing to iterate through everything. I'm hoping I can learn from this and apply it to future recursion problems.
 
 ```{r}
-shorterDF <-
-  longerDF |>
-  dplyr::summarise(nChild = dplyr::n(), .by = c('parent', 'cChild'))
-
-traverse <- function(shorterDF, start, i = 0) {
-  if (length(start) == 1) return(i)
-  tmp <- dplyr::filter(shorterDF, parent == start[1])
-  if (nrow(tmp) == 0) return(traverse(shorterDF, start[-1], i + 1))
-  traverse(shorterDF, tmp$cChild, i + 1)
-}
-traverse(shorterDF, 'shiny gold')
-```
-
-```{r}
-tibble::tibble(
-  'parent' = c('shiny gold', 'red', 'orange', 'yellow', 'green', 'blue', 'violet'),
-  'nChild' = c(2, 2, 2, 2, 2, 2, 0),
-  'cChild' = c('red', 'orange', 'yellow', 'green', 'blue', 'violet', NA)
-) |>
-  tidyr::uncount(nChild, .remove = FALSE) -> longerDF
-```
-
-
-```{r}
-shorterDF <-
-  longerDF |>
-  dplyr::summarise(nChild = dplyr::n(), .by = c('parent', 'cChild'))
-bags <- 
-  c(longerDF$parent, longerDF$cChild) |>
-  unique() |>
-  sort() |>
-  factor()
-bags |>
-  purrr::map_dbl(\(x) {
+df <-
+  'input.txt' |>
+  readLines() |> 
+  stringr::str_replace_all(' bags contain ', ',') |>
+  stringr::str_remove_all('(bags?[\\. ]?)') |>
+  stringr::str_split(' ?, ?') |>
+  purrr::map(\(x) {
     x <-
-      longerDF |>
-      dplyr::select(parent, cChild) |>
-      dplyr::mutate(dplyr::across(
-        tidyselect::everything(),
-        \(x) { purrr::map_dbl(x, \(x) { which(levels(bags) == x) }) }
-      )) |>
-      as.matrix() |>
-      t() |>
-      as.vector() |>
-      igraph::make_graph(n = length(bags)) |>
-      igraph::all_simple_paths(from = which(bags == 'shiny gold'), to = which(bags == x)) |>
-      unlist()
-    x <- x[x != which(bags == 'shiny gold')]
-    shorterDF |>
-      dplyr::filter(cChild %in% bags[x]) |>
-      dplyr::pull(nChild) |>
-      prod()
-  }, .progress = TRUE) |>
-  sum(-1)
+      x |>
+      stringr::str_match('([0-9]*) ?([a-z]+ [a-z]+)') |>
+      tibble::as_tibble() |>
+      dplyr::select(-1) |>
+      dplyr::mutate('V2' = as.integer(.data$V2))
+    x |>
+      dplyr::filter(!is.na(.data$V2)) |>
+      tidyr::uncount(weights = .data$V2) |>
+      dplyr::pull(.data$V3) |>
+      list() |>
+      setNames(x$V3[1])
+  }) |>
+  unlist(recursive = FALSE)
 ```
 
-> 2068
-6268
-6286
-<16014
+```{r}
+dig <- function(df, bag, bags = c()) {
+  contents <- 
+    df[bag] |>
+    unlist() |>
+    unname()
+  bags <- c(bags, bag)
+  if (length(contents) == 0) return(bags)
+  for (bag in contents) {
+    bags <- dig(df, bag, bags)
+  }
+  return(bags)
+}
+df |>
+  dig('shiny gold') |>
+  tail(-1) |>
+  length()
+```
