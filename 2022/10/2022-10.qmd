@@ -1,5 +1,5 @@
 ---
-title: "2022-10: Cathode-Ray Tube"
+title: "10: Cathode-Ray Tube"
 format: html
 ---
 
@@ -9,7 +9,6 @@ library(mistlecode)
 ```
 
 ```{r}
-# dt <- fread("input.txt", header = FALSE)
 dt <-
   readLines("input.txt") |>
   str_split(" ", simplify = TRUE) |>
@@ -22,14 +21,7 @@ Oh. This looks a lot like last year's day one.
 
 ## Part 1
 
-Part 1 wasn't too bad. I was a really big dummy and forgot to download the test
-input then was trying to check my real input as the test input which didn't
-work. Other than that, I'm really happy I got to use
-`mistlecode::expand_directions` which I only wrote a few hours prior. I did have
-to make some live modifications, but nothing crazy. Once everything was mostly
-right, I had a problem where the first five signals were correct, but the last
-wasn't. I eventually realized that I needed to lead the add values and that got
-everything sorted.
+Part 1 wasn't too bad. I was a really big dummy and forgot to download the test input then was trying to check my real input as the test input which didn't work. Other than that, I'm really happy I got to use `mistlecode::expand_directions` which I only wrote a few hours prior. I did have to make some live modifications, but nothing crazy. Once everything was mostly right, I had a problem where the first five signals were correct, but the last wasn't. I eventually realized that I needed to lead the add values and that got everything sorted.
 
 ```{r}
 dt <-
@@ -53,10 +45,7 @@ sapply(c(20, 60, 100, 140, 180, 220), \(x) {
 
 ## Part 2
 
-This was an absolute mess. I didn't understand the question at all and still
-don't really get it. The difference between what I had and what I thought I
-should have made the solution relatively clear, but only after struggling with
-it for hours. I do like ggplot-able solutions though. Those are always nice.
+This was an absolute mess. I didn't understand the question at all and still don't really get it. The difference between what I had and what I thought I should have made the solution relatively clear, but only after struggling with it for hours. I do like ggplot-able solutions though. Those are always nice.
 
 ```{r}
 m <- matrix(" ", 6, 40)

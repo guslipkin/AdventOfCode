@@ -7,6 +7,8 @@ eval: false
 ```{r}
 #| message: false
 library(mistlecode)
+
+options(scipen = 999)
 ```
 
 ```{r}
@@ -34,6 +36,14 @@ rock_seq <- rep_len(rock_seq, 10000)
 ```{r}
 cave <- matrix(" ", 3, 7)
 
+cave_to_matrix <- function(cave) {
+  cave |>
+    matrix_to_coords() |>
+    dplyr::filter(.data$data == '@') |>
+    dplyr::select(-'data') |>
+    as.matrix()
+}
+
 add_row <- function(cave, rock) {
   rbind(
     cbind(
@@ -44,12 +54,7 @@ add_row <- function(cave, rock) {
 }
 
 can_fall <- function(cave) {
-    x <-
-    matrix_to_coords(cave) %>%
-    .[.[, "data"] == "@", c("row", "col")]
-  coords <- 
-    matrix(as.numeric(x), nrow(x)) |>
-    `colnames<-`(c("row", "col"))
+  coords <- cave_to_matrix(cave)
   if (any(coords[,"row"] == nrow(cave))) { return(FALSE) }
   apply(coords, 1, \(x) {
     (cave[x["row"] + 1, x["col"]] %in% c("@", " "))
@@ -58,12 +63,7 @@ can_fall <- function(cave) {
 }
 
 move_rock <- function(cave, dir) {
-  x <-
-    matrix_to_coords(cave) %>%
-    .[.[, "data"] == "@", c("row", "col")]
-  x <- 
-    matrix(as.numeric(x), nrow(x)) |>
-    `colnames<-`(c("row", "col"))
+  x <- cave_to_matrix(cave)
 
   for (j in 1:nrow(x)) { cave[x[j, "row"], x[j, "col"]] <- " " }
   
@@ -116,12 +116,7 @@ for (i in seq_along(rock_seq)) {
   }
   
   cave <- trim_row(cave)
-  x <-
-    matrix_to_coords(cave) %>%
-    .[.[, "data"] == "@", c("row", "col")]
-  x <- 
-    matrix(as.numeric(x), nrow(x)) |>
-    `colnames<-`(c("row", "col"))
+  x <- cave_to_matrix(cave)
   
   for (j in 1:nrow(x)) { cave[x[j, "row"], x[j, "col"]] <- "█" }
 }

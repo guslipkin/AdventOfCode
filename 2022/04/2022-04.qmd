@@ -1,5 +1,5 @@
 ---
-title: "2022-04: Camp Cleanup"
+title: "04: Camp Cleanup"
 format: html
 ---
 
@@ -10,7 +10,6 @@ library(data.table)
 
 ```{r}
 dt <- fread("input.txt", header = FALSE)
-# dt <- readLines("input.txt")
 ```
 
 This looks bad at first, but it's not.

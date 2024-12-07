@@ -1,5 +1,5 @@
 ---
-title: "2022-02: Rock Paper Scissors"
+title: "02: Rock Paper Scissors"
 format: html
 ---
 

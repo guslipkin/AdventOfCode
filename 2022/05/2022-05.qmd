@@ -1,5 +1,5 @@
 ---
-title: "2022-05: Supply Stacks"
+title: "05: Supply Stacks"
 format: html
 ---
 
@@ -40,17 +40,19 @@ do_part <- function(part) {
   dt <- readLines(file_name)
   piles <- read_fwf(file = file_name, na = "  ", n_max = which(dt == "") - 2)
   
-  piles <- piles |>
-    as.matrix()
+  piles <- piles |> as.matrix()
   piles <-
-    lapply(seq_len(ncol(piles)), \(i) piles[, i]) |>
+    piles |>
+    ncol() |>
+    seq_len()
+    lapply(\(i) piles[, i]) |>
     lapply(\(x) str_extract(x[x != ""], "\\w"))
   
   ins <-
     readLines(file_name) |>
     tail(-(which(dt == "") - 1)) |>
-    str_match_all("move (\\d*) from (\\d*) to (\\d*)") %>%
-    do.call(rbind, .) |>
+    str_match_all("move (\\d*) from (\\d*) to (\\d*)") |>
+    do.call(rbind, args = _) |>
     data.frame() |>
     lapply(as.numeric) |>
     data.frame()

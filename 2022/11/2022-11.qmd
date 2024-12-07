@@ -1,5 +1,5 @@
 ---
-title: "2022-11: Monkey in the Middle"
+title: "11: Monkey in the Middle"
 format: html
 ---
 
@@ -21,11 +21,7 @@ Oh no. I'm going to bed.
 
 ## Part 1
 
-This was so much fun! I dipped my toes into S3 classes, made a useful function
-factory, and did some recursion. I had a bit of trouble making sure my list of
-monkeys was getting passed around properly and returned because loops can't
-change objects in the global environment. That said, I have a bad feeling about
-part 2.
+This was so much fun! I dipped my toes into S3 classes, made a useful function factory, and did some recursion. I had a bit of trouble making sure my list of monkeys was getting passed around properly and returned because loops can't change objects in the global environment. That said, I have a bad feeling about part 2.
 
 ```{r}
 operation <- function(op, val) {
@@ -119,14 +115,9 @@ sapply(m, \(m) m$inspections) |>
 
 ## Part 2
 
-I want to scream. I submitted my answer just to see and it's right, even though
-the test input was wrong. I could've submitted yesterday 😭 So many hours
-devoted to these monkeys for nothing...
+I want to scream. I submitted my answer just to see and it's right, even though the test input was wrong. I could've submitted yesterday 😭 So many hours devoted to these monkeys for nothing...
 
-I figured out the `worry_level %% prod(tests)` thing pretty quick after part 1,
-but it took a full day because the test input never lined up, even if I got
-super close. I still want to figure out why that is, but for now I'm just happy
-to have the star.
+I figured out the `worry_level %% prod(tests)` thing pretty quick after part 1, but it took a full day because the test input never lined up, even if I got super close. I still want to figure out why that is, but for now I'm just happy to have the star.
 
 ```{r}
 process_items <- function(item, monkey, these_monkeys) {

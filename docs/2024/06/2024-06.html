@@ -268,52 +268,52 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 ">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../2022/01/2022-01.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">2022-01: Calorie Counting</span></a>
+  <a href="../../2022/01/2022-01.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">01: Calorie Counting</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../2022/02/2022-02.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">2022-02: Rock Paper Scissors</span></a>
+  <a href="../../2022/02/2022-02.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">02: Rock Paper Scissors</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../2022/03/2022-03.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">2022-03: Rucksack Reorganization</span></a>
+  <a href="../../2022/03/2022-03.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">03: Rucksack Reorganization</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../2022/04/2022-04.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">2022-04: Camp Cleanup</span></a>
+  <a href="../../2022/04/2022-04.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">04: Camp Cleanup</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../2022/05/2022-05.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">2022-05: Supply Stacks</span></a>
+  <a href="../../2022/05/2022-05.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">05: Supply Stacks</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../2022/06/2022-06.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">2022-06: Tuning Trouble</span></a>
+  <a href="../../2022/06/2022-06.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">06: Tuning Trouble</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../2022/07/2022-07.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">2022-07: No Space Left On Device</span></a>
+  <a href="../../2022/07/2022-07.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">07: No Space Left On Device</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../2022/08/2022-08.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">2022-08: Treetop Tree House</span></a>
+  <a href="../../2022/08/2022-08.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">08: Treetop Tree House</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../2022/10/2022-10.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">2022-10: Cathode-Ray Tube</span></a>
+  <a href="../../2022/10/2022-10.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">10: Cathode-Ray Tube</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../2022/11/2022-11.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">2022-11: Monkey in the Middle</span></a>
+  <a href="../../2022/11/2022-11.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">11: Monkey in the Middle</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -837,6 +837,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </section><section id="part-2" class="level2"><h2 class="anchored" data-anchor-id="part-2">Part 2</h2>
 <p>It’s never a good sign when you resort to <a href="https://future.futureverse.org">future</a>… But also, I figured a path can’t cross itself more than five times without being in a loop. Before figuring that out, my estimated run time on a single core was 6-8 hours.</p>
+<p>The next day…I realized the magic number is four since that’s the number of unique directions you can approach a node from.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a>tictoc<span class="sc">::</span><span class="fu">tic</span>()</span>
 <span id="cb6-2"><a href="#cb6-2"></a>start <span class="ot">&lt;-</span> <span class="fu">which</span>(mat <span class="sc">==</span> <span class="st">'^'</span>, <span class="at">arr.ind =</span> <span class="cn">TRUE</span>)[<span class="dv">1</span>,] <span class="sc">|&gt;</span> <span class="fu">unname</span>()</span>
@@ -862,7 +863,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb6-22"><a href="#cb6-22"></a>        guy <span class="ot">&lt;-</span> n</span>
 <span id="cb6-23"><a href="#cb6-23"></a>      } <span class="cf">else</span> dir <span class="ot">&lt;-</span> rotate[dir]</span>
 <span id="cb6-24"><a href="#cb6-24"></a>      step <span class="ot">&lt;-</span> step <span class="sc">+</span> <span class="dv">1</span></span>
-<span id="cb6-25"><a href="#cb6-25"></a>      <span class="cf">if</span> (<span class="fu">any</span>(cells <span class="sc">&gt;</span> <span class="dv">5</span>)) <span class="fu">return</span>(<span class="cn">TRUE</span>)</span>
+<span id="cb6-25"><a href="#cb6-25"></a>      <span class="cf">if</span> (<span class="fu">any</span>(cells <span class="sc">&gt;</span> <span class="dv">4</span>)) <span class="fu">return</span>(<span class="cn">TRUE</span>)</span>
 <span id="cb6-26"><a href="#cb6-26"></a>    }</span>
 <span id="cb6-27"><a href="#cb6-27"></a>  }) <span class="sc">|&gt;</span></span>
 <span id="cb6-28"><a href="#cb6-28"></a>  <span class="fu">sum</span>()</span>
@@ -873,7 +874,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a>future<span class="sc">::</span><span class="fu">plan</span>(future<span class="sc">::</span><span class="fu">sequential</span>())</span>
 <span id="cb8-2"><a href="#cb8-2"></a>tictoc<span class="sc">::</span><span class="fu">toc</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>159.856 sec elapsed</code></pre>
+<pre><code>167.415 sec elapsed</code></pre>
 </div>
 </div>
 

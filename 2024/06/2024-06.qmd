@@ -51,7 +51,9 @@ sum(visited)
 
 ## Part 2
 
-It's never a good sign when you resort to `{future}`... But also, I figured a path can't cross itself more than five times without being in a loop. Before figuring that out, my estimated run time on a single core was 6-8 hours.
+It's never a good sign when you resort to `{future}`... But also, I figured a path can't cross itself more than five times without being in a loop. Before figuring that out, my estimated run time on a single core was 6-8 hours. 
+
+The next day...I realized the magic number is four since that's the number of unique directions you can approach a node from.
 
 ```{r}
 tictoc::tic()
@@ -78,7 +80,7 @@ progressr::with_progress({
         guy <- n
       } else dir <- rotate[dir]
       step <- step + 1
-      if (any(cells > 5)) return(TRUE)
+      if (any(cells > 4)) return(TRUE)
     }
   }) |>
   sum()

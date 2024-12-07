@@ -1,5 +1,5 @@
 ---
-title: "2022-03: Rucksack Reorganization"
+title: "03: Rucksack Reorganization"
 format: html
 ---
 

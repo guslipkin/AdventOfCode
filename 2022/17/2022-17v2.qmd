@@ -1,0 +1,132 @@
+---
+title: "17: Pyroclastic Flow"
+---
+
+```{r}
+#| message: false
+library(mistlecode)
+
+options(scipen = 999)
+```
+
+```{r}
+jets <-
+  'input2.txt' |>
+  readLines() |>
+  strsplit('') |>
+  unlist() |>
+  dplyr::case_match(
+    '<' ~ -1,
+    '>' ~ 1
+  )
+
+rocks <-
+  list(
+    matrix("@", 1, 4),
+    matrix(c("", "@", "", "@", "@", "@", "", "@", ""), 3, 3),
+    matrix(c("", "", "@", "", "", "@", "@", "@", "@"), 3, 3),
+    matrix("@", 4, 1),
+    matrix("@", 2, 2)
+  )
+```
+
+```{r}
+index <- function(x, n) {
+  stopifnot(length(x) > 0)
+  n <- n %% length(x)
+  n[n == 0] <- length(x)
+  return(n)
+}
+```
+
+```{r}
+chamber <- structure(
+  list(
+    'cave' = matrix('', nrow = 3, ncol = 7),
+    'rock' = rocks[[1]],
+    'i' = 1
+  ),
+  class = 'chamber'
+)
+
+pad_rock <- function(rock, left_pad = 2) {
+  left <- matrix('', nrow = nrow(rock), ncol = left_pad)
+  right <- matrix('', nrow = nrow(rock), ncol = 7 - ncol(rock) - ncol(left))
+  cbind(left, rock, right)
+}
+
+new_rock <- function(chamber) {
+  chamber$rock <- 
+    rocks[[index(rocks, chamber$i)]] |>
+    pad_rock()
+  return(chamber)
+}
+
+do_push <- function(rock, jets, cols = NULL) {
+  rock_cols <- which(colSums(rock != '') != 0)
+  if (length(jets) == 0) {
+      rock <-
+        rock[, rock_cols] |>
+        `dim<-`(c(nrow(rock), length(rock_cols))) |>
+        pad_rock(min(cols))
+    return(rock)
+  }
+  new_cols <- rock_cols + jets[1]
+  if (any(new_cols < 1 | new_cols > 7)) 
+    do_push(rock, jets[-1], rock_cols)
+  else 
+    do_push(rock, jets[-1], new_cols)
+}
+
+rock_push_3 <- function(chamber) {
+  i <- chamber$i
+  chamber$rock <- do_push(chamber$rock, jets[index(jets, i:(i+3))])
+  return(chamber)
+}
+
+matrix_join <- function(x, y, false = '', fn = \(z) z != false) {
+  stopifnot(dim(x) == dim(y))
+  copy <- matrix(false, nrow(x), ncol(x))
+  fn_x <- fn(x); fn_y <- fn(y);
+  copy[fn_x] <- x[fn_x]
+  copy[fn_y] <- y[fn_y]
+  return(copy)
+}
+
+rock_fall <- function(chamber) {
+  for (i in 3:1) {
+    placeholder <- matrix('', 3 - i, 7)
+    cave <- rbind(placeholder, chamber$cave[1:i,])
+    print(cave)
+    print(chamber$rock)
+    pass <- all((chamber$rock == '' & cave == '') | chamber$rock != cave)
+    if (pass) {
+      chamber$cave <- 
+        chamber$cave[-(1:i)] |>
+        matrix(ncol = 7)
+      chamber$cave <- rbind(matrix_join(cave, chamber$rock), chamber$cave)
+      return(chamber)
+    }
+  }
+  chamber$cave <- rbind(chamber$rock, chamber$cave)
+  return(chamber)
+}
+
+rock_push <- function(chamber) {
+  i <- chamber$i
+  chamber$rock <- do_push(chamber$rock, jets[index(jets, i)])
+  return(chamber)
+}
+
+do_step <- function(chamber) {
+  chamber |>
+    rock_fall() |>
+    rock_push()
+}
+
+chamber |>
+  new_rock() |>
+  rock_push_3() |>
+  do_step()
+```
+

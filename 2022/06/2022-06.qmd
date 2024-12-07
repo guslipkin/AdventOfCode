@@ -1,5 +1,5 @@
 ---
-title: "2022-06: Tuning Trouble"
+title: "06: Tuning Trouble"
 format: html
 ---
 
@@ -10,7 +10,11 @@ library(mistlecode)
 ```
 
 ```{r}
-dt <- unlist(strsplit(readLines("input.txt"), ""))
+dt <- 
+  'input.txt' |> 
+  readLines() |> 
+  strsplit('') |> 
+  unlist()
 ```
 
 This looks easy. Oh wait. I totally misread the problem...

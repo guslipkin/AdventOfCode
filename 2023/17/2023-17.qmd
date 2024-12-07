@@ -1,12 +1,13 @@
 ---
-title: "2022-12: Hill Climbing Algorithm"
+title: "17: "
 format: html
-eval: false
 ---
 
 ```{r}
 #| message: false
 library(mistlecode)
+
+options(scipen = 999)
 ```
 
 ```{r}
@@ -15,39 +16,46 @@ mat <-
   stringr::str_split("", simplify = TRUE)
 ```
 
+## Part 1
+
 ```{r}
 adjacent <- function(point, mat) {
   y <- point[1]; x <- point[2];
   tibble::tibble(
     'y' = c(y-1, y+1, y,   y),
-    'x' = c(x,   x,   x-1, x+1)
+    'x' = c(x,   x,   x-1, x+1),
+    'dir' = c('up', 'down', 'left', 'right')
   ) |>
     dplyr::filter(
       dplyr::between(.data$y, 1, nrow(mat)),
       dplyr::between(.data$x, 1, ncol(mat))
     ) |>
-    purrr::pmap(\(y, x) {
-      c(y, x)
+    purrr::pmap(\(y, x, dir) {
+      list('node' = c(y, x), 'dir' = dir)
     })
 }
 
 hash <- function(x) paste0(x, collapse = ' ')
 ```
 
-
 ```{r}
-find_path <- function(mat, current, end, neighbors = adjacent, cost = function(x, y) dist(rbind(x, y), method = 'manhattan')[1]) {
+find_path <- function(mat, current, end, neighbors = adjacent, cost = function(x, y, mat) mat[y[1], y[2]]) {
 
-  open_list <- collections::priority_queue()$clear()$push(current, 0)
+  open_list <- collections::priority_queue()$clear()$push(list('node' = current, 'dir' = 'start'), 0)
   g_score <- matrix(Inf, nrow = nrow(mat), ncol = ncol(mat))
   f_score <- matrix(Inf, nrow = nrow(mat), ncol = ncol(mat))
   g_score[current[1], current[2]] <- 0
   f_score[current[1], current[2]] <- dist(rbind(current, end), method = 'manhattan')[1]
 
   came_from <- list()
+  dir_list <- list()
+  dir_list[[hash(current)]] <- 'start'
+  dir <- rep('', 3)
 
   while (open_list$size() > 0) {
     current_node <- open_list$pop()
+    if (all(dir == current_node$dir)) next else dir <- c(dir[2:3], current_node$dir) |> print()
+    current_node <- current_node$node
     if (all(current_node == end)) {
       path <- list()
       node <- current_node
@@ -62,14 +70,15 @@ find_path <- function(mat, current, end, neighbors = adjacent, cost = function(x
       return(list('path' = path[-1], 'cost' = g_score[end[1], end[2]]))
     }
     for (neighbor in neighbors(current_node, mat)) {
-      move_cost <- cost(current_node, neighbor, mat)
+      neighbor_dir <- neighbor$dir; neighbor <- neighbor$node;
+      move_cost <- cost(current_node, neighbor, mat) |> as.integer()
       if (is.na(move_cost) || move_cost == Inf) next
       tentative_g_score <- g_score[current_node[1], current_node[2]] + move_cost
       if (tentative_g_score < g_score[neighbor[1], neighbor[2]]) {
         came_from[[hash(neighbor)]] <- current_node
         g_score[neighbor[1], neighbor[2]] <- tentative_g_score
         f_score[neighbor[1], neighbor[2]] <- tentative_g_score + dist(rbind(neighbor, end), method = 'manhattan')[1]
-        open_list$push(neighbor, -f_score[neighbor[1], neighbor[2]])
+        open_list$push(list('node' = neighbor, 'dir' = neighbor_dir), -g_score[neighbor[1], neighbor[2]])
       }
     }
   }
@@ -77,16 +86,8 @@ find_path <- function(mat, current, end, neighbors = adjacent, cost = function(x
 }
 
 mat |>
-  apply(c(1, 2), \(x) {
-    if (x == tolower(x)) which(letters == x) else if (x == 'E') 27 else 0
-  }) |>
-  as.integer() |>
-  `dim<-`(dim(mat)) |>
-  find_path(which(mat == 'S', arr.ind = TRUE)[1,], which(mat == 'E', arr.ind = TRUE)[1,], cost = \(x, y, mat) {
-    x <- mat[x[1], x[2]]; y <- mat[y[1], y[2]];
-    if ((y - x) > 1) NA else (y - x)
-  }) |>
-  purrr::pluck('path') |>
+  find_path(c(1,1), c(nrow(mat), ncol(mat))) |>
+  purrr::pluck('path') |> # purrr::map_int(\(x) mat[x[1], x[2]] |> as.integer()) |> sum()
   (\(x) { print(length(x)); x; })() |>
   unlist () |>
   matrix(ncol = 2, byrow = TRUE) |>
@@ -97,13 +98,3 @@ mat |>
   ggplot2::geom_point(ggplot2::aes(color = rowId), size = 5, shape = 15)
   # ggplot2::geom_text(ggplot2::aes(label = rowId))
 ```
-
-440
-441
-436
-437
-
-```{r}
-
-```
-
