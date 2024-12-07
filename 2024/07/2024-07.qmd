@@ -73,7 +73,6 @@ progressr::with_progress({
       target <- rr[1]; rr <- rr[-1]; rr <- rr[!is.na(rr)];
       grid <- 
         expand.grid(rlang::inject(rep(list(c('*', '+', '|')), length(rr) - 1))) |>
-        dplyr::mutate(dplyr::across(tidyselect::everything(), as.character)) |>
         dplyr::filter(dplyr::if_any(tidyselect::everything(), \(x) x == '|'))
       for (g in seq_len(nrow(grid))) {
         ops <- grid[g,] |> unlist() |> as.character()

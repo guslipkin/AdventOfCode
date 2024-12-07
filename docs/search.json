@@ -2251,5 +2251,27 @@
       "2015",
       "<span class='chapter-number'>98</span>  <span class='chapter-title'>23: Opening the Turing Lock</span>"
     ]
+  },
+  {
+    "objectID": "2024/07/2024-07.html",
+    "href": "2024/07/2024-07.html",
+    "title": "07: Bridge Repair",
+    "section": "",
+    "text": "Part 1\nOkay. At first glance this is some fancy math one that I don’t know enough math to do correctly. After fiddling around a bit and getting it working on the test input, it was time to move to the real one. For ages I kept getting the same wrong output. I thought that maybe it’s because I needed bit64 for 64 bit integers and spent way too long screwing around with that then eventually realized that not only was my input not being read properly (that seems to be a theme this year…), but that the numbers can be double and that solves all my problems. They’re still whole numbers, just not integers. After realizing that, it was a lot of head scratching until I realized that my if statement with return(total) was inside my second for loop when it should be after it. Fixing that led to a victory.\ntotals &lt;-\n  mat |&gt;\n  apply(1, \\(r) {\n    target &lt;- r[1]; r &lt;- r[-1]; r &lt;- r[!is.na(r)];\n    grid &lt;- expand.grid(rlang::inject(rep(list(c('*', '+')), length(r) - 1)))\n    for (g in seq_len(nrow(grid))) {\n      ops &lt;- grid[g,] |&gt; unlist() |&gt; unname(); total &lt;- 0;\n      for (i in seq_along(r)[-1]) {\n        if (i == 2) {\n          total &lt;- if (ops[i-1] == '+') r[i-1] + r[i] else r[i-1] * r[i]\n        } else {\n          total &lt;- if (ops[i-1] == '+') total + r[i] else total * r[i]\n        }\n      }\n      if (target == total) return(total)\n    }\n    return(0)\n  }) \npart1 &lt;-\n  totals |&gt; \n  sum() |&gt;\n  print()\n\n[1] 945512582195",
+    "crumbs": [
+      "2024",
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>07: Bridge Repair</span>"
+    ]
+  },
+  {
+    "objectID": "2024/07/2024-07.html#part-2",
+    "href": "2024/07/2024-07.html#part-2",
+    "title": "07: Bridge Repair",
+    "section": "Part 2",
+    "text": "Part 2\nI spent a while on part 2 as well, but had more of a plan than part 1. I initially had a cool little recursion method that used the same expand.grid and collapsed the string in on itself. It ultimately didn’t end up working and I’m not really sure why. Moving the operations into a function helped make things more readable and then it was just a matter of collapsing the string the right way every time and waiting a while for everything to run. After getting my answer I realized I could reduce grid even further by filtering for rows that contain a concatenate operation since the new numbers must have one.\n\ntictoc::tic()\nfuture::plan(future::multisession, workers = future::availableCores())\nprogressr::with_progress({\n  do_op &lt;- function(x, y, op) {\n    x &lt;- \n      if (op == '*') x * y else if (op == '+') x + y else paste0(x, y, collapse = '')\n    as.numeric(x)\n  }\n  \n  mat2 &lt;- mat[totals == 0,] \n  p &lt;- progressr::progressor(steps = nrow(mat2))\n  mat2 |&gt;\n    nrow() |&gt;\n    seq_len() |&gt;\n    furrr::future_map_dbl(\\(rr) {\n      p()\n      rr &lt;- mat2[rr,]\n      target &lt;- rr[1]; rr &lt;- rr[-1]; rr &lt;- rr[!is.na(rr)];\n      grid &lt;- \n        expand.grid(rlang::inject(rep(list(c('*', '+', '|')), length(rr) - 1))) |&gt;\n        dplyr::mutate(dplyr::across(tidyselect::everything(), as.character)) |&gt;\n        dplyr::filter(dplyr::if_any(tidyselect::everything(), \\(x) x == '|'))\n      for (g in seq_len(nrow(grid))) {\n        ops &lt;- grid[g,] |&gt; unlist() |&gt; as.character()\n        r &lt;- rr; i &lt;- 1;\n        repeat {\n          if (r[1] &gt; target || i &gt; length(ops)) break\n          x &lt;- do_op(r[1], r[2], ops[i])\n          r &lt;- c(x, utils::tail(r, -2))\n          i &lt;- i + 1\n        }\n        if (isTRUE(r == target)) return(r)\n      }\n      return(0)\n    }) |&gt;\n    sum(part1)\n}, handlers = progressr::handler_cli())\n\n[1] 271691107779347\n\nfuture::plan(future::sequential())\ntictoc::toc()\n\n229.06 sec elapsed",
+    "crumbs": [
+      "2024",
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>07: Bridge Repair</span>"
+    ]
   }
 ]
