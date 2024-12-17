@@ -39,7 +39,7 @@ dt <-
 
 I got to do math!!! I'm so proud of myself for this one. Like genuinely actually for realizing I could just math it out. And my solution is so fast too! I probably could've done the linear programming, but just solving seemed easier?
 
-$$
+\begin{gather*}
 ix_a + jx_b = X, iy_a + jy_b = Y\\
 ix_a = X - jx_b, iy_a = Y - jy_b\\
 i = \frac{X - jx_b}{x_a}, i = \frac{Y - jy_b}{y_a}\\
@@ -49,7 +49,7 @@ y_aX - jx_by_a = x_aY - jx_ay_b\\
 -jx_by_a + jx_ay_b = x_aY - y_aX\\
 j * (-x_by_a + x_ay_b) = x_aY - y_aX\\
 j = \frac{x_aY - y_aX}{x_ay_b - x_by_a}
-$$
+\end{gather*}
 
 ```{r}
 dt |>
