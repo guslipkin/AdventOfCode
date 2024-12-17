@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="generator" content="quarto-1.6.39">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<title>07: Bridge Repair – Gus Lipkin's Awesome Code</title>
+<title>14: Restroom Redoubt – Gus Lipkin's Awesome Code</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -60,8 +60,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../../">
-<link href="../../2024/14/2024-14.html" rel="next">
-<link href="../../2024/06/2024-06.html" rel="prev">
+<link href="../../2023/01/2023-01.html" rel="next">
+<link href="../../2024/07/2024-07.html" rel="prev">
 <script src="../../site_libs/quarto-html/quarto.js"></script>
 <script src="../../site_libs/quarto-html/popper.min.js"></script>
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -149,7 +149,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../2024/01/2024-01.html">2024</a></li><li class="breadcrumb-item"><a href="../../2024/07/2024-07.html"><span class="chapter-title">07: Bridge Repair</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../2024/01/2024-01.html">2024</a></li><li class="breadcrumb-item"><a href="../../2024/14/2024-14.html"><span class="chapter-title">14: Restroom Redoubt</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -211,12 +211,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../2024/07/2024-07.html" class="sidebar-item-text sidebar-link active"><span class="chapter-title">07: Bridge Repair</span></a>
+  <a href="../../2024/07/2024-07.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">07: Bridge Repair</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../2024/14/2024-14.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">14:</span></a>
+  <a href="../../2024/14/2024-14.html" class="sidebar-item-text sidebar-link active"><span class="chapter-title">14: Restroom Redoubt</span></a>
   </div>
 </li>
       </ul>
@@ -788,8 +788,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </ul></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../2024/01/2024-01.html">2024</a></li><li class="breadcrumb-item"><a href="../../2024/07/2024-07.html"><span class="chapter-title">07: Bridge Repair</span></a></li></ol></nav><div class="quarto-title">
-<h1 class="title"><span class="chapter-title">07: Bridge Repair</span></h1>
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../2024/01/2024-01.html">2024</a></li><li class="breadcrumb-item"><a href="../../2024/14/2024-14.html"><span class="chapter-title">14: Restroom Redoubt</span></a></li></ol></nav><div class="quarto-title">
+<h1 class="title"><span class="chapter-title">14: Restroom Redoubt</span></h1>
 </div>
 
 
@@ -809,88 +809,127 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-3"><a href="#cb1-3"></a><span class="fu">options</span>(<span class="at">scipen =</span> <span class="dv">999</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a>mat <span class="ot">&lt;-</span></span>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a>mdt <span class="ot">&lt;-</span></span>
 <span id="cb2-2"><a href="#cb2-2"></a>  <span class="st">'input.txt'</span> <span class="sc">|&gt;</span></span>
 <span id="cb2-3"><a href="#cb2-3"></a>  <span class="fu">readLines</span>() <span class="sc">|&gt;</span></span>
-<span id="cb2-4"><a href="#cb2-4"></a>  stringr<span class="sc">::</span><span class="fu">str_split</span>(<span class="st">':| '</span>, <span class="at">simplify =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span></span>
-<span id="cb2-5"><a href="#cb2-5"></a>  mistlecode<span class="sc">::</span><span class="fu">cast_matrix</span>(as.numeric)</span>
-<span id="cb2-6"><a href="#cb2-6"></a>mat <span class="ot">&lt;-</span> mat[,<span class="sc">-</span><span class="dv">2</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-4"><a href="#cb2-4"></a>  stringr<span class="sc">::</span><span class="fu">str_match_all</span>(<span class="st">'-?</span><span class="sc">\\</span><span class="st">d+'</span>) <span class="sc">|&gt;</span></span>
+<span id="cb2-5"><a href="#cb2-5"></a>  purrr<span class="sc">::</span><span class="fu">map</span>(\(x) {</span>
+<span id="cb2-6"><a href="#cb2-6"></a>    x <span class="ot">&lt;-</span> <span class="fu">as.integer</span>(x)</span>
+<span id="cb2-7"><a href="#cb2-7"></a>    <span class="fu">list</span>(</span>
+<span id="cb2-8"><a href="#cb2-8"></a>      <span class="st">'p'</span> <span class="ot">=</span> <span class="fu">c</span>(x[<span class="dv">1</span>], x[<span class="dv">2</span>]) <span class="sc">+</span> <span class="dv">1</span>, <span class="co"># row,col</span></span>
+<span id="cb2-9"><a href="#cb2-9"></a>      <span class="st">'v'</span> <span class="ot">=</span> <span class="fu">c</span>(x[<span class="dv">3</span>], x[<span class="dv">4</span>])</span>
+<span id="cb2-10"><a href="#cb2-10"></a>    )</span>
+<span id="cb2-11"><a href="#cb2-11"></a>  })</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <section id="part-1" class="level2"><h2 class="anchored" data-anchor-id="part-1">Part 1</h2>
-<p>Okay. At first glance this is some fancy math one that I don’t know enough math to do correctly. After fiddling around a bit and getting it working on the test input, it was time to move to the real one. For ages I kept getting the same wrong output. I thought that maybe it’s because I needed <a href="https://github.com/truecluster/bit64">bit64</a> for 64 bit integers and spent way too long screwing around with that then eventually realized that not only was my input not being read properly (that seems to be a theme this year…), but that the numbers can be <code>double</code> and that solves all my problems. They’re still whole numbers, just not integers. After realizing that, it was a lot of head scratching until I realized that my <code>if</code> statement with <code>return(total)</code> was inside my second <code>for</code> loop when it should be after it. Fixing that led to a victory.</p>
+<p>When I was almost done I realized I could’ve just multiplied the vectors by 100 then not needed a loop. Oh well. Easy enough.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>totals <span class="ot">&lt;-</span></span>
-<span id="cb3-2"><a href="#cb3-2"></a>  mat <span class="sc">|&gt;</span></span>
-<span id="cb3-3"><a href="#cb3-3"></a>  <span class="fu">apply</span>(<span class="dv">1</span>, \(r) {</span>
-<span id="cb3-4"><a href="#cb3-4"></a>    target <span class="ot">&lt;-</span> r[<span class="dv">1</span>]; r <span class="ot">&lt;-</span> r[<span class="sc">-</span><span class="dv">1</span>]; r <span class="ot">&lt;-</span> r[<span class="sc">!</span><span class="fu">is.na</span>(r)];</span>
-<span id="cb3-5"><a href="#cb3-5"></a>    grid <span class="ot">&lt;-</span> <span class="fu">expand.grid</span>(rlang<span class="sc">::</span><span class="fu">inject</span>(<span class="fu">rep</span>(<span class="fu">list</span>(<span class="fu">c</span>(<span class="st">'*'</span>, <span class="st">'+'</span>)), <span class="fu">length</span>(r) <span class="sc">-</span> <span class="dv">1</span>)))</span>
-<span id="cb3-6"><a href="#cb3-6"></a>    <span class="cf">for</span> (g <span class="cf">in</span> <span class="fu">seq_len</span>(<span class="fu">nrow</span>(grid))) {</span>
-<span id="cb3-7"><a href="#cb3-7"></a>      ops <span class="ot">&lt;-</span> grid[g,] <span class="sc">|&gt;</span> <span class="fu">unlist</span>() <span class="sc">|&gt;</span> <span class="fu">unname</span>(); total <span class="ot">&lt;-</span> <span class="dv">0</span>;</span>
-<span id="cb3-8"><a href="#cb3-8"></a>      <span class="cf">for</span> (i <span class="cf">in</span> <span class="fu">seq_along</span>(r)[<span class="sc">-</span><span class="dv">1</span>]) {</span>
-<span id="cb3-9"><a href="#cb3-9"></a>        <span class="cf">if</span> (i <span class="sc">==</span> <span class="dv">2</span>) {</span>
-<span id="cb3-10"><a href="#cb3-10"></a>          total <span class="ot">&lt;-</span> <span class="cf">if</span> (ops[i<span class="dv">-1</span>] <span class="sc">==</span> <span class="st">'+'</span>) r[i<span class="dv">-1</span>] <span class="sc">+</span> r[i] <span class="cf">else</span> r[i<span class="dv">-1</span>] <span class="sc">*</span> r[i]</span>
-<span id="cb3-11"><a href="#cb3-11"></a>        } <span class="cf">else</span> {</span>
-<span id="cb3-12"><a href="#cb3-12"></a>          total <span class="ot">&lt;-</span> <span class="cf">if</span> (ops[i<span class="dv">-1</span>] <span class="sc">==</span> <span class="st">'+'</span>) total <span class="sc">+</span> r[i] <span class="cf">else</span> total <span class="sc">*</span> r[i]</span>
-<span id="cb3-13"><a href="#cb3-13"></a>        }</span>
-<span id="cb3-14"><a href="#cb3-14"></a>      }</span>
-<span id="cb3-15"><a href="#cb3-15"></a>      <span class="cf">if</span> (target <span class="sc">==</span> total) <span class="fu">return</span>(total)</span>
-<span id="cb3-16"><a href="#cb3-16"></a>    }</span>
-<span id="cb3-17"><a href="#cb3-17"></a>    <span class="fu">return</span>(<span class="dv">0</span>)</span>
-<span id="cb3-18"><a href="#cb3-18"></a>  }) </span>
-<span id="cb3-19"><a href="#cb3-19"></a>part1 <span class="ot">&lt;-</span></span>
-<span id="cb3-20"><a href="#cb3-20"></a>  totals <span class="sc">|&gt;</span> </span>
-<span id="cb3-21"><a href="#cb3-21"></a>  <span class="fu">sum</span>() <span class="sc">|&gt;</span></span>
-<span id="cb3-22"><a href="#cb3-22"></a>  <span class="fu">print</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>m <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">list</span>(), <span class="at">nrow =</span> <span class="dv">103</span>, <span class="at">ncol =</span> <span class="dv">101</span>)</span>
+<span id="cb3-2"><a href="#cb3-2"></a>dt <span class="ot">&lt;-</span> mdt</span>
+<span id="cb3-3"><a href="#cb3-3"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>) {</span>
+<span id="cb3-4"><a href="#cb3-4"></a>  dt <span class="ot">&lt;-</span> purrr<span class="sc">::</span><span class="fu">map</span>(dt, \(x) {</span>
+<span id="cb3-5"><a href="#cb3-5"></a>      p <span class="ot">&lt;-</span> x<span class="sc">$</span>p <span class="sc">+</span> x<span class="sc">$</span>v</span>
+<span id="cb3-6"><a href="#cb3-6"></a>      p[<span class="dv">1</span>] <span class="ot">&lt;-</span> p[<span class="dv">1</span>] <span class="sc">%%</span> <span class="fu">ncol</span>(m); <span class="cf">if</span> (p[<span class="dv">1</span>] <span class="sc">==</span> <span class="dv">0</span>) p[<span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="fu">ncol</span>(m);</span>
+<span id="cb3-7"><a href="#cb3-7"></a>      p[<span class="dv">2</span>] <span class="ot">&lt;-</span> p[<span class="dv">2</span>] <span class="sc">%%</span> <span class="fu">nrow</span>(m); <span class="cf">if</span> (p[<span class="dv">2</span>] <span class="sc">==</span> <span class="dv">0</span>) p[<span class="dv">2</span>] <span class="ot">&lt;-</span> <span class="fu">nrow</span>(m);</span>
+<span id="cb3-8"><a href="#cb3-8"></a>      <span class="fu">list</span>(<span class="st">'p'</span> <span class="ot">=</span> p, <span class="st">'v'</span> <span class="ot">=</span> x<span class="sc">$</span>v)</span>
+<span id="cb3-9"><a href="#cb3-9"></a>    })</span>
+<span id="cb3-10"><a href="#cb3-10"></a>}</span>
+<span id="cb3-11"><a href="#cb3-11"></a></span>
+<span id="cb3-12"><a href="#cb3-12"></a>p <span class="ot">&lt;-</span></span>
+<span id="cb3-13"><a href="#cb3-13"></a>  dt <span class="sc">|&gt;</span></span>
+<span id="cb3-14"><a href="#cb3-14"></a>  purrr<span class="sc">::</span><span class="fu">map</span>(\(x) x<span class="sc">$</span>p <span class="sc">|&gt;</span> <span class="fu">matrix</span>(<span class="at">ncol =</span> <span class="dv">2</span>) <span class="sc">|&gt;</span> <span class="fu">as.data.frame</span>()) <span class="sc">|&gt;</span></span>
+<span id="cb3-15"><a href="#cb3-15"></a>  purrr<span class="sc">::</span><span class="fu">list_rbind</span>() <span class="sc">|&gt;</span></span>
+<span id="cb3-16"><a href="#cb3-16"></a>  <span class="fu">setNames</span>(<span class="fu">c</span>(<span class="st">'col'</span>, <span class="st">'row'</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb3-17"><a href="#cb3-17"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="st">'row'</span>, <span class="st">'col'</span>)</span>
+<span id="cb3-18"><a href="#cb3-18"></a></span>
+<span id="cb3-19"><a href="#cb3-19"></a>mid_row <span class="ot">&lt;-</span> <span class="fu">ceiling</span>(<span class="fu">nrow</span>(m) <span class="sc">/</span> <span class="dv">2</span>); mid_col <span class="ot">&lt;-</span> <span class="fu">ceiling</span>(<span class="fu">ncol</span>(m) <span class="sc">/</span> <span class="dv">2</span>);</span>
+<span id="cb3-20"><a href="#cb3-20"></a>one <span class="ot">&lt;-</span> p[p<span class="sc">$</span>row <span class="sc">&lt;</span> mid_row <span class="sc">&amp;</span> p<span class="sc">$</span>col <span class="sc">&lt;</span> mid_col,] <span class="sc">|&gt;</span> <span class="fu">nrow</span>()</span>
+<span id="cb3-21"><a href="#cb3-21"></a>two <span class="ot">&lt;-</span> p[p<span class="sc">$</span>row <span class="sc">&lt;</span> mid_row <span class="sc">&amp;</span> p<span class="sc">$</span>col <span class="sc">&gt;</span> mid_col,] <span class="sc">|&gt;</span> <span class="fu">nrow</span>()</span>
+<span id="cb3-22"><a href="#cb3-22"></a>three <span class="ot">&lt;-</span> p[p<span class="sc">$</span>row <span class="sc">&gt;</span> mid_row <span class="sc">&amp;</span> p<span class="sc">$</span>col <span class="sc">&lt;</span> mid_col,] <span class="sc">|&gt;</span> <span class="fu">nrow</span>()</span>
+<span id="cb3-23"><a href="#cb3-23"></a>four <span class="ot">&lt;-</span> p[p<span class="sc">$</span>row <span class="sc">&gt;</span> mid_row <span class="sc">&amp;</span> p<span class="sc">$</span>col <span class="sc">&gt;</span> mid_col,] <span class="sc">|&gt;</span> <span class="fu">nrow</span>()</span>
+<span id="cb3-24"><a href="#cb3-24"></a><span class="fu">prod</span>(one, two, three, four)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 945512582195</code></pre>
+<pre><code>[1] 228421332</code></pre>
 </div>
 </div>
 </section><section id="part-2" class="level2"><h2 class="anchored" data-anchor-id="part-2">Part 2</h2>
-<p>I spent a while on part 2 as well, but had more of a plan than part 1. I initially had a cool little recursion method that used the same <code>expand.grid</code> and collapsed the string in on itself. It ultimately didn’t end up working and I’m not really sure why. Moving the operations into a function helped make things more readable and then it was just a matter of collapsing the string the right way every time and waiting a while for everything to run. After getting my answer I realized I could reduce <code>grid</code> even further by filtering for rows that contain a <code>concatenate</code> operation since the new numbers must have one.</p>
+<p>Ugh. <code><a href="http://mistlecode.guslipkin.me/reference/coords_to_matrix.html">mistlecode::coords_to_matrix()</a></code> isn’t working. I guess I’ll use <code>{ggplot}</code>. Figuring out how to identify the tree was annoying. I tried clicking through the first 500 iterations with <code>{ggplot}</code> but that wasn’t going anywhere. I took a bit but I figured that the tree would probably have either high or low density in terms of points vs white space. Took a gander and just ran a loop until the initial state was repeated then checked the max and min densities. Sure enough. Max density it was.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>tictoc<span class="sc">::</span><span class="fu">tic</span>()</span>
-<span id="cb5-2"><a href="#cb5-2"></a>future<span class="sc">::</span><span class="fu">plan</span>(future<span class="sc">::</span>multisession, <span class="at">workers =</span> future<span class="sc">::</span><span class="fu">availableCores</span>())</span>
-<span id="cb5-3"><a href="#cb5-3"></a>progressr<span class="sc">::</span><span class="fu">with_progress</span>({</span>
-<span id="cb5-4"><a href="#cb5-4"></a>  do_op <span class="ot">&lt;-</span> <span class="cf">function</span>(x, y, op) {</span>
-<span id="cb5-5"><a href="#cb5-5"></a>    x <span class="ot">&lt;-</span> </span>
-<span id="cb5-6"><a href="#cb5-6"></a>      <span class="cf">if</span> (op <span class="sc">==</span> <span class="st">'*'</span>) x <span class="sc">*</span> y <span class="cf">else</span> <span class="cf">if</span> (op <span class="sc">==</span> <span class="st">'+'</span>) x <span class="sc">+</span> y <span class="cf">else</span> <span class="fu">paste0</span>(x, y, <span class="at">collapse =</span> <span class="st">''</span>)</span>
-<span id="cb5-7"><a href="#cb5-7"></a>    <span class="fu">as.numeric</span>(x)</span>
-<span id="cb5-8"><a href="#cb5-8"></a>  }</span>
-<span id="cb5-9"><a href="#cb5-9"></a>  </span>
-<span id="cb5-10"><a href="#cb5-10"></a>  mat2 <span class="ot">&lt;-</span> mat[totals <span class="sc">==</span> <span class="dv">0</span>,] </span>
-<span id="cb5-11"><a href="#cb5-11"></a>  p <span class="ot">&lt;-</span> progressr<span class="sc">::</span><span class="fu">progressor</span>(<span class="at">steps =</span> <span class="fu">nrow</span>(mat2))</span>
-<span id="cb5-12"><a href="#cb5-12"></a>  mat2 <span class="sc">|&gt;</span></span>
-<span id="cb5-13"><a href="#cb5-13"></a>    <span class="fu">nrow</span>() <span class="sc">|&gt;</span></span>
-<span id="cb5-14"><a href="#cb5-14"></a>    <span class="fu">seq_len</span>() <span class="sc">|&gt;</span></span>
-<span id="cb5-15"><a href="#cb5-15"></a>    furrr<span class="sc">::</span><span class="fu">future_map_dbl</span>(\(rr) {</span>
-<span id="cb5-16"><a href="#cb5-16"></a>      <span class="fu">p</span>()</span>
-<span id="cb5-17"><a href="#cb5-17"></a>      rr <span class="ot">&lt;-</span> mat2[rr,]</span>
-<span id="cb5-18"><a href="#cb5-18"></a>      target <span class="ot">&lt;-</span> rr[<span class="dv">1</span>]; rr <span class="ot">&lt;-</span> rr[<span class="sc">-</span><span class="dv">1</span>]; rr <span class="ot">&lt;-</span> rr[<span class="sc">!</span><span class="fu">is.na</span>(rr)];</span>
-<span id="cb5-19"><a href="#cb5-19"></a>      grid <span class="ot">&lt;-</span> </span>
-<span id="cb5-20"><a href="#cb5-20"></a>        <span class="fu">expand.grid</span>(rlang<span class="sc">::</span><span class="fu">inject</span>(<span class="fu">rep</span>(<span class="fu">list</span>(<span class="fu">c</span>(<span class="st">'*'</span>, <span class="st">'+'</span>, <span class="st">'|'</span>)), <span class="fu">length</span>(rr) <span class="sc">-</span> <span class="dv">1</span>))) <span class="sc">|&gt;</span></span>
-<span id="cb5-21"><a href="#cb5-21"></a>        dplyr<span class="sc">::</span><span class="fu">filter</span>(dplyr<span class="sc">::</span><span class="fu">if_any</span>(tidyselect<span class="sc">::</span><span class="fu">everything</span>(), \(x) x <span class="sc">==</span> <span class="st">'|'</span>))</span>
-<span id="cb5-22"><a href="#cb5-22"></a>      <span class="cf">for</span> (g <span class="cf">in</span> <span class="fu">seq_len</span>(<span class="fu">nrow</span>(grid))) {</span>
-<span id="cb5-23"><a href="#cb5-23"></a>        ops <span class="ot">&lt;-</span> grid[g,] <span class="sc">|&gt;</span> <span class="fu">unlist</span>() <span class="sc">|&gt;</span> <span class="fu">as.character</span>()</span>
-<span id="cb5-24"><a href="#cb5-24"></a>        r <span class="ot">&lt;-</span> rr; i <span class="ot">&lt;-</span> <span class="dv">1</span>;</span>
-<span id="cb5-25"><a href="#cb5-25"></a>        <span class="cf">repeat</span> {</span>
-<span id="cb5-26"><a href="#cb5-26"></a>          <span class="cf">if</span> (r[<span class="dv">1</span>] <span class="sc">&gt;</span> target <span class="sc">||</span> i <span class="sc">&gt;</span> <span class="fu">length</span>(ops)) <span class="cf">break</span></span>
-<span id="cb5-27"><a href="#cb5-27"></a>          x <span class="ot">&lt;-</span> <span class="fu">do_op</span>(r[<span class="dv">1</span>], r[<span class="dv">2</span>], ops[i])</span>
-<span id="cb5-28"><a href="#cb5-28"></a>          r <span class="ot">&lt;-</span> <span class="fu">c</span>(x, utils<span class="sc">::</span><span class="fu">tail</span>(r, <span class="sc">-</span><span class="dv">2</span>))</span>
-<span id="cb5-29"><a href="#cb5-29"></a>          i <span class="ot">&lt;-</span> i <span class="sc">+</span> <span class="dv">1</span></span>
-<span id="cb5-30"><a href="#cb5-30"></a>        }</span>
-<span id="cb5-31"><a href="#cb5-31"></a>        <span class="cf">if</span> (<span class="fu">isTRUE</span>(r <span class="sc">==</span> target)) <span class="fu">return</span>(r)</span>
-<span id="cb5-32"><a href="#cb5-32"></a>      }</span>
-<span id="cb5-33"><a href="#cb5-33"></a>      <span class="fu">return</span>(<span class="dv">0</span>)</span>
-<span id="cb5-34"><a href="#cb5-34"></a>    }) <span class="sc">|&gt;</span></span>
-<span id="cb5-35"><a href="#cb5-35"></a>    <span class="fu">sum</span>(part1)</span>
-<span id="cb5-36"><a href="#cb5-36"></a>}, <span class="at">handlers =</span> progressr<span class="sc">::</span><span class="fu">handler_cli</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 2.716911e+14</code></pre>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>m <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">list</span>(), <span class="at">nrow =</span> <span class="dv">103</span>, <span class="at">ncol =</span> <span class="dv">101</span>)</span>
+<span id="cb5-2"><a href="#cb5-2"></a>filled <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="cn">Inf</span>, <span class="dv">0</span>); which_filled <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a>future<span class="sc">::</span><span class="fu">plan</span>(future<span class="sc">::</span><span class="fu">sequential</span>())</span>
-<span id="cb7-2"><a href="#cb7-2"></a>tictoc<span class="sc">::</span><span class="fu">toc</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a>dt1 <span class="ot">&lt;-</span> purrr<span class="sc">::</span><span class="fu">map</span>(mdt, \(x) {</span>
+<span id="cb6-2"><a href="#cb6-2"></a>      p <span class="ot">&lt;-</span> x<span class="sc">$</span>p <span class="sc">+</span> x<span class="sc">$</span>v</span>
+<span id="cb6-3"><a href="#cb6-3"></a>      p[<span class="dv">1</span>] <span class="ot">&lt;-</span> p[<span class="dv">1</span>] <span class="sc">%%</span> <span class="fu">ncol</span>(m); <span class="cf">if</span> (p[<span class="dv">1</span>] <span class="sc">==</span> <span class="dv">0</span>) p[<span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="fu">ncol</span>(m);</span>
+<span id="cb6-4"><a href="#cb6-4"></a>      p[<span class="dv">2</span>] <span class="ot">&lt;-</span> p[<span class="dv">2</span>] <span class="sc">%%</span> <span class="fu">nrow</span>(m); <span class="cf">if</span> (p[<span class="dv">2</span>] <span class="sc">==</span> <span class="dv">0</span>) p[<span class="dv">2</span>] <span class="ot">&lt;-</span> <span class="fu">nrow</span>(m);</span>
+<span id="cb6-5"><a href="#cb6-5"></a>      <span class="fu">list</span>(<span class="st">'p'</span> <span class="ot">=</span> p, <span class="st">'v'</span> <span class="ot">=</span> x<span class="sc">$</span>v)</span>
+<span id="cb6-6"><a href="#cb6-6"></a>    })</span>
+<span id="cb6-7"><a href="#cb6-7"></a>i <span class="ot">&lt;-</span> <span class="dv">2</span></span>
+<span id="cb6-8"><a href="#cb6-8"></a><span class="cf">repeat</span> {</span>
+<span id="cb6-9"><a href="#cb6-9"></a>  dt <span class="ot">&lt;-</span> purrr<span class="sc">::</span><span class="fu">map</span>(mdt, \(x) {</span>
+<span id="cb6-10"><a href="#cb6-10"></a>      p <span class="ot">&lt;-</span> x<span class="sc">$</span>p <span class="sc">+</span> (x<span class="sc">$</span>v <span class="sc">*</span> i)</span>
+<span id="cb6-11"><a href="#cb6-11"></a>      p[<span class="dv">1</span>] <span class="ot">&lt;-</span> p[<span class="dv">1</span>] <span class="sc">%%</span> <span class="fu">ncol</span>(m); <span class="cf">if</span> (p[<span class="dv">1</span>] <span class="sc">==</span> <span class="dv">0</span>) p[<span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="fu">ncol</span>(m);</span>
+<span id="cb6-12"><a href="#cb6-12"></a>      p[<span class="dv">2</span>] <span class="ot">&lt;-</span> p[<span class="dv">2</span>] <span class="sc">%%</span> <span class="fu">nrow</span>(m); <span class="cf">if</span> (p[<span class="dv">2</span>] <span class="sc">==</span> <span class="dv">0</span>) p[<span class="dv">2</span>] <span class="ot">&lt;-</span> <span class="fu">nrow</span>(m);</span>
+<span id="cb6-13"><a href="#cb6-13"></a>      <span class="fu">list</span>(<span class="st">'p'</span> <span class="ot">=</span> p, <span class="st">'v'</span> <span class="ot">=</span> x<span class="sc">$</span>v)</span>
+<span id="cb6-14"><a href="#cb6-14"></a>    })</span>
+<span id="cb6-15"><a href="#cb6-15"></a>  <span class="cf">if</span> (<span class="fu">identical</span>(dt, dt1)) <span class="cf">break</span></span>
+<span id="cb6-16"><a href="#cb6-16"></a>  dt <span class="ot">&lt;-</span></span>
+<span id="cb6-17"><a href="#cb6-17"></a>    dt <span class="sc">|&gt;</span></span>
+<span id="cb6-18"><a href="#cb6-18"></a>    purrr<span class="sc">::</span><span class="fu">map</span>(\(x) x<span class="sc">$</span>p <span class="sc">|&gt;</span> <span class="fu">matrix</span>(<span class="at">ncol =</span> <span class="dv">2</span>) <span class="sc">|&gt;</span> <span class="fu">as.data.frame</span>()) <span class="sc">|&gt;</span></span>
+<span id="cb6-19"><a href="#cb6-19"></a>    purrr<span class="sc">::</span><span class="fu">list_rbind</span>() <span class="sc">|&gt;</span></span>
+<span id="cb6-20"><a href="#cb6-20"></a>    <span class="fu">setNames</span>(<span class="fu">c</span>(<span class="st">'col'</span>, <span class="st">'row'</span>))</span>
+<span id="cb6-21"><a href="#cb6-21"></a>  f <span class="ot">&lt;-</span> <span class="fu">nrow</span>(<span class="fu">unique</span>(dt)) <span class="sc">/</span> <span class="fu">prod</span>(<span class="fu">dim</span>(m))</span>
+<span id="cb6-22"><a href="#cb6-22"></a>  <span class="cf">if</span> (f <span class="sc">&lt;</span> filled[<span class="dv">1</span>]) {</span>
+<span id="cb6-23"><a href="#cb6-23"></a>    filled[<span class="dv">1</span>] <span class="ot">&lt;-</span> f </span>
+<span id="cb6-24"><a href="#cb6-24"></a>    which_filled[<span class="dv">1</span>] <span class="ot">&lt;-</span> i</span>
+<span id="cb6-25"><a href="#cb6-25"></a>  } <span class="cf">else</span> <span class="cf">if</span> (f <span class="sc">&gt;</span> filled[<span class="dv">2</span>]) {</span>
+<span id="cb6-26"><a href="#cb6-26"></a>    filled[<span class="dv">2</span>] <span class="ot">&lt;-</span> f</span>
+<span id="cb6-27"><a href="#cb6-27"></a>    which_filled[<span class="dv">2</span>] <span class="ot">&lt;-</span> i</span>
+<span id="cb6-28"><a href="#cb6-28"></a>  }</span>
+<span id="cb6-29"><a href="#cb6-29"></a>  i <span class="ot">&lt;-</span> i <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb6-30"><a href="#cb6-30"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a>purrr<span class="sc">::</span><span class="fu">map</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>, \(i) {</span>
+<span id="cb7-2"><a href="#cb7-2"></a>  dt <span class="ot">&lt;-</span> purrr<span class="sc">::</span><span class="fu">map</span>(mdt, \(x) {</span>
+<span id="cb7-3"><a href="#cb7-3"></a>      p <span class="ot">&lt;-</span> x<span class="sc">$</span>p <span class="sc">+</span> (x<span class="sc">$</span>v <span class="sc">*</span> which_filled[i])</span>
+<span id="cb7-4"><a href="#cb7-4"></a>      p[<span class="dv">1</span>] <span class="ot">&lt;-</span> p[<span class="dv">1</span>] <span class="sc">%%</span> <span class="fu">ncol</span>(m); <span class="cf">if</span> (p[<span class="dv">1</span>] <span class="sc">==</span> <span class="dv">0</span>) p[<span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="fu">ncol</span>(m);</span>
+<span id="cb7-5"><a href="#cb7-5"></a>      p[<span class="dv">2</span>] <span class="ot">&lt;-</span> p[<span class="dv">2</span>] <span class="sc">%%</span> <span class="fu">nrow</span>(m); <span class="cf">if</span> (p[<span class="dv">2</span>] <span class="sc">==</span> <span class="dv">0</span>) p[<span class="dv">2</span>] <span class="ot">&lt;-</span> <span class="fu">nrow</span>(m);</span>
+<span id="cb7-6"><a href="#cb7-6"></a>      <span class="fu">list</span>(<span class="st">'p'</span> <span class="ot">=</span> p, <span class="st">'v'</span> <span class="ot">=</span> x<span class="sc">$</span>v)</span>
+<span id="cb7-7"><a href="#cb7-7"></a>    })</span>
+<span id="cb7-8"><a href="#cb7-8"></a>  dt <span class="sc">|&gt;</span></span>
+<span id="cb7-9"><a href="#cb7-9"></a>    purrr<span class="sc">::</span><span class="fu">map</span>(\(x) x<span class="sc">$</span>p <span class="sc">|&gt;</span> <span class="fu">matrix</span>(<span class="at">ncol =</span> <span class="dv">2</span>) <span class="sc">|&gt;</span> <span class="fu">as.data.frame</span>()) <span class="sc">|&gt;</span></span>
+<span id="cb7-10"><a href="#cb7-10"></a>    purrr<span class="sc">::</span><span class="fu">list_rbind</span>() <span class="sc">|&gt;</span></span>
+<span id="cb7-11"><a href="#cb7-11"></a>    <span class="fu">setNames</span>(<span class="fu">c</span>(<span class="st">'col'</span>, <span class="st">'row'</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb7-12"><a href="#cb7-12"></a>    ggplot2<span class="sc">::</span><span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb7-13"><a href="#cb7-13"></a>    ggplot2<span class="sc">::</span><span class="fu">geom_point</span>(ggplot2<span class="sc">::</span><span class="fu">aes</span>(<span class="at">x =</span> col, <span class="at">y =</span> <span class="sc">-</span>row)) <span class="sc">+</span></span>
+<span id="cb7-14"><a href="#cb7-14"></a>    ggplot2<span class="sc">::</span><span class="fu">theme_void</span>()</span>
+<span id="cb7-15"><a href="#cb7-15"></a>})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>408.647 sec elapsed</code></pre>
+<pre><code>[[1]]</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure"><p><img src="2024-14_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+[[2]]</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure"><p><img src="2024-14_files/figure-html/unnamed-chunk-6-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a>which_filled[<span class="dv">2</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 7790</code></pre>
 </div>
 </div>
 
@@ -1456,13 +1495,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
 });
 </script><nav class="page-navigation"><div class="nav-page nav-page-previous">
-      <a href="../../2024/06/2024-06.html" class="pagination-link" aria-label="06: Guard Gallivant">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-title">06: Guard Gallivant</span></span>
+      <a href="../../2024/07/2024-07.html" class="pagination-link" aria-label="07: Bridge Repair">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-title">07: Bridge Repair</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../../2024/14/2024-14.html" class="pagination-link" aria-label="14:">
-        <span class="nav-page-text"><span class="chapter-title">14:</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../../2023/01/2023-01.html" class="pagination-link" aria-label="01: Trebuchet?!">
+        <span class="nav-page-text"><span class="chapter-title">01: Trebuchet?!</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
