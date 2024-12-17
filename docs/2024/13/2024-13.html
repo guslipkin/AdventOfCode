@@ -1,0 +1,1631 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="quarto-1.6.39" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+
+
+<title>13: Claw Contraption – Gus Lipkin's Awesome Code</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+<!-- htmldependencies:E3FAD763 -->
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../../styles.css" />
+</head>
+
+<body>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="/index.html">
+    <span class="navbar-title">Gus Lipkin&#39;s Awesome Code</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
+  aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation"
+  onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="https://guslipkin.github.io/"> 
+<span class="menu-text">Main Site</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="https://guslipkin.github.io/contact.html"> 
+<span class="menu-text">Contact Me</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="https://adventofcode.com/about"> 
+<span class="menu-text">About AoC</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/in/guslipkin/"> <i 
+  class="bi bi-linkedin" 
+  role="img" 
+>
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://www.github.com/guslipkin"> <i 
+  class="bi bi-github" 
+  role="img" 
+>
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn"
+      data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" 
+      aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation"
+      onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <h1 class="quarto-secondary-nav-title no-breadcrumbs"></h1>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" role="link"
+        aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation"
+        onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class='chapter-number'>1</span>  <span class='chapter-title'>Welcome!</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1"  role="navigation" aria-expanded="true">
+ <span class="menu-text">2024</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/2024/01/2024-01.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class='chapter-number'>2</span>  <span class='chapter-title'>01: Historian Hysteria</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/2024/02/2024-02.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class='chapter-number'>3</span>  <span class='chapter-title'>02: Red-Nosed Reports</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/2024/03/2024-03.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class='chapter-number'>4</span>  <span class='chapter-title'>03: Mull It Over</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/2024/04/2024-04.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class='chapter-number'>5</span>  <span class='chapter-title'>04: Ceres Search</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/2024/05/2024-05.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class='chapter-number'>6</span>  <span class='chapter-title'>05: Print Queue</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/2024/06/2024-06.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class='chapter-number'>7</span>  <span class='chapter-title'>06: Guard Gallivant</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/2024/07/2024-07.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class='chapter-number'>8</span>  <span class='chapter-title'>07: Bridge Repair</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/2024/13/2024-13.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class='chapter-number'>9</span>  <span class='chapter-title'>13: Claw Contraption</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/2024/14/2024-14.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class='chapter-number'>10</span>  <span class='chapter-title'>14: Restroom Redoubt</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2"  role="navigation" aria-expanded="false">
+ <span class="menu-text">2023</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/2023/01/2023-01.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class='chapter-number'>11</span>  <span class='chapter-title'>01: Trebuchet?!</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/2023/02/2023-02.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class='chapter-number'>12</span>  <span class='chapter-title'>02: Cube Conundrum</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/2023/03/2023-03.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class='chapter-number'>13</span>  <span class='chapter-title'>03: Gear Ratios</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/2023/04/2023-04.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class='chapter-number'>14</span>  <span class='chapter-title'>04: Scratchcards</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/2023/07/2023-07.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class='chapter-number'>15</span>  <span class='chapter-title'>07: Camel Cards</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/2023/08/2023-08.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class='chapter-number'>16</span>  <span class='chapter-title'>08: Haunted Wasteland</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/2023/13/2023-13.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class='chapter-number'>17</span>  <span class='chapter-title'>13: Point of Incidence</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3"  role="navigation" aria-expanded="false">
+ <span class="menu-text">2022</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/2022/01/2022-01.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class='chapter-number'>18</span>  <span class='chapter-title'>01: Calorie Counting</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/2022/02/2022-02.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class='chapter-number'>19</span>  <span class='chapter-title'>02: Rock Paper Scissors</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/2022/03/2022-03.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class='chapter-number'>20</span>  <span class='chapter-title'>03: Rucksack Reorganization</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/2022/04/2022-04.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class='chapter-number'>21</span>  <span class='chapter-title'>04: Camp Cleanup</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/2022/05/2022-05.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class='chapter-number'>22</span>  <span class='chapter-title'>05: Supply Stacks</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/2022/06/2022-06.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class='chapter-number'>23</span>  <span class='chapter-title'>06: Tuning Trouble</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/2022/07/2022-07.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class='chapter-number'>24</span>  <span class='chapter-title'>07: No Space Left On Device</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/2022/08/2022-08.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class='chapter-number'>25</span>  <span class='chapter-title'>08: Treetop Tree House</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/2022/10/2022-10.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class='chapter-number'>26</span>  <span class='chapter-title'>10: Cathode-Ray Tube</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/2022/11/2022-11.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class='chapter-number'>27</span>  <span class='chapter-title'>11: Monkey in the Middle</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/2022/14/2022-14.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class='chapter-number'>28</span>  <span class='chapter-title'>2022-14: Regolith Reservoir</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/2022/20/2022-20.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class='chapter-number'>29</span>  <span class='chapter-title'>2022-20: Grove Positioning System</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/2022/21/2022-21.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class='chapter-number'>30</span>  <span class='chapter-title'>2022-21: Monkey Math</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/2022/25/2022-25.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class='chapter-number'>31</span>  <span class='chapter-title'>2022-25: Full of Hot Air</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4"  role="navigation" aria-expanded="false">
+ <span class="menu-text">2021</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/2021/01/2021-01.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class='chapter-number'>32</span>  <span class='chapter-title'>2021-01: Sonar Sweep</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/2021/02/2021-02.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class='chapter-number'>33</span>  <span class='chapter-title'>2021-02: Dive!</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/2021/03/2021-03.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class='chapter-number'>34</span>  <span class='chapter-title'>2021-03: Binary Diagnostic</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/2021/04/2021-04.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class='chapter-number'>35</span>  <span class='chapter-title'>2021-04: Giant Squid</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/2021/05/2021-05.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class='chapter-number'>36</span>  <span class='chapter-title'>2021-05: Hydrothermal Venture</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/2021/06/2021-06.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class='chapter-number'>37</span>  <span class='chapter-title'>2021-06: Lanternfish</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/2021/07/2021-07.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class='chapter-number'>38</span>  <span class='chapter-title'>2021-07: The Treachery of Whales</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/2021/08/2021-08.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class='chapter-number'>39</span>  <span class='chapter-title'>2021-08: Seven Segment Search</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/2021/09/2021-09.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class='chapter-number'>40</span>  <span class='chapter-title'>2021-09: Smoke Basin</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/2021/10/2021-10.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class='chapter-number'>41</span>  <span class='chapter-title'>2021-10: Syntax Scoring</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/2021/11/2021-11.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class='chapter-number'>42</span>  <span class='chapter-title'>2021-11: Dumbo Octopus</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/2021/13/2021-13.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class='chapter-number'>43</span>  <span class='chapter-title'>2021-13: Transparent Origami</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/2021/14/2021-14.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class='chapter-number'>44</span>  <span class='chapter-title'>2022-14: Extended Polymerization</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5"  role="navigation" aria-expanded="false">
+ <span class="menu-text">2020</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/2020/01/2020-01.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class='chapter-number'>45</span>  <span class='chapter-title'>2020-01: Report Repair</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/2020/02/2020-02.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class='chapter-number'>46</span>  <span class='chapter-title'>2020-02: Password Philosophy</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/2020/03/2020-03.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class='chapter-number'>47</span>  <span class='chapter-title'>2020-03: Toboggan Trajectory</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/2020/04/2020-04.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class='chapter-number'>48</span>  <span class='chapter-title'>2020-04: Passport Processing</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/2020/05/2020-05.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class='chapter-number'>49</span>  <span class='chapter-title'>2020-05: Binary Boarding</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/2020/06/2020-06.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class='chapter-number'>50</span>  <span class='chapter-title'>2020-06: Custom Customs</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/2020/07/2020-07.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class='chapter-number'>51</span>  <span class='chapter-title'>07: Handy Haversacks</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/2020/08/2020-08.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class='chapter-number'>52</span>  <span class='chapter-title'>2020-08: Handheld Halting</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/2020/09/2020-09.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class='chapter-number'>53</span>  <span class='chapter-title'>2020-09: Encoding Error</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/2020/10/2020-10.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class='chapter-number'>54</span>  <span class='chapter-title'>2020-10: Adapter Array</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6"  role="navigation" aria-expanded="false">
+ <span class="menu-text">2019</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/2019/01/2019-01.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class='chapter-number'>55</span>  <span class='chapter-title'>2019-01: The Tyranny of the Rocket Equation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/2019/02/2019-02.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class='chapter-number'>56</span>  <span class='chapter-title'>2019-02: 1202 Program Alarm</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/2019/03/2019-03.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class='chapter-number'>57</span>  <span class='chapter-title'>2019-03: Crossed Wires</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/2019/04/2019-04.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class='chapter-number'>58</span>  <span class='chapter-title'>2019-04: Secure Container</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7"  role="navigation" aria-expanded="false">
+ <span class="menu-text">2018</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/2018/01/2018-01.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class='chapter-number'>59</span>  <span class='chapter-title'>2018-01: Chronal Calibration</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/2018/02/2018-02.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class='chapter-number'>60</span>  <span class='chapter-title'>2018-02: Inventory Management System</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/2018/03/2018-03.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class='chapter-number'>61</span>  <span class='chapter-title'>2018-03: No Matter How You Slice It</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/2018/04/2018-04.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class='chapter-number'>62</span>  <span class='chapter-title'>2018-04: Repose Record</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/2018/05/2018-05.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class='chapter-number'>63</span>  <span class='chapter-title'>2018-05: Alchemical Reduction</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/2018/06/2018-06.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class='chapter-number'>64</span>  <span class='chapter-title'>2018-06: Chronal Coordinates</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8"  role="navigation" aria-expanded="false">
+ <span class="menu-text">2017</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-8" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/2017/01/2017-01.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class='chapter-number'>65</span>  <span class='chapter-title'>01: Inverse Captcha</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/2017/02/2017-02.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class='chapter-number'>66</span>  <span class='chapter-title'>02: Corruption Checksum</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/2017/03/2017-03.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class='chapter-number'>67</span>  <span class='chapter-title'>03: Spiral Memory</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/2017/04/2017-04.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class='chapter-number'>68</span>  <span class='chapter-title'>04: High-Entropy Passphrases</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/2017/05/2017-05.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class='chapter-number'>69</span>  <span class='chapter-title'>05: A Maze of Twisty Trampolines, All Alike</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/2017/08/2017-08.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class='chapter-number'>70</span>  <span class='chapter-title'>08: I Heard You Like Registers</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/2017/16/2017-16.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class='chapter-number'>71</span>  <span class='chapter-title'>16: Permutation Promenade</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-9"  role="navigation" aria-expanded="false">
+ <span class="menu-text">2016</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-9" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-9" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/2016/01/2016-01.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class='chapter-number'>72</span>  <span class='chapter-title'>2016-01: No Time for a Taxicab</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/2016/02/2016-02.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class='chapter-number'>73</span>  <span class='chapter-title'>2016-02: Bathroom Security</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/2016/03/2016-03.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class='chapter-number'>74</span>  <span class='chapter-title'>2016-03: Squares With Three Sides</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/2016/04/2016-04.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class='chapter-number'>75</span>  <span class='chapter-title'>2016-04: Security Through Obscurity</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/2016/05/2016-05.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class='chapter-number'>76</span>  <span class='chapter-title'>05: How About a Nice Game of Chess?</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/2016/06/2016-06.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class='chapter-number'>77</span>  <span class='chapter-title'>06: Signals and Noise</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/2016/07/2016-07.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class='chapter-number'>78</span>  <span class='chapter-title'>07: Internet Protocol Version 7</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/2016/08/2016-08.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class='chapter-number'>79</span>  <span class='chapter-title'>08: Two-Factor Authentication</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/2016/12/2016-12.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class='chapter-number'>80</span>  <span class='chapter-title'>12: Leonardo's Monorail</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-10"  role="navigation" aria-expanded="false">
+ <span class="menu-text">2015</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-10" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-10" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/2015/01/2015-01.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class='chapter-number'>81</span>  <span class='chapter-title'>01: Not Quite Lisp</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/2015/02/2015-02.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class='chapter-number'>82</span>  <span class='chapter-title'>02: I Was Told There Would Be No Math</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/2015/03/2015-03.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class='chapter-number'>83</span>  <span class='chapter-title'>03: Perfectly Spherical Houses in a Vacuum</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/2015/04/2015-04.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class='chapter-number'>84</span>  <span class='chapter-title'>04: The Ideal Stocking Stuffer</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/2015/05/2015-05.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class='chapter-number'>85</span>  <span class='chapter-title'>05: Doesn't He Have Intern-Elves For This?</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/2015/06/2015-06.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class='chapter-number'>86</span>  <span class='chapter-title'>06: Probably a Fire Hazard</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/2015/07/2015-07.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class='chapter-number'>87</span>  <span class='chapter-title'>07: Some Assembly Required</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/2015/08/2015-08.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class='chapter-number'>88</span>  <span class='chapter-title'>08: Matchsticks</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/2015/09/2015-09.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class='chapter-number'>89</span>  <span class='chapter-title'>09: All in a Single Night</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/2015/10/2015-10.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class='chapter-number'>90</span>  <span class='chapter-title'>10: Elves Look, Elves Say</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/2015/11/2015-11.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class='chapter-number'>91</span>  <span class='chapter-title'>11: Corporate Policy</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/2015/12/2015-12.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class='chapter-number'>92</span>  <span class='chapter-title'>12: JSAbacusFramework.io</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/2015/13/2015-13.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class='chapter-number'>93</span>  <span class='chapter-title'>13: Knights of the Dinner Table</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/2015/14/2015-14.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class='chapter-number'>94</span>  <span class='chapter-title'>14: Reindeer Olympics</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/2015/15/2015-15.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class='chapter-number'>95</span>  <span class='chapter-title'>15: Science for Hungry People</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/2015/16/2015-16.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class='chapter-number'>96</span>  <span class='chapter-title'>16: Aunt Sue</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/2015/17/2015-17.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class='chapter-number'>97</span>  <span class='chapter-title'>17: No Such Thing as Too Much</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/2015/18/2015-18.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class='chapter-number'>98</span>  <span class='chapter-title'>18: Like a GIF For Your Yard</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/2015/20/2015-20.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class='chapter-number'>99</span>  <span class='chapter-title'>20: Infinite Elves and Infinite Houses</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/2015/21/2015-21.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class='chapter-number'>100</span>  <span class='chapter-title'>21: RPG Simulator 20XX</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/2015/23/2015-23.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class='chapter-number'>101</span>  <span class='chapter-title'>23: Opening the Turing Lock</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" ></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <div id="quarto-toc-target"></div>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-title">13: Claw Contraption</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+<nav id="TOC" role="doc-toc">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#part-1" id="toc-part-1">Part 1</a></li>
+  <li><a href="#part-2" id="toc-part-2">Part 2</a></li>
+  </ul>
+</nav>
+<div class="cell">
+<div class="sourceCode" id="cb1"><pre class="sourceCode numberSource r cell-code number-lines"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">library</span>(mistlecode)</span>
+<span id="cb1-2"><a href="#cb1-2"></a></span>
+<span id="cb1-3"><a href="#cb1-3"></a><span class="fu">options</span>(<span class="at">scipen =</span> <span class="dv">999</span>)</span></code></pre></div>
+</div>
+<p>Figuring out how best to parse the input was annoying. I need to remember that <code>tidyr::extract()</code> exists.</p>
+<div class="cell">
+<div class="sourceCode" id="cb2"><pre class="sourceCode numberSource r cell-code number-lines"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a>.get_buttons <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb2-2"><a href="#cb2-2"></a>  x <span class="ot">&lt;-</span></span>
+<span id="cb2-3"><a href="#cb2-3"></a>    stringr<span class="sc">::</span><span class="fu">str_match</span>(x<span class="sc">$</span>raw, <span class="st">&#39;(</span><span class="sc">\\</span><span class="st">d+), Y[+=](</span><span class="sc">\\</span><span class="st">d+)&#39;</span>)[,<span class="sc">-</span><span class="dv">1</span>] <span class="sc">|&gt;</span></span>
+<span id="cb2-4"><a href="#cb2-4"></a>    mistlecode<span class="sc">::</span><span class="fu">cast_matrix</span>(as.integer)</span>
+<span id="cb2-5"><a href="#cb2-5"></a>  <span class="cf">if</span> (<span class="fu">all</span>(<span class="fu">is.na</span>(x[<span class="dv">1</span>,]))) x[<span class="sc">-</span><span class="dv">1</span>,] <span class="cf">else</span> x</span>
+<span id="cb2-6"><a href="#cb2-6"></a>}</span>
+<span id="cb2-7"><a href="#cb2-7"></a>dt <span class="ot">&lt;-</span></span>
+<span id="cb2-8"><a href="#cb2-8"></a>  <span class="st">&#39;input.txt&#39;</span> <span class="sc">|&gt;</span></span>
+<span id="cb2-9"><a href="#cb2-9"></a>  <span class="fu">readLines</span>() <span class="sc">|&gt;</span></span>
+<span id="cb2-10"><a href="#cb2-10"></a>  tibble<span class="sc">::</span><span class="fu">tibble</span>() <span class="sc">|&gt;</span></span>
+<span id="cb2-11"><a href="#cb2-11"></a>  <span class="fu">setNames</span>(<span class="st">&#39;raw&#39;</span>) <span class="sc">|&gt;</span></span>
+<span id="cb2-12"><a href="#cb2-12"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(</span>
+<span id="cb2-13"><a href="#cb2-13"></a>    <span class="st">&#39;game&#39;</span> <span class="ot">=</span> <span class="fu">cumsum</span>(.data<span class="sc">$</span>raw <span class="sc">==</span> <span class="st">&#39;&#39;</span>)</span>
+<span id="cb2-14"><a href="#cb2-14"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb2-15"><a href="#cb2-15"></a>  tidyr<span class="sc">::</span><span class="fu">nest</span>(<span class="st">&#39;data&#39;</span> <span class="ot">=</span> raw) <span class="sc">|&gt;</span></span>
+<span id="cb2-16"><a href="#cb2-16"></a>  dplyr<span class="sc">::</span><span class="fu">pull</span>(.data<span class="sc">$</span>data) <span class="sc">|&gt;</span></span>
+<span id="cb2-17"><a href="#cb2-17"></a>  purrr<span class="sc">::</span><span class="fu">map</span>(\(x) {</span>
+<span id="cb2-18"><a href="#cb2-18"></a>    x <span class="ot">&lt;-</span> <span class="fu">.get_buttons</span>(x)</span>
+<span id="cb2-19"><a href="#cb2-19"></a>    <span class="fu">list</span>(<span class="st">&#39;a&#39;</span> <span class="ot">=</span> x[<span class="dv">1</span>,], <span class="st">&#39;b&#39;</span> <span class="ot">=</span> x[<span class="dv">2</span>,], <span class="st">&#39;p&#39;</span> <span class="ot">=</span> x[<span class="dv">3</span>,])</span>
+<span id="cb2-20"><a href="#cb2-20"></a>  })</span></code></pre></div>
+</div>
+<section id="part-1" class="level2">
+<h2>Part 1</h2>
+<p>I got to do math!!! I’m so proud of myself for this one. Like genuinely actually for realizing I could just math it out. And my solution is so fast too! I probably could’ve done the linear programming, but just solving seemed easier?</p>
+<p><span class="math display">\[
+ix_a + jx_b = X, iy_a + jy_b = Y\\
+ix_a = X - jx_b, iy_a = Y - jy_b\\
+i = \frac{X - jx_b}{x_a}, i = \frac{Y - jy_b}{y_a}\\
+\frac{X - jx_b}{x_a} = \frac{Y - jy_b}{y_a}\\
+X - jx_b =\frac{x_aY - jx_ay_b}{y_a}\\
+y_aX - jx_by_a = x_aY - jx_ay_b\\
+-jx_by_a + jx_ay_b = x_aY - y_aX\\
+j * (-x_by_a + x_ay_b) = x_aY - y_aX\\
+j = \frac{x_aY - y_aX}{x_ay_b - x_by_a}
+\]</span></p>
+<div class="cell">
+<div class="sourceCode" id="cb3"><pre class="sourceCode numberSource r cell-code number-lines"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>dt <span class="sc">|&gt;</span></span>
+<span id="cb3-2"><a href="#cb3-2"></a>  purrr<span class="sc">::</span><span class="fu">map</span>(\(x) {</span>
+<span id="cb3-3"><a href="#cb3-3"></a>    j <span class="ot">&lt;-</span></span>
+<span id="cb3-4"><a href="#cb3-4"></a>      ((x<span class="sc">$</span>a[<span class="dv">1</span>] <span class="sc">*</span> x<span class="sc">$</span>p[<span class="dv">2</span>]) <span class="sc">-</span> (x<span class="sc">$</span>a[<span class="dv">2</span>] <span class="sc">*</span> x<span class="sc">$</span>p[<span class="dv">1</span>])) <span class="sc">/</span> </span>
+<span id="cb3-5"><a href="#cb3-5"></a>      ((x<span class="sc">$</span>a[<span class="dv">1</span>] <span class="sc">*</span> x<span class="sc">$</span>b[<span class="dv">2</span>]) <span class="sc">-</span> (x<span class="sc">$</span>b[<span class="dv">1</span>] <span class="sc">*</span> x<span class="sc">$</span>a[<span class="dv">2</span>]))</span>
+<span id="cb3-6"><a href="#cb3-6"></a>    i <span class="ot">&lt;-</span> (x<span class="sc">$</span>p[<span class="dv">1</span>] <span class="sc">-</span> (j <span class="sc">*</span> x<span class="sc">$</span>b[<span class="dv">1</span>])) <span class="sc">/</span> x<span class="sc">$</span>a[<span class="dv">1</span>]</span>
+<span id="cb3-7"><a href="#cb3-7"></a>    x <span class="ot">&lt;-</span> <span class="fu">c</span>(i <span class="sc">*</span> <span class="dv">3</span>, j <span class="sc">*</span> <span class="dv">1</span>)</span>
+<span id="cb3-8"><a href="#cb3-8"></a>    <span class="cf">if</span> (<span class="fu">all</span>(<span class="fu">as.integer</span>(x) <span class="sc">==</span> x)) <span class="fu">sum</span>(x)</span>
+<span id="cb3-9"><a href="#cb3-9"></a>  }) <span class="sc">|&gt;</span></span>
+<span id="cb3-10"><a href="#cb3-10"></a>  purrr<span class="sc">::</span><span class="fu">discard</span>(is.null) <span class="sc">|&gt;</span></span>
+<span id="cb3-11"><a href="#cb3-11"></a>  <span class="fu">unlist</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb3-12"><a href="#cb3-12"></a>  <span class="fu">sum</span>()</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 33921</code></pre>
+</div>
+</div>
+</section>
+<section id="part-2" class="level2">
+<h2>Part 2</h2>
+<p>This was supremely unsatisfying. I kept multiplying by 10000000000000 instead of adding then for whatever reason if I leave my if statement as an <code>all(x)</code> kinda deal, it doesn’t work right. I spent way too long on random <code>{bit64}</code> stuff and trying to solve to get rid of the 10000000000000.</p>
+<div class="cell">
+<div class="sourceCode" id="cb5"><pre class="sourceCode numberSource r cell-code number-lines"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>dt <span class="sc">|&gt;</span></span>
+<span id="cb5-2"><a href="#cb5-2"></a>  purrr<span class="sc">::</span><span class="fu">map</span>(\(x) {</span>
+<span id="cb5-3"><a href="#cb5-3"></a>    x<span class="sc">$</span>p <span class="ot">&lt;-</span> x<span class="sc">$</span>p <span class="sc">+</span> <span class="dv">10000000000000</span></span>
+<span id="cb5-4"><a href="#cb5-4"></a>    j <span class="ot">&lt;-</span></span>
+<span id="cb5-5"><a href="#cb5-5"></a>      ((x<span class="sc">$</span>a[<span class="dv">1</span>] <span class="sc">*</span> x<span class="sc">$</span>p[<span class="dv">2</span>]) <span class="sc">-</span> (x<span class="sc">$</span>a[<span class="dv">2</span>] <span class="sc">*</span> x<span class="sc">$</span>p[<span class="dv">1</span>])) <span class="sc">/</span> </span>
+<span id="cb5-6"><a href="#cb5-6"></a>      ((x<span class="sc">$</span>a[<span class="dv">1</span>] <span class="sc">*</span> x<span class="sc">$</span>b[<span class="dv">2</span>]) <span class="sc">-</span> (x<span class="sc">$</span>b[<span class="dv">1</span>] <span class="sc">*</span> x<span class="sc">$</span>a[<span class="dv">2</span>]))</span>
+<span id="cb5-7"><a href="#cb5-7"></a>    <span class="cf">if</span> (j <span class="sc">&lt;</span> <span class="dv">0</span> <span class="sc">||</span> j <span class="sc">%%</span> <span class="dv">1</span> <span class="sc">!=</span> <span class="dv">0</span>) <span class="fu">return</span>(<span class="cn">NULL</span>)</span>
+<span id="cb5-8"><a href="#cb5-8"></a>    i <span class="ot">&lt;-</span> (x<span class="sc">$</span>p[<span class="dv">1</span>] <span class="sc">-</span> (j <span class="sc">*</span> x<span class="sc">$</span>b[<span class="dv">1</span>])) <span class="sc">/</span> x<span class="sc">$</span>a[<span class="dv">1</span>]</span>
+<span id="cb5-9"><a href="#cb5-9"></a>    <span class="cf">if</span> (i <span class="sc">&lt;</span> <span class="dv">0</span> <span class="sc">||</span> i <span class="sc">%%</span> <span class="dv">1</span> <span class="sc">!=</span> <span class="dv">0</span>) <span class="fu">return</span>(<span class="cn">NULL</span>)</span>
+<span id="cb5-10"><a href="#cb5-10"></a>    x <span class="ot">&lt;-</span> <span class="fu">c</span>(i <span class="sc">*</span> <span class="dv">3</span>, j <span class="sc">*</span> <span class="dv">1</span>)</span>
+<span id="cb5-11"><a href="#cb5-11"></a>    <span class="fu">sum</span>(x)</span>
+<span id="cb5-12"><a href="#cb5-12"></a>  }) <span class="sc">|&gt;</span></span>
+<span id="cb5-13"><a href="#cb5-13"></a>  purrr<span class="sc">::</span><span class="fu">discard</span>(is.null) <span class="sc">|&gt;</span></span>
+<span id="cb5-14"><a href="#cb5-14"></a>  <span class="fu">unlist</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb5-15"><a href="#cb5-15"></a>  <span class="fu">sum</span>()</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 82261957837868</code></pre>
+</div>
+</div>
+<div id="quarto-navigation-envelope" class="hidden">
+<p><span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyLXRpdGxl">Gus Lipkin’s Awesome Code</span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1uYXZiYXItdGl0bGU=">Gus Lipkin’s Awesome Code</span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1uZXh0"><span class="chapter-number">10</span>  <span class="chapter-title">14: Restroom Redoubt</span></span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1wcmV2"><span class="chapter-number">8</span>  <span class="chapter-title">07: Bridge Repair</span></span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOi9pbmRleC5odG1sPHNwYW4tY2xhc3M9J2NoYXB0ZXItbnVtYmVyJz4xPC9zcGFuPi0tPHNwYW4tY2xhc3M9J2NoYXB0ZXItdGl0bGUnPldlbGNvbWUhPC9zcGFuPg=="><span class="chapter-number">1</span>  <span class="chapter-title">Welcome!</span></span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOnF1YXJ0by1zaWRlYmFyLXNlY3Rpb24tMQ==">2024</span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOi8yMDI0LzAxLzIwMjQtMDEuaHRtbDxzcGFuLWNsYXNzPSdjaGFwdGVyLW51bWJlcic+Mjwvc3Bhbj4tLTxzcGFuLWNsYXNzPSdjaGFwdGVyLXRpdGxlJz4wMTotSGlzdG9yaWFuLUh5c3RlcmlhPC9zcGFuPg=="><span class="chapter-number">2</span>  <span class="chapter-title">01: Historian Hysteria</span></span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOi8yMDI0LzAyLzIwMjQtMDIuaHRtbDxzcGFuLWNsYXNzPSdjaGFwdGVyLW51bWJlcic+Mzwvc3Bhbj4tLTxzcGFuLWNsYXNzPSdjaGFwdGVyLXRpdGxlJz4wMjotUmVkLU5vc2VkLVJlcG9ydHM8L3NwYW4+"><span class="chapter-number">3</span>  <span class="chapter-title">02: Red-Nosed Reports</span></span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOi8yMDI0LzAzLzIwMjQtMDMuaHRtbDxzcGFuLWNsYXNzPSdjaGFwdGVyLW51bWJlcic+NDwvc3Bhbj4tLTxzcGFuLWNsYXNzPSdjaGFwdGVyLXRpdGxlJz4wMzotTXVsbC1JdC1PdmVyPC9zcGFuPg=="><span class="chapter-number">4</span>  <span class="chapter-title">03: Mull It Over</span></span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOi8yMDI0LzA0LzIwMjQtMDQuaHRtbDxzcGFuLWNsYXNzPSdjaGFwdGVyLW51bWJlcic+NTwvc3Bhbj4tLTxzcGFuLWNsYXNzPSdjaGFwdGVyLXRpdGxlJz4wNDotQ2VyZXMtU2VhcmNoPC9zcGFuPg=="><span class="chapter-number">5</span>  <span class="chapter-title">04: Ceres Search</span></span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOi8yMDI0LzA1LzIwMjQtMDUuaHRtbDxzcGFuLWNsYXNzPSdjaGFwdGVyLW51bWJlcic+Njwvc3Bhbj4tLTxzcGFuLWNsYXNzPSdjaGFwdGVyLXRpdGxlJz4wNTotUHJpbnQtUXVldWU8L3NwYW4+"><span class="chapter-number">6</span>  <span class="chapter-title">05: Print Queue</span></span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOi8yMDI0LzA2LzIwMjQtMDYuaHRtbDxzcGFuLWNsYXNzPSdjaGFwdGVyLW51bWJlcic+Nzwvc3Bhbj4tLTxzcGFuLWNsYXNzPSdjaGFwdGVyLXRpdGxlJz4wNjotR3VhcmQtR2FsbGl2YW50PC9zcGFuPg=="><span class="chapter-number">7</span>  <span class="chapter-title">06: Guard Gallivant</span></span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOi8yMDI0LzA3LzIwMjQtMDcuaHRtbDxzcGFuLWNsYXNzPSdjaGFwdGVyLW51bWJlcic+ODwvc3Bhbj4tLTxzcGFuLWNsYXNzPSdjaGFwdGVyLXRpdGxlJz4wNzotQnJpZGdlLVJlcGFpcjwvc3Bhbj4="><span class="chapter-number">8</span>  <span class="chapter-title">07: Bridge Repair</span></span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOi8yMDI0LzEzLzIwMjQtMTMuaHRtbDxzcGFuLWNsYXNzPSdjaGFwdGVyLW51bWJlcic+OTwvc3Bhbj4tLTxzcGFuLWNsYXNzPSdjaGFwdGVyLXRpdGxlJz4xMzotQ2xhdy1Db250cmFwdGlvbjwvc3Bhbj4="><span class="chapter-number">9</span>  <span class="chapter-title">13: Claw Contraption</span></span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOi8yMDI0LzE0LzIwMjQtMTQuaHRtbDxzcGFuLWNsYXNzPSdjaGFwdGVyLW51bWJlcic+MTA8L3NwYW4+LS08c3Bhbi1jbGFzcz0nY2hhcHRlci10aXRsZSc+MTQ6LVJlc3Ryb29tLVJlZG91YnQ8L3NwYW4+"><span class="chapter-number">10</span>  <span class="chapter-title">14: Restroom Redoubt</span></span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOnF1YXJ0by1zaWRlYmFyLXNlY3Rpb24tMg==">2023</span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOi8yMDIzLzAxLzIwMjMtMDEuaHRtbDxzcGFuLWNsYXNzPSdjaGFwdGVyLW51bWJlcic+MTE8L3NwYW4+LS08c3Bhbi1jbGFzcz0nY2hhcHRlci10aXRsZSc+MDE6LVRyZWJ1Y2hldD8hPC9zcGFuPg=="><span class="chapter-number">11</span>  <span class="chapter-title">01: Trebuchet?!</span></span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOi8yMDIzLzAyLzIwMjMtMDIuaHRtbDxzcGFuLWNsYXNzPSdjaGFwdGVyLW51bWJlcic+MTI8L3NwYW4+LS08c3Bhbi1jbGFzcz0nY2hhcHRlci10aXRsZSc+MDI6LUN1YmUtQ29udW5kcnVtPC9zcGFuPg=="><span class="chapter-number">12</span>  <span class="chapter-title">02: Cube Conundrum</span></span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOi8yMDIzLzAzLzIwMjMtMDMuaHRtbDxzcGFuLWNsYXNzPSdjaGFwdGVyLW51bWJlcic+MTM8L3NwYW4+LS08c3Bhbi1jbGFzcz0nY2hhcHRlci10aXRsZSc+MDM6LUdlYXItUmF0aW9zPC9zcGFuPg=="><span class="chapter-number">13</span>  <span class="chapter-title">03: Gear Ratios</span></span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOi8yMDIzLzA0LzIwMjMtMDQuaHRtbDxzcGFuLWNsYXNzPSdjaGFwdGVyLW51bWJlcic+MTQ8L3NwYW4+LS08c3Bhbi1jbGFzcz0nY2hhcHRlci10aXRsZSc+MDQ6LVNjcmF0Y2hjYXJkczwvc3Bhbj4="><span class="chapter-number">14</span>  <span class="chapter-title">04: Scratchcards</span></span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOi8yMDIzLzA3LzIwMjMtMDcuaHRtbDxzcGFuLWNsYXNzPSdjaGFwdGVyLW51bWJlcic+MTU8L3NwYW4+LS08c3Bhbi1jbGFzcz0nY2hhcHRlci10aXRsZSc+MDc6LUNhbWVsLUNhcmRzPC9zcGFuPg=="><span class="chapter-number">15</span>  <span class="chapter-title">07: Camel Cards</span></span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOi8yMDIzLzA4LzIwMjMtMDguaHRtbDxzcGFuLWNsYXNzPSdjaGFwdGVyLW51bWJlcic+MTY8L3NwYW4+LS08c3Bhbi1jbGFzcz0nY2hhcHRlci10aXRsZSc+MDg6LUhhdW50ZWQtV2FzdGVsYW5kPC9zcGFuPg=="><span class="chapter-number">16</span>  <span class="chapter-title">08: Haunted Wasteland</span></span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOi8yMDIzLzEzLzIwMjMtMTMuaHRtbDxzcGFuLWNsYXNzPSdjaGFwdGVyLW51bWJlcic+MTc8L3NwYW4+LS08c3Bhbi1jbGFzcz0nY2hhcHRlci10aXRsZSc+MTM6LVBvaW50LW9mLUluY2lkZW5jZTwvc3Bhbj4="><span class="chapter-number">17</span>  <span class="chapter-title">13: Point of Incidence</span></span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOnF1YXJ0by1zaWRlYmFyLXNlY3Rpb24tMw==">2022</span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOi8yMDIyLzAxLzIwMjItMDEuaHRtbDxzcGFuLWNsYXNzPSdjaGFwdGVyLW51bWJlcic+MTg8L3NwYW4+LS08c3Bhbi1jbGFzcz0nY2hhcHRlci10aXRsZSc+MDE6LUNhbG9yaWUtQ291bnRpbmc8L3NwYW4+"><span class="chapter-number">18</span>  <span class="chapter-title">01: Calorie Counting</span></span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOi8yMDIyLzAyLzIwMjItMDIuaHRtbDxzcGFuLWNsYXNzPSdjaGFwdGVyLW51bWJlcic+MTk8L3NwYW4+LS08c3Bhbi1jbGFzcz0nY2hhcHRlci10aXRsZSc+MDI6LVJvY2stUGFwZXItU2Npc3NvcnM8L3NwYW4+"><span class="chapter-number">19</span>  <span class="chapter-title">02: Rock Paper Scissors</span></span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOi8yMDIyLzAzLzIwMjItMDMuaHRtbDxzcGFuLWNsYXNzPSdjaGFwdGVyLW51bWJlcic+MjA8L3NwYW4+LS08c3Bhbi1jbGFzcz0nY2hhcHRlci10aXRsZSc+MDM6LVJ1Y2tzYWNrLVJlb3JnYW5pemF0aW9uPC9zcGFuPg=="><span class="chapter-number">20</span>  <span class="chapter-title">03: Rucksack Reorganization</span></span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOi8yMDIyLzA0LzIwMjItMDQuaHRtbDxzcGFuLWNsYXNzPSdjaGFwdGVyLW51bWJlcic+MjE8L3NwYW4+LS08c3Bhbi1jbGFzcz0nY2hhcHRlci10aXRsZSc+MDQ6LUNhbXAtQ2xlYW51cDwvc3Bhbj4="><span class="chapter-number">21</span>  <span class="chapter-title">04: Camp Cleanup</span></span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOi8yMDIyLzA1LzIwMjItMDUuaHRtbDxzcGFuLWNsYXNzPSdjaGFwdGVyLW51bWJlcic+MjI8L3NwYW4+LS08c3Bhbi1jbGFzcz0nY2hhcHRlci10aXRsZSc+MDU6LVN1cHBseS1TdGFja3M8L3NwYW4+"><span class="chapter-number">22</span>  <span class="chapter-title">05: Supply Stacks</span></span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOi8yMDIyLzA2LzIwMjItMDYuaHRtbDxzcGFuLWNsYXNzPSdjaGFwdGVyLW51bWJlcic+MjM8L3NwYW4+LS08c3Bhbi1jbGFzcz0nY2hhcHRlci10aXRsZSc+MDY6LVR1bmluZy1Ucm91YmxlPC9zcGFuPg=="><span class="chapter-number">23</span>  <span class="chapter-title">06: Tuning Trouble</span></span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOi8yMDIyLzA3LzIwMjItMDcuaHRtbDxzcGFuLWNsYXNzPSdjaGFwdGVyLW51bWJlcic+MjQ8L3NwYW4+LS08c3Bhbi1jbGFzcz0nY2hhcHRlci10aXRsZSc+MDc6LU5vLVNwYWNlLUxlZnQtT24tRGV2aWNlPC9zcGFuPg=="><span class="chapter-number">24</span>  <span class="chapter-title">07: No Space Left On Device</span></span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOi8yMDIyLzA4LzIwMjItMDguaHRtbDxzcGFuLWNsYXNzPSdjaGFwdGVyLW51bWJlcic+MjU8L3NwYW4+LS08c3Bhbi1jbGFzcz0nY2hhcHRlci10aXRsZSc+MDg6LVRyZWV0b3AtVHJlZS1Ib3VzZTwvc3Bhbj4="><span class="chapter-number">25</span>  <span class="chapter-title">08: Treetop Tree House</span></span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOi8yMDIyLzEwLzIwMjItMTAuaHRtbDxzcGFuLWNsYXNzPSdjaGFwdGVyLW51bWJlcic+MjY8L3NwYW4+LS08c3Bhbi1jbGFzcz0nY2hhcHRlci10aXRsZSc+MTA6LUNhdGhvZGUtUmF5LVR1YmU8L3NwYW4+"><span class="chapter-number">26</span>  <span class="chapter-title">10: Cathode-Ray Tube</span></span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOi8yMDIyLzExLzIwMjItMTEuaHRtbDxzcGFuLWNsYXNzPSdjaGFwdGVyLW51bWJlcic+Mjc8L3NwYW4+LS08c3Bhbi1jbGFzcz0nY2hhcHRlci10aXRsZSc+MTE6LU1vbmtleS1pbi10aGUtTWlkZGxlPC9zcGFuPg=="><span class="chapter-number">27</span>  <span class="chapter-title">11: Monkey in the Middle</span></span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOi8yMDIyLzE0LzIwMjItMTQuaHRtbDxzcGFuLWNsYXNzPSdjaGFwdGVyLW51bWJlcic+Mjg8L3NwYW4+LS08c3Bhbi1jbGFzcz0nY2hhcHRlci10aXRsZSc+MjAyMi0xNDotUmVnb2xpdGgtUmVzZXJ2b2lyPC9zcGFuPg=="><span class="chapter-number">28</span>  <span class="chapter-title">2022-14: Regolith Reservoir</span></span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOi8yMDIyLzIwLzIwMjItMjAuaHRtbDxzcGFuLWNsYXNzPSdjaGFwdGVyLW51bWJlcic+Mjk8L3NwYW4+LS08c3Bhbi1jbGFzcz0nY2hhcHRlci10aXRsZSc+MjAyMi0yMDotR3JvdmUtUG9zaXRpb25pbmctU3lzdGVtPC9zcGFuPg=="><span class="chapter-number">29</span>  <span class="chapter-title">2022-20: Grove Positioning System</span></span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOi8yMDIyLzIxLzIwMjItMjEuaHRtbDxzcGFuLWNsYXNzPSdjaGFwdGVyLW51bWJlcic+MzA8L3NwYW4+LS08c3Bhbi1jbGFzcz0nY2hhcHRlci10aXRsZSc+MjAyMi0yMTotTW9ua2V5LU1hdGg8L3NwYW4+"><span class="chapter-number">30</span>  <span class="chapter-title">2022-21: Monkey Math</span></span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOi8yMDIyLzI1LzIwMjItMjUuaHRtbDxzcGFuLWNsYXNzPSdjaGFwdGVyLW51bWJlcic+MzE8L3NwYW4+LS08c3Bhbi1jbGFzcz0nY2hhcHRlci10aXRsZSc+MjAyMi0yNTotRnVsbC1vZi1Ib3QtQWlyPC9zcGFuPg=="><span class="chapter-number">31</span>  <span class="chapter-title">2022-25: Full of Hot Air</span></span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOnF1YXJ0by1zaWRlYmFyLXNlY3Rpb24tNA==">2021</span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOi8yMDIxLzAxLzIwMjEtMDEuaHRtbDxzcGFuLWNsYXNzPSdjaGFwdGVyLW51bWJlcic+MzI8L3NwYW4+LS08c3Bhbi1jbGFzcz0nY2hhcHRlci10aXRsZSc+MjAyMS0wMTotU29uYXItU3dlZXA8L3NwYW4+"><span class="chapter-number">32</span>  <span class="chapter-title">2021-01: Sonar Sweep</span></span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOi8yMDIxLzAyLzIwMjEtMDIuaHRtbDxzcGFuLWNsYXNzPSdjaGFwdGVyLW51bWJlcic+MzM8L3NwYW4+LS08c3Bhbi1jbGFzcz0nY2hhcHRlci10aXRsZSc+MjAyMS0wMjotRGl2ZSE8L3NwYW4+"><span class="chapter-number">33</span>  <span class="chapter-title">2021-02: Dive!</span></span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOi8yMDIxLzAzLzIwMjEtMDMuaHRtbDxzcGFuLWNsYXNzPSdjaGFwdGVyLW51bWJlcic+MzQ8L3NwYW4+LS08c3Bhbi1jbGFzcz0nY2hhcHRlci10aXRsZSc+MjAyMS0wMzotQmluYXJ5LURpYWdub3N0aWM8L3NwYW4+"><span class="chapter-number">34</span>  <span class="chapter-title">2021-03: Binary Diagnostic</span></span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOi8yMDIxLzA0LzIwMjEtMDQuaHRtbDxzcGFuLWNsYXNzPSdjaGFwdGVyLW51bWJlcic+MzU8L3NwYW4+LS08c3Bhbi1jbGFzcz0nY2hhcHRlci10aXRsZSc+MjAyMS0wNDotR2lhbnQtU3F1aWQ8L3NwYW4+"><span class="chapter-number">35</span>  <span class="chapter-title">2021-04: Giant Squid</span></span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOi8yMDIxLzA1LzIwMjEtMDUuaHRtbDxzcGFuLWNsYXNzPSdjaGFwdGVyLW51bWJlcic+MzY8L3NwYW4+LS08c3Bhbi1jbGFzcz0nY2hhcHRlci10aXRsZSc+MjAyMS0wNTotSHlkcm90aGVybWFsLVZlbnR1cmU8L3NwYW4+"><span class="chapter-number">36</span>  <span class="chapter-title">2021-05: Hydrothermal Venture</span></span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOi8yMDIxLzA2LzIwMjEtMDYuaHRtbDxzcGFuLWNsYXNzPSdjaGFwdGVyLW51bWJlcic+Mzc8L3NwYW4+LS08c3Bhbi1jbGFzcz0nY2hhcHRlci10aXRsZSc+MjAyMS0wNjotTGFudGVybmZpc2g8L3NwYW4+"><span class="chapter-number">37</span>  <span class="chapter-title">2021-06: Lanternfish</span></span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOi8yMDIxLzA3LzIwMjEtMDcuaHRtbDxzcGFuLWNsYXNzPSdjaGFwdGVyLW51bWJlcic+Mzg8L3NwYW4+LS08c3Bhbi1jbGFzcz0nY2hhcHRlci10aXRsZSc+MjAyMS0wNzotVGhlLVRyZWFjaGVyeS1vZi1XaGFsZXM8L3NwYW4+"><span class="chapter-number">38</span>  <span class="chapter-title">2021-07: The Treachery of Whales</span></span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOi8yMDIxLzA4LzIwMjEtMDguaHRtbDxzcGFuLWNsYXNzPSdjaGFwdGVyLW51bWJlcic+Mzk8L3NwYW4+LS08c3Bhbi1jbGFzcz0nY2hhcHRlci10aXRsZSc+MjAyMS0wODotU2V2ZW4tU2VnbWVudC1TZWFyY2g8L3NwYW4+"><span class="chapter-number">39</span>  <span class="chapter-title">2021-08: Seven Segment Search</span></span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOi8yMDIxLzA5LzIwMjEtMDkuaHRtbDxzcGFuLWNsYXNzPSdjaGFwdGVyLW51bWJlcic+NDA8L3NwYW4+LS08c3Bhbi1jbGFzcz0nY2hhcHRlci10aXRsZSc+MjAyMS0wOTotU21va2UtQmFzaW48L3NwYW4+"><span class="chapter-number">40</span>  <span class="chapter-title">2021-09: Smoke Basin</span></span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOi8yMDIxLzEwLzIwMjEtMTAuaHRtbDxzcGFuLWNsYXNzPSdjaGFwdGVyLW51bWJlcic+NDE8L3NwYW4+LS08c3Bhbi1jbGFzcz0nY2hhcHRlci10aXRsZSc+MjAyMS0xMDotU3ludGF4LVNjb3Jpbmc8L3NwYW4+"><span class="chapter-number">41</span>  <span class="chapter-title">2021-10: Syntax Scoring</span></span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOi8yMDIxLzExLzIwMjEtMTEuaHRtbDxzcGFuLWNsYXNzPSdjaGFwdGVyLW51bWJlcic+NDI8L3NwYW4+LS08c3Bhbi1jbGFzcz0nY2hhcHRlci10aXRsZSc+MjAyMS0xMTotRHVtYm8tT2N0b3B1czwvc3Bhbj4="><span class="chapter-number">42</span>  <span class="chapter-title">2021-11: Dumbo Octopus</span></span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOi8yMDIxLzEzLzIwMjEtMTMuaHRtbDxzcGFuLWNsYXNzPSdjaGFwdGVyLW51bWJlcic+NDM8L3NwYW4+LS08c3Bhbi1jbGFzcz0nY2hhcHRlci10aXRsZSc+MjAyMS0xMzotVHJhbnNwYXJlbnQtT3JpZ2FtaTwvc3Bhbj4="><span class="chapter-number">43</span>  <span class="chapter-title">2021-13: Transparent Origami</span></span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOi8yMDIxLzE0LzIwMjEtMTQuaHRtbDxzcGFuLWNsYXNzPSdjaGFwdGVyLW51bWJlcic+NDQ8L3NwYW4+LS08c3Bhbi1jbGFzcz0nY2hhcHRlci10aXRsZSc+MjAyMi0xNDotRXh0ZW5kZWQtUG9seW1lcml6YXRpb248L3NwYW4+"><span class="chapter-number">44</span>  <span class="chapter-title">2022-14: Extended Polymerization</span></span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOnF1YXJ0by1zaWRlYmFyLXNlY3Rpb24tNQ==">2020</span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOi8yMDIwLzAxLzIwMjAtMDEuaHRtbDxzcGFuLWNsYXNzPSdjaGFwdGVyLW51bWJlcic+NDU8L3NwYW4+LS08c3Bhbi1jbGFzcz0nY2hhcHRlci10aXRsZSc+MjAyMC0wMTotUmVwb3J0LVJlcGFpcjwvc3Bhbj4="><span class="chapter-number">45</span>  <span class="chapter-title">2020-01: Report Repair</span></span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOi8yMDIwLzAyLzIwMjAtMDIuaHRtbDxzcGFuLWNsYXNzPSdjaGFwdGVyLW51bWJlcic+NDY8L3NwYW4+LS08c3Bhbi1jbGFzcz0nY2hhcHRlci10aXRsZSc+MjAyMC0wMjotUGFzc3dvcmQtUGhpbG9zb3BoeTwvc3Bhbj4="><span class="chapter-number">46</span>  <span class="chapter-title">2020-02: Password Philosophy</span></span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOi8yMDIwLzAzLzIwMjAtMDMuaHRtbDxzcGFuLWNsYXNzPSdjaGFwdGVyLW51bWJlcic+NDc8L3NwYW4+LS08c3Bhbi1jbGFzcz0nY2hhcHRlci10aXRsZSc+MjAyMC0wMzotVG9ib2dnYW4tVHJhamVjdG9yeTwvc3Bhbj4="><span class="chapter-number">47</span>  <span class="chapter-title">2020-03: Toboggan Trajectory</span></span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOi8yMDIwLzA0LzIwMjAtMDQuaHRtbDxzcGFuLWNsYXNzPSdjaGFwdGVyLW51bWJlcic+NDg8L3NwYW4+LS08c3Bhbi1jbGFzcz0nY2hhcHRlci10aXRsZSc+MjAyMC0wNDotUGFzc3BvcnQtUHJvY2Vzc2luZzwvc3Bhbj4="><span class="chapter-number">48</span>  <span class="chapter-title">2020-04: Passport Processing</span></span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOi8yMDIwLzA1LzIwMjAtMDUuaHRtbDxzcGFuLWNsYXNzPSdjaGFwdGVyLW51bWJlcic+NDk8L3NwYW4+LS08c3Bhbi1jbGFzcz0nY2hhcHRlci10aXRsZSc+MjAyMC0wNTotQmluYXJ5LUJvYXJkaW5nPC9zcGFuPg=="><span class="chapter-number">49</span>  <span class="chapter-title">2020-05: Binary Boarding</span></span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOi8yMDIwLzA2LzIwMjAtMDYuaHRtbDxzcGFuLWNsYXNzPSdjaGFwdGVyLW51bWJlcic+NTA8L3NwYW4+LS08c3Bhbi1jbGFzcz0nY2hhcHRlci10aXRsZSc+MjAyMC0wNjotQ3VzdG9tLUN1c3RvbXM8L3NwYW4+"><span class="chapter-number">50</span>  <span class="chapter-title">2020-06: Custom Customs</span></span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOi8yMDIwLzA3LzIwMjAtMDcuaHRtbDxzcGFuLWNsYXNzPSdjaGFwdGVyLW51bWJlcic+NTE8L3NwYW4+LS08c3Bhbi1jbGFzcz0nY2hhcHRlci10aXRsZSc+MDc6LUhhbmR5LUhhdmVyc2Fja3M8L3NwYW4+"><span class="chapter-number">51</span>  <span class="chapter-title">07: Handy Haversacks</span></span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOi8yMDIwLzA4LzIwMjAtMDguaHRtbDxzcGFuLWNsYXNzPSdjaGFwdGVyLW51bWJlcic+NTI8L3NwYW4+LS08c3Bhbi1jbGFzcz0nY2hhcHRlci10aXRsZSc+MjAyMC0wODotSGFuZGhlbGQtSGFsdGluZzwvc3Bhbj4="><span class="chapter-number">52</span>  <span class="chapter-title">2020-08: Handheld Halting</span></span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOi8yMDIwLzA5LzIwMjAtMDkuaHRtbDxzcGFuLWNsYXNzPSdjaGFwdGVyLW51bWJlcic+NTM8L3NwYW4+LS08c3Bhbi1jbGFzcz0nY2hhcHRlci10aXRsZSc+MjAyMC0wOTotRW5jb2RpbmctRXJyb3I8L3NwYW4+"><span class="chapter-number">53</span>  <span class="chapter-title">2020-09: Encoding Error</span></span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOi8yMDIwLzEwLzIwMjAtMTAuaHRtbDxzcGFuLWNsYXNzPSdjaGFwdGVyLW51bWJlcic+NTQ8L3NwYW4+LS08c3Bhbi1jbGFzcz0nY2hhcHRlci10aXRsZSc+MjAyMC0xMDotQWRhcHRlci1BcnJheTwvc3Bhbj4="><span class="chapter-number">54</span>  <span class="chapter-title">2020-10: Adapter Array</span></span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOnF1YXJ0by1zaWRlYmFyLXNlY3Rpb24tNg==">2019</span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOi8yMDE5LzAxLzIwMTktMDEuaHRtbDxzcGFuLWNsYXNzPSdjaGFwdGVyLW51bWJlcic+NTU8L3NwYW4+LS08c3Bhbi1jbGFzcz0nY2hhcHRlci10aXRsZSc+MjAxOS0wMTotVGhlLVR5cmFubnktb2YtdGhlLVJvY2tldC1FcXVhdGlvbjwvc3Bhbj4="><span class="chapter-number">55</span>  <span class="chapter-title">2019-01: The Tyranny of the Rocket Equation</span></span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOi8yMDE5LzAyLzIwMTktMDIuaHRtbDxzcGFuLWNsYXNzPSdjaGFwdGVyLW51bWJlcic+NTY8L3NwYW4+LS08c3Bhbi1jbGFzcz0nY2hhcHRlci10aXRsZSc+MjAxOS0wMjotMTIwMi1Qcm9ncmFtLUFsYXJtPC9zcGFuPg=="><span class="chapter-number">56</span>  <span class="chapter-title">2019-02: 1202 Program Alarm</span></span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOi8yMDE5LzAzLzIwMTktMDMuaHRtbDxzcGFuLWNsYXNzPSdjaGFwdGVyLW51bWJlcic+NTc8L3NwYW4+LS08c3Bhbi1jbGFzcz0nY2hhcHRlci10aXRsZSc+MjAxOS0wMzotQ3Jvc3NlZC1XaXJlczwvc3Bhbj4="><span class="chapter-number">57</span>  <span class="chapter-title">2019-03: Crossed Wires</span></span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOi8yMDE5LzA0LzIwMTktMDQuaHRtbDxzcGFuLWNsYXNzPSdjaGFwdGVyLW51bWJlcic+NTg8L3NwYW4+LS08c3Bhbi1jbGFzcz0nY2hhcHRlci10aXRsZSc+MjAxOS0wNDotU2VjdXJlLUNvbnRhaW5lcjwvc3Bhbj4="><span class="chapter-number">58</span>  <span class="chapter-title">2019-04: Secure Container</span></span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOnF1YXJ0by1zaWRlYmFyLXNlY3Rpb24tNw==">2018</span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOi8yMDE4LzAxLzIwMTgtMDEuaHRtbDxzcGFuLWNsYXNzPSdjaGFwdGVyLW51bWJlcic+NTk8L3NwYW4+LS08c3Bhbi1jbGFzcz0nY2hhcHRlci10aXRsZSc+MjAxOC0wMTotQ2hyb25hbC1DYWxpYnJhdGlvbjwvc3Bhbj4="><span class="chapter-number">59</span>  <span class="chapter-title">2018-01: Chronal Calibration</span></span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOi8yMDE4LzAyLzIwMTgtMDIuaHRtbDxzcGFuLWNsYXNzPSdjaGFwdGVyLW51bWJlcic+NjA8L3NwYW4+LS08c3Bhbi1jbGFzcz0nY2hhcHRlci10aXRsZSc+MjAxOC0wMjotSW52ZW50b3J5LU1hbmFnZW1lbnQtU3lzdGVtPC9zcGFuPg=="><span class="chapter-number">60</span>  <span class="chapter-title">2018-02: Inventory Management System</span></span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOi8yMDE4LzAzLzIwMTgtMDMuaHRtbDxzcGFuLWNsYXNzPSdjaGFwdGVyLW51bWJlcic+NjE8L3NwYW4+LS08c3Bhbi1jbGFzcz0nY2hhcHRlci10aXRsZSc+MjAxOC0wMzotTm8tTWF0dGVyLUhvdy1Zb3UtU2xpY2UtSXQ8L3NwYW4+"><span class="chapter-number">61</span>  <span class="chapter-title">2018-03: No Matter How You Slice It</span></span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOi8yMDE4LzA0LzIwMTgtMDQuaHRtbDxzcGFuLWNsYXNzPSdjaGFwdGVyLW51bWJlcic+NjI8L3NwYW4+LS08c3Bhbi1jbGFzcz0nY2hhcHRlci10aXRsZSc+MjAxOC0wNDotUmVwb3NlLVJlY29yZDwvc3Bhbj4="><span class="chapter-number">62</span>  <span class="chapter-title">2018-04: Repose Record</span></span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOi8yMDE4LzA1LzIwMTgtMDUuaHRtbDxzcGFuLWNsYXNzPSdjaGFwdGVyLW51bWJlcic+NjM8L3NwYW4+LS08c3Bhbi1jbGFzcz0nY2hhcHRlci10aXRsZSc+MjAxOC0wNTotQWxjaGVtaWNhbC1SZWR1Y3Rpb248L3NwYW4+"><span class="chapter-number">63</span>  <span class="chapter-title">2018-05: Alchemical Reduction</span></span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOi8yMDE4LzA2LzIwMTgtMDYuaHRtbDxzcGFuLWNsYXNzPSdjaGFwdGVyLW51bWJlcic+NjQ8L3NwYW4+LS08c3Bhbi1jbGFzcz0nY2hhcHRlci10aXRsZSc+MjAxOC0wNjotQ2hyb25hbC1Db29yZGluYXRlczwvc3Bhbj4="><span class="chapter-number">64</span>  <span class="chapter-title">2018-06: Chronal Coordinates</span></span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOnF1YXJ0by1zaWRlYmFyLXNlY3Rpb24tOA==">2017</span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOi8yMDE3LzAxLzIwMTctMDEuaHRtbDxzcGFuLWNsYXNzPSdjaGFwdGVyLW51bWJlcic+NjU8L3NwYW4+LS08c3Bhbi1jbGFzcz0nY2hhcHRlci10aXRsZSc+MDE6LUludmVyc2UtQ2FwdGNoYTwvc3Bhbj4="><span class="chapter-number">65</span>  <span class="chapter-title">01: Inverse Captcha</span></span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOi8yMDE3LzAyLzIwMTctMDIuaHRtbDxzcGFuLWNsYXNzPSdjaGFwdGVyLW51bWJlcic+NjY8L3NwYW4+LS08c3Bhbi1jbGFzcz0nY2hhcHRlci10aXRsZSc+MDI6LUNvcnJ1cHRpb24tQ2hlY2tzdW08L3NwYW4+"><span class="chapter-number">66</span>  <span class="chapter-title">02: Corruption Checksum</span></span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOi8yMDE3LzAzLzIwMTctMDMuaHRtbDxzcGFuLWNsYXNzPSdjaGFwdGVyLW51bWJlcic+Njc8L3NwYW4+LS08c3Bhbi1jbGFzcz0nY2hhcHRlci10aXRsZSc+MDM6LVNwaXJhbC1NZW1vcnk8L3NwYW4+"><span class="chapter-number">67</span>  <span class="chapter-title">03: Spiral Memory</span></span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOi8yMDE3LzA0LzIwMTctMDQuaHRtbDxzcGFuLWNsYXNzPSdjaGFwdGVyLW51bWJlcic+Njg8L3NwYW4+LS08c3Bhbi1jbGFzcz0nY2hhcHRlci10aXRsZSc+MDQ6LUhpZ2gtRW50cm9weS1QYXNzcGhyYXNlczwvc3Bhbj4="><span class="chapter-number">68</span>  <span class="chapter-title">04: High-Entropy Passphrases</span></span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOi8yMDE3LzA1LzIwMTctMDUuaHRtbDxzcGFuLWNsYXNzPSdjaGFwdGVyLW51bWJlcic+Njk8L3NwYW4+LS08c3Bhbi1jbGFzcz0nY2hhcHRlci10aXRsZSc+MDU6LUEtTWF6ZS1vZi1Ud2lzdHktVHJhbXBvbGluZXMsLUFsbC1BbGlrZTwvc3Bhbj4="><span class="chapter-number">69</span>  <span class="chapter-title">05: A Maze of Twisty Trampolines, All Alike</span></span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOi8yMDE3LzA4LzIwMTctMDguaHRtbDxzcGFuLWNsYXNzPSdjaGFwdGVyLW51bWJlcic+NzA8L3NwYW4+LS08c3Bhbi1jbGFzcz0nY2hhcHRlci10aXRsZSc+MDg6LUktSGVhcmQtWW91LUxpa2UtUmVnaXN0ZXJzPC9zcGFuPg=="><span class="chapter-number">70</span>  <span class="chapter-title">08: I Heard You Like Registers</span></span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOi8yMDE3LzE2LzIwMTctMTYuaHRtbDxzcGFuLWNsYXNzPSdjaGFwdGVyLW51bWJlcic+NzE8L3NwYW4+LS08c3Bhbi1jbGFzcz0nY2hhcHRlci10aXRsZSc+MTY6LVBlcm11dGF0aW9uLVByb21lbmFkZTwvc3Bhbj4="><span class="chapter-number">71</span>  <span class="chapter-title">16: Permutation Promenade</span></span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOnF1YXJ0by1zaWRlYmFyLXNlY3Rpb24tOQ==">2016</span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOi8yMDE2LzAxLzIwMTYtMDEuaHRtbDxzcGFuLWNsYXNzPSdjaGFwdGVyLW51bWJlcic+NzI8L3NwYW4+LS08c3Bhbi1jbGFzcz0nY2hhcHRlci10aXRsZSc+MjAxNi0wMTotTm8tVGltZS1mb3ItYS1UYXhpY2FiPC9zcGFuPg=="><span class="chapter-number">72</span>  <span class="chapter-title">2016-01: No Time for a Taxicab</span></span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOi8yMDE2LzAyLzIwMTYtMDIuaHRtbDxzcGFuLWNsYXNzPSdjaGFwdGVyLW51bWJlcic+NzM8L3NwYW4+LS08c3Bhbi1jbGFzcz0nY2hhcHRlci10aXRsZSc+MjAxNi0wMjotQmF0aHJvb20tU2VjdXJpdHk8L3NwYW4+"><span class="chapter-number">73</span>  <span class="chapter-title">2016-02: Bathroom Security</span></span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOi8yMDE2LzAzLzIwMTYtMDMuaHRtbDxzcGFuLWNsYXNzPSdjaGFwdGVyLW51bWJlcic+NzQ8L3NwYW4+LS08c3Bhbi1jbGFzcz0nY2hhcHRlci10aXRsZSc+MjAxNi0wMzotU3F1YXJlcy1XaXRoLVRocmVlLVNpZGVzPC9zcGFuPg=="><span class="chapter-number">74</span>  <span class="chapter-title">2016-03: Squares With Three Sides</span></span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOi8yMDE2LzA0LzIwMTYtMDQuaHRtbDxzcGFuLWNsYXNzPSdjaGFwdGVyLW51bWJlcic+NzU8L3NwYW4+LS08c3Bhbi1jbGFzcz0nY2hhcHRlci10aXRsZSc+MjAxNi0wNDotU2VjdXJpdHktVGhyb3VnaC1PYnNjdXJpdHk8L3NwYW4+"><span class="chapter-number">75</span>  <span class="chapter-title">2016-04: Security Through Obscurity</span></span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOi8yMDE2LzA1LzIwMTYtMDUuaHRtbDxzcGFuLWNsYXNzPSdjaGFwdGVyLW51bWJlcic+NzY8L3NwYW4+LS08c3Bhbi1jbGFzcz0nY2hhcHRlci10aXRsZSc+MDU6LUhvdy1BYm91dC1hLU5pY2UtR2FtZS1vZi1DaGVzcz88L3NwYW4+"><span class="chapter-number">76</span>  <span class="chapter-title">05: How About a Nice Game of Chess?</span></span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOi8yMDE2LzA2LzIwMTYtMDYuaHRtbDxzcGFuLWNsYXNzPSdjaGFwdGVyLW51bWJlcic+Nzc8L3NwYW4+LS08c3Bhbi1jbGFzcz0nY2hhcHRlci10aXRsZSc+MDY6LVNpZ25hbHMtYW5kLU5vaXNlPC9zcGFuPg=="><span class="chapter-number">77</span>  <span class="chapter-title">06: Signals and Noise</span></span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOi8yMDE2LzA3LzIwMTYtMDcuaHRtbDxzcGFuLWNsYXNzPSdjaGFwdGVyLW51bWJlcic+Nzg8L3NwYW4+LS08c3Bhbi1jbGFzcz0nY2hhcHRlci10aXRsZSc+MDc6LUludGVybmV0LVByb3RvY29sLVZlcnNpb24tNzwvc3Bhbj4="><span class="chapter-number">78</span>  <span class="chapter-title">07: Internet Protocol Version 7</span></span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOi8yMDE2LzA4LzIwMTYtMDguaHRtbDxzcGFuLWNsYXNzPSdjaGFwdGVyLW51bWJlcic+Nzk8L3NwYW4+LS08c3Bhbi1jbGFzcz0nY2hhcHRlci10aXRsZSc+MDg6LVR3by1GYWN0b3ItQXV0aGVudGljYXRpb248L3NwYW4+"><span class="chapter-number">79</span>  <span class="chapter-title">08: Two-Factor Authentication</span></span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOi8yMDE2LzEyLzIwMTYtMTIuaHRtbDxzcGFuLWNsYXNzPSdjaGFwdGVyLW51bWJlcic+ODA8L3NwYW4+LS08c3Bhbi1jbGFzcz0nY2hhcHRlci10aXRsZSc+MTI6LUxlb25hcmRvJ3MtTW9ub3JhaWw8L3NwYW4+"><span class="chapter-number">80</span>  <span class="chapter-title">12: Leonardo’s Monorail</span></span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOnF1YXJ0by1zaWRlYmFyLXNlY3Rpb24tMTA=">2015</span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOi8yMDE1LzAxLzIwMTUtMDEuaHRtbDxzcGFuLWNsYXNzPSdjaGFwdGVyLW51bWJlcic+ODE8L3NwYW4+LS08c3Bhbi1jbGFzcz0nY2hhcHRlci10aXRsZSc+MDE6LU5vdC1RdWl0ZS1MaXNwPC9zcGFuPg=="><span class="chapter-number">81</span>  <span class="chapter-title">01: Not Quite Lisp</span></span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOi8yMDE1LzAyLzIwMTUtMDIuaHRtbDxzcGFuLWNsYXNzPSdjaGFwdGVyLW51bWJlcic+ODI8L3NwYW4+LS08c3Bhbi1jbGFzcz0nY2hhcHRlci10aXRsZSc+MDI6LUktV2FzLVRvbGQtVGhlcmUtV291bGQtQmUtTm8tTWF0aDwvc3Bhbj4="><span class="chapter-number">82</span>  <span class="chapter-title">02: I Was Told There Would Be No Math</span></span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOi8yMDE1LzAzLzIwMTUtMDMuaHRtbDxzcGFuLWNsYXNzPSdjaGFwdGVyLW51bWJlcic+ODM8L3NwYW4+LS08c3Bhbi1jbGFzcz0nY2hhcHRlci10aXRsZSc+MDM6LVBlcmZlY3RseS1TcGhlcmljYWwtSG91c2VzLWluLWEtVmFjdXVtPC9zcGFuPg=="><span class="chapter-number">83</span>  <span class="chapter-title">03: Perfectly Spherical Houses in a Vacuum</span></span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOi8yMDE1LzA0LzIwMTUtMDQuaHRtbDxzcGFuLWNsYXNzPSdjaGFwdGVyLW51bWJlcic+ODQ8L3NwYW4+LS08c3Bhbi1jbGFzcz0nY2hhcHRlci10aXRsZSc+MDQ6LVRoZS1JZGVhbC1TdG9ja2luZy1TdHVmZmVyPC9zcGFuPg=="><span class="chapter-number">84</span>  <span class="chapter-title">04: The Ideal Stocking Stuffer</span></span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOi8yMDE1LzA1LzIwMTUtMDUuaHRtbDxzcGFuLWNsYXNzPSdjaGFwdGVyLW51bWJlcic+ODU8L3NwYW4+LS08c3Bhbi1jbGFzcz0nY2hhcHRlci10aXRsZSc+MDU6LURvZXNuJ3QtSGUtSGF2ZS1JbnRlcm4tRWx2ZXMtRm9yLVRoaXM/PC9zcGFuPg=="><span class="chapter-number">85</span>  <span class="chapter-title">05: Doesn’t He Have Intern-Elves For This?</span></span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOi8yMDE1LzA2LzIwMTUtMDYuaHRtbDxzcGFuLWNsYXNzPSdjaGFwdGVyLW51bWJlcic+ODY8L3NwYW4+LS08c3Bhbi1jbGFzcz0nY2hhcHRlci10aXRsZSc+MDY6LVByb2JhYmx5LWEtRmlyZS1IYXphcmQ8L3NwYW4+"><span class="chapter-number">86</span>  <span class="chapter-title">06: Probably a Fire Hazard</span></span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOi8yMDE1LzA3LzIwMTUtMDcuaHRtbDxzcGFuLWNsYXNzPSdjaGFwdGVyLW51bWJlcic+ODc8L3NwYW4+LS08c3Bhbi1jbGFzcz0nY2hhcHRlci10aXRsZSc+MDc6LVNvbWUtQXNzZW1ibHktUmVxdWlyZWQ8L3NwYW4+"><span class="chapter-number">87</span>  <span class="chapter-title">07: Some Assembly Required</span></span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOi8yMDE1LzA4LzIwMTUtMDguaHRtbDxzcGFuLWNsYXNzPSdjaGFwdGVyLW51bWJlcic+ODg8L3NwYW4+LS08c3Bhbi1jbGFzcz0nY2hhcHRlci10aXRsZSc+MDg6LU1hdGNoc3RpY2tzPC9zcGFuPg=="><span class="chapter-number">88</span>  <span class="chapter-title">08: Matchsticks</span></span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOi8yMDE1LzA5LzIwMTUtMDkuaHRtbDxzcGFuLWNsYXNzPSdjaGFwdGVyLW51bWJlcic+ODk8L3NwYW4+LS08c3Bhbi1jbGFzcz0nY2hhcHRlci10aXRsZSc+MDk6LUFsbC1pbi1hLVNpbmdsZS1OaWdodDwvc3Bhbj4="><span class="chapter-number">89</span>  <span class="chapter-title">09: All in a Single Night</span></span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOi8yMDE1LzEwLzIwMTUtMTAuaHRtbDxzcGFuLWNsYXNzPSdjaGFwdGVyLW51bWJlcic+OTA8L3NwYW4+LS08c3Bhbi1jbGFzcz0nY2hhcHRlci10aXRsZSc+MTA6LUVsdmVzLUxvb2ssLUVsdmVzLVNheTwvc3Bhbj4="><span class="chapter-number">90</span>  <span class="chapter-title">10: Elves Look, Elves Say</span></span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOi8yMDE1LzExLzIwMTUtMTEuaHRtbDxzcGFuLWNsYXNzPSdjaGFwdGVyLW51bWJlcic+OTE8L3NwYW4+LS08c3Bhbi1jbGFzcz0nY2hhcHRlci10aXRsZSc+MTE6LUNvcnBvcmF0ZS1Qb2xpY3k8L3NwYW4+"><span class="chapter-number">91</span>  <span class="chapter-title">11: Corporate Policy</span></span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOi8yMDE1LzEyLzIwMTUtMTIuaHRtbDxzcGFuLWNsYXNzPSdjaGFwdGVyLW51bWJlcic+OTI8L3NwYW4+LS08c3Bhbi1jbGFzcz0nY2hhcHRlci10aXRsZSc+MTI6LUpTQWJhY3VzRnJhbWV3b3JrLmlvPC9zcGFuPg=="><span class="chapter-number">92</span>  <span class="chapter-title">12: JSAbacusFramework.io</span></span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOi8yMDE1LzEzLzIwMTUtMTMuaHRtbDxzcGFuLWNsYXNzPSdjaGFwdGVyLW51bWJlcic+OTM8L3NwYW4+LS08c3Bhbi1jbGFzcz0nY2hhcHRlci10aXRsZSc+MTM6LUtuaWdodHMtb2YtdGhlLURpbm5lci1UYWJsZTwvc3Bhbj4="><span class="chapter-number">93</span>  <span class="chapter-title">13: Knights of the Dinner Table</span></span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOi8yMDE1LzE0LzIwMTUtMTQuaHRtbDxzcGFuLWNsYXNzPSdjaGFwdGVyLW51bWJlcic+OTQ8L3NwYW4+LS08c3Bhbi1jbGFzcz0nY2hhcHRlci10aXRsZSc+MTQ6LVJlaW5kZWVyLU9seW1waWNzPC9zcGFuPg=="><span class="chapter-number">94</span>  <span class="chapter-title">14: Reindeer Olympics</span></span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOi8yMDE1LzE1LzIwMTUtMTUuaHRtbDxzcGFuLWNsYXNzPSdjaGFwdGVyLW51bWJlcic+OTU8L3NwYW4+LS08c3Bhbi1jbGFzcz0nY2hhcHRlci10aXRsZSc+MTU6LVNjaWVuY2UtZm9yLUh1bmdyeS1QZW9wbGU8L3NwYW4+"><span class="chapter-number">95</span>  <span class="chapter-title">15: Science for Hungry People</span></span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOi8yMDE1LzE2LzIwMTUtMTYuaHRtbDxzcGFuLWNsYXNzPSdjaGFwdGVyLW51bWJlcic+OTY8L3NwYW4+LS08c3Bhbi1jbGFzcz0nY2hhcHRlci10aXRsZSc+MTY6LUF1bnQtU3VlPC9zcGFuPg=="><span class="chapter-number">96</span>  <span class="chapter-title">16: Aunt Sue</span></span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOi8yMDE1LzE3LzIwMTUtMTcuaHRtbDxzcGFuLWNsYXNzPSdjaGFwdGVyLW51bWJlcic+OTc8L3NwYW4+LS08c3Bhbi1jbGFzcz0nY2hhcHRlci10aXRsZSc+MTc6LU5vLVN1Y2gtVGhpbmctYXMtVG9vLU11Y2g8L3NwYW4+"><span class="chapter-number">97</span>  <span class="chapter-title">17: No Such Thing as Too Much</span></span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOi8yMDE1LzE4LzIwMTUtMTguaHRtbDxzcGFuLWNsYXNzPSdjaGFwdGVyLW51bWJlcic+OTg8L3NwYW4+LS08c3Bhbi1jbGFzcz0nY2hhcHRlci10aXRsZSc+MTg6LUxpa2UtYS1HSUYtRm9yLVlvdXItWWFyZDwvc3Bhbj4="><span class="chapter-number">98</span>  <span class="chapter-title">18: Like a GIF For Your Yard</span></span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOi8yMDE1LzIwLzIwMTUtMjAuaHRtbDxzcGFuLWNsYXNzPSdjaGFwdGVyLW51bWJlcic+OTk8L3NwYW4+LS08c3Bhbi1jbGFzcz0nY2hhcHRlci10aXRsZSc+MjA6LUluZmluaXRlLUVsdmVzLWFuZC1JbmZpbml0ZS1Ib3VzZXM8L3NwYW4+"><span class="chapter-number">99</span>  <span class="chapter-title">20: Infinite Elves and Infinite Houses</span></span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOi8yMDE1LzIxLzIwMTUtMjEuaHRtbDxzcGFuLWNsYXNzPSdjaGFwdGVyLW51bWJlcic+MTAwPC9zcGFuPi0tPHNwYW4tY2xhc3M9J2NoYXB0ZXItdGl0bGUnPjIxOi1SUEctU2ltdWxhdG9yLTIwWFg8L3NwYW4+"><span class="chapter-number">100</span>  <span class="chapter-title">21: RPG Simulator 20XX</span></span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOi8yMDE1LzIzLzIwMTUtMjMuaHRtbDxzcGFuLWNsYXNzPSdjaGFwdGVyLW51bWJlcic+MTAxPC9zcGFuPi0tPHNwYW4tY2xhc3M9J2NoYXB0ZXItdGl0bGUnPjIzOi1PcGVuaW5nLXRoZS1UdXJpbmctTG9jazwvc3Bhbj4="><span class="chapter-number">101</span>  <span class="chapter-title">23: Opening the Turing Lock</span></span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1uYXZiYXI6TWFpbiBTaXRl">Main Site</span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1uYXZiYXI6aHR0cHM6Ly9ndXNsaXBraW4uZ2l0aHViLmlvLw==">https://guslipkin.github.io/</span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1uYXZiYXI6Q29udGFjdCBNZQ==">Contact Me</span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1uYXZiYXI6aHR0cHM6Ly9ndXNsaXBraW4uZ2l0aHViLmlvL2NvbnRhY3QuaHRtbA==">https://guslipkin.github.io/contact.html</span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1uYXZiYXI6QWJvdXQgQW9D">About AoC</span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1uYXZiYXI6aHR0cHM6Ly9hZHZlbnRvZmNvZGUuY29tL2Fib3V0">https://adventofcode.com/about</span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1uYXZiYXI6aHR0cHM6Ly93d3cubGlua2VkaW4uY29tL2luL2d1c2xpcGtpbi8=">https://www.linkedin.com/in/guslipkin/</span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1uYXZiYXI6aHR0cHM6Ly93d3cuZ2l0aHViLmNvbS9ndXNsaXBraW4=">https://www.github.com/guslipkin</span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWJyZWFkY3J1bWJzLTIwMjQ=">2024</span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWJyZWFkY3J1bWJzLTxzcGFuLWNsYXNzPSdjaGFwdGVyLW51bWJlcic+OTwvc3Bhbj4tLTxzcGFuLWNsYXNzPSdjaGFwdGVyLXRpdGxlJz4xMzotQ2xhdy1Db250cmFwdGlvbjwvc3Bhbj4="><span class="chapter-number">9</span>  <span class="chapter-title">13: Claw Contraption</span></span></p>
+</div>
+<div id="quarto-meta-markdown" class="hidden">
+<p><span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLW1ldGF0aXRsZQ=="><span class="chapter-title">13: Claw Contraption</span> – Gus Lipkin’s Awesome Code</span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLXR3aXR0ZXJjYXJkdGl0bGU="><span class="chapter-title">13: Claw Contraption</span> – Gus Lipkin’s Awesome Code</span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLW9nY2FyZHRpdGxl"><span class="chapter-title">13: Claw Contraption</span> – Gus Lipkin’s Awesome Code</span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLW1ldGFzaXRlbmFtZQ==">Gus Lipkin’s Awesome Code</span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLXR3aXR0ZXJjYXJkZGVzYw=="></span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLW9nY2FyZGRkZXNj"></span></p>
+</div>
+</section>
+
+</main> <!-- /main -->
+<script id = "quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+    const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+    const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+    let newTheme = '';
+    if(darkModeDefault) {
+      newTheme = isAlternate ? baseTheme : alternateTheme;
+    } else {
+      newTheme = isAlternate ? alternateTheme : baseTheme;
+    }
+    const changeGiscusTheme = () => {
+      // From: https://github.com/giscus/giscus/issues/336
+      const sendMessage = (message) => {
+        const iframe = document.querySelector('iframe.giscus-frame');
+        if (!iframe) return;
+        iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+      }
+      sendMessage({
+        setConfig: {
+          theme: newTheme
+        }
+      });
+    }
+    const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+    if (isGiscussLoaded) {
+      changeGiscusTheme();
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  const darkModeDefault = false;
+  let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+    toggleGiscusIfUsed(toAlternate, darkModeDefault);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a  href="/2024/07/2024-07.html" class="pagination-link" aria-label="07: Bridge Repair">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class='chapter-number'>8</span>  <span class='chapter-title'>07: Bridge Repair</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a  href="/2024/14/2024-14.html" class="pagination-link" aria-label="14: Restroom Redoubt">
+        <span class="nav-page-text"><span class='chapter-number'>10</span>  <span class='chapter-title'>14: Restroom Redoubt</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+</body>
+
+</html>
