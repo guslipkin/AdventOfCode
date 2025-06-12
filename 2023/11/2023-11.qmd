@@ -1,0 +1,161 @@
+---
+title: "11: Cosmic Expansion"
+format: html
+---
+
+```{r}
+#| message: false
+library(mistlecode)
+
+options(scipen = 999)
+```
+
+```{r}
+df <-
+  readLines('input.txt') |>
+  strsplit('') |>
+  do.call(rbind, args = _)
+```
+
+
+## Part 1
+
+I struggled way too hard with this. I should eat something. I'm pleased with my `apply`/`do.call` chain.
+
+```{r}
+expanded <-
+  df |>
+  apply(2, \(x) if (all(x == '.')) matrix('.', ncol = 2, nrow = length(x)) else matrix(x, ncol = 1)) |>
+  do.call(cbind, args = _) |>
+  apply(1, \(x) if (all(x == '.')) matrix('.', nrow = 2, ncol = length(x)) else matrix(x, nrow = 1)) |>
+  do.call(rbind, args = _)
+
+coords <-
+  expanded |>
+  mistlecode::matrix_to_coords() |>
+  dplyr::filter(.data$data == '#')
+
+coords |>
+  nrow() |>
+  seq_len() |>
+  combn(2) |>
+  t() |>
+  tibble::as_tibble() |>
+  `colnames<-`(c('x', 'y')) |>
+  purrr::pmap_int(\(x, y) {
+    x <- coords[x,]
+    y <- coords[y,]
+    
+    abs(y$row - x$row) + abs(y$col - x$col)
+  }) |>
+  sum()
+```
+
+## Part 2
+
+> 618800216794
+
+```{r}
+col <- ncol(df)
+mult <- 1e6
+nums <-
+  df |>
+  stringr::str_replace_all('\\.', '1') |>
+  stringr::str_replace('#', '0') |>
+  matrix(ncol = col, byrow = TRUE) |>
+  apply(2, \(x) if (all(x %in% c('1', mult))) matrix(mult, ncol = 1, nrow = length(x)) else matrix(x, ncol = 1)) |>
+  apply(1, \(x) if (all(x %in% c('1', mult))) matrix(mult, nrow = 1, ncol = length(x)) else matrix(x, nrow = 1)) |>
+  as.numeric() |>
+  matrix(ncol = col)
+
+coords <-
+  nums |>
+  mistlecode::matrix_to_coords() |>
+  dplyr::filter(.data$data == '0') |>
+  dplyr::arrange(.data$col, .data$row)
+
+coords |>
+  nrow() |>
+  seq_len() |>
+  combn(2) |>
+  t() |>
+  tibble::as_tibble() |>
+  `colnames<-`(c('x', 'y')) |>
+  purrr::pmap_int(\(x, y) {
+    r1 <- coords[x, 'row']; c1 <- coords[x, 'col']
+    r2 <- coords[y, 'row']; c2 <- coords[y, 'col']
+    sum(nums[r1:r2,c1]) + sum(nums[r1,c1:c2])
+  }) |>
+  sum(nrow(coords), 1)
+```
+
+
+```{r}
+col <-
+  df |>
+  ncol() |>
+  seq_len() |>
+  purrr::map_lgl(\(x) all(df[,x] == '.')) |>
+  which()
+row <-
+  df |>
+  nrow() |>
+  seq_len() |>
+  purrr::map_lgl(\(x) all(df[x,] == '.')) |>
+  which()
+
+coords <-
+  df |>
+  mistlecode::matrix_to_coords() |>
+  dplyr::filter(.data$data == '#') |>
+  dplyr::arrange(.data$col, .data$row)
+
+coords |>
+  nrow() |>
+  seq_len() |>
+  combn(2) |>
+  t() |>
+  tibble::as_tibble() |>
+  `colnames<-`(c('x', 'y')) |>
+  purrr::pmap_int(\(x, y) {
+    x <- coords[x,]
+    y <- coords[y,]
+    
+    cl <- sum(dplyr::between(col, x$col, y$col)) * 1e1
+    rw <- sum(dplyr::between(row, x$row, y$row)) * 1e1
+    abs(y$row + rw - x$row) + abs(y$col + cl - x$col)
+  }) |>
+  sum()
+```
+
+> 459898489496
+
+```{r}
+expanded <-
+  df |>
+  apply(2, \(x) if (all(x == '.')) matrix('.', ncol = 2, nrow = length(x)) else matrix(x, ncol = 1)) |>
+  do.call(cbind, args = _) |>
+  apply(1, \(x) if (all(x == '.')) matrix('.', nrow = 2, ncol = length(x)) else matrix(x, nrow = 1)) |>
+  do.call(rbind, args = _)
+
+coords <-
+  expanded |>
+  mistlecode::matrix_to_coords() |>
+  dplyr::filter(.data$data == '#')
+
+coords |>
+  nrow() |>
+  seq_len() |>
+  combn(2) |>
+  t() |>
+  tibble::as_tibble() |>
+  `colnames<-`(c('x', 'y')) |>
+  purrr::pmap_int(\(x, y) {
+    x <- coords[x,]
+    y <- coords[y,]
+    
+    abs(y$row - x$row) + abs(y$col - x$col)
+  }) |>
+  sum()
+```
+

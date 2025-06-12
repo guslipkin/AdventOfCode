@@ -1,0 +1,43 @@
+---
+title: "15: Lens Library"
+format: html
+---
+
+```{r}
+#| message: false
+library(mistlecode)
+
+options(scipen = 999)
+```
+
+```{r}
+dt <-
+  readLines("input.txt") |>
+  stringr::str_split_1(',')
+```
+
+## Part 1
+
+Not too bad. I just needed to get the recursion right and forgot that I need to actually `return(y)` instead of just `y` and the math is done on `y + i[1]`.
+
+```{r}
+do_math <- function(i, y = 0) {
+  if (length(i) == 0) return(y)
+  do_math(i[-1], ((y + i[1]) * 17) %% 256)
+}
+
+dt |>
+  purrr::map_int(\(x) {
+    x |>
+      utf8ToInt() |>
+      do_math()
+  }) |>
+  sum()
+```
+
+## Part 2
+
+```{r}
+
+```
+

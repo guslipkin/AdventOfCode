@@ -1,0 +1,58 @@
+---
+title: "2018-07: The Sum of Its Parts"
+format: html
+---
+
+```{r}
+library(tidyverse)
+library(data.table)
+```
+
+```{r}
+dt <- fread("test.txt", header = FALSE) |>
+  select(V2, V8) |>
+  rename("predecessor" = V2, "task" = V8)
+t <- dt$task
+p <- dt$predecessor
+head(dt)
+```
+
+## Part 1
+
+```{r}
+DiagrammeR::mermaid(c("graph LR;",
+                      apply(dt[rowSums(is.na(dt)) == 0, ], 1, function(x) {
+                        paste0(x["predecessor"], " --> ", x["task"], ";")
+                      })))
+```
+
+```{r}
+start <- unique(p[!(p %in% t)])
+end <- unique(t[!(t %in% p)])
+vec <- c()
+ls <- list()
+
+getParent <- function(x) {
+  x <- dt$predecessor[dt$task %in% x]
+  if(length(x) > 0) {
+    x <- rev(sort(unique(x)))
+    ls <<- append(ls, paste(rev(x), collapse = ""))
+    vec <<- c(vec, x)
+    return(getParent(x))
+  } else { return(x) }
+}
+
+getParent(end)
+lapply(ls, function(x) {
+  unique(str_split(x, ""))
+}) |>
+  rev() |>
+  unlist() |>
+  unique() -> vec
+paste(c(vec, end), collapse = "")
+```
+
+KVCSHBXDQMJGFZYROUAPLIEWTN
+CKVSHBXDQMJGFZYROUAPLIEWTN
+KVCBSHXDJMGQFYRZOAULPIEWTN
+KCVBHSDXFGJMQRYZOAULPIEWTN

@@ -1,58 +1,49 @@
 ---
-title: "2018-07: The Sum of Its Parts"
+title: "07: "
 format: html
 ---
 
 ```{r}
-library(tidyverse)
-library(data.table)
+#| message: false
+library(mistlecode)
+
+options(scipen = 999)
 ```
 
 ```{r}
-dt <- fread("test.txt", header = FALSE) |>
-  select(V2, V8) |>
-  rename("predecessor" = V2, "task" = V8)
-t <- dt$task
-p <- dt$predecessor
-head(dt)
+dt <-
+  'input.txt' |>
+  readLines() |>
+  stringr::str_extract_all(' ([A-Z]{1}) ') |>
+  purrr::map(\(x) stringr::str_remove_all(x, ' ')) |>
+  unlist() |>
+  matrix(ncol = 2, byrow = TRUE) |>
+  tibble::as_tibble(.name_repair = 'minimal') |>
+  setNames(c('x', 'y'))
 ```
 
 ## Part 1
 
-```{r}
-DiagrammeR::mermaid(c("graph LR;",
-                      apply(dt[rowSums(is.na(dt)) == 0, ], 1, function(x) {
-                        paste0(x["predecessor"], " --> ", x["task"], ";")
-                      })))
-```
+KVBCJGHMZSDQRXFYOAULPIEWTN
+KCJMSDVBHXFQRYGZOAULPIEWTN
 
 ```{r}
-start <- unique(p[!(p %in% t)])
-end <- unique(t[!(t %in% p)])
-vec <- c()
-ls <- list()
-
-getParent <- function(x) {
-  x <- dt$predecessor[dt$task %in% x]
-  if(length(x) > 0) {
-    x <- rev(sort(unique(x)))
-    ls <<- append(ls, paste(rev(x), collapse = ""))
-    vec <<- c(vec, x)
-    return(getParent(x))
-  } else { return(x) }
+recurse <- function(steps, node, path = c()) {
+  path <- unique(c(node, path))
+  opts <-
+    steps |>
+    dplyr::filter(.data$y == node) |>
+    dplyr::pull(.data$x) |>
+    sort() |>
+    rev()
+  if (length(opts) == 0) return(path)
+  for (o in opts) {
+    path <- recurse(steps, o, path)
+  }
+  return(path)
 }
-
-getParent(end)
-lapply(ls, function(x) {
-  unique(str_split(x, ""))
-}) |>
-  rev() |>
-  unlist() |>
-  unique() -> vec
-paste(c(vec, end), collapse = "")
+start <- dt$y[which(!(dt$y %in% dt$x))] |> unique()
+dt |>
+  recurse(start) |>
+  paste0(collapse = '')
 ```
-
-KVCSHBXDQMJGFZYROUAPLIEWTN
-CKVSHBXDQMJGFZYROUAPLIEWTN
-KVCBSHXDJMGQFYRZOAULPIEWTN
-KCVBHSDXFGJMQRYZOAULPIEWTN

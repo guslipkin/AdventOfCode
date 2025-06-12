@@ -1,0 +1,69 @@
+---
+title: "11: "
+format: html
+---
+
+```{r}
+#| message: false
+library(mistlecode)
+
+options(scipen = 999)
+```
+
+```{r}
+dt <- c(125, 17)
+# dt <- c(4189, 413, 82070, 61, 655813, 7478611, 0, 8)
+```
+
+## Part 1
+
+lmao. I'm going to fall for this hook, line, and sinker.
+
+```{r}
+for(i in 1:25) {
+  dt <-
+    dt |>
+    purrr::map(\(x) {
+      chr_x <- as.character(x)
+      if (x == 0) {
+        1
+      } else if (nchar(chr_x) %% 2 == 0) {
+        c(substr(chr_x, 1, nchar(chr_x) / 2), substr(chr_x, nchar(chr_x) / 2 + 1, nchar(chr_x))) |>
+          as.numeric()
+      } else {
+        x * 2024
+      }
+    }) |>
+    unlist()
+}
+length(dt)
+```
+
+## Part 2
+
+Spoiler alert. I fell for it.
+
+```{r}
+dt <- as.character(dt)[9]
+for(i in 26:75) {
+  dt <-
+    dt |>
+    purrr::map(\(x) {
+      if (x == '0') {
+        '1'
+      } else if (nchar(x) %% 2 == 0) {
+        c(
+          substr(x, 1, nchar(x) / 2), 
+          substr(x, nchar(x) / 2 + 1, nchar(x))
+        )
+      } else {
+        x |>
+          as.numeric() |>
+          prod(2024) |>
+          as.character()
+      }
+    }) |>
+    unlist()
+}
+length(dt)
+```

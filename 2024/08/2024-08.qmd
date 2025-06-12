@@ -1,0 +1,67 @@
+---
+title: "08: "
+format: html
+---
+
+```{r}
+#| message: false
+library(mistlecode)
+
+options(scipen = 999)
+```
+
+```{r}
+dt <- 
+  'input2.txt' |>
+  readLines() |>
+  stringr::str_split('', simplify = TRUE)
+```
+
+## Part 1
+
+302
+
+```{r}
+antinodes <- matrix('.', nrow(dt), ncol(dt))
+dt[dt != '.'] |> 
+  unique() |>
+  purrr::map(\(n) {
+    locs <- 
+      which(dt == n, arr.ind = TRUE) |>
+      tibble::as_tibble()
+    locs |>
+      purrr::pmap(\(row, col) {
+        current <- tibble::tibble('row' = row, 'col' = col)
+        locs <- dplyr::anti_join(x = locs, y = current, by = c('row', 'col'))
+        if (nrow(locs) == 0) return(x)
+        locs |>
+          dplyr::bind_rows(current) |>
+          dplyr::mutate(
+            'anti_r' = ifelse(
+              .data$row == min(.data$row),
+              .data$row - abs(.data$row - .env$row),
+              .data$row + abs(.data$row - .env$row)
+            ),
+            .by = 'row'
+          ) |>
+          dplyr::mutate(
+            'anti_c' = ifelse(
+              .data$col == min(.data$col),
+              .data$col - abs(.data$col - .env$col),
+              .data$col + abs(.data$col - .env$col)
+            ),
+            .by = 'col'
+          ) |>
+          suppressWarnings()
+      }) |>
+      purrr::list_rbind()
+  }) |>
+  purrr::list_rbind() |>
+  dplyr::filter(
+    dplyr::between(.data$anti_r, 1, nrow(dt)),
+    dplyr::between(.data$anti_c, 1, ncol(dt))
+  ) |>
+  dplyr::select('anti_r', 'anti_c') |>
+  unique() |>
+  nrow()
+```
