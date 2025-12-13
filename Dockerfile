@@ -24,6 +24,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libgmp-dev \
     libharfbuzz-dev \
     libfribidi-dev \
+    libglpk-dev \
+    libgmp3-dev \
+    libx11-dev \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 

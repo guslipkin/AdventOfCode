@@ -4,10 +4,9 @@ services:
     # image: rocker/rstudio:4.4.3
     container_name: rstudio
     volumes:
-      - ./AdventOfCode:/home/rstudio/AdventOfCode
-      - ./docs:/home/rstudio/AdventOfCode/docs
-      - ./.cache:/home/rstudio/.cache
+      - .:/home/rstudio/AdventOfCode
       - ./rstudio-config:/home/.config
+      - .cache:/home/rstudio/.cache
     environment:
       - DISABLE_AUTH=true
     ports:
