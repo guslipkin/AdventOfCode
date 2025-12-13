@@ -5,6 +5,7 @@ services:
     container_name: rstudio
     volumes:
       - ./AdventOfCode:/home/rstudio/AdventOfCode
+      - ./docs:/home/rstudio/AdventOfCode/docs
       - ./.cache:/home/rstudio/.cache
       - ./rstudio-config:/home/.config
     environment:
