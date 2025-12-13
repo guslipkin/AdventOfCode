@@ -1,0 +1,124 @@
+---
+title: "Restroom Redoubt"
+format: html
+date: "2024-12-14"
+---
+
+```{r}
+#| message: false
+library(mistlecode)
+
+options(scipen = 999)
+```
+
+```{r}
+mdt <-
+  'input.txt' |>
+  readLines() |>
+  stringr::str_match_all('-?\\d+') |>
+  purrr::map(\(x) {
+    x <- as.integer(x)
+    list(
+      'p' = c(x[1], x[2]) + 1, # row,col
+      'v' = c(x[3], x[4])
+    )
+  })
+```
+
+## Part 1
+
+When I was almost done I realized I could've just multiplied the vectors by 100 then not needed a loop. Oh well. Easy enough.
+
+```{r}
+m <- matrix(list(), nrow = 103, ncol = 101)
+dt <- mdt
+for(i in 1:100) {
+  dt <- purrr::map(dt, \(x) {
+      p <- x$p + x$v
+      p[1] <- p[1] %% ncol(m); if (p[1] == 0) p[1] <- ncol(m);
+      p[2] <- p[2] %% nrow(m); if (p[2] == 0) p[2] <- nrow(m);
+      list('p' = p, 'v' = x$v)
+    })
+}
+
+p <-
+  dt |>
+  purrr::map(\(x) x$p |> matrix(ncol = 2) |> as.data.frame()) |>
+  purrr::list_rbind() |>
+  setNames(c('col', 'row')) |>
+  dplyr::select('row', 'col')
+
+mid_row <- ceiling(nrow(m) / 2); mid_col <- ceiling(ncol(m) / 2);
+one <- p[p$row < mid_row & p$col < mid_col,] |> nrow()
+two <- p[p$row < mid_row & p$col > mid_col,] |> nrow()
+three <- p[p$row > mid_row & p$col < mid_col,] |> nrow()
+four <- p[p$row > mid_row & p$col > mid_col,] |> nrow()
+prod(one, two, three, four)
+```
+
+## Part 2
+
+Ugh. `mistlecode::coords_to_matrix()` isn't working. I guess I'll use `{ggplot}`. Figuring out how to identify the tree was annoying. I tried clicking through the first 500 iterations with `{ggplot}` but that wasn't going anywhere. I took a bit but I figured that the tree would probably have either high or low density in terms of points vs white space. Took a gander and just ran a loop until the initial state was repeated then checked the max and min densities. Sure enough. Max density it was.
+
+```{r}
+m <- matrix(list(), nrow = 103, ncol = 101)
+filled <- c(Inf, 0); which_filled <- c(0, 0)
+```
+
+```{r}
+dt1 <- purrr::map(mdt, \(x) {
+      p <- x$p + x$v
+      p[1] <- p[1] %% ncol(m); if (p[1] == 0) p[1] <- ncol(m);
+      p[2] <- p[2] %% nrow(m); if (p[2] == 0) p[2] <- nrow(m);
+      list('p' = p, 'v' = x$v)
+    })
+i <- 2
+repeat {
+  dt <- purrr::map(mdt, \(x) {
+      p <- x$p + (x$v * i)
+      p[1] <- p[1] %% ncol(m); if (p[1] == 0) p[1] <- ncol(m);
+      p[2] <- p[2] %% nrow(m); if (p[2] == 0) p[2] <- nrow(m);
+      list('p' = p, 'v' = x$v)
+    })
+  if (identical(dt, dt1)) break
+  dt <-
+    dt |>
+    purrr::map(\(x) x$p |> matrix(ncol = 2) |> as.data.frame()) |>
+    purrr::list_rbind() |>
+    setNames(c('col', 'row'))
+  f <- nrow(unique(dt)) / prod(dim(m))
+  if (f < filled[1]) {
+    filled[1] <- f 
+    which_filled[1] <- i
+  } else if (f > filled[2]) {
+    filled[2] <- f
+    which_filled[2] <- i
+  }
+  i <- i + 1
+}
+```
+
+```{r}
+purrr::map(1:2, \(i) {
+  dt <- purrr::map(mdt, \(x) {
+      p <- x$p + (x$v * which_filled[i])
+      p[1] <- p[1] %% ncol(m); if (p[1] == 0) p[1] <- ncol(m);
+      p[2] <- p[2] %% nrow(m); if (p[2] == 0) p[2] <- nrow(m);
+      list('p' = p, 'v' = x$v)
+    })
+  dt |>
+    purrr::map(\(x) x$p |> matrix(ncol = 2) |> as.data.frame()) |>
+    purrr::list_rbind() |>
+    setNames(c('col', 'row')) |>
+    ggplot2::ggplot() +
+    ggplot2::geom_point(ggplot2::aes(x = col, y = -row)) +
+    ggplot2::theme_void()
+})
+```
+
+```{r}
+which_filled[2]
+```
+
+
+

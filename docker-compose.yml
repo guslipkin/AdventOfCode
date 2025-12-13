@@ -1,0 +1,14 @@
+services:
+  rstudio:
+    build: .
+    # image: rocker/rstudio:4.4.3
+    container_name: rstudio
+    volumes:
+      - ./AdventOfCode:/home/rstudio/AdventOfCode
+      - ./.cache:/home/rstudio/.cache
+      - ./rstudio-config:/home/.config
+    environment:
+      - DISABLE_AUTH=true
+    ports:
+      - '8787:8787'
+    platform: linux/arm64

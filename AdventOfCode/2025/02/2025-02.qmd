@@ -1,0 +1,55 @@
+---
+title: "Gift Shop"
+format: html
+date: "2025-12-02"
+---
+
+```{r}
+#| message: false
+library(mistlecode)
+
+options(scipen = 999)
+```
+
+## Part 1
+
+Fun litle bit of regex. I'm pleased it was that easy.
+
+```{r}
+'input.txt' |>
+  readLines() |>
+  stringr::str_split_1(',') |>
+  stringr::str_split('-') |>
+  purrr::map(\(x) {
+    sq <- x[1]:x[2]
+    sq[
+      sq |>
+        as.character() |>
+        stringr::str_detect('^(\\d+)(\\1)$')
+    ]
+  }) |>
+  unlist() |>
+  sum()
+```
+
+## Part 2
+
+Just a little regex modification. Nice and simple.
+
+```{r}
+'input.txt' |>
+  readLines() |>
+  stringr::str_split_1(',') |>
+  stringr::str_split('-') |>
+  purrr::map(\(x) {
+    sq <- x[1]:x[2]
+    sq[
+      sq |>
+        as.character() |>
+        stringr::str_detect('^(\\d+)(\\1){1,}$')
+    ]
+  }) |>
+  unlist() |>
+  sum()
+```
+

@@ -1,0 +1,15 @@
+{
+  "hash": "42cf3825b0dad8bbd930e5cded828c64",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\ntitle: \"2018-01: Chronal Calibration\"\nformat: html\n---\n\n\n\n\n[https://adventofcode.com/2018/day/1](https://adventofcode.com/2018/day/1)\n\n\n\n\n::: {.cell}\n\n```{.r .cell-code}\nlibrary(data.table)\ndt <- fread(\"input.txt\")\nhead(dt)\n```\n\n::: {.cell-output .cell-output-stdout}\n\n```\n      V1\n   <int>\n1:   -14\n2:    15\n3:     9\n4:    19\n5:    18\n6:    14\n```\n\n\n:::\n:::\n\n\n\n\n## Part 1\n\n\n\n\n::: {.cell}\n\n```{.r .cell-code}\nsum(dt$V1)\n```\n\n::: {.cell-output .cell-output-stdout}\n\n```\n[1] 425\n```\n\n\n:::\n:::\n\n\n\n\n## Part 2\n\n\n\n\n::: {.cell}\n\n```{.r .cell-code}\nbreakFlag <- FALSE\nre_pete <- 1\nwhile (!breakFlag) {\n  vec <- cumsum(rep(dt$V1, re_pete))\n  \n  twice <- vec[duplicated(vec)]\n  \n  if (length(twice >= 1)) {\n    print(twice[1])\n    breakFlag <- TRUE\n  } else {\n    re_pete <- re_pete + 1\n  }\n}\n```\n\n::: {.cell-output .cell-output-stdout}\n\n```\n[1] 57538\n```\n\n\n:::\n:::\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

@@ -1,0 +1,42 @@
+project:
+  type: website
+  output-dir: docs
+  render:
+    - "index.qmd"
+    - "solutions.qmd"
+    - "2025/*/*.qmd"
+    - "2024/*/*.qmd"
+
+website:
+  title: "Gus Lipkin's Awesome Code"
+  navbar:
+    background: primary
+    left:
+      - href: solutions.qmd
+        text: My Solutions
+      - href: https://guslipkin.github.io/
+        text: Main Site
+      - href: https://adventofcode.com/about
+        text: About AoC
+    right:
+      - href: https://guslipkin.github.io/contact.html
+        text: Contact Me
+    tools:
+      - href: https://www.linkedin.com/in/guslipkin/
+        icon: linkedin
+      - href: https://www.github.com/guslipkin
+        icon: github
+
+format:
+  html:
+    theme:
+      light: flatly
+      dark: darkly
+    css: styles.css
+    toc: true
+    code-line-numbers: true
+    code-link: true
+
+execute:
+  freeze: auto
+  cache: true

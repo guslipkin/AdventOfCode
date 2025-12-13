@@ -57,3 +57,5 @@ docs/CNAME
 .aocdlconfig
 aocdl
 downloadScript.sh
+/.cache
+.bash_history

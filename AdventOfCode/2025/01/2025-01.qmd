@@ -1,0 +1,53 @@
+---
+title: "Secret Entrance"
+format: html
+date: "2025-12-01"
+---
+
+```{r}
+#| message: false
+library(mistlecode)
+
+options(scipen = 999)
+```
+
+## Part 1
+
+I'm very proud of this one. I did it the fancy math way instead of trying to simulate an actual dial.
+
+```{r}
+'input.txt' |>
+  readLines() |>
+  stringr::str_replace_all('L', '-') |>
+  stringr::str_replace_all('R', '') |>
+  as.numeric() |>
+  append(50, after = 0) |>
+  cumsum() |>
+  (\(x) x %% 100)() |>
+  table() |>
+  _[['0']]
+```
+
+## Part 2
+
+Disappointed in myself on this one. I tried a bunch of fancy stuff including simulating the dial by move, but the real easy solution was just to move the dial step by step and then apply the solution from above.
+
+```{r}
+'input.txt' |>
+  readLines() |>
+  stringr::str_replace_all('L', '-') |>
+  stringr::str_replace_all('R', '') |>
+  as.numeric() |>
+  # append(50, after = 0) |>
+  purrr::map(\(x) {
+    x |>
+      sign() |>
+      rep(abs(x))
+  }) |>
+  unlist() |>
+  append(50, after = 0) |>
+  cumsum() |>
+  (\(x) x %% 100)() |>
+  table() |>
+  _[['0']]
+```

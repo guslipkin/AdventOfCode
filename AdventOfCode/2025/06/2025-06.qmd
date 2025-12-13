@@ -1,0 +1,66 @@
+---
+title: "Trash Compactor"
+format: html
+date: "2025-12-06"
+---
+
+```{r}
+#| message: false
+library(mistlecode)
+
+options(scipen = 999)
+```
+
+## Part 1
+
+Used `apply` because it's much better at this sort of thing than `purrr::pmap()`.
+
+```{r}
+'input.txt' |>
+  readLines() |>
+  stringr::str_split('\\s+') |>
+  purrr::map(\(x) x[x != '']) |>
+  do.call(rbind, args = _) |>
+  apply(\(x) {
+    x[-length(x)] |>
+      paste0(collapse = x[length(x)]) |>
+      parse(text = _) |>
+      eval()
+  }, MARGIN = 2) |>
+  sum()
+```
+
+## Part 2
+
+Took me way too long to realize my problems where because numbers could be left or right padded and then I had to figure out how to deal with it.
+
+```{r}
+which_op <-
+  'input.txt' |> 
+  readLines() |>
+  utils::tail(1) |>
+  stringr::str_split_1('') |>
+  (\(x) which(x != ' '))()
+
+'input.txt' |>
+  readLines() |>
+  # utils::head(-1) |>
+  purrr::map(\(x) {
+    x |>
+      stringr::str_sub_all(start = which_op, end = c(which_op[-1] -1, nchar(x))) |>
+      unlist()
+  }) |>
+  do.call(rbind, args = _) |>
+  apply(\(x) {
+    x[-length(x)] |>
+      stringr::str_split('') |>
+      do.call(rbind, args = _) |>
+      apply(paste0, MARGIN = 2, collapse = '') |>
+      stringr::str_trim() |>
+      (\(x) x[x != ''])() |>
+      paste0(collapse = x[length(x)]) |>
+      parse(text = _) |>
+      eval()
+  }, MARGIN = 2) |>
+  sum()
+```

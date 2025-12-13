@@ -1,0 +1,111 @@
+---
+title: "Welcome!"
+format: html
+execute: 
+  enabled: true
+  cache: false
+  freeze: false
+---
+
+Welcome to my Advent of Code ~~blog~~ book! All of my solutions are in R with varying degrees of complexity and documentation.
+
+::: {.callout-caution}
+
+## Under Construction
+
+I'm currently trying to convert this from a Quarto Book to a Quarto Blog. There ended up being too much for the Book format to handle so I'm hoping a Blog is easier to maintain.
+
+:::
+
+## [CLICK HERE FOR MY SOLUTIONS](solutions.html)
+
+## Star Chart
+
+```{r}
+#| output: false
+#| include: false
+library(quarto)
+years <- c(2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025)
+stars <- c(  43,   18,   16,   12,    8,   23,   26,   28,   16,   19,   10)
+
+mapply(\(y, s) {
+  c("star" = rev(seq_len(s))) |>
+    `names<-`(rep(y, s)) |>
+    c(setNames(0, y))
+}, years, stars) |>
+  unlist() |>
+  tibble::enframe(name = 'year', value = 'stars') |>
+  dplyr::mutate(
+    'label' = max(.data$stars),
+    .by = 'year'
+  ) |>
+  dplyr::filter(
+    .data$stars > 0 | dplyr::n() == 1, 
+    .by = 'year'
+  ) |>
+  dplyr::mutate(
+    'label' = ifelse(.data$label == .data$stars, .data$label, NA),
+    'stars' = ifelse(.data$stars == 0, NA, .data$stars)
+  ) |>
+  ggplot2::ggplot(ggplot2::aes(x = year, y = stars)) +
+  ggstar::geom_star(fill = "gold", size = 5) +
+  ggplot2::geom_label(ggplot2::aes(label = label), size = 3) +
+  ggplot2::theme_minimal() +
+  ggplot2::theme(
+    legend.position = "none",
+    axis.ticks = ggplot2::element_blank(),
+    axis.text = ggplot2::element_text(face = "bold"),
+    axis.text.y = ggplot2::element_blank(),
+    panel.grid = ggplot2::element_blank(),
+    panel.background = ggplot2::element_rect(fill = 'transparent', colour = 'transparent'),
+    plot.background = ggplot2::element_rect(fill = 'transparent', color = NA)
+  ) +
+  ggplot2::xlab("Year") + ggplot2::ylab("Stars") +
+  ggplot2::ylim(0, max(stars) + 8) +
+  ggplot2::coord_cartesian(clip = "off") +
+  ggplot2::geom_label(
+    x = .7,
+    y = -4, # year tick box
+    label = paste(rep(" ", 149), collapse = ""),
+    hjust = 0,
+    fill = "white"
+  ) +
+  ggplot2::geom_label(x = 6, y = -6.3, label = "       ") + # year label box
+  ggtext::geom_richtext(
+    x = .17,
+    y = max(stars) / 2 + 4,
+    label = "",
+    angle = 90,
+    label.padding = ggplot2::unit(c(.6, 1.1, .4, 1.1), "lines")
+  ) +
+  ggplot2::geom_label(
+    x = .5,
+    y = max(stars) + 6,
+    label = paste(
+      "My Advent of Code Star Chart\nTotal Stars: ",
+      sum(stars),
+      "/",
+      (10 * 50) + (1 * 24)
+    ),
+    hjust = 0
+  ) -> p
+print(p)
+ggplot2::ggsave("stars.png", p, bg = 'transparent')
+```
+
+![](stars.png)
+
+```{r}
+#| echo: false
+#| output: false
+# source("post-packages.R")
+
+cat("adventofcode.guslipkin.me", file = "docs/CNAME")
+```
+
+## My Favorite Solutions
+
+- [2016-12](2016/12/2016-12.html) and [2017-08](2017/08/2017-08.html): I [created a small assembly style computer](https://mistlecode.guslipkin.me/reference/assembly) that solves the problems for me given a set of registers and instructions.
+- [2021-09](2021/09/2021-09.html): I used the `dbscan` clustering method to solve a path finding issue. 
+- [2022-04](2022/04/2022-04.html): While not my fastest part 1, part 2 took me just 38 seconds!
+- [2022-11](2022/11/2022-11.html): I used [S3 Classes](https://adv-r.hadley.nz/s3.html#s3) and [function factories](https://adv-r.hadley.nz/function-factories.html?q=function%20fac#function-factories) for the first time, and got just a little bit better at recursion.

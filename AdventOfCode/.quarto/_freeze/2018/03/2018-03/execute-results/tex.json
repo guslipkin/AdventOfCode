@@ -1,0 +1,18 @@
+{
+  "hash": "3df84e042f395dfbc19b4927fb73cbff",
+  "result": {
+    "markdown": "# 2018-03: No Matter How You Slice It\n\n\n\n::: {.cell hash='2018-03_cache/pdf/unnamed-chunk-1_124d21a86bdb533f1c944068248decc7'}\n\n```{.r .cell-code}\nlibrary(data.table)\nlibrary(stringi)\ndt <- readLines(\"input.txt\")\ndt <- data.table(do.call(rbind, stri_match_all_regex(dt, \"#([0-9]{1,4}) @ ([0-9]{0,4}),([0-9]{0,4}): ([0-9]{0,4})x([0-9]{0,4})\")))\ncolnames(dt) <- c(\"input\", \"id\", \"xPos\", \"yPos\", \"xSize\", \"ySize\")\ndt <- data.table(apply(dt[, 2:6], 2, as.numeric))\nhead(dt)\n```\n\n::: {.cell-output .cell-output-stdout}\n```\n   id xPos yPos xSize ySize\n1:  1  393  863    11    29\n2:  2  675  133    15    26\n3:  3  690  605    25    22\n4:  4  342  752    19    17\n5:  5  840   36    14    18\n6:  6  671  653    10    23\n```\n:::\n:::\n\n\n\n## Part 1\n\n\n\n::: {.cell hash='2018-03_cache/pdf/unnamed-chunk-2_fedba4efafc8734fb53249cd03933dce'}\n\n```{.r .cell-code}\nmat <- matrix(0, 1000, 1000)\nfor(x in 1:nrow(dt)) {\n  xPos <- dt$xPos[x] + 1\n  xSize <- dt$xSize[x] - 1\n  yPos <- dt$yPos[x] + 1\n  ySize <- dt$ySize[x] - 1\n  mat[xPos:(xPos + xSize), yPos:(yPos + ySize)] <- mat[xPos:(xPos + xSize), yPos:(yPos + ySize)] + 1\n}\nlength(mat[mat >= 2])\n```\n\n::: {.cell-output .cell-output-stdout}\n```\n[1] 98005\n```\n:::\n:::\n\n\n\n## Part 2\n\n\n\n::: {.cell hash='2018-03_cache/pdf/unnamed-chunk-3_d905b633fd012da9792456af8f8bd3c5'}\n\n```{.r .cell-code}\nfor(x in 1:nrow(dt)) {\n  xPos <- dt$xPos[x] + 1\n  xSize <- dt$xSize[x] - 1\n  yPos <- dt$yPos[x] + 1\n  ySize <- dt$ySize[x] - 1\n  if (all(mat[xPos:(xPos + xSize), yPos:(yPos + ySize)] == 1)) { print(x) }\n}\n```\n\n::: {.cell-output .cell-output-stdout}\n```\n[1] 331\n```\n:::\n:::\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {
+      "knitr": [
+        "{\"type\":\"list\",\"attributes\":{},\"value\":[]}"
+      ]
+    },
+    "preserve": null,
+    "postProcess": false
+  }
+}

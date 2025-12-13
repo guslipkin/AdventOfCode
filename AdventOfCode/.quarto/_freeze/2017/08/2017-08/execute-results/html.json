@@ -1,0 +1,15 @@
+{
+  "hash": "b1aacd3790bbbc4a23101cfab798a5e1",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\ntitle: \"08: I Heard You Like Registers\"\n---\n\n::: {.cell}\n\n```{.r .cell-code}\nlibrary(mistlecode)\ndt <- fread(\"input.txt\")\n```\n:::\n\n\n\n\n## Part 1\n\nThis was so much fun. I like that I had to hack around my computer a bit with the `proc` function to do the actual processing, but it's good to keep in my back pocket for later.\n\n\n\n\n::: {.cell}\n\n```{.r .cell-code}\nregisters <- \n  dt$V1 |>\n  unique() |>\n  sort()\nregisters <- \n  rep(0L, length(registers)) |>\n  as.list() |>\n  `names<-`(registers)\n\nfunctions <- list(\n  \"proc\" = \\(x, y) {\n    x <- str_match(x, \"([a-z]+) (inc|dec) (-?[0-9]+) if (.*)\")[1,-1]\n    iff <- eval(parse(text = glue(\"self${x[4]}\")))\n    if (iff) {\n      self[[x[1]]] <- self[[x[2]]](x[1], as.integer(x[3]))\n    }\n    private$.inc()\n  },\n  \"inc\" = \\(x, y) {\n    self[[x]] <- self[[x]] + y\n  },\n  \"dec\" = \\(x, y) {\n    self[[x]] <- self[[x]] - y\n  }\n)\n\nx <- \n  readLines(\"input.txt\") |>\n  add_processor()\na <- create_assembly(registers, functions)$run(x)\nas.list(a)[names(registers)] |>\n  unlist() |>\n  max()\n```\n\n::: {.cell-output .cell-output-stdout}\n\n```\n[1] 2971\n```\n\n\n:::\n:::\n\n\n\n\n## Part 2\n\nHmmm. Okay. Small register and function mods and we're good to go!\n\n\n\n\n::: {.cell}\n\n```{.r .cell-code}\nregisters$maximum_value <- 0L\n\nfunctions$proc <- \\(x, y) {\n  x <- str_match(x, \"([a-z]+) (inc|dec) (-?[0-9]+) if (.*)\")[1,-1]\n    iff <- eval(parse(text = glue(\"self${x[4]}\")))\n    if (iff) {\n      self[[x[1]]] <- self[[x[2]]](x[1], as.integer(x[3]))\n      if (self[[x[1]]] > self$maximum_value) self$maximum_value <- self[[x[1]]]\n    }\n    private$.inc()\n}\n\ncreate_assembly(registers, functions)$run(x, target = \"maximum_value\")\n```\n\n::: {.cell-output .cell-output-stdout}\n\n```\n[1] 4254\n```\n\n\n:::\n:::\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

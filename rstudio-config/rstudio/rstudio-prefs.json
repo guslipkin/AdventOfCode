@@ -1,0 +1,12 @@
+{
+    "save_workspace": "never",
+    "always_save_history": false,
+    "reuse_sessions_for_project_links": true,
+    "posix_terminal_shell": "bash",
+    "initial_working_directory": "~",
+    "insert_native_pipe_operator": true,
+    "highlight_r_function_calls": true,
+    "rainbow_parentheses": true,
+    "editor_theme": "Material",
+    "show_hidden_files": true
+}

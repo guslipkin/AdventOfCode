@@ -1,0 +1,58 @@
+---
+title: "Lobby"
+format: html
+date: "2025-12-03"
+---
+
+```{r}
+#| message: false
+library(mistlecode)
+
+options(scipen = 999)
+```
+
+## Part 1
+
+Proud of this one. Just find the biggest number that isn't the last number, then find the biggest number after the biggest number.
+
+```{r}
+'input.txt' |>
+  readLines() |>
+  stringr::str_split('') |>
+  purrr::map_int(\(x) {
+    x <- as.integer(x)
+    biggest <- which.max(head(x, -1))
+    second_biggest <- which.max(x[(biggest+1):length(x)]) + biggest
+    glue::glue('{x[biggest]}{x[second_biggest]}') |>
+      as.integer()
+  }) |>
+  sum()
+```
+
+## Part 2
+
+Getting the recursion right was a bit annoying. I had an off-by-one error in my `which.max()`. I do like these kinds of puzzles where the second part is doing the first part a more general way.
+
+```{r}
+find_biggest <- function(x, value = integer(), pos = 0) {
+  remaining <- 12 - length(value)
+  if (remaining == 0) return(value)
+  biggest <- which.max(x[(pos+1):(length(x)-remaining+1)]) + pos
+  value <- c(value, x[biggest])
+  pos <- biggest
+  find_biggest(x, value, pos)
+}
+
+'input.txt' |>
+  readLines() |>
+  stringr::str_split('') |>
+  purrr::map_dbl(\(x) {
+    x |>
+      as.integer() |>
+      find_biggest() |>
+      paste0(collapse = '') |>
+      as.numeric()
+  }) |>
+  sum()
+```
+

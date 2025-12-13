@@ -1,0 +1,15 @@
+{
+  "hash": "1eeab7e34559f1967124ae380397a728",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\ntitle: \"Trash Compactor\"\nformat: html\ndate: \"2025-12-06\"\n---\n\n::: {.cell}\n\n```{.r .cell-code}\nlibrary(mistlecode)\n\noptions(scipen = 999)\n```\n:::\n\n\n\n\n## Part 1\n\nUsed `apply` because it's much better at this sort of thing than `purrr::pmap()`.\n\n\n\n\n::: {.cell}\n\n```{.r .cell-code}\n'input.txt' |>\n  readLines() |>\n  stringr::str_split('\\\\s+') |>\n  purrr::map(\\(x) x[x != '']) |>\n  do.call(rbind, args = _) |>\n  apply(\\(x) {\n    x[-length(x)] |>\n      paste0(collapse = x[length(x)]) |>\n      parse(text = _) |>\n      eval()\n  }, MARGIN = 2) |>\n  sum()\n```\n\n::: {.cell-output .cell-output-stdout}\n\n```\n[1] 4405895212738\n```\n\n\n:::\n:::\n\n\n\n\n## Part 2\n\nTook me way too long to realize my problems where because numbers could be left or right padded and then I had to figure out how to deal with it.\n\n\n\n\n::: {.cell}\n\n```{.r .cell-code}\nwhich_op <-\n  'input.txt' |> \n  readLines() |>\n  utils::tail(1) |>\n  stringr::str_split_1('') |>\n  (\\(x) which(x != ' '))()\n\n'input.txt' |>\n  readLines() |>\n  # utils::head(-1) |>\n  purrr::map(\\(x) {\n    x |>\n      stringr::str_sub_all(start = which_op, end = c(which_op[-1] -1, nchar(x))) |>\n      unlist()\n  }) |>\n  do.call(rbind, args = _) |>\n  apply(\\(x) {\n    x[-length(x)] |>\n      stringr::str_split('') |>\n      do.call(rbind, args = _) |>\n      apply(paste0, MARGIN = 2, collapse = '') |>\n      stringr::str_trim() |>\n      (\\(x) x[x != ''])() |>\n      paste0(collapse = x[length(x)]) |>\n      parse(text = _) |>\n      eval()\n  }, MARGIN = 2) |>\n  sum()\n```\n\n::: {.cell-output .cell-output-stdout}\n\n```\n[1] 7450962489289\n```\n\n\n:::\n:::\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

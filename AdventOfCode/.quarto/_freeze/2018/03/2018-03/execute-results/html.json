@@ -1,0 +1,15 @@
+{
+  "hash": "c06c953e0febfa81a872b723cb2de5ef",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\ntitle: \"2018-03: No Matter How You Slice It\"\nformat: html\n---\n\n::: {.cell}\n\n```{.r .cell-code}\nlibrary(data.table)\nlibrary(stringi)\ndt <- readLines(\"input.txt\")\npattern <- \n  \"#([0-9]{1,4}) @ ([0-9]{0,4}),([0-9]{0,4}): ([0-9]{0,4})x([0-9]{0,4})\"\ndt <- \n  data.table(do.call(rbind, stri_match_all_regex(dt, pattern)))\ncolnames(dt) <- c(\"input\", \"id\", \"xPos\", \"yPos\", \"xSize\", \"ySize\")\ndt <- data.table(apply(dt[, 2:6], 2, as.numeric))\nhead(dt)\n```\n\n::: {.cell-output .cell-output-stdout}\n\n```\n      id  xPos  yPos xSize ySize\n   <num> <num> <num> <num> <num>\n1:     1   393   863    11    29\n2:     2   675   133    15    26\n3:     3   690   605    25    22\n4:     4   342   752    19    17\n5:     5   840    36    14    18\n6:     6   671   653    10    23\n```\n\n\n:::\n:::\n\n\n\n\n## Part 1\n\n\n\n\n::: {.cell}\n\n```{.r .cell-code}\nmat <- matrix(0, 1000, 1000)\nfor(x in 1:nrow(dt)) {\n  xPos <- dt$xPos[x] + 1\n  xSize <- dt$xSize[x] - 1\n  yPos <- dt$yPos[x] + 1\n  ySize <- dt$ySize[x] - 1\n  mat[xPos:(xPos + xSize), yPos:(yPos + ySize)] <- \n    mat[xPos:(xPos + xSize), yPos:(yPos + ySize)] + 1\n}\nlength(mat[mat >= 2])\n```\n\n::: {.cell-output .cell-output-stdout}\n\n```\n[1] 98005\n```\n\n\n:::\n:::\n\n\n\n\n## Part 2\n\n\n\n\n::: {.cell}\n\n```{.r .cell-code}\nfor(x in 1:nrow(dt)) {\n  xPos <- dt$xPos[x] + 1\n  xSize <- dt$xSize[x] - 1\n  yPos <- dt$yPos[x] + 1\n  ySize <- dt$ySize[x] - 1\n  if (all(mat[xPos:(xPos + xSize), yPos:(yPos + ySize)] == 1)) { print(x) }\n}\n```\n\n::: {.cell-output .cell-output-stdout}\n\n```\n[1] 331\n```\n\n\n:::\n:::\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "hash": "4c3aaef489427fb6ade695051ed9e7f4",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\ntitle: \"Historian Hysteria\"\nformat: html\ndate: \"2024-12-01\"\n---\n\n::: {.cell}\n\n```{.r .cell-code}\nlibrary(mistlecode)\n\noptions(scipen = 999)\n```\n:::\n\n::: {.cell}\n\n```{.r .cell-code}\ndt <- \n  'input.txt' |>\n  readr::read_delim(delim = '   ', col_names = FALSE, show_col_types = FALSE)\n```\n\n::: {.cell-output .cell-output-stderr}\n\n```\nRegistered S3 methods overwritten by 'bit64':\n  method               from  \n  as.double.integer64  cheapr\n  as.integer.integer64 cheapr\n```\n\n\n:::\n:::\n\n\n\n\n## Part 1\n\nThis was nice and quick. I'm pretty happy with my global rank 518.\n\n\n\n\n::: {.cell}\n\n```{.r .cell-code}\ndt1 <- dt$X1 |> sort()\ndt2 <- dt$X2 |> sort()\n\nabs(dt1 - dt2) |> sum()\n```\n\n::: {.cell-output .cell-output-stdout}\n\n```\n[1] 1151792\n```\n\n\n:::\n:::\n\n\n\n\n## Part 2\n\nThis took way too long for me. I was really struggling with the counting portion for some reason and it took a long time for me to internalize that `x %in% y` and `which` don't actually count things. Might need to add that to `mistlecode`...\n\n\n\n\n::: {.cell}\n\n```{.r .cell-code}\ndt |>\n  dplyr::mutate('count' = purrr::map_int(.data$X1, \\(x) {\n    which(.data$X2 == x) |> length()\n  })) |>\n  dplyr::mutate('count' = .data$X1 * .data$count) |>\n  dplyr::pull(.data$count) |>\n  sum()\n```\n\n::: {.cell-output .cell-output-stdout}\n\n```\n[1] 21790168\n```\n\n\n:::\n:::\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

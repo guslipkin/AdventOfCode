@@ -1,0 +1,15 @@
+{
+  "hash": "ee3d451fee2508be82b0beb5f606c497",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\ntitle: \"Lobby\"\nformat: html\ndate: \"2025-12-03\"\n---\n\n::: {.cell}\n\n```{.r .cell-code}\nlibrary(mistlecode)\n\noptions(scipen = 999)\n```\n:::\n\n\n\n\n## Part 1\n\nProud of this one. Just find the biggest number that isn't the last number, then find the biggest number after the biggest number.\n\n\n\n\n::: {.cell}\n\n```{.r .cell-code}\n'input.txt' |>\n  readLines() |>\n  stringr::str_split('') |>\n  purrr::map_int(\\(x) {\n    x <- as.integer(x)\n    biggest <- which.max(head(x, -1))\n    second_biggest <- which.max(x[(biggest+1):length(x)]) + biggest\n    glue::glue('{x[biggest]}{x[second_biggest]}') |>\n      as.integer()\n  }) |>\n  sum()\n```\n\n::: {.cell-output .cell-output-stdout}\n\n```\n[1] 16812\n```\n\n\n:::\n:::\n\n\n\n\n## Part 2\n\nGetting the recursion right was a bit annoying. I had an off-by-one error in my `which.max()`. I do like these kinds of puzzles where the second part is doing the first part a more general way.\n\n\n\n\n::: {.cell}\n\n```{.r .cell-code}\nfind_biggest <- function(x, value = integer(), pos = 0) {\n  remaining <- 12 - length(value)\n  if (remaining == 0) return(value)\n  biggest <- which.max(x[(pos+1):(length(x)-remaining+1)]) + pos\n  value <- c(value, x[biggest])\n  pos <- biggest\n  find_biggest(x, value, pos)\n}\n\n'input.txt' |>\n  readLines() |>\n  stringr::str_split('') |>\n  purrr::map_dbl(\\(x) {\n    x |>\n      as.integer() |>\n      find_biggest() |>\n      paste0(collapse = '') |>\n      as.numeric()\n  }) |>\n  sum()\n```\n\n::: {.cell-output .cell-output-stdout}\n\n```\n[1] 166345822896410\n```\n\n\n:::\n:::\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

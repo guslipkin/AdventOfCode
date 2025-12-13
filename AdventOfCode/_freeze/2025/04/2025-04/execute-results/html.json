@@ -1,0 +1,15 @@
+{
+  "hash": "4420e4311b3e16456c1b201faf3ced15",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\ntitle: \"Printing Department\"\nformat: html\ndate: \"2025-12-04\"\ndraft: true\n---\n\n::: {.cell}\n\n```{.r .cell-code}\nlibrary(mistlecode)\n\noptions(scipen = 999)\n```\n:::\n\n\n\n## Part 1\n\n\n\n::: {.cell}\n\n```{.r .cell-code}\nmat <- mistlecode::read_matrix('input.txt')\nmat_all <- mat\nexpand.grid(\n  'x' = mat |> ncol() |> seq_len(),\n  'y' = mat |> nrow() |> seq_len()\n) |>\n  purrr::pmap_int(\\(x, y) {\n    mat_copy <- mat\n    if (mat[y, x] == '.') return(4)\n    mat_copy[y, x] <- '.'\n    vals <- \n      mistlecode::get_adjacent_values(y, x, mat_copy) |>\n      as.vector()\n    if (all(vals == '.')) return(4)\n    vals |>\n      table() |>\n      _[['@']]\n  }) |>\n  (\\(x) x[x < 4])() |>\n  length()\n```\n\n::: {.cell-output .cell-output-stdout}\n\n```\n[1] 1512\n```\n\n\n:::\n:::\n\n\n\n> 1512\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

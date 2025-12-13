@@ -1,0 +1,40 @@
+---
+title: "Printing Department"
+format: html
+date: "2025-12-04"
+draft: true
+---
+
+```{r}
+#| message: false
+library(mistlecode)
+
+options(scipen = 999)
+```
+
+## Part 1
+
+```{r}
+mat <- mistlecode::read_matrix('input.txt')
+mat_all <- mat
+expand.grid(
+  'x' = mat |> ncol() |> seq_len(),
+  'y' = mat |> nrow() |> seq_len()
+) |>
+  purrr::pmap_int(\(x, y) {
+    mat_copy <- mat
+    if (mat[y, x] == '.') return(4)
+    mat_copy[y, x] <- '.'
+    vals <- 
+      mistlecode::get_adjacent_values(y, x, mat_copy) |>
+      as.vector()
+    if (all(vals == '.')) return(4)
+    vals |>
+      table() |>
+      _[['@']]
+  }) |>
+  (\(x) x[x < 4])() |>
+  length()
+```
+
+> 1512

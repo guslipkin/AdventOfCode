@@ -1,0 +1,15 @@
+{
+  "hash": "c80cd6b935c71c7f438be174a927c044",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\ntitle: \"Gift Shop\"\nformat: html\ndate: \"2025-12-02\"\n---\n\n::: {.cell}\n\n```{.r .cell-code}\nlibrary(mistlecode)\n\noptions(scipen = 999)\n```\n:::\n\n\n\n\n## Part 1\n\nFun litle bit of regex. I'm pleased it was that easy.\n\n\n\n\n::: {.cell}\n\n```{.r .cell-code}\n'input.txt' |>\n  readLines() |>\n  stringr::str_split_1(',') |>\n  stringr::str_split('-') |>\n  purrr::map(\\(x) {\n    sq <- x[1]:x[2]\n    sq[\n      sq |>\n        as.character() |>\n        stringr::str_detect('^(\\\\d+)(\\\\1)$')\n    ]\n  }) |>\n  unlist() |>\n  sum()\n```\n\n::: {.cell-output .cell-output-stdout}\n\n```\n[1] 12850231731\n```\n\n\n:::\n:::\n\n\n\n\n## Part 2\n\nJust a little regex modification. Nice and simple.\n\n\n\n\n::: {.cell}\n\n```{.r .cell-code}\n'input.txt' |>\n  readLines() |>\n  stringr::str_split_1(',') |>\n  stringr::str_split('-') |>\n  purrr::map(\\(x) {\n    sq <- x[1]:x[2]\n    sq[\n      sq |>\n        as.character() |>\n        stringr::str_detect('^(\\\\d+)(\\\\1){1,}$')\n    ]\n  }) |>\n  unlist() |>\n  sum()\n```\n\n::: {.cell-output .cell-output-stdout}\n\n```\n[1] 24774350322\n```\n\n\n:::\n:::\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

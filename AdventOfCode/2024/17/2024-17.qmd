@@ -1,0 +1,58 @@
+---
+title: "Chronospatial Computer"
+format: html
+date: "2024-12-17"
+draft: true
+---
+
+```{r}
+#| message: false
+library(mistlecode)
+
+options(scipen = 999)
+```
+
+```{r}
+program <-
+  '0,1,5,4,3,0' |>
+  stringr::str_split_1(',') |>
+  matrix(ncol = 2, byrow = TRUE) |>
+  apply(1, paste0, collapse = ' ')
+```
+
+## Part 1
+
+```{r}
+registers <- list(
+  'A' = 729,
+  'B' = 0,
+  'C' = 0,
+  'out' = c(''),
+  'jump' = FALSE
+)
+functions <- list(
+  '0' = \(x) { self$A <- self$A / (2 ^ self$get_combo(x)) },
+  '1' = \(x) { print(x); self$B <- bitwXor(self$B, self$get_combo(x)); },
+  '2' = \(x) { self$B <- self$get_combo(x) %% 8 },
+  '3' = \(x) {
+    if (self$A != 0 & !self$jump) {
+      self$index <- self$get_combo(x)
+      self$jump <- TRUE
+    }
+    if (self$jump) self$jump <- FALSE
+  },
+  '4' = \(x) { self$B <- bitwXor(self$B, self$C) },
+  '5' = \(x) { self$out <- c(self$out, self$get_combo(x) %% 8) },
+  '6' = \(x) { self$B <- self$A / (2 ^ self$get_combo(x)) },
+  '7' = \(x) { self$C <- self$A / (2 ^ self$get_combo(x)) },
+  'get_combo' = \(x) {
+    if (x %in% 0:3) x
+    else if (x == 4) self$A
+    else if (x == 5) self$B
+    else if (x == 6) self$C
+  }
+)
+
+a <- mistlecode::create_assembly2(registers, functions, regex = '\\d|\\d')
+a$run(program, target = 'out')
+```
