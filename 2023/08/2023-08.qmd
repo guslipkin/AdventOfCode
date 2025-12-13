@@ -1,6 +1,7 @@
 ---
-title: "08: Haunted Wasteland"
+title: "Haunted Wasteland"
 format: html
+date: "2023-12-08"
 ---
 
 ```{r}

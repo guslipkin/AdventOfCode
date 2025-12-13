@@ -9,6 +9,7 @@ listing:
   contents: # Make sure to update the rendered folders in _quarto.yml
     - '2025/*/*.qmd'
     - '2024/*/*.qmd'
+    - '2023/*/*.qmd'
   date-format: 'YYYY-DD'
   sort: "date desc"
   type: table

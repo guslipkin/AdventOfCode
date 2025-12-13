@@ -1,6 +1,8 @@
 ---
-title: "17: "
+title: "Clumsy Crucible"
 format: html
+date: "2023-12-17"
+draft: true
 ---
 
 ```{r}

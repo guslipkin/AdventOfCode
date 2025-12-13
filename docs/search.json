@@ -21,88 +21,130 @@
     "text": "Part 2\nUgh. mistlecode::coords_to_matrix() isn’t working. I guess I’ll use {ggplot}. Figuring out how to identify the tree was annoying. I tried clicking through the first 500 iterations with {ggplot} but that wasn’t going anywhere. I took a bit but I figured that the tree would probably have either high or low density in terms of points vs white space. Took a gander and just ran a loop until the initial state was repeated then checked the max and min densities. Sure enough. Max density it was.\n\nm &lt;- matrix(list(), nrow = 103, ncol = 101)\nfilled &lt;- c(Inf, 0); which_filled &lt;- c(0, 0)\n\n\ndt1 &lt;- purrr::map(mdt, \\(x) {\n      p &lt;- x$p + x$v\n      p[1] &lt;- p[1] %% ncol(m); if (p[1] == 0) p[1] &lt;- ncol(m);\n      p[2] &lt;- p[2] %% nrow(m); if (p[2] == 0) p[2] &lt;- nrow(m);\n      list('p' = p, 'v' = x$v)\n    })\ni &lt;- 2\nrepeat {\n  dt &lt;- purrr::map(mdt, \\(x) {\n      p &lt;- x$p + (x$v * i)\n      p[1] &lt;- p[1] %% ncol(m); if (p[1] == 0) p[1] &lt;- ncol(m);\n      p[2] &lt;- p[2] %% nrow(m); if (p[2] == 0) p[2] &lt;- nrow(m);\n      list('p' = p, 'v' = x$v)\n    })\n  if (identical(dt, dt1)) break\n  dt &lt;-\n    dt |&gt;\n    purrr::map(\\(x) x$p |&gt; matrix(ncol = 2) |&gt; as.data.frame()) |&gt;\n    purrr::list_rbind() |&gt;\n    setNames(c('col', 'row'))\n  f &lt;- nrow(unique(dt)) / prod(dim(m))\n  if (f &lt; filled[1]) {\n    filled[1] &lt;- f \n    which_filled[1] &lt;- i\n  } else if (f &gt; filled[2]) {\n    filled[2] &lt;- f\n    which_filled[2] &lt;- i\n  }\n  i &lt;- i + 1\n}\n\n\npurrr::map(1:2, \\(i) {\n  dt &lt;- purrr::map(mdt, \\(x) {\n      p &lt;- x$p + (x$v * which_filled[i])\n      p[1] &lt;- p[1] %% ncol(m); if (p[1] == 0) p[1] &lt;- ncol(m);\n      p[2] &lt;- p[2] %% nrow(m); if (p[2] == 0) p[2] &lt;- nrow(m);\n      list('p' = p, 'v' = x$v)\n    })\n  dt |&gt;\n    purrr::map(\\(x) x$p |&gt; matrix(ncol = 2) |&gt; as.data.frame()) |&gt;\n    purrr::list_rbind() |&gt;\n    setNames(c('col', 'row')) |&gt;\n    ggplot2::ggplot() +\n    ggplot2::geom_point(ggplot2::aes(x = col, y = -row)) +\n    ggplot2::theme_void()\n})\n\n[[1]]\n\n\n\n\n\n\n\n\n\n[[2]]\n\n\n\n\n\n\n\n\n\nwhich_filled[2]\n\n[1] 7790"
   },
   {
-    "objectID": "2024/13/2024-13.html",
-    "href": "2024/13/2024-13.html",
-    "title": "Claw Contraption",
+    "objectID": "2023/08/2023-08.html",
+    "href": "2023/08/2023-08.html",
+    "title": "Haunted Wasteland",
     "section": "",
-    "text": "library(mistlecode)\n\noptions(scipen = 999)\nFiguring out how best to parse the input was annoying. I need to remember that tidyr::extract() exists.\n.get_buttons &lt;- function(x) {\n  x &lt;-\n    stringr::str_match(x$raw, '(\\\\d+), Y[+=](\\\\d+)')[,-1] |&gt;\n    mistlecode::cast_matrix(as.integer)\n  if (all(is.na(x[1,]))) x[-1,] else x\n}\ndt &lt;-\n  'input.txt' |&gt;\n  readLines() |&gt;\n  tibble::tibble() |&gt;\n  setNames('raw') |&gt;\n  dplyr::mutate(\n    'game' = cumsum(.data$raw == '')\n  ) |&gt;\n  tidyr::nest('data' = raw) |&gt;\n  dplyr::pull(.data$data) |&gt;\n  purrr::map(\\(x) {\n    x &lt;- .get_buttons(x)\n    list('a' = x[1,], 'b' = x[2,], 'p' = x[3,])\n  })"
+    "text": "library(mistlecode)\n\noptions(scipen = 999)\nfile &lt;- 'input.txt'\n\ndir &lt;- \n  file |&gt;\n  readLines(n = 1) |&gt;\n  stringr::str_split_1('')\n  \ndt &lt;-\n  file |&gt;\n  readr::read_csv(skip = 2, trim_ws = TRUE, col_names = FALSE) |&gt;\n  tidyr::separate(X1, into = c('start', 'L'), sep = ' = \\\\(') |&gt;\n  dplyr::mutate('R' = stringr::str_remove_all(.data$X2, '\\\\)')) |&gt;\n  dplyr::select(-'X2')\n\nRegistered S3 methods overwritten by 'bit64':\n  method               from  \n  as.double.integer64  cheapr\n  as.integer.integer64 cheapr\n\n\nRows: 718 Columns: 2\n── Column specification ────────────────────────────────────────────────────────\nDelimiter: \",\"\nchr (2): X1, X2\n\nℹ Use `spec()` to retrieve the full column specification for this data.\nℹ Specify the column types or set `show_col_types = FALSE` to quiet this message."
   },
   {
-    "objectID": "2024/13/2024-13.html#part-1",
-    "href": "2024/13/2024-13.html#part-1",
-    "title": "Claw Contraption",
+    "objectID": "2023/08/2023-08.html#part-1",
+    "href": "2023/08/2023-08.html#part-1",
+    "title": "Haunted Wasteland",
     "section": "Part 1",
-    "text": "Part 1\nI got to do math!!! I’m so proud of myself for this one. Like genuinely actually for realizing I could just math it out. And my solution is so fast too! I probably could’ve done the linear programming, but just solving seemed easier?\n\\[\\begin{gather*}\nix_a + jx_b = X, iy_a + jy_b = Y\\\\\nix_a = X - jx_b, iy_a = Y - jy_b\\\\\ni = \\frac{X - jx_b}{x_a}, i = \\frac{Y - jy_b}{y_a}\\\\\n\\frac{X - jx_b}{x_a} = \\frac{Y - jy_b}{y_a}\\\\\nX - jx_b =\\frac{x_aY - jx_ay_b}{y_a}\\\\\ny_aX - jx_by_a = x_aY - jx_ay_b\\\\\n-jx_by_a + jx_ay_b = x_aY - y_aX\\\\\nj * (-x_by_a + x_ay_b) = x_aY - y_aX\\\\\nj = \\frac{x_aY - y_aX}{x_ay_b - x_by_a}\n\\end{gather*}\\]\n\ndt |&gt;\n  purrr::map(\\(x) {\n    j &lt;-\n      ((x$a[1] * x$p[2]) - (x$a[2] * x$p[1])) / \n      ((x$a[1] * x$b[2]) - (x$b[1] * x$a[2]))\n    i &lt;- (x$p[1] - (j * x$b[1])) / x$a[1]\n    x &lt;- c(i * 3, j * 1)\n    if (all(as.integer(x) == x)) sum(x)\n  }) |&gt;\n  purrr::discard(is.null) |&gt;\n  unlist() |&gt; \n  sum()\n\n[1] 33921"
+    "text": "Part 1\nI have evidence that I struggled some other time, but I have no recollection. This was pretty easy, just had an off-by-one to deal with to get around the modulo of length sometimes being zero.\n\nstart &lt;- function(end, dir) {\n  dt[[dir]][dt$start == end]\n}\n\ncount &lt;- 0\nend &lt;- 'AAA'\nrepeat {\n  end &lt;- start(end, dir[(count %% length(dir)) + 1])\n  if (end == 'ZZZ') break else count &lt;- count + 1\n}\ncount + 1\n\n[1] 17141"
   },
   {
-    "objectID": "2024/13/2024-13.html#part-2",
-    "href": "2024/13/2024-13.html#part-2",
-    "title": "Claw Contraption",
+    "objectID": "2023/08/2023-08.html#part-2",
+    "href": "2023/08/2023-08.html#part-2",
+    "title": "Haunted Wasteland",
     "section": "Part 2",
-    "text": "Part 2\nThis was supremely unsatisfying. I kept multiplying by 10000000000000 instead of adding then for whatever reason if I leave my if statement as an all(x) kinda deal, it doesn’t work right. I spent way too long on random bit64 stuff and trying to solve to get rid of the 10000000000000.\n\ndt |&gt;\n  purrr::map(\\(x) {\n    x$p &lt;- x$p + 10000000000000\n    j &lt;-\n      ((x$a[1] * x$p[2]) - (x$a[2] * x$p[1])) / \n      ((x$a[1] * x$b[2]) - (x$b[1] * x$a[2]))\n    if (j &lt; 0 || j %% 1 != 0) return(NULL)\n    i &lt;- (x$p[1] - (j * x$b[1])) / x$a[1]\n    if (i &lt; 0 || i %% 1 != 0) return(NULL)\n    x &lt;- c(i * 3, j * 1)\n    sum(x)\n  }) |&gt;\n  purrr::discard(is.null) |&gt;\n  unlist() |&gt; \n  sum()\n\n[1] 82261957837868"
+    "text": "Part 2\nI hate when there’s a fancy math way. It’s just least common multiples this time and I’m super dumb for not thinking of this sooner. I did have to be careful with match instead of %in% because that would return the indices in the incorrect order and cause everything to fail.\n\nstart &lt;- function(end, dir) {\n  dt[[dir]][match(end, dt$start)]\n}\n\ncount &lt;- 0\nend &lt;-\n  dt |&gt;\n    dplyr::filter(grepl('A$', .data$start)) |&gt;\n    dplyr::pull(.data$start)\ntargets &lt;-\n  dt |&gt;\n    dplyr::filter(grepl('Z$', .data$start)) |&gt;\n    dplyr::pull(.data$start)\ntarget_pos &lt;- integer(length(end))\nrepeat {\n  end &lt;- start(end, dir[(count %% length(dir)) + 1])\n  if (any(end %in% targets)) {\n    target_pos[end %in% targets] &lt;- count\n    if (!any(target_pos == 0)) break\n  }\n  count &lt;- count + 1\n}\ncheapr::scm(target_pos + 1)\n\n[1] 10818234074807"
   },
   {
-    "objectID": "2024/05/2024-05.html",
-    "href": "2024/05/2024-05.html",
-    "title": "Print Queue",
+    "objectID": "2023/03/2023-03.html",
+    "href": "2023/03/2023-03.html",
+    "title": "Gear Ratios",
     "section": "",
-    "text": "Lots of minor hiccups leading to a major fizzle. Overall I want to see how everyone else’s solutions look, but I think mine is rather elegant, even if a bit slow.\nlibrary(mistlecode)\n\noptions(scipen = 999)\ninput &lt;- 'input.txt'\nskip &lt;- which(readLines(input) == '')\n\ndt1 &lt;- \n  input |&gt;\n  readr::read_delim('|', col_names = FALSE, n_max = skip - 1, show_col_types = FALSE) |&gt;\n  dplyr::filter(!is.na(.data$X2))\n\nRegistered S3 methods overwritten by 'bit64':\n  method               from  \n  as.double.integer64  cheapr\n  as.integer.integer64 cheapr\n\ndt2 &lt;-\n  input |&gt;\n  readLines()\ndt2 &lt;-\n  dt2[(skip+1):length(dt2)] |&gt;\n  strsplit(',') |&gt;\n  purrr::map(as.integer)"
+    "text": "library(mistlecode)\n\noptions(scipen = 999)\ndt &lt;- \n  readLines(\"input.txt\") |&gt;\n  stringr::str_split(\"\")\n\nm &lt;- matrix(unlist(dt), nrow = length(dt), byrow = TRUE)"
   },
   {
-    "objectID": "2024/05/2024-05.html#part-1",
-    "href": "2024/05/2024-05.html#part-1",
-    "title": "Print Queue",
+    "objectID": "2023/03/2023-03.html#part-1",
+    "href": "2023/03/2023-03.html#part-1",
+    "title": "Gear Ratios",
     "section": "Part 1",
-    "text": "Part 1\nThis was really frustrating. I was struggling and eventually found I had lines with even numbers of items. I couldn’t figure out what the heck was up with that and how to get a middle item from an even length set and then eventually realized my input ingestion was messing everything up. Once I switched from read.delim() to readLines(), I was able to clear everything right up.\n\nmiddle_page &lt;-\n  dt2 |&gt;\n  purrr::map_int(\\(x) {\n    if (length(x) %% 2 == 0) print(x)\n    is_valid &lt;-\n      x |&gt;\n      seq_along() |&gt;\n      purrr::map_lgl(\\(i) {\n        if (i == length(x)) return(TRUE)\n        left &lt;- x[i]; right &lt;- x[(i+1):length(x)];\n        check_right &lt;- dt1$X2[dt1$X1 == left]\n        all(right %in% check_right)\n      }) |&gt;\n      all()\n    if (is_valid) x[ceiling(length(x) / 2)] else 0\n  })\nsum(middle_page)\n\n[1] 7307"
+    "text": "Part 1\nThis was so much fun! I love dbscan with all my heart. I also did something really stupid and submitted the test input then had to wait the longest minute of my life to submit the real answer.\n\ndt &lt;- mistlecode::matrix_to_coords(m)\nclust &lt;-\n  dt |&gt;\n  dplyr::filter(data != \".\") |&gt;\n  dplyr::select(-data) |&gt;\n  dbscan::dbscan(sqrt(2), minPts = 2)\ndt &lt;- \n  dt |&gt;\n  dplyr::filter(data != \".\") |&gt;\n  dplyr::mutate(clust = clust$cluster) |&gt;\n  dplyr::filter(any(!grepl('[0-9]', data)), .by = 'clust')\nnumbers &lt;-\n  mistlecode::coords_to_matrix(dt$data, dt$row, dt$col) |&gt;\n  t() |&gt;\n  as.vector() |&gt;\n  paste0(collapse = \"\") |&gt;\n  stringr::str_replace_all('[^0-9]', ' ') |&gt;\n  stringr::str_split(' ') |&gt;\n  unlist() |&gt;\n  as.numeric() |&gt;\n  purrr::discard(is.na)\nsum(numbers, na.rm = TRUE)\n\n[1] 520019"
   },
   {
-    "objectID": "2024/05/2024-05.html#part-2",
-    "href": "2024/05/2024-05.html#part-2",
-    "title": "Print Queue",
+    "objectID": "2023/03/2023-03.html#part-2",
+    "href": "2023/03/2023-03.html#part-2",
+    "title": "Gear Ratios",
     "section": "Part 2",
-    "text": "Part 2\nThis was just a matter of getting the logic straight in my head then putting it on sreen and getting over silly mistakes like filtering for things that passed the test in part 1 instead of things that failed. Except. I’ve always struggled with recursion but I’m getting better at it and I’m getting better at it and I’m getting better at it and eventually I might be able to solve that stupid bag problem from 2020.\n\nswap &lt;- function(x, i = 1) {\n  left &lt;- x[i]; right &lt;- x[i+1];\n  check_right &lt;- dt1$X2[dt1$X1 == left]\n  if (is.na(right)) return(x)\n  if (!(right %in% check_right)) {\n    x[i+1] &lt;- left; x[i] &lt;- right;\n    swap(x, 1)\n  } else { swap(x, i + 1) }\n}\n\ndt2[middle_page == 0] |&gt;\n  purrr::map_int(\\(x) {\n    x &lt;- swap(x)\n    x[ceiling(length(x) / 2)]\n  }) |&gt;\n  sum()\n\n[1] 4713"
+    "text": "Part 2\nThis is really long-winded. I’m sure it could be better functionalized. The hard part wasn’t as much figuring out what goes in a group as much as figuring out what goes in which group.\n\ndt &lt;- mistlecode::matrix_to_coords(m)\nnumber_clust &lt;-\n  dt |&gt;\n  dplyr::filter(grepl('[0-9]', data)) |&gt;\n  dplyr::select(-data) |&gt;\n  dbscan::dbscan(1, minPts = 1)\nnumber_dt &lt;-\n  dt |&gt;\n  dplyr::filter(grepl('[0-9]', data)) |&gt;\n  dplyr::mutate(number_clust = number_clust$cluster)\nclust_dt &lt;- \n  dt |&gt;\n  dplyr::filter(data != \".\") |&gt;\n  dplyr::mutate(clust = clust$cluster) |&gt;\n  dplyr::left_join(number_dt, by = dplyr::join_by(data, row, col)) |&gt;\n  dplyr::filter(any(!grepl('[0-9]', data)), .by = 'clust') |&gt;\n  dplyr::mutate(\n    has_prod = any(data == '*') & length(unique(number_clust[!is.na(number_clust)])) == 2,\n    prod_group = dplyr::cur_group_id(),\n    .by = 'clust'\n  ) |&gt;\n  dplyr::filter(grepl('[0-9]', data))\nhas_prod &lt;-\n  mistlecode::coords_to_matrix(clust_dt$prod_group, clust_dt$row, clust_dt$col) |&gt;\n  t() |&gt;\n  as.vector() |&gt;\n  data.frame() |&gt;\n  `colnames&lt;-`('has_prod') |&gt;\n  dplyr::mutate(t = cumsum(is.na(has_prod))) |&gt;\n  dplyr::filter(dplyr::row_number() == dplyr::n() & !is.na(has_prod), .by = 't') |&gt;\n  dplyr::pull(has_prod)\n\ndata.frame(\n  has_prod,\n  numbers\n) |&gt;\n  dplyr::filter(dplyr::n() &gt;= 2, .by = has_prod) |&gt;\n  dplyr::summarise(val = prod(numbers), .by = has_prod) |&gt;\n  dplyr::pull(val) |&gt;\n  sum()\n\n[1] 75519888"
   },
   {
-    "objectID": "2024/03/2024-03.html",
-    "href": "2024/03/2024-03.html",
-    "title": "Mull It Over",
+    "objectID": "2023/01/2023-01.html",
+    "href": "2023/01/2023-01.html",
+    "title": "Trebuchet?!",
     "section": "",
     "text": "library(mistlecode)\n\noptions(scipen = 999)\ndt &lt;- readLines(\"input.txt\")"
   },
   {
-    "objectID": "2024/03/2024-03.html#part-1",
-    "href": "2024/03/2024-03.html#part-1",
-    "title": "Mull It Over",
+    "objectID": "2023/01/2023-01.html#part-1",
+    "href": "2023/01/2023-01.html#part-1",
+    "title": "Trebuchet?!",
     "section": "Part 1",
-    "text": "Part 1\nI’m really pleased with this. Doing the parse() |&gt; eval() is super super dangerous and should never be done, but it works so I’m happy. I got 343 on the leaderboard which is my best ever.\n\nmul &lt;- function(x, y) x * y\ndt |&gt;\n  stringr::str_extract_all('mul\\\\(\\\\d+,\\\\d+\\\\)') |&gt;\n  unlist() |&gt;\n  purrr::map_int(\\(x) {\n    x |&gt;\n      parse(text = _) |&gt;\n      eval()\n  }) |&gt;\n  sum()\n\n[1] 170068701"
+    "text": "Part 1\nThis wasn’t too bad. Just forgot to unlist initially.\n\ndt |&gt;\n   sapply(\\(x) {\n     x |&gt;\n      str_extract_all('[0-9]') |&gt;\n      unlist() -&gt; y\n    glue::glue('{head(y, 1)}{tail(y, 1)}')\n  }) |&gt;\n  as.numeric() |&gt;\n  sum()\n\n[1] 56397"
   },
   {
-    "objectID": "2024/03/2024-03.html#part-2",
-    "href": "2024/03/2024-03.html#part-2",
-    "title": "Mull It Over",
+    "objectID": "2023/01/2023-01.html#part-2",
+    "href": "2023/01/2023-01.html#part-2",
+    "title": "Trebuchet?!",
     "section": "Part 2",
-    "text": "Part 2\nI didn’t realize the example input changed which messed me up a bit. Then I just had to get my regex right and I was good to go. I’m also pleased with my little if...else if chain. I got an error when x was a mul() call, but then realized that I didn’t have to explicitly check because I was already checking for do() and don't() and if it’s not either of those, then it must be a mul(). Oh, and 502 on the leaderboard for part 2 would’ve been a best ever if not for part 1!\n\ndo &lt;- TRUE\ndt |&gt;\n  stringr::str_extract_all(\"mul\\\\(\\\\d+,\\\\d+\\\\)|do\\\\(\\\\)|don't\\\\(\\\\)\") |&gt;\n  unlist() |&gt;\n  purrr::map_int(\\(x) {\n    if (x == \"don't()\") do &lt;&lt;- FALSE \n    else if (x == \"do()\") do &lt;&lt;- TRUE \n    else if (do) {\n      x &lt;-\n        x |&gt;\n        parse(text = _) |&gt;\n        eval()\n      return(x)\n    }\n    return(0)\n  }) |&gt;\n  sum()\n\n[1] 78683433"
+    "text": "Part 2\nThis took way too long and I hate incomplete examples. Absolutely no indication that oneight flips for both 1 and 8.\n\nnumbers &lt;-\n  c(\n    'one' = 1,\n    'two' = 2,\n    'three' = 3,\n    'four' = 4,\n    'five' = 5,\n    'six' = 6,\n    'seven' = 7,\n    'eight' = 8,\n    'nine' = 9\n  )\ndt |&gt;\n  sapply(\\(x) {\n    n &lt;- c(names(numbers), '[1-9]')\n    i &lt;-\n      x |&gt;\n      stringi::stri_locate_all_regex(n, omit_no_match = TRUE) |&gt;\n      lapply(data.frame) |&gt;\n      purrr::list_rbind() |&gt;\n      dplyr::pull(start) |&gt;\n      order()\n    x &lt;-\n      stringi::stri_match_all_regex(x, n) |&gt;\n      unlist() |&gt;\n      purrr::discard(is.na)\n    y &lt;- ifelse(x %in% names(numbers), numbers[x], x)[i]\n    glue::glue('{head(y, 1)}{tail(y, 1)}')\n  }) |&gt;\n  as.numeric() |&gt;\n  sum()\n\n[1] 55701"
   },
   {
-    "objectID": "2024/01/2024-01.html",
-    "href": "2024/01/2024-01.html",
-    "title": "Historian Hysteria",
+    "objectID": "2024/07/2024-07.html",
+    "href": "2024/07/2024-07.html",
+    "title": "Bridge Repair",
     "section": "",
-    "text": "library(mistlecode)\n\noptions(scipen = 999)\ndt &lt;- \n  'input.txt' |&gt;\n  readr::read_delim(delim = '   ', col_names = FALSE, show_col_types = FALSE)\n\nRegistered S3 methods overwritten by 'bit64':\n  method               from  \n  as.double.integer64  cheapr\n  as.integer.integer64 cheapr"
+    "text": "library(mistlecode)\n\noptions(scipen = 999)\nmat &lt;-\n  'input.txt' |&gt;\n  readLines() |&gt;\n  stringr::str_split(':| ', simplify = TRUE) |&gt;\n  mistlecode::cast_matrix(as.numeric)\nmat &lt;- mat[,-2]"
   },
   {
-    "objectID": "2024/01/2024-01.html#part-1",
-    "href": "2024/01/2024-01.html#part-1",
-    "title": "Historian Hysteria",
+    "objectID": "2024/07/2024-07.html#part-1",
+    "href": "2024/07/2024-07.html#part-1",
+    "title": "Bridge Repair",
     "section": "Part 1",
-    "text": "Part 1\nThis was nice and quick. I’m pretty happy with my global rank 518.\n\ndt1 &lt;- dt$X1 |&gt; sort()\ndt2 &lt;- dt$X2 |&gt; sort()\n\nabs(dt1 - dt2) |&gt; sum()\n\n[1] 1151792"
+    "text": "Part 1\nOkay. At first glance this is some fancy math one that I don’t know enough math to do correctly. After fiddling around a bit and getting it working on the test input, it was time to move to the real one. For ages I kept getting the same wrong output. I thought that maybe it’s because I needed bit64 for 64 bit integers and spent way too long screwing around with that then eventually realized that not only was my input not being read properly (that seems to be a theme this year…), but that the numbers can be double and that solves all my problems. They’re still whole numbers, just not integers. After realizing that, it was a lot of head scratching until I realized that my if statement with return(total) was inside my second for loop when it should be after it. Fixing that led to a victory.\n\ntotals &lt;-\n  mat |&gt;\n  apply(1, \\(r) {\n    target &lt;- r[1]; r &lt;- r[-1]; r &lt;- r[!is.na(r)];\n    grid &lt;- expand.grid(rlang::inject(rep(list(c('*', '+')), length(r) - 1)))\n    for (g in seq_len(nrow(grid))) {\n      ops &lt;- grid[g,] |&gt; unlist() |&gt; unname(); total &lt;- 0;\n      for (i in seq_along(r)[-1]) {\n        if (i == 2) {\n          total &lt;- if (ops[i-1] == '+') r[i-1] + r[i] else r[i-1] * r[i]\n        } else {\n          total &lt;- if (ops[i-1] == '+') total + r[i] else total * r[i]\n        }\n      }\n      if (target == total) return(total)\n    }\n    return(0)\n  }) \npart1 &lt;-\n  totals |&gt; \n  sum() |&gt;\n  print()\n\n[1] 945512582195"
   },
   {
-    "objectID": "2024/01/2024-01.html#part-2",
-    "href": "2024/01/2024-01.html#part-2",
-    "title": "Historian Hysteria",
+    "objectID": "2024/07/2024-07.html#part-2",
+    "href": "2024/07/2024-07.html#part-2",
+    "title": "Bridge Repair",
     "section": "Part 2",
-    "text": "Part 2\nThis took way too long for me. I was really struggling with the counting portion for some reason and it took a long time for me to internalize that x %in% y and which don’t actually count things. Might need to add that to mistlecode…\n\ndt |&gt;\n  dplyr::mutate('count' = purrr::map_int(.data$X1, \\(x) {\n    which(.data$X2 == x) |&gt; length()\n  })) |&gt;\n  dplyr::mutate('count' = .data$X1 * .data$count) |&gt;\n  dplyr::pull(.data$count) |&gt;\n  sum()\n\n[1] 21790168"
+    "text": "Part 2\nI spent a while on part 2 as well, but had more of a plan than part 1. I initially had a cool little recursion method that used the same expand.grid and collapsed the string in on itself. It ultimately didn’t end up working and I’m not really sure why. Moving the operations into a function helped make things more readable and then it was just a matter of collapsing the string the right way every time and waiting a while for everything to run. After getting my answer I realized I could reduce grid even further by filtering for rows that contain a concatenate operation since the new numbers must have one.\n\ntictoc::tic()\nfuture::plan(future::multisession, workers = future::availableCores())\nprogressr::with_progress({\n  do_op &lt;- function(x, y, op) {\n    x &lt;- \n      if (op == '*') x * y else if (op == '+') x + y else paste0(x, y, collapse = '')\n    as.numeric(x)\n  }\n  \n  mat2 &lt;- mat[totals == 0,] \n  p &lt;- progressr::progressor(steps = nrow(mat2))\n  mat2 |&gt;\n    nrow() |&gt;\n    seq_len() |&gt;\n    furrr::future_map_dbl(\\(rr) {\n      p()\n      rr &lt;- mat2[rr,]\n      target &lt;- rr[1]; rr &lt;- rr[-1]; rr &lt;- rr[!is.na(rr)];\n      grid &lt;- \n        expand.grid(rlang::inject(rep(list(c('*', '+', '|')), length(rr) - 1))) |&gt;\n        dplyr::filter(dplyr::if_any(tidyselect::everything(), \\(x) x == '|'))\n      for (g in seq_len(nrow(grid))) {\n        ops &lt;- grid[g,] |&gt; unlist() |&gt; as.character()\n        r &lt;- rr; i &lt;- 1;\n        repeat {\n          if (r[1] &gt; target || i &gt; length(ops)) break\n          x &lt;- do_op(r[1], r[2], ops[i])\n          r &lt;- c(x, utils::tail(r, -2))\n          i &lt;- i + 1\n        }\n        if (isTRUE(r == target)) return(r)\n      }\n      return(0)\n    }) |&gt;\n    sum(part1)\n}, handlers = progressr::handler_cli())\n\n[1] 2.716911e+14\n\nfuture::plan(future::sequential())\ntictoc::toc()\n\n408.647 sec elapsed"
+  },
+  {
+    "objectID": "2024/04/2024-04.html",
+    "href": "2024/04/2024-04.html",
+    "title": "Ceres Search",
+    "section": "",
+    "text": "library(mistlecode)\n\noptions(scipen = 999)\ndt &lt;-\n  readLines(\"input.txt\") |&gt; \n  strsplit('')\n\ndt &lt;-\n  dt |&gt;\n  unlist() |&gt;\n  matrix(ncol = length(dt[[1]]), byrow = TRUE)"
+  },
+  {
+    "objectID": "2024/04/2024-04.html#part-1",
+    "href": "2024/04/2024-04.html#part-1",
+    "title": "Ceres Search",
+    "section": "Part 1",
+    "text": "Part 1\nI’m disappointed in myself. I really should have a function to parse input like this by now, but again I sat on my butt and didn’t make one then struggled for it. I also got super duper stuck when my mistlecode::get_diagonal() wasn’t able to pick up diagonals that start in the lower right corner. It’s something I’ll have to go fix. I’ll probably re-do the whole thing to just say ‘top-left’ or ‘bottom-right’ or something to actually say what corner it’s coming off of rather than trying to say how it’s divided. Anyways, I knew I had overlapping diagonals and needed to drop them, but I was dropping them inside count_diag() which wasn’t doing anything except dropping a letter off the diagonals. Once I moved that outside, I was able to recognize my missing corner.\n\ncount &lt;- function(x) {\n  x |&gt;\n    paste0(collapse = '') |&gt;\n    mistlecode::strg_extract_all('XMAS|SAMX') |&gt;\n    unlist() |&gt;\n    length()\n}\n\ncount_diag &lt;- function(x, dim, dir) {\n  x |&gt;\n    purrr::map_int(\\(x) {\n      mistlecode::get_diagonal(dt, x, dim, dir) |&gt;\n        count()\n    }) |&gt;\n    sum()\n}\n\nrows &lt;- dt |&gt; apply(1, count) |&gt; sum()\ncols &lt;- dt |&gt; apply(2, count) |&gt; sum()\n\ndrow &lt;- dt |&gt; nrow() |&gt; seq_len() |&gt; count_diag('row', 'down')\ndcol &lt;- dt |&gt; ncol() |&gt; seq_len() |&gt; tail(-1) |&gt; count_diag('col', 'down')\n\nurow &lt;-\n  dt |&gt; rev() |&gt; `dim&lt;-`(rev(dim(dt))) |&gt;\n  nrow() |&gt; seq_len() |&gt; count_diag('row', 'up')\nucol &lt;-\n  dt |&gt;  rev() |&gt; `dim&lt;-`(rev(dim(dt))) |&gt;\n  ncol() |&gt; seq_len() |&gt; tail(-1) |&gt; count_diag('col', 'up')\n\nrows + cols + drow + dcol + urow + ucol\n\n[1] 2524"
+  },
+  {
+    "objectID": "2024/04/2024-04.html#part-2",
+    "href": "2024/04/2024-04.html#part-2",
+    "title": "Ceres Search",
+    "section": "Part 2",
+    "text": "Part 2\nThankfully this was much easier. It was a small struggle adapting my count() which I really didn’t need to do if I hadn’t been so eager to paste0() in my for loop. But if it works, it works, and it was much much faster than part 1.\n\ndt[dt == 'X'] &lt;- ''\n\ncount &lt;- function(x) {\n  x |&gt;\n    stringr::str_count('MAS|SAM') |&gt;\n    sum()\n}\n\ntally &lt;- logical()\nfor (r in seq_len(nrow(dt) - 2)) {\n  for (c in seq_len(ncol(dt) - 2)) {\n    x &lt;- dt[r:(r+2), c:(c+2)]\n    if (x[2, 2] != 'A') next\n    left_right &lt;- paste0(c(x[1,1], x[2,2], x[3,3]), collapse = '')\n    right_left &lt;- paste0(c(x[1,3], x[2,2], x[3,1]), collapse = '')\n    valid &lt;- count(c(left_right, right_left)) == 2\n    if (valid) tally &lt;- c(tally, valid)\n  }\n}\ntally |&gt;\n  sum()\n\n[1] 1873"
+  },
+  {
+    "objectID": "2024/02/2024-02.html",
+    "href": "2024/02/2024-02.html",
+    "title": "Red-Nosed Reports",
+    "section": "",
+    "text": "library(mistlecode)\n\noptions(scipen = 999)\ndt &lt;-\n  'input.txt' |&gt;\n  readLines() |&gt;\n  strsplit(' ') |&gt;\n  purrr::map(as.integer)"
+  },
+  {
+    "objectID": "2024/02/2024-02.html#part-1",
+    "href": "2024/02/2024-02.html#part-1",
+    "title": "Red-Nosed Reports",
+    "section": "Part 1",
+    "text": "Part 1\nI missed the second condition for a pass at first. Mildly annoying, but not too bad globally.\n\ndt |&gt;\n  purrr::map_lgl(\\(x) {\n    x &lt;- x - lag(x)\n    x &lt;- x[!is.na(x)]\n    all(abs(x) %in% 1:3) & (all(x &lt; 0) | all(x &gt; 0))\n  }) |&gt; \n  sum()\n\n[1] 686"
+  },
+  {
+    "objectID": "2024/02/2024-02.html#part-2",
+    "href": "2024/02/2024-02.html#part-2",
+    "title": "Red-Nosed Reports",
+    "section": "Part 2",
+    "text": "Part 2\nI’m really pleased with this. I was trying something more functional, then realized a simple for loop was the way to go and that resulted in a 495 on the leaderboard. It’s also a good example for whatever it’s called that I did with my returns not just being if statements the whole way down.\n\ntest &lt;- function(x) {\n  x &lt;- x - lag(x)\n  x &lt;- x[!is.na(x)]\n  all(abs(x) %in% 1:3) & (all(x &lt; 0) | all(x &gt; 0))\n}\n\ndt |&gt;\n  purrr::map_lgl(\\(x) {\n    if (test(x)) return(TRUE)\n    for(i in seq_along(x)) {\n      if (test(x[-i])) return(TRUE)\n    }\n    return(FALSE)\n  }) |&gt; \n  sum()\n\n[1] 717"
   },
   {
     "objectID": "2025/09/2025-09.html",
@@ -124,6 +166,27 @@
     "title": "Movie Theater",
     "section": "Part 2",
     "text": "Part 2\nVery pleased with this one. I had this whole convoluted solution actually plotting out the green tiles but then was like “how do I check if something is in a polygon?” and realized I do know how to do that. geos is great for stuff like this. It’s super fast and easy to work with unlike sf. Unfortunately geos::geos_area() didn’t work because these are points on a grid and not a lat/long. There’s probably a CRS I could’ve used but I didn’t.\n\npoints &lt;-\n  'input.txt' |&gt;\n  readLines() |&gt;\n  stringr::str_split(',') |&gt;\n  purrr::map(as.numeric)\n\npolygon_points &lt;-\n  points |&gt;\n  append(points[1]) |&gt;\n  do.call(rbind, args = _)\n\npolygon &lt;- \n  geos::geos_make_polygon(x = polygon_points[,1], y = polygon_points[,2])\n\nchosen_one &lt;-\n  expand.grid(\n    'i' = seq_along(points),\n    'j' = seq_along(points)\n  ) |&gt;\n  dplyr::filter(.data$j &gt; .data$i) |&gt;\n  dplyr::mutate(\n    'rectangle' = purrr::map2_vec(.data$i, .data$j, \\(i, j) {\n      geos::geos_create_rectangle(\n        points[[i]][1], points[[i]][2], \n        points[[j]][1], points[[j]][2]\n      )\n    }),\n    'covers' = geos::geos_contains(.env$polygon, .data$rectangle)\n  ) |&gt;\n  dplyr::filter(.data$covers) |&gt;\n  dplyr::mutate(\n    'area' = purrr::map2_dbl(.data$i, .data$j, \\(i, j) {\n      width &lt;- abs(points[[i]][1] - points[[j]][1]) + 1\n      height &lt;- abs(points[[i]][2] - points[[j]][2]) + 1\n      if (width == 0) width &lt;- 1\n      if (height == 0) height &lt;- 1\n      (width * height)\n    })\n  ) |&gt;\n  dplyr::filter(.data$area == max(.data$area))\nplot(c(polygon, chosen_one$rectangle))\n\n\n\n\n\n\nchosen_one$area\n\n[1] 1654141440"
+  },
+  {
+    "objectID": "2025/05/2025-05.html",
+    "href": "2025/05/2025-05.html",
+    "title": "Cafeteria",
+    "section": "",
+    "text": "library(mistlecode)\n\noptions(scipen = 999)"
+  },
+  {
+    "objectID": "2025/05/2025-05.html#part-1",
+    "href": "2025/05/2025-05.html#part-1",
+    "title": "Cafeteria",
+    "section": "Part 1",
+    "text": "Part 1\nError: cannot allocate vector of size 3238080.8 Gb yeah okay. Just doing %in% would’ve been too easy. But my actual solution isn’t that much more complicated either. I’m not sure I’ve ever actually used dplyr::join_by() before.\n\ninput &lt;- readLines('input.txt')\n\nranges &lt;-\n  input[1:(which(input == '')-1)] |&gt;\n  purrr::map(\\(x) {\n    x |&gt;\n      stringr::str_split_1('-') |&gt;\n      as.numeric()\n  }) |&gt;\n  do.call(rbind, args = _) |&gt;\n  as.data.frame()\n\ninput[(which(input == '')+1):length(input)] |&gt;\n  as.numeric() |&gt;\n  tibble::tibble() |&gt;\n  setNames('values') |&gt;\n  dplyr::inner_join(\n    y = ranges,\n    by = dplyr::join_by(dplyr::between(x$values, y$V1, y$V2))\n  ) |&gt;\n  dplyr::pull(.data$values) |&gt;\n  unique() |&gt;\n  length()\n\n[1] 607"
+  },
+  {
+    "objectID": "2025/05/2025-05.html#part-2",
+    "href": "2025/05/2025-05.html#part-2",
+    "title": "Cafeteria",
+    "section": "Part 2",
+    "text": "Part 2\nI’m sure there’s a more efficient way. That said, initially I was starting back at row one every time a new range was found and that was taking forever. I realized I can just subtract one from my current index to account for the row I lost and there will always be something new until there isn’t.\n\ndownsize &lt;- function(ranges, i = 1) {\n  # browser()\n  if (i &gt; nrow(ranges)) return(ranges)\n  r &lt;- ranges[i,]\n  \n  new_ranges &lt;-\n    ranges[-i,] |&gt;\n    dplyr::filter(\n      (r$V1 &gt;= .data$V1 & r$V1 &lt;= .data$V2) | (r$V2 &gt;= .data$V1 & r$V1 &lt;= .data$V2)\n    ) |&gt;\n    purrr::pmap(\\(V1, V2) {\n      tibble::tibble(\n        'V1' = min(r$V1, V1),\n        'V2' = max(r$V2, V2)\n      )\n    }) |&gt;\n    purrr::list_rbind()\n  \n  if (nrow(new_ranges) == 0) {\n    downsize(ranges, i + 1) \n  } else {\n    ranges &lt;- ranges[-i,]\n    ranges |&gt;\n      dplyr::bind_rows(new_ranges) |&gt;\n      unique() |&gt;\n      downsize(i - 1)\n  }\n}\n\nranges |&gt;\n  downsize() |&gt;\n  dplyr::mutate(\n    'size' = .data$V2 - .data$V1 + 1\n  ) |&gt;\n  dplyr::pull(.data$size) |&gt;\n  sum()\n\n[1] 3.424334e+14"
   },
   {
     "objectID": "2025/03/2025-03.html",
@@ -172,7 +235,7 @@
     "href": "solutions.html",
     "title": "Solutions",
     "section": "",
-    "text": "Order By\n       Default\n         \n          Date - Oldest\n        \n         \n          Date - Newest\n        \n         \n          Title\n        \n     \n  \n    \n      \n      \n    \n\n\n\n\n\nDate\n\n\nTitle\n\n\n\n\n\n\n2025-09\n\n\nMovie Theater\n\n\n\n\n2025-06\n\n\nTrash Compactor\n\n\n\n\n2025-03\n\n\nLobby\n\n\n\n\n2025-02\n\n\nGift Shop\n\n\n\n\n2025-01\n\n\nSecret Entrance\n\n\n\n\n2024-14\n\n\nRestroom Redoubt\n\n\n\n\n2024-13\n\n\nClaw Contraption\n\n\n\n\n2024-07\n\n\nBridge Repair\n\n\n\n\n2024-06\n\n\nGuard Gallivant\n\n\n\n\n2024-05\n\n\nPrint Queue\n\n\n\n\n2024-04\n\n\nCeres Search\n\n\n\n\n2024-03\n\n\nMull It Over\n\n\n\n\n2024-02\n\n\nRed-Nosed Reports\n\n\n\n\n2024-01\n\n\nHistorian Hysteria\n\n\n\n\n\nNo matching items"
+    "text": "Order By\n       Default\n         \n          Date - Oldest\n        \n         \n          Date - Newest\n        \n         \n          Title\n        \n     \n  \n    \n      \n      \n    \n\n\n\n\n\nDate\n\n\nTitle\n\n\n\n\n\n\n2025-09\n\n\nMovie Theater\n\n\n\n\n2025-06\n\n\nTrash Compactor\n\n\n\n\n2025-05\n\n\nCafeteria\n\n\n\n\n2025-04\n\n\nPrinting Department\n\n\n\n\n2025-03\n\n\nLobby\n\n\n\n\n2025-02\n\n\nGift Shop\n\n\n\n\n2025-01\n\n\nSecret Entrance\n\n\n\n\n2024-14\n\n\nRestroom Redoubt\n\n\n\n\n2024-13\n\n\nClaw Contraption\n\n\n\n\n2024-07\n\n\nBridge Repair\n\n\n\n\n2024-06\n\n\nGuard Gallivant\n\n\n\n\n2024-05\n\n\nPrint Queue\n\n\n\n\n2024-04\n\n\nCeres Search\n\n\n\n\n2024-03\n\n\nMull It Over\n\n\n\n\n2024-02\n\n\nRed-Nosed Reports\n\n\n\n\n2024-01\n\n\nHistorian Hysteria\n\n\n\n\n2023-13\n\n\nPoint of Incidence\n\n\n\n\n2023-08\n\n\nHaunted Wasteland\n\n\n\n\n2023-07\n\n\nCamel Cards\n\n\n\n\n2023-04\n\n\nScratchcards\n\n\n\n\n2023-03\n\n\nGear Ratios\n\n\n\n\n2023-02\n\n\nCube Conundrum\n\n\n\n\n2023-01\n\n\nTrebuchet?!\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "index.html",
@@ -224,6 +287,27 @@
     "text": "Part 2\nJust a little regex modification. Nice and simple.\n\n'input.txt' |&gt;\n  readLines() |&gt;\n  stringr::str_split_1(',') |&gt;\n  stringr::str_split('-') |&gt;\n  purrr::map(\\(x) {\n    sq &lt;- x[1]:x[2]\n    sq[\n      sq |&gt;\n        as.character() |&gt;\n        stringr::str_detect('^(\\\\d+)(\\\\1){1,}$')\n    ]\n  }) |&gt;\n  unlist() |&gt;\n  sum()\n\n[1] 24774350322"
   },
   {
+    "objectID": "2025/04/2025-04.html",
+    "href": "2025/04/2025-04.html",
+    "title": "Printing Department",
+    "section": "",
+    "text": "library(mistlecode)\n\noptions(scipen = 999)"
+  },
+  {
+    "objectID": "2025/04/2025-04.html#part-1",
+    "href": "2025/04/2025-04.html#part-1",
+    "title": "Printing Department",
+    "section": "Part 1",
+    "text": "Part 1\nThis is one of those ones where you do great on the test input and miss something on the real one and can’t figure it out. I was returning too early in a few edge cases. Literal edge cases. Where the toilet paper was on the edge of the grid.\n\nmat &lt;- mistlecode::read_matrix('input.txt')\nexpand.grid(\n  'y' = mat |&gt; nrow() |&gt; seq_len(),\n  'x' = mat |&gt; ncol() |&gt; seq_len()\n) |&gt;\n  purrr::pmap(\\(y, x) {\n    if (mat[y, x] == '.') return(c('.' = 4))\n    mistlecode::get_adjacent_values(y, x, mat) |&gt;\n      as.vector() |&gt;\n      table()\n  }) |&gt;\n  unlist() |&gt;\n  (\\(x) x[names(x) == '@'])() |&gt;\n  (\\(x) x[x &lt;= 4])() |&gt;\n  length()\n\n[1] 1516"
+  },
+  {
+    "objectID": "2025/04/2025-04.html#part-2",
+    "href": "2025/04/2025-04.html#part-2",
+    "title": "Printing Department",
+    "section": "Part 2",
+    "text": "Part 2\nA little bit more of me being not so bright on the execution and some waiting and there’s a solution.\n\nmat &lt;- mistlecode::read_matrix('input.txt')\nwiped &lt;- 0\ncoords &lt;-\n  expand.grid(\n    'y' = mat |&gt; nrow() |&gt; seq_len(),\n    'x' = mat |&gt; ncol() |&gt; seq_len()\n  )\ndo_wipe &lt;- function(mat) {\n  current &lt;- wiped\n  mat_copy &lt;- mat\n  coords |&gt;\n    purrr::pwalk(\\(y, x) {\n      if (mat[y, x] == '@') {\n        vals &lt;- \n          mistlecode::get_adjacent_values(y, x, mat) |&gt;\n          as.vector() |&gt;\n          table()\n        if (vals['@'] &lt;= 4) {\n          mat_copy[y, x] &lt;&lt;- '.'\n          wiped &lt;&lt;- wiped + 1\n        }\n      }\n    })\n  if (current != wiped) do_wipe(mat_copy) else wiped\n}\ndo_wipe(mat)\n\n[1] 9122"
+  },
+  {
     "objectID": "2025/06/2025-06.html",
     "href": "2025/06/2025-06.html",
     "title": "Trash Compactor",
@@ -245,67 +329,172 @@
     "text": "Part 2\nTook me way too long to realize my problems where because numbers could be left or right padded and then I had to figure out how to deal with it.\n\nwhich_op &lt;-\n  'input.txt' |&gt; \n  readLines() |&gt;\n  utils::tail(1) |&gt;\n  stringr::str_split_1('') |&gt;\n  (\\(x) which(x != ' '))()\n\n'input.txt' |&gt;\n  readLines() |&gt;\n  # utils::head(-1) |&gt;\n  purrr::map(\\(x) {\n    x |&gt;\n      stringr::str_sub_all(start = which_op, end = c(which_op[-1] -1, nchar(x))) |&gt;\n      unlist()\n  }) |&gt;\n  do.call(rbind, args = _) |&gt;\n  apply(\\(x) {\n    x[-length(x)] |&gt;\n      stringr::str_split('') |&gt;\n      do.call(rbind, args = _) |&gt;\n      apply(paste0, MARGIN = 2, collapse = '') |&gt;\n      stringr::str_trim() |&gt;\n      (\\(x) x[x != ''])() |&gt;\n      paste0(collapse = x[length(x)]) |&gt;\n      parse(text = _) |&gt;\n      eval()\n  }, MARGIN = 2) |&gt;\n  sum()\n\n[1] 7450962489289"
   },
   {
-    "objectID": "2024/02/2024-02.html",
-    "href": "2024/02/2024-02.html",
-    "title": "Red-Nosed Reports",
+    "objectID": "2024/01/2024-01.html",
+    "href": "2024/01/2024-01.html",
+    "title": "Historian Hysteria",
     "section": "",
-    "text": "library(mistlecode)\n\noptions(scipen = 999)\ndt &lt;-\n  'input.txt' |&gt;\n  readLines() |&gt;\n  strsplit(' ') |&gt;\n  purrr::map(as.integer)"
+    "text": "library(mistlecode)\n\noptions(scipen = 999)\ndt &lt;- \n  'input.txt' |&gt;\n  readr::read_delim(delim = '   ', col_names = FALSE, show_col_types = FALSE)\n\nRegistered S3 methods overwritten by 'bit64':\n  method               from  \n  as.double.integer64  cheapr\n  as.integer.integer64 cheapr"
   },
   {
-    "objectID": "2024/02/2024-02.html#part-1",
-    "href": "2024/02/2024-02.html#part-1",
-    "title": "Red-Nosed Reports",
+    "objectID": "2024/01/2024-01.html#part-1",
+    "href": "2024/01/2024-01.html#part-1",
+    "title": "Historian Hysteria",
     "section": "Part 1",
-    "text": "Part 1\nI missed the second condition for a pass at first. Mildly annoying, but not too bad globally.\n\ndt |&gt;\n  purrr::map_lgl(\\(x) {\n    x &lt;- x - lag(x)\n    x &lt;- x[!is.na(x)]\n    all(abs(x) %in% 1:3) & (all(x &lt; 0) | all(x &gt; 0))\n  }) |&gt; \n  sum()\n\n[1] 686"
+    "text": "Part 1\nThis was nice and quick. I’m pretty happy with my global rank 518.\n\ndt1 &lt;- dt$X1 |&gt; sort()\ndt2 &lt;- dt$X2 |&gt; sort()\n\nabs(dt1 - dt2) |&gt; sum()\n\n[1] 1151792"
   },
   {
-    "objectID": "2024/02/2024-02.html#part-2",
-    "href": "2024/02/2024-02.html#part-2",
-    "title": "Red-Nosed Reports",
+    "objectID": "2024/01/2024-01.html#part-2",
+    "href": "2024/01/2024-01.html#part-2",
+    "title": "Historian Hysteria",
     "section": "Part 2",
-    "text": "Part 2\nI’m really pleased with this. I was trying something more functional, then realized a simple for loop was the way to go and that resulted in a 495 on the leaderboard. It’s also a good example for whatever it’s called that I did with my returns not just being if statements the whole way down.\n\ntest &lt;- function(x) {\n  x &lt;- x - lag(x)\n  x &lt;- x[!is.na(x)]\n  all(abs(x) %in% 1:3) & (all(x &lt; 0) | all(x &gt; 0))\n}\n\ndt |&gt;\n  purrr::map_lgl(\\(x) {\n    if (test(x)) return(TRUE)\n    for(i in seq_along(x)) {\n      if (test(x[-i])) return(TRUE)\n    }\n    return(FALSE)\n  }) |&gt; \n  sum()\n\n[1] 717"
+    "text": "Part 2\nThis took way too long for me. I was really struggling with the counting portion for some reason and it took a long time for me to internalize that x %in% y and which don’t actually count things. Might need to add that to mistlecode…\n\ndt |&gt;\n  dplyr::mutate('count' = purrr::map_int(.data$X1, \\(x) {\n    which(.data$X2 == x) |&gt; length()\n  })) |&gt;\n  dplyr::mutate('count' = .data$X1 * .data$count) |&gt;\n  dplyr::pull(.data$count) |&gt;\n  sum()\n\n[1] 21790168"
   },
   {
-    "objectID": "2024/04/2024-04.html",
-    "href": "2024/04/2024-04.html",
-    "title": "Ceres Search",
+    "objectID": "2024/03/2024-03.html",
+    "href": "2024/03/2024-03.html",
+    "title": "Mull It Over",
     "section": "",
-    "text": "library(mistlecode)\n\noptions(scipen = 999)\ndt &lt;-\n  readLines(\"input.txt\") |&gt; \n  strsplit('')\n\ndt &lt;-\n  dt |&gt;\n  unlist() |&gt;\n  matrix(ncol = length(dt[[1]]), byrow = TRUE)"
+    "text": "library(mistlecode)\n\noptions(scipen = 999)\ndt &lt;- readLines(\"input.txt\")"
   },
   {
-    "objectID": "2024/04/2024-04.html#part-1",
-    "href": "2024/04/2024-04.html#part-1",
-    "title": "Ceres Search",
+    "objectID": "2024/03/2024-03.html#part-1",
+    "href": "2024/03/2024-03.html#part-1",
+    "title": "Mull It Over",
     "section": "Part 1",
-    "text": "Part 1\nI’m disappointed in myself. I really should have a function to parse input like this by now, but again I sat on my butt and didn’t make one then struggled for it. I also got super duper stuck when my mistlecode::get_diagonal() wasn’t able to pick up diagonals that start in the lower right corner. It’s something I’ll have to go fix. I’ll probably re-do the whole thing to just say ‘top-left’ or ‘bottom-right’ or something to actually say what corner it’s coming off of rather than trying to say how it’s divided. Anyways, I knew I had overlapping diagonals and needed to drop them, but I was dropping them inside count_diag() which wasn’t doing anything except dropping a letter off the diagonals. Once I moved that outside, I was able to recognize my missing corner.\n\ncount &lt;- function(x) {\n  x |&gt;\n    paste0(collapse = '') |&gt;\n    mistlecode::strg_extract_all('XMAS|SAMX') |&gt;\n    unlist() |&gt;\n    length()\n}\n\ncount_diag &lt;- function(x, dim, dir) {\n  x |&gt;\n    purrr::map_int(\\(x) {\n      mistlecode::get_diagonal(dt, x, dim, dir) |&gt;\n        count()\n    }) |&gt;\n    sum()\n}\n\nrows &lt;- dt |&gt; apply(1, count) |&gt; sum()\ncols &lt;- dt |&gt; apply(2, count) |&gt; sum()\n\ndrow &lt;- dt |&gt; nrow() |&gt; seq_len() |&gt; count_diag('row', 'down')\ndcol &lt;- dt |&gt; ncol() |&gt; seq_len() |&gt; tail(-1) |&gt; count_diag('col', 'down')\n\nurow &lt;-\n  dt |&gt; rev() |&gt; `dim&lt;-`(rev(dim(dt))) |&gt;\n  nrow() |&gt; seq_len() |&gt; count_diag('row', 'up')\nucol &lt;-\n  dt |&gt;  rev() |&gt; `dim&lt;-`(rev(dim(dt))) |&gt;\n  ncol() |&gt; seq_len() |&gt; tail(-1) |&gt; count_diag('col', 'up')\n\nrows + cols + drow + dcol + urow + ucol\n\n[1] 2524"
+    "text": "Part 1\nI’m really pleased with this. Doing the parse() |&gt; eval() is super super dangerous and should never be done, but it works so I’m happy. I got 343 on the leaderboard which is my best ever.\n\nmul &lt;- function(x, y) x * y\ndt |&gt;\n  stringr::str_extract_all('mul\\\\(\\\\d+,\\\\d+\\\\)') |&gt;\n  unlist() |&gt;\n  purrr::map_int(\\(x) {\n    x |&gt;\n      parse(text = _) |&gt;\n      eval()\n  }) |&gt;\n  sum()\n\n[1] 170068701"
   },
   {
-    "objectID": "2024/04/2024-04.html#part-2",
-    "href": "2024/04/2024-04.html#part-2",
-    "title": "Ceres Search",
+    "objectID": "2024/03/2024-03.html#part-2",
+    "href": "2024/03/2024-03.html#part-2",
+    "title": "Mull It Over",
     "section": "Part 2",
-    "text": "Part 2\nThankfully this was much easier. It was a small struggle adapting my count() which I really didn’t need to do if I hadn’t been so eager to paste0() in my for loop. But if it works, it works, and it was much much faster than part 1.\n\ndt[dt == 'X'] &lt;- ''\n\ncount &lt;- function(x) {\n  x |&gt;\n    stringr::str_count('MAS|SAM') |&gt;\n    sum()\n}\n\ntally &lt;- logical()\nfor (r in seq_len(nrow(dt) - 2)) {\n  for (c in seq_len(ncol(dt) - 2)) {\n    x &lt;- dt[r:(r+2), c:(c+2)]\n    if (x[2, 2] != 'A') next\n    left_right &lt;- paste0(c(x[1,1], x[2,2], x[3,3]), collapse = '')\n    right_left &lt;- paste0(c(x[1,3], x[2,2], x[3,1]), collapse = '')\n    valid &lt;- count(c(left_right, right_left)) == 2\n    if (valid) tally &lt;- c(tally, valid)\n  }\n}\ntally |&gt;\n  sum()\n\n[1] 1873"
+    "text": "Part 2\nI didn’t realize the example input changed which messed me up a bit. Then I just had to get my regex right and I was good to go. I’m also pleased with my little if...else if chain. I got an error when x was a mul() call, but then realized that I didn’t have to explicitly check because I was already checking for do() and don't() and if it’s not either of those, then it must be a mul(). Oh, and 502 on the leaderboard for part 2 would’ve been a best ever if not for part 1!\n\ndo &lt;- TRUE\ndt |&gt;\n  stringr::str_extract_all(\"mul\\\\(\\\\d+,\\\\d+\\\\)|do\\\\(\\\\)|don't\\\\(\\\\)\") |&gt;\n  unlist() |&gt;\n  purrr::map_int(\\(x) {\n    if (x == \"don't()\") do &lt;&lt;- FALSE \n    else if (x == \"do()\") do &lt;&lt;- TRUE \n    else if (do) {\n      x &lt;-\n        x |&gt;\n        parse(text = _) |&gt;\n        eval()\n      return(x)\n    }\n    return(0)\n  }) |&gt;\n  sum()\n\n[1] 78683433"
   },
   {
-    "objectID": "2024/07/2024-07.html",
-    "href": "2024/07/2024-07.html",
-    "title": "Bridge Repair",
+    "objectID": "2024/05/2024-05.html",
+    "href": "2024/05/2024-05.html",
+    "title": "Print Queue",
     "section": "",
-    "text": "library(mistlecode)\n\noptions(scipen = 999)\nmat &lt;-\n  'input.txt' |&gt;\n  readLines() |&gt;\n  stringr::str_split(':| ', simplify = TRUE) |&gt;\n  mistlecode::cast_matrix(as.numeric)\nmat &lt;- mat[,-2]"
+    "text": "Lots of minor hiccups leading to a major fizzle. Overall I want to see how everyone else’s solutions look, but I think mine is rather elegant, even if a bit slow.\nlibrary(mistlecode)\n\noptions(scipen = 999)\ninput &lt;- 'input.txt'\nskip &lt;- which(readLines(input) == '')\n\ndt1 &lt;- \n  input |&gt;\n  readr::read_delim('|', col_names = FALSE, n_max = skip - 1, show_col_types = FALSE) |&gt;\n  dplyr::filter(!is.na(.data$X2))\n\nRegistered S3 methods overwritten by 'bit64':\n  method               from  \n  as.double.integer64  cheapr\n  as.integer.integer64 cheapr\n\ndt2 &lt;-\n  input |&gt;\n  readLines()\ndt2 &lt;-\n  dt2[(skip+1):length(dt2)] |&gt;\n  strsplit(',') |&gt;\n  purrr::map(as.integer)"
   },
   {
-    "objectID": "2024/07/2024-07.html#part-1",
-    "href": "2024/07/2024-07.html#part-1",
-    "title": "Bridge Repair",
+    "objectID": "2024/05/2024-05.html#part-1",
+    "href": "2024/05/2024-05.html#part-1",
+    "title": "Print Queue",
     "section": "Part 1",
-    "text": "Part 1\nOkay. At first glance this is some fancy math one that I don’t know enough math to do correctly. After fiddling around a bit and getting it working on the test input, it was time to move to the real one. For ages I kept getting the same wrong output. I thought that maybe it’s because I needed bit64 for 64 bit integers and spent way too long screwing around with that then eventually realized that not only was my input not being read properly (that seems to be a theme this year…), but that the numbers can be double and that solves all my problems. They’re still whole numbers, just not integers. After realizing that, it was a lot of head scratching until I realized that my if statement with return(total) was inside my second for loop when it should be after it. Fixing that led to a victory.\n\ntotals &lt;-\n  mat |&gt;\n  apply(1, \\(r) {\n    target &lt;- r[1]; r &lt;- r[-1]; r &lt;- r[!is.na(r)];\n    grid &lt;- expand.grid(rlang::inject(rep(list(c('*', '+')), length(r) - 1)))\n    for (g in seq_len(nrow(grid))) {\n      ops &lt;- grid[g,] |&gt; unlist() |&gt; unname(); total &lt;- 0;\n      for (i in seq_along(r)[-1]) {\n        if (i == 2) {\n          total &lt;- if (ops[i-1] == '+') r[i-1] + r[i] else r[i-1] * r[i]\n        } else {\n          total &lt;- if (ops[i-1] == '+') total + r[i] else total * r[i]\n        }\n      }\n      if (target == total) return(total)\n    }\n    return(0)\n  }) \npart1 &lt;-\n  totals |&gt; \n  sum() |&gt;\n  print()\n\n[1] 945512582195"
+    "text": "Part 1\nThis was really frustrating. I was struggling and eventually found I had lines with even numbers of items. I couldn’t figure out what the heck was up with that and how to get a middle item from an even length set and then eventually realized my input ingestion was messing everything up. Once I switched from read.delim() to readLines(), I was able to clear everything right up.\n\nmiddle_page &lt;-\n  dt2 |&gt;\n  purrr::map_int(\\(x) {\n    if (length(x) %% 2 == 0) print(x)\n    is_valid &lt;-\n      x |&gt;\n      seq_along() |&gt;\n      purrr::map_lgl(\\(i) {\n        if (i == length(x)) return(TRUE)\n        left &lt;- x[i]; right &lt;- x[(i+1):length(x)];\n        check_right &lt;- dt1$X2[dt1$X1 == left]\n        all(right %in% check_right)\n      }) |&gt;\n      all()\n    if (is_valid) x[ceiling(length(x) / 2)] else 0\n  })\nsum(middle_page)\n\n[1] 7307"
   },
   {
-    "objectID": "2024/07/2024-07.html#part-2",
-    "href": "2024/07/2024-07.html#part-2",
-    "title": "Bridge Repair",
+    "objectID": "2024/05/2024-05.html#part-2",
+    "href": "2024/05/2024-05.html#part-2",
+    "title": "Print Queue",
     "section": "Part 2",
-    "text": "Part 2\nI spent a while on part 2 as well, but had more of a plan than part 1. I initially had a cool little recursion method that used the same expand.grid and collapsed the string in on itself. It ultimately didn’t end up working and I’m not really sure why. Moving the operations into a function helped make things more readable and then it was just a matter of collapsing the string the right way every time and waiting a while for everything to run. After getting my answer I realized I could reduce grid even further by filtering for rows that contain a concatenate operation since the new numbers must have one.\n\ntictoc::tic()\nfuture::plan(future::multisession, workers = future::availableCores())\nprogressr::with_progress({\n  do_op &lt;- function(x, y, op) {\n    x &lt;- \n      if (op == '*') x * y else if (op == '+') x + y else paste0(x, y, collapse = '')\n    as.numeric(x)\n  }\n  \n  mat2 &lt;- mat[totals == 0,] \n  p &lt;- progressr::progressor(steps = nrow(mat2))\n  mat2 |&gt;\n    nrow() |&gt;\n    seq_len() |&gt;\n    furrr::future_map_dbl(\\(rr) {\n      p()\n      rr &lt;- mat2[rr,]\n      target &lt;- rr[1]; rr &lt;- rr[-1]; rr &lt;- rr[!is.na(rr)];\n      grid &lt;- \n        expand.grid(rlang::inject(rep(list(c('*', '+', '|')), length(rr) - 1))) |&gt;\n        dplyr::filter(dplyr::if_any(tidyselect::everything(), \\(x) x == '|'))\n      for (g in seq_len(nrow(grid))) {\n        ops &lt;- grid[g,] |&gt; unlist() |&gt; as.character()\n        r &lt;- rr; i &lt;- 1;\n        repeat {\n          if (r[1] &gt; target || i &gt; length(ops)) break\n          x &lt;- do_op(r[1], r[2], ops[i])\n          r &lt;- c(x, utils::tail(r, -2))\n          i &lt;- i + 1\n        }\n        if (isTRUE(r == target)) return(r)\n      }\n      return(0)\n    }) |&gt;\n    sum(part1)\n}, handlers = progressr::handler_cli())\n\n[1] 2.716911e+14\n\nfuture::plan(future::sequential())\ntictoc::toc()\n\n408.647 sec elapsed"
+    "text": "Part 2\nThis was just a matter of getting the logic straight in my head then putting it on sreen and getting over silly mistakes like filtering for things that passed the test in part 1 instead of things that failed. Except. I’ve always struggled with recursion but I’m getting better at it and I’m getting better at it and I’m getting better at it and eventually I might be able to solve that stupid bag problem from 2020.\n\nswap &lt;- function(x, i = 1) {\n  left &lt;- x[i]; right &lt;- x[i+1];\n  check_right &lt;- dt1$X2[dt1$X1 == left]\n  if (is.na(right)) return(x)\n  if (!(right %in% check_right)) {\n    x[i+1] &lt;- left; x[i] &lt;- right;\n    swap(x, 1)\n  } else { swap(x, i + 1) }\n}\n\ndt2[middle_page == 0] |&gt;\n  purrr::map_int(\\(x) {\n    x &lt;- swap(x)\n    x[ceiling(length(x) / 2)]\n  }) |&gt;\n  sum()\n\n[1] 4713"
+  },
+  {
+    "objectID": "2024/13/2024-13.html",
+    "href": "2024/13/2024-13.html",
+    "title": "Claw Contraption",
+    "section": "",
+    "text": "library(mistlecode)\n\noptions(scipen = 999)\nFiguring out how best to parse the input was annoying. I need to remember that tidyr::extract() exists.\n.get_buttons &lt;- function(x) {\n  x &lt;-\n    stringr::str_match(x$raw, '(\\\\d+), Y[+=](\\\\d+)')[,-1] |&gt;\n    mistlecode::cast_matrix(as.integer)\n  if (all(is.na(x[1,]))) x[-1,] else x\n}\ndt &lt;-\n  'input.txt' |&gt;\n  readLines() |&gt;\n  tibble::tibble() |&gt;\n  setNames('raw') |&gt;\n  dplyr::mutate(\n    'game' = cumsum(.data$raw == '')\n  ) |&gt;\n  tidyr::nest('data' = raw) |&gt;\n  dplyr::pull(.data$data) |&gt;\n  purrr::map(\\(x) {\n    x &lt;- .get_buttons(x)\n    list('a' = x[1,], 'b' = x[2,], 'p' = x[3,])\n  })"
+  },
+  {
+    "objectID": "2024/13/2024-13.html#part-1",
+    "href": "2024/13/2024-13.html#part-1",
+    "title": "Claw Contraption",
+    "section": "Part 1",
+    "text": "Part 1\nI got to do math!!! I’m so proud of myself for this one. Like genuinely actually for realizing I could just math it out. And my solution is so fast too! I probably could’ve done the linear programming, but just solving seemed easier?\n\\[\\begin{gather*}\nix_a + jx_b = X, iy_a + jy_b = Y\\\\\nix_a = X - jx_b, iy_a = Y - jy_b\\\\\ni = \\frac{X - jx_b}{x_a}, i = \\frac{Y - jy_b}{y_a}\\\\\n\\frac{X - jx_b}{x_a} = \\frac{Y - jy_b}{y_a}\\\\\nX - jx_b =\\frac{x_aY - jx_ay_b}{y_a}\\\\\ny_aX - jx_by_a = x_aY - jx_ay_b\\\\\n-jx_by_a + jx_ay_b = x_aY - y_aX\\\\\nj * (-x_by_a + x_ay_b) = x_aY - y_aX\\\\\nj = \\frac{x_aY - y_aX}{x_ay_b - x_by_a}\n\\end{gather*}\\]\n\ndt |&gt;\n  purrr::map(\\(x) {\n    j &lt;-\n      ((x$a[1] * x$p[2]) - (x$a[2] * x$p[1])) / \n      ((x$a[1] * x$b[2]) - (x$b[1] * x$a[2]))\n    i &lt;- (x$p[1] - (j * x$b[1])) / x$a[1]\n    x &lt;- c(i * 3, j * 1)\n    if (all(as.integer(x) == x)) sum(x)\n  }) |&gt;\n  purrr::discard(is.null) |&gt;\n  unlist() |&gt; \n  sum()\n\n[1] 33921"
+  },
+  {
+    "objectID": "2024/13/2024-13.html#part-2",
+    "href": "2024/13/2024-13.html#part-2",
+    "title": "Claw Contraption",
+    "section": "Part 2",
+    "text": "Part 2\nThis was supremely unsatisfying. I kept multiplying by 10000000000000 instead of adding then for whatever reason if I leave my if statement as an all(x) kinda deal, it doesn’t work right. I spent way too long on random bit64 stuff and trying to solve to get rid of the 10000000000000.\n\ndt |&gt;\n  purrr::map(\\(x) {\n    x$p &lt;- x$p + 10000000000000\n    j &lt;-\n      ((x$a[1] * x$p[2]) - (x$a[2] * x$p[1])) / \n      ((x$a[1] * x$b[2]) - (x$b[1] * x$a[2]))\n    if (j &lt; 0 || j %% 1 != 0) return(NULL)\n    i &lt;- (x$p[1] - (j * x$b[1])) / x$a[1]\n    if (i &lt; 0 || i %% 1 != 0) return(NULL)\n    x &lt;- c(i * 3, j * 1)\n    sum(x)\n  }) |&gt;\n  purrr::discard(is.null) |&gt;\n  unlist() |&gt; \n  sum()\n\n[1] 82261957837868"
+  },
+  {
+    "objectID": "2023/02/2023-02.html",
+    "href": "2023/02/2023-02.html",
+    "title": "Cube Conundrum",
+    "section": "",
+    "text": "library(mistlecode)\n\noptions(scipen = 999)\ndt &lt;-\n  readLines(\"input.txt\") |&gt;\n  stringr::str_split(\": |; \") |&gt;\n  purrr::map(\\(x) {\n    x[-1] |&gt;\n      str_split(', ')\n  })"
+  },
+  {
+    "objectID": "2023/02/2023-02.html#part-1",
+    "href": "2023/02/2023-02.html#part-1",
+    "title": "Cube Conundrum",
+    "section": "Part 1",
+    "text": "Part 1\nI’m pretty pleased overall. I got a bit hung up on the if statements because y was originally all the colors, not one color at a time so I had to add the second (actually third) map statement.\n\nred &lt;- 12; green &lt;- 13; blue &lt;- 14;\n\ndt |&gt;\n  purrr::map_lgl(\\(x) {\n    x &lt;-\n      x |&gt;\n      purrr::map(\\(x2) {\n        x2 |&gt;\n          stringr::str_split(\" \") |&gt;\n          purrr::map(\\(y) {\n            r &lt;- 1\n            if ((y[2] == 'red' & as.numeric(y[1]) &gt; red) |\n                (y[2] == 'green' & as.numeric(y[1]) &gt; green) |\n                (y[2] == 'blue' & as.numeric(y[1]) &gt; blue)) {\n              r &lt;- 0\n            }\n            return(r)\n          })\n    }) |&gt;\n      unlist()\n    all(x == 1)\n  }) |&gt;\n  which() |&gt;\n  sum()\n\n[1] 2006"
+  },
+  {
+    "objectID": "2023/02/2023-02.html#part-2",
+    "href": "2023/02/2023-02.html#part-2",
+    "title": "Cube Conundrum",
+    "section": "Part 2",
+    "text": "Part 2\nPretty happy with this too. I got pretty stuck on X1 being character because I was casting later but that meant I was finding the max of a character not a numeric. Moved the cast and it works like a dream.\n\ndt |&gt;\n  purrr::map_int(\\(x) {\n    x |&gt;\n    purrr::map(\\(y) {\n      y |&gt;\n        stringr::str_split_fixed(\" \", 2) |&gt;\n        data.frame() |&gt;\n        dplyr::arrange(X2)\n    }) |&gt;\n      purrr::list_rbind() |&gt;\n      dplyr::summarise(count = max(as.numeric(X1)), .by = X2) |&gt;\n      dplyr::pull(count) |&gt;\n      as.numeric() |&gt;\n      prod()\n  }) |&gt;\n  sum()\n\n[1] 84911"
+  },
+  {
+    "objectID": "2023/04/2023-04.html",
+    "href": "2023/04/2023-04.html",
+    "title": "Scratchcards",
+    "section": "",
+    "text": "library(mistlecode)\n\noptions(scipen = 999)\ndt &lt;-\n  readLines(\"input.txt\") |&gt;\n  stringr::str_remove_all('Card +\\\\d+: ') |&gt;\n  stringr::str_split(\" \\\\| \")"
+  },
+  {
+    "objectID": "2023/04/2023-04.html#part-1",
+    "href": "2023/04/2023-04.html#part-1",
+    "title": "Scratchcards",
+    "section": "Part 1",
+    "text": "Part 1\nThis took me longer than it should’ve, mostly because of the multiplication factor. I’m happy with my code, but disappointed in how long it took.\n\nbreak_line &lt;- function(x) {\n  x |&gt;\n    stringr::str_split(\" +\") |&gt; \n    unlist() |&gt; \n    as.numeric() |&gt; \n    purrr::discard(is.na)\n}\ndt |&gt;\n  purrr::map(\\(x) {\n    x1 &lt;- break_line(x[1]); x2 &lt;- break_line(x[2]);\n    x &lt;- sum(x1 %in% x2)\n    floor(2^(x-1))\n  }) |&gt;\n  unlist() |&gt;\n  sum()\n\n[1] 21105"
+  },
+  {
+    "objectID": "2023/04/2023-04.html#part-2",
+    "href": "2023/04/2023-04.html#part-2",
+    "title": "Scratchcards",
+    "section": "Part 2",
+    "text": "Part 2\nPart 2 follows the same theme as part 1. I’m ultimately really pleased with my code, but it took way too long and in this case could be faster too. The almost recursion but not quite was quite confusing to figure out and I’m sure my code makes even less sense than the problem does.\n\ndt2 &lt;- list()\ndt |&gt;\n  purrr::iwalk(\\(x, idx) {\n    x1 &lt;- break_line(x[1]); x2 &lt;- break_line(x[2]);\n    i &lt;- if (length(dt2) == 0) 1 else (unname(table(unlist(dt2))[idx]) + 1)\n    i &lt;- if (is.na(i)) 1 else i\n    dt2[[idx]] &lt;&lt;- c(idx, rep((idx:(idx + sum(x1 %in% x2)))[-1], i))\n  })\ndt2 |&gt; \n  unlist() |&gt; \n  length()\n\n[1] 5329815"
+  },
+  {
+    "objectID": "2023/07/2023-07.html",
+    "href": "2023/07/2023-07.html",
+    "title": "Camel Cards",
+    "section": "",
+    "text": "library(mistlecode)\n\noptions(scipen = 999)\ndt &lt;-\n  readLines('input.txt') |&gt;\n  stringr::str_split(' ') |&gt;\n  unlist() |&gt;\n  matrix(ncol = 2, byrow = TRUE) |&gt;\n  `colnames&lt;-`(c('cards', 'bet')) |&gt;\n  tibble::as_tibble()"
+  },
+  {
+    "objectID": "2023/07/2023-07.html#part-1",
+    "href": "2023/07/2023-07.html#part-1",
+    "title": "Camel Cards",
+    "section": "Part 1",
+    "text": "Part 1\nThis wasn’t too bad, but I originally used a dplyr::case_when instead of my if...else chain and because dplyr::case_when is vectorized, that wouldn’t work. However, when I swapped to my if...else chain, I accidentally marked three of a kind as the same value as a full house. Quite annoying, but an easy fix.\n\nrank &lt;- c('A', 'K', 'Q', 'J', 'T', 9:2) |&gt; rev()\ndt |&gt;\n  dplyr::mutate(\n    '.nest' = purrr::map(.data$cards, \\(x) {\n      # x &lt;- 'QJJQ2'\n      h &lt;-\n        x |&gt;\n        stringr::str_split_1('') |&gt;\n        table() |&gt;\n        sort(decreasing = TRUE)\n      hand &lt;-\n        if (length(h) == 1 && all(h %in% 5)) 7\n        else if (length(h) == 2 && all(h %in% c(4, 1))) 6\n        else if (length(h) == 2 && all(h %in% c(3, 2))) 5\n        else if (length(h) == 3 && max(h) == 3) 4\n        else if (length(h[h == 2]) == 2 && max(h) == 2) 3\n        else if (length(h[h == 2]) == 1 && max(h) == 2) 2\n        else 1\n      high &lt;-\n        x |&gt; \n        stringr::str_split_1('') |&gt;\n        purrr::map_int(\\(y) which(rank == y)) |&gt;\n        stringr::str_pad(2, pad = '0') |&gt;\n        paste0(collapse = '') |&gt;\n        as.integer()\n      list('hand' = hand, 'high' = high)\n    })\n  ) |&gt;\n  tidyr::unnest_wider('.nest') |&gt;\n  dplyr::arrange(.data$hand, .data$high) |&gt;\n  dplyr::mutate('bid' = as.integer(.data$bet) * dplyr::row_number()) |&gt;\n  dplyr::pull(.data$bid) |&gt;\n  sum()\n\n[1] 250120186"
+  },
+  {
+    "objectID": "2023/07/2023-07.html#part-2",
+    "href": "2023/07/2023-07.html#part-2",
+    "title": "Camel Cards",
+    "section": "Part 2",
+    "text": "Part 2\nThis took longer than it should’ve. I had the concept down quick, but was assigning the Joker to the highest available card rather than the card with the most occurrences. This is quickly apparent with the example KTJJT which with my original method would’ve become KTKKT, a full house, instead of KTTTT, four of a kind.\n\nrank &lt;- c('A', 'K', 'Q', 'T', 9:2, 'J') |&gt; rev()\ndt |&gt;\n  dplyr::mutate(\n    '.nest' = purrr::map(.data$cards, \\(x) {\n      # x &lt;- 'KTJJT'\n      x &lt;- stringr::str_split_1(x, '')\n      h &lt;-\n        x |&gt;\n        table() |&gt;\n        sort(decreasing = TRUE)\n      if (any(names(h) == 'J') & !all(names(h) == 'J')) {\n        r &lt;- which(rank == names(h[names(h) != 'J'])[1])\n        h[rank[r]] &lt;- h[rank[r]] + h['J']\n      } else if (length(h) == 1 & all(names(h) == 'J')) {\n        h &lt;- c('A' = 5)\n      }\n      h &lt;- h[names(h) != 'J']\n      hand &lt;- {\n        if (length(h) == 1 && all(h %in% 5)) 7\n        else if (length(h) == 2 && all(h %in% c(4, 1))) 6\n        else if (length(h) == 2 && all(h %in% c(3, 2))) 5\n        else if (length(h) == 3 && max(h) == 3) 4\n        else if (length(h[h == 2]) == 2 && max(h) == 2) 3\n        else if (length(h[h == 2]) == 1 && max(h) == 2) 2\n        else 1\n      }\n      high &lt;-\n        x |&gt; \n        purrr::map_int(\\(y) which(rank == y)) |&gt;\n        stringr::str_pad(2, pad = '0') |&gt;\n        paste0(collapse = '') |&gt;\n        as.integer()\n      list('hand' = hand, 'high' = high)\n    })\n  ) |&gt;\n  tidyr::unnest_wider('.nest') |&gt;\n  dplyr::arrange(.data$hand, .data$high) |&gt;\n  dplyr::mutate('bid' = as.integer(.data$bet) * dplyr::row_number()) |&gt;\n  dplyr::pull(.data$bid) |&gt;\n  sum()\n\n[1] 250665248"
+  },
+  {
+    "objectID": "2023/13/2023-13.html",
+    "href": "2023/13/2023-13.html",
+    "title": "Point of Incidence",
+    "section": "",
+    "text": "library(mistlecode)\n\noptions(scipen = 999)\ndt &lt;-\n  readLines(\"input.txt\") |&gt;\n  tibble::as_tibble() |&gt;\n  dplyr::mutate(group = cumsum(value == \"\")) |&gt;\n  dplyr::filter(value != \"\") |&gt;\n  dplyr::group_split(group) |&gt;\n  purrr::map(\\(x) {\n    x |&gt;\n      dplyr::pull(value) |&gt;\n      stringr::str_split(\"\", simplify = TRUE)\n  })"
+  },
+  {
+    "objectID": "2023/13/2023-13.html#part-1",
+    "href": "2023/13/2023-13.html#part-1",
+    "title": "Point of Incidence",
+    "section": "Part 1",
+    "text": "Part 1\nOkay okay. Not too bad. Just need to make sure I get the line of reflection right.\n\nget_up_down &lt;- function(up, down) {\n  l &lt;- min(c(length(up), length(down)))\n  up &lt;- rev(rev(up)[seq_len(l)]); down &lt;- down[rev(seq_len(l))];\n  list('up' = up, 'down' = down)\n}\nget_seq &lt;- function(s) { s |&gt; seq_len() |&gt; head(-1) }\ncheck_row &lt;- function(x) {\n  x |&gt;\n    nrow() |&gt;\n    get_seq() |&gt;\n    purrr::map_int(\\(r) {\n      up &lt;- seq_len(r); down &lt;- min(c(r+1,nrow(x))):nrow(x)\n      updown &lt;- get_up_down(up, down)\n      up &lt;- x[updown$up,]; down &lt;- x[updown$down,];\n      if (all(up == down)) r * 100 else 0\n    })\n}\ncheck_col &lt;- function(x) {\n  x |&gt;\n    ncol() |&gt;\n    get_seq() |&gt;\n    purrr::map_int(\\(r) {\n      up &lt;- seq_len(r); down &lt;- min(c(r+1,ncol(x))):ncol(x)\n      updown &lt;- get_up_down(up, down)\n      up &lt;- x[,updown$up]; down &lt;- x[,updown$down];\n      if (all(up == down)) r else 0\n    })\n}\ndt |&gt;\n  purrr::map(\\(x) {\n    c(check_row(x), check_col(x))\n  }) |&gt;\n  unlist() |&gt;\n  sum()\n\n[1] 37718"
+  },
+  {
+    "objectID": "2023/13/2023-13.html#part-2",
+    "href": "2023/13/2023-13.html#part-2",
+    "title": "Point of Incidence",
+    "section": "Part 2",
+    "text": "Part 2\nomg. This is gonna be easy. I just need to check if all but one are equal instead of all. I got this in well under two minutes!\n\ncheck_row &lt;- function(x) {\n  x |&gt;\n    nrow() |&gt;\n    get_seq() |&gt;\n    purrr::map_int(\\(r) {\n      up &lt;- seq_len(r); down &lt;- min(c(r+1,nrow(x))):nrow(x)\n      updown &lt;- get_up_down(up, down)\n      up &lt;- x[updown$up,]; down &lt;- x[updown$down,];\n      if (sum(up == down) == length(up) - 1) r * 100 else 0\n    })\n}\ncheck_col &lt;- function(x) {\n  x |&gt;\n    ncol() |&gt;\n    get_seq() |&gt;\n    purrr::map_int(\\(r) {\n      up &lt;- seq_len(r); down &lt;- min(c(r+1,ncol(x))):ncol(x)\n      updown &lt;- get_up_down(up, down)\n      up &lt;- x[,updown$up]; down &lt;- x[,updown$down];\n      if (sum(up == down) == length(up) - 1) r else 0\n    })\n}\ndt |&gt;\n  purrr::map(\\(x) {\n    c(check_row(x), check_col(x))\n  }) |&gt;\n  unlist() |&gt;\n  sum()\n\n[1] 40995"
   },
   {
     "objectID": "2024/06/2024-06.html",

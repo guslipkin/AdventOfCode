@@ -1,0 +1,86 @@
+---
+title: "Cafeteria"
+format: html
+date: "2025-12-05"
+---
+
+```{r}
+#| message: false
+library(mistlecode)
+
+options(scipen = 999)
+```
+
+## Part 1
+
+`Error: cannot allocate vector of size 3238080.8 Gb` yeah okay. Just doing `%in%` would've been too easy. But my actual solution isn't that much more complicated either. I'm not sure I've ever actually used `dplyr::join_by()` before.
+
+```{r}
+input <- readLines('input.txt')
+
+ranges <-
+  input[1:(which(input == '')-1)] |>
+  purrr::map(\(x) {
+    x |>
+      stringr::str_split_1('-') |>
+      as.numeric()
+  }) |>
+  do.call(rbind, args = _) |>
+  as.data.frame()
+
+input[(which(input == '')+1):length(input)] |>
+  as.numeric() |>
+  tibble::tibble() |>
+  setNames('values') |>
+  dplyr::inner_join(
+    y = ranges,
+    by = dplyr::join_by(dplyr::between(x$values, y$V1, y$V2))
+  ) |>
+  dplyr::pull(.data$values) |>
+  unique() |>
+  length()
+```
+
+## Part 2
+
+I'm sure there's a more efficient way. That said, initially I was starting back at row one every time a new range was found and that was taking forever. I realized I can just subtract one from my current index to account for the row I lost and there will always be something new until there isn't.
+
+```{r}
+downsize <- function(ranges, i = 1) {
+  # browser()
+  if (i > nrow(ranges)) return(ranges)
+  r <- ranges[i,]
+  
+  new_ranges <-
+    ranges[-i,] |>
+    dplyr::filter(
+      (r$V1 >= .data$V1 & r$V1 <= .data$V2) | (r$V2 >= .data$V1 & r$V1 <= .data$V2)
+    ) |>
+    purrr::pmap(\(V1, V2) {
+      tibble::tibble(
+        'V1' = min(r$V1, V1),
+        'V2' = max(r$V2, V2)
+      )
+    }) |>
+    purrr::list_rbind()
+  
+  if (nrow(new_ranges) == 0) {
+    downsize(ranges, i + 1) 
+  } else {
+    ranges <- ranges[-i,]
+    ranges |>
+      dplyr::bind_rows(new_ranges) |>
+      unique() |>
+      downsize(i - 1)
+  }
+}
+
+ranges |>
+  downsize() |>
+  dplyr::mutate(
+    'size' = .data$V2 - .data$V1 + 1
+  ) |>
+  dplyr::pull(.data$size) |>
+  sum()
+```
+

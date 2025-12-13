@@ -1,6 +1,8 @@
 ---
-title: "05: "
+title: "If You Give A Seed A Fertiziler"
 format: html
+date: "2023-12-05"
+draft: true
 ---
 
 ```{r}

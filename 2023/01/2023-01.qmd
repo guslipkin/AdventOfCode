@@ -1,6 +1,7 @@
 ---
-title: "01: Trebuchet?!"
+title: "Trebuchet?!"
 format: html
+date: "2023-12-01"
 ---
 
 ```{r}

@@ -6,6 +6,7 @@ project:
     - "solutions.qmd"
     - "2025/*/*.qmd"
     - "2024/*/*.qmd"
+    - "2023/*/*.qmd"
 
 website:
   title: "Gus Lipkin's Awesome Code"

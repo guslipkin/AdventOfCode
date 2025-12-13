@@ -2,7 +2,6 @@
 title: "Printing Department"
 format: html
 date: "2025-12-04"
-draft: true
 ---
 
 ```{r}
@@ -14,27 +13,56 @@ options(scipen = 999)
 
 ## Part 1
 
+This is one of those ones where you do great on the test input and miss something on the real one and can't figure it out. I was returning too early in a few edge cases. Literal edge cases. Where the toilet paper was on the edge of the grid.
+
 ```{r}
 mat <- mistlecode::read_matrix('input.txt')
-mat_all <- mat
 expand.grid(
-  'x' = mat |> ncol() |> seq_len(),
-  'y' = mat |> nrow() |> seq_len()
+  'y' = mat |> nrow() |> seq_len(),
+  'x' = mat |> ncol() |> seq_len()
 ) |>
-  purrr::pmap_int(\(x, y) {
-    mat_copy <- mat
-    if (mat[y, x] == '.') return(4)
-    mat_copy[y, x] <- '.'
-    vals <- 
-      mistlecode::get_adjacent_values(y, x, mat_copy) |>
-      as.vector()
-    if (all(vals == '.')) return(4)
-    vals |>
-      table() |>
-      _[['@']]
+  purrr::pmap(\(y, x) {
+    if (mat[y, x] == '.') return(c('.' = 4))
+    mistlecode::get_adjacent_values(y, x, mat) |>
+      as.vector() |>
+      table()
   }) |>
-  (\(x) x[x < 4])() |>
+  unlist() |>
+  (\(x) x[names(x) == '@'])() |>
+  (\(x) x[x <= 4])() |>
   length()
 ```
 
-> 1512
+## Part 2
+
+A little bit more of me being not so bright on the execution and some waiting and there's a solution.
+
+```{r}
+mat <- mistlecode::read_matrix('input.txt')
+wiped <- 0
+coords <-
+  expand.grid(
+    'y' = mat |> nrow() |> seq_len(),
+    'x' = mat |> ncol() |> seq_len()
+  )
+do_wipe <- function(mat) {
+  current <- wiped
+  mat_copy <- mat
+  coords |>
+    purrr::pwalk(\(y, x) {
+      if (mat[y, x] == '@') {
+        vals <- 
+          mistlecode::get_adjacent_values(y, x, mat) |>
+          as.vector() |>
+          table()
+        if (vals['@'] <= 4) {
+          mat_copy[y, x] <<- '.'
+          wiped <<- wiped + 1
+        }
+      }
+    })
+  if (current != wiped) do_wipe(mat_copy) else wiped
+}
+do_wipe(mat)
+```
+

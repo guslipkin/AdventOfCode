@@ -1,6 +1,8 @@
 ---
-title: "14: "
+title: "Parabolic Reflector Dish"
 format: html
+date: "2023-12-14"
+draft: true
 ---
 
 ```{r}

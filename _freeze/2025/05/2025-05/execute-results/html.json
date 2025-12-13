@@ -1,0 +1,15 @@
+{
+  "hash": "5aef881ca67711f2694f6fcb2f4d818c",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\ntitle: \"Cafeteria\"\nformat: html\ndate: \"2025-12-05\"\n---\n\n::: {.cell}\n\n```{.r .cell-code}\nlibrary(mistlecode)\n\noptions(scipen = 999)\n```\n:::\n\n\n\n## Part 1\n\n`Error: cannot allocate vector of size 3238080.8 Gb` yeah okay. Just doing `%in%` would've been too easy. But my actual solution isn't that much more complicated either. I'm not sure I've ever actually used `dplyr::join_by()` before.\n\n\n\n::: {.cell}\n\n```{.r .cell-code}\ninput <- readLines('input.txt')\n\nranges <-\n  input[1:(which(input == '')-1)] |>\n  purrr::map(\\(x) {\n    x |>\n      stringr::str_split_1('-') |>\n      as.numeric()\n  }) |>\n  do.call(rbind, args = _) |>\n  as.data.frame()\n\ninput[(which(input == '')+1):length(input)] |>\n  as.numeric() |>\n  tibble::tibble() |>\n  setNames('values') |>\n  dplyr::inner_join(\n    y = ranges,\n    by = dplyr::join_by(dplyr::between(x$values, y$V1, y$V2))\n  ) |>\n  dplyr::pull(.data$values) |>\n  unique() |>\n  length()\n```\n\n::: {.cell-output .cell-output-stdout}\n\n```\n[1] 607\n```\n\n\n:::\n:::\n\n\n\n## Part 2\n\nI'm sure there's a more efficient way. That said, initially I was starting back at row one every time a new range was found and that was taking forever. I realized I can just subtract one from my current index to account for the row I lost and there will always be something new until there isn't.\n\n\n\n::: {.cell}\n\n```{.r .cell-code}\ndownsize <- function(ranges, i = 1) {\n  # browser()\n  if (i > nrow(ranges)) return(ranges)\n  r <- ranges[i,]\n  \n  new_ranges <-\n    ranges[-i,] |>\n    dplyr::filter(\n      (r$V1 >= .data$V1 & r$V1 <= .data$V2) | (r$V2 >= .data$V1 & r$V1 <= .data$V2)\n    ) |>\n    purrr::pmap(\\(V1, V2) {\n      tibble::tibble(\n        'V1' = min(r$V1, V1),\n        'V2' = max(r$V2, V2)\n      )\n    }) |>\n    purrr::list_rbind()\n  \n  if (nrow(new_ranges) == 0) {\n    downsize(ranges, i + 1) \n  } else {\n    ranges <- ranges[-i,]\n    ranges |>\n      dplyr::bind_rows(new_ranges) |>\n      unique() |>\n      downsize(i - 1)\n  }\n}\n\nranges |>\n  downsize() |>\n  dplyr::mutate(\n    'size' = .data$V2 - .data$V1 + 1\n  ) |>\n  dplyr::pull(.data$size) |>\n  sum()\n```\n\n::: {.cell-output .cell-output-stdout}\n\n```\n[1] 3.424334e+14\n```\n\n\n:::\n:::\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

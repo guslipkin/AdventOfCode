@@ -26,7 +26,7 @@ I'm currently trying to convert this from a Quarto Book to a Quarto Blog. There 
 #| include: false
 library(quarto)
 years <- c(2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025)
-stars <- c(  43,   18,   16,   12,    8,   23,   26,   28,   16,   19,   10)
+stars <- c(  43,   18,   16,   12,    8,   23,   26,   28,   16,   19,   14)
 
 mapply(\(y, s) {
   c("star" = rev(seq_len(s))) |>

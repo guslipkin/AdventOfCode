@@ -1,0 +1,15 @@
+{
+  "hash": "4717d8f484965db768f43a982964c62f",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\ntitle: \"If You Give A Seed A Fertiziler\"\nformat: html\ndate: \"2023-12-05\"\ndraft: true\n---\n\n::: {.cell}\n\n```{.r .cell-code}\nlibrary(mistlecode)\n\noptions(scipen = 999)\n```\n:::\n\n::: {.cell}\n\n```{.r .cell-code}\nget_range <- function(x, range) {\n  x:(x+range-1)\n}\ndo_join <- function(x, y) {\n  x |>\n    dplyr::full_join(y, by = c('dest' = 'source')) |>\n    dplyr::select(-dest, 'dest' = 'dest.y') |>\n    dplyr::mutate(dest = ifelse(is.na(dest), source, dest))\n}\n# do_join(dt[[1]], dt[[2]])\ndt <-\n  readLines(\"input2.txt\") |>\n  tibble::tibble() |>\n  `colnames<-`('input') |>\n  dplyr::mutate(group = cumsum(grepl('[a-z]', input))) |>\n  dplyr::filter(input != '') |>\n  dplyr::group_split(group) |>\n  tail(-1) |>\n  purrr::imap(\\(x, idx) {\n    x <-\n        x |>\n        dplyr::select(-group) |>\n        dplyr::filter(dplyr::row_number() != 1) |>\n        tidyr::separate(input, c('source', 'dest', 'range'), convert = TRUE) |>\n        dplyr::rowwise() |>\n        dplyr::mutate(\n          source = purrr::map(source, get_range, range = range),\n          dest = purrr::map(dest, get_range, range = range)\n        ) |>\n        dplyr::select(-range) |>\n        tidyr::unnest_longer(col = c(source, dest)) |>\n        `colnames<-`(c('dest', 'source'))\n      x |>\n        dplyr::right_join(tibble::tibble('source' = seq_len(max(x$source, na.rm = TRUE))), by = 'source') |>\n        dplyr::arrange(source) |>\n        dplyr::mutate(dest = ifelse(is.na(dest), source, dest))\n  }) |>\n  purrr::reduce(do_join) |>\n  unique()\n\ns <-\n  readLines('input2.txt', n = 1) |>\n  stringr::str_extract_all('\\\\d+') |>\n  unlist() |>\n  as.numeric()\n\ndt[s,]\n```\n\n::: {.cell-output .cell-output-stdout}\n\n```\n# A tibble: 4 × 2\n  source  dest\n   <int> <int>\n1     79    83\n2     14    43\n3     55    45\n4     13    35\n```\n\n\n:::\n\n```{.r .cell-code}\n  # dplyr::pull(dest) |>\n  # min()\n```\n:::\n\n\n\n\n## Part 1\n\n\n\n\n::: {.cell}\n\n:::\n\n\n\n\n## Part 2\n\n\n\n\n::: {.cell}\n\n:::\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}
