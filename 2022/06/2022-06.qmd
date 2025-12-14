@@ -1,6 +1,7 @@
 ---
-title: "06: Tuning Trouble"
+title: "Tuning Trouble"
 format: html
+date: "2022-12-06"
 ---
 
 ```{r}

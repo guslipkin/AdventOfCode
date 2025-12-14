@@ -1,6 +1,8 @@
 ---
-title: "2022-17: Pyroclastic Flow"
+title: "Pyroclastic Flow"
 format: html
+date: "2022-12-17"
+draft: true
 eval: false
 ---
 

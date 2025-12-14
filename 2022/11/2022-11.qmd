@@ -1,6 +1,7 @@
 ---
-title: "11: Monkey in the Middle"
+title: "Monkey in the Middle"
 format: html
+date: "2022-12-11"
 ---
 
 ```{r}

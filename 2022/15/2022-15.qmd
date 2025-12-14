@@ -1,6 +1,8 @@
 ---
-title: "2022-15: Beacon Exclusion Zone"
+title: "Beacon Exclusion Zone"
 format: html
+date: "2022-12-15"
+draft: true
 ---
 
 ```{r}

@@ -1,6 +1,7 @@
 ---
-title: "2022-21: Monkey Math"
+title: "Monkey Math"
 format: html
+date: "2022-12-21"
 ---
 
 This...doesn't actually look too bad. Part 2 will probably be a nightmare.

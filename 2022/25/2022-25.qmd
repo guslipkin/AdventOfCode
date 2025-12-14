@@ -1,6 +1,8 @@
 ---
-title: "2022-25: Full of Hot Air"
+title: "Full of Hot Air"
 format: html
+date: "2022-12-25"
+draft: true
 ---
 
 This doesn't look too terrible. The numbering system is weird, but I can work with it. It seems too easy for Day 25.

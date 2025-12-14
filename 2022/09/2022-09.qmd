@@ -1,6 +1,8 @@
 ---
-title: "2022-09: Rope Bridge"
+title: "Rope Bridge"
 format: html
+date: "2022-12-09"
+draft: true
 ---
 
 ```{r}

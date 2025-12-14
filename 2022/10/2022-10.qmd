@@ -1,6 +1,7 @@
 ---
-title: "10: Cathode-Ray Tube"
+title: "Cathode-Ray Tube"
 format: html
+date: "2022-12-10"
 ---
 
 ```{r}

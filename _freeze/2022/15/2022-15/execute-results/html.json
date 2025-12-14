@@ -1,0 +1,15 @@
+{
+  "hash": "ea076fa6c993c2ef46919224185a5390",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\ntitle: \"Beacon Exclusion Zone\"\nformat: html\ndate: \"2022-12-15\"\ndraft: true\n---\n\n::: {.cell}\n\n```{.r .cell-code}\nlibrary(mistlecode)\n\noptions(scipen = 999)\n```\n:::\n\n::: {.cell}\n\n```{.r .cell-code}\ndt <-\n  readLines(\"input2.txt\") |>\n  str_match(\"(Sensor at x=)(-?\\\\d+)(, y=)(-?\\\\d+)(: closest beacon is at x=)(-?\\\\d+)(, y=)(-?\\\\d+)\") |>\n  `colnames<-`(c(\"input\", \"burn\", \"xS\", \"burn\", \"yS\", \"burn\", \"xB\", \"burn\", \"yB\")) |>\n  data.frame() |>\n  select(xS, yS, xB, yB) |>\n  lapply(as.integer) |>\n  data.frame() |>\n  as.matrix()\n```\n:::\n\n\n\n\n## Part 1\n\n\n\n\n::: {.cell}\n\n:::\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

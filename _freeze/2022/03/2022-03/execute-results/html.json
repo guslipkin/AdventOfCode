@@ -1,0 +1,15 @@
+{
+  "hash": "41752aabd27b925e85608e14474610c8",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\ntitle: \"Rucksack Reorganization\"\nformat: html\ndate: \"2022-12-03\"\n---\n\n::: {.cell}\n\n```{.r .cell-code}\nlibrary(tidyverse)\nlibrary(data.table)\n```\n:::\n\n::: {.cell}\n\n```{.r .cell-code}\n# dt <- fread(\"input.txt\", header = FALSE)\ndt <- readLines(\"input.txt\")\n```\n:::\n\n\n\n\nThis already looks rough. `readLines` because it's strings.\n\n## Part 1\n\nUltimately not too bad. I got to make use of `\\(x)` for an anonymous function. I messed up the second half of the string and had it started at the end of the first half. I got docked a minute for the bad answer but then was able to fix it in time for resubmission.\n\n\n\n\n::: {.cell}\n\n```{.r .cell-code}\ndata.frame(\"input\" = dt) %>%\n  mutate(V1 = substr(input, 1, nchar(input) / 2),\n         V2 = substr(input, nchar(input) / 2 + 1, nchar(input))) %>%\n  apply(1, \\(x) {\n    v1 <- unlist(strsplit(x[\"V1\"], \"\"))\n    v2 <- unlist(strsplit(x[\"V2\"], \"\"))\n    \n    return(v1[v1 %in% v2])\n  }) %>%\n  sapply(\\(x) {\n    x <- unique(x)\n    sum(which(letters == x), (which(LETTERS == x) + 26), na.rm = TRUE)\n  }) %>%\n  sum()\n```\n\n::: {.cell-output .cell-output-stdout}\n\n```\n[1] 7811\n```\n\n\n:::\n:::\n\n\n\n\n## Part 2\n\nI struggled with creating the groups for some reason. Once I had that going, the rest was pretty easy.\n\n\n\n\n::: {.cell}\n\n```{.r .cell-code}\ndata.frame(\"input\" = dt) %>%\n  mutate(\"group\" = rep(1:(nrow(.) / 3), each = 3)) -> dt2\n\nd2 <- c()\nfor(g in unique(dt2$group)) {\n  d <- dt2$input[dt2$group == g]\n  \n  v1 <- unlist(strsplit(d[1], \"\"))\n  v2 <- unlist(strsplit(d[2], \"\"))\n  v3 <- unlist(strsplit(d[3], \"\"))\n    \n  d2 <<- c(d2, unique(v3[v3 %in% v1[v1 %in% v2]]))\n}\n\nsapply(d2, \\(x) {\n    x <- unique(x)\n    sum(which(letters == x), (which(LETTERS == x) + 26), na.rm = TRUE)\n  }) %>%\n  sum()\n```\n\n::: {.cell-output .cell-output-stdout}\n\n```\n[1] 2639\n```\n\n\n:::\n:::\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

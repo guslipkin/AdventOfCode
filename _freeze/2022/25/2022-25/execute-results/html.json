@@ -1,0 +1,15 @@
+{
+  "hash": "0385cba6f2defd1c098ebd071bac2ef1",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\ntitle: \"Full of Hot Air\"\nformat: html\ndate: \"2022-12-25\"\ndraft: true\n---\n\n\n\n\nThis doesn't look too terrible. The numbering system is weird, but I can work with it. It seems too easy for Day 25.\n\n\n\n\n::: {.cell}\n\n```{.r .cell-code}\nlibrary(mistlecode)\n\noptions(scipen = 999)\n```\n:::\n\n::: {.cell}\n\n```{.r .cell-code}\ndt <- readLines(\"input.txt\")\n```\n:::\n\n\n\n\n## Part 1\n\nI was able to get Bob's number pretty quickly. Then I realized I hadn't fully\nread the question and I had to translate Bob's number back into SNAFU. I had a\nfew ideas on how to do it, but really struggled for some reason. I tried a\nrecursive method first, but quickly hit C stack limits and couldn't quite wrap\nmy mind around how to brute-force it. I did realize that I could jump start the\nguessing by finding the smallest number greater than Bob's that's made entirely\nout of `2`s. By starting there, I could subtract towards my goal, rather than\ntrying to add, which would have been much more difficult. It was then just a\nmatter of getting the code straight in my head, and using the `un_snafu`\nfunction to check my values every cycle.\n\n\n\n\n::: {.cell}\n\n```{.r .cell-code}\nun_snafu <- function(x) {\n  x <- \n    x |>\n    str_split_1(\"\") |>\n    rev()\n\n  x <- case_when(\n    x == \"-\" ~ -1,\n    x == \"=\" ~ -2,\n    TRUE ~ as.numeric(x)\n  )\n\n  sum((5 ^ (0:(length(x)-1))) * x)\n}\n\nbob <- \n  dt |>\n  sapply(un_snafu) |>\n  suppressWarnings() |>\n  sum()\n\nsubtract <- function(x) {\n  case_when(\n    x == \"2\" ~ \"1\",\n    x == \"1\" ~ \"0\",\n    x == \"0\" ~ \"-\",\n    x == \"-\" ~ \"=\"\n  )\n}\n\nmax_places <-\n  sapply(1:100, \\(x) paste0(rep(\"2\", x), collapse = \"\")) |>\n  sapply(un_snafu)\nx <- names(which(max_places > bob)[1])\nplace <- 1\n\nrepeat {\n  x2 <- x\n  \n  s <- substr(x2, place, place)\n  if (s != \"=\") { substr(x2, place, place) <- subtract(s) } \n  else { place <- place + 1 }\n  \n  u <- un_snafu(x2)\n  if (u > bob) { x <- x2 }\n  else if (u < bob) { place <- place + 1 }\n  else { print(x2); break }\n} |>\n  suppressWarnings()\n```\n\n::: {.cell-output .cell-output-stdout}\n\n```\n[1] \"2-02===-21---2002==0\"\n```\n\n\n:::\n:::\n\n\n\n\n## Part 2\n\n::: {.callout-caution}\n\nThis puzzle does not unlock until you have completed the rest of the year. I'll\nbe back one day...\n\n:::\n\n\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

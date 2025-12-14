@@ -1,6 +1,7 @@
 ---
-title: "2022-20: Grove Positioning System"
+title: "Grove Positioning System"
 format: html
+date: "2022-12-20"
 ---
 
 This looks too good to be true!

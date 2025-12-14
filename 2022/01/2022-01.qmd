@@ -1,6 +1,7 @@
 ---
-title: "01: Calorie Counting"
+title: "Calorie Counting"
 format: html
+date: "2022-12-01"
 ---
 
 ```{r}

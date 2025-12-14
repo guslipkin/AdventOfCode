@@ -10,6 +10,7 @@ listing:
     - '2025/*/*.qmd'
     - '2024/*/*.qmd'
     - '2023/*/*.qmd'
+    - '2022/*/*.qmd'
   date-format: 'YYYY-DD'
   sort: "date desc"
   type: table

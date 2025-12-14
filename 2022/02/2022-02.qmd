@@ -1,6 +1,7 @@
 ---
-title: "02: Rock Paper Scissors"
+title: "Rock Paper Scissors"
 format: html
+date: "2022-12-02"
 ---
 
 ```{r}

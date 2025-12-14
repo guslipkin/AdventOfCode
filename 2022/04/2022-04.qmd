@@ -1,6 +1,7 @@
 ---
-title: "04: Camp Cleanup"
+title: "Camp Cleanup"
 format: html
+date: "2022-12-04"
 ---
 
 ```{r}

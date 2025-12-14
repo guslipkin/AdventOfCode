@@ -1,0 +1,15 @@
+{
+  "hash": "874365da7a7b62b4ba26f2a9d741a193",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\ntitle: \"Boiling Boulders\"\nformat: html\ndate: \"2022-12-18\"\ndraft: true\n---\n\n::: {.cell}\n\n```{.r .cell-code}\nlibrary(mistlecode)\n\noptions(scipen = 999)\n```\n:::\n\n::: {.cell}\n\n```{.r .cell-code}\ndt <- \n  fread(\"input2.txt\") |>\n  `colnames<-`(letters[24:26])\n```\n:::\n\n\n\n\n## Part 1\n\n\n\n\n::: {.cell}\n\n```{.r .cell-code}\ndt |>\n  mutate(\n    xx = paste0(x, x),\n    xy = paste0(x, y),\n    xz = paste0(x, z),\n    yy = paste0(y, y),\n    yz = paste0(y, z),\n    zz = paste0(z, z)\n  ) |>\n  select(-\"xx\", -\"yy\", -\"zz\") |>\n  pivot_longer(cols = c(\"xy\", \"xz\", \"yz\")) |>\n  group_by(name) |>\n  mutate(\n    minX = min(x), maxX = max(x),\n    minY = min(y), maxY = max(y),\n    minZ = min(z), maxZ = max(z)\n  ) |>\n  # pull(value) |>\n  unique() |>\n  length()\n```\n\n::: {.cell-output .cell-output-stdout}\n\n```\n[1] 11\n```\n\n\n:::\n\n```{.r .cell-code}\n# (nrow(dt) * 6) - x + 1\n```\n:::\n\n\n\n\n< 12211\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

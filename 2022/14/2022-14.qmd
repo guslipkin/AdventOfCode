@@ -1,6 +1,7 @@
 ---
-title: "2022-14: Regolith Reservoir"
+title: "Regolith Reservoir"
 format: html
+date: "2022-12-14"
 ---
 
 This doesn't actually look too terrible.

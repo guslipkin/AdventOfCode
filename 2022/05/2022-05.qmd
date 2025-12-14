@@ -1,6 +1,7 @@
 ---
-title: "05: Supply Stacks"
+title: "Supply Stacks"
 format: html
+date: "2022-12-05"
 ---
 
 ```{r}

@@ -1,6 +1,7 @@
 ---
-title: "03: Rucksack Reorganization"
+title: "Rucksack Reorganization"
 format: html
+date: "2022-12-03"
 ---
 
 ```{r}

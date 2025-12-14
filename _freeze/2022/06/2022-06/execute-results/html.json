@@ -1,0 +1,15 @@
+{
+  "hash": "7bcd2c1104017a204b2bf53a38bccda2",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\ntitle: \"Tuning Trouble\"\nformat: html\ndate: \"2022-12-06\"\n---\n\n::: {.cell}\n\n```{.r .cell-code}\nlibrary(tidyverse)\nlibrary(data.table)\nlibrary(mistlecode)\n```\n:::\n\n::: {.cell}\n\n```{.r .cell-code}\ndt <- \n  'input.txt' |> \n  readLines() |> \n  strsplit('') |> \n  unlist()\n```\n:::\n\n\n\n\nThis looks easy. Oh wait. I totally misread the problem...\n\n\n\n\n::: {.cell}\n\n```{.r .cell-code}\ndo_part <- function(part) {\n  part <- part - 1\n  get_vec <- function(vec, place) {\n    if (place == 0) { return(vec)}\n    c(vec[-1:(-place)], rep(NA, place))\n  }\n  \n  lapply(0:part, function(x) {\n    get_vec(dt, x)\n  }) |>\n    data.frame() |>\n    `colnames<-`(paste0(\"X\", 1:part)) %>%\n    apply(1, function(x) {\n      paste0(x, collapse = \"\")\n    }) |>\n    sapply(function(x) {\n      max(table(strsplit(x, \"\")))\n    }) -> tmp\n  (which(tmp == 1) + part)[1]\n}\n```\n:::\n\n\n\n\n\n## Part 1\n\nHardcoding everything will bite me in the butt later probably. Ultimately not too bad in hindsight.\n\n::: {.panel-tabset}\n\n### New\n\n\n\n\n::: {.cell}\n\n```{.r .cell-code}\ndo_part(4)\n```\n\n::: {.cell-output .cell-output-stdout}\n\n```\nbdjq \n1578 \n```\n\n\n:::\n:::\n\n\n\n\n### Original\n\n\n\n\n::: {.cell}\n\n```{.r .cell-code}\ndata.frame(\"w\" = dt,\n           \"x\" = c(dt[-1], NA),\n           \"y\" = c(dt[-1:-2], NA, NA),\n           \"z\" = c(dt[-1:-3], NA, NA, NA)) |>\n  mutate(marker = paste0(w, x, y, z, sep = \"\")) |>\n  apply(1, function(x) {\n    max(table(strsplit(x[\"marker\"], \"\")))\n  }) -> tmp\n(which(tmp == 1) + 3)[1]\n```\n\n::: {.cell-output .cell-output-stdout}\n\n```\n[1] 1578\n```\n\n\n:::\n:::\n\n\n\n\n:::\n\n## Part 2\n\nWell, well, well. Hardcoding is never a good move. Took a bit of time to get it figured out, but I got there in the end.\n\n::: {.panel-tabset}\n\n### New\n\n\n\n::: {.cell}\n\n```{.r .cell-code}\ndo_part(14)\n```\n\n::: {.cell-output .cell-output-stdout}\n\n```\nmdcbnwqgshpvfj \n          2178 \n```\n\n\n:::\n:::\n\n\n\n\n### Original\n\n\n\n\n::: {.cell}\n\n```{.r .cell-code}\nget_vec <- function(vec, place) {\n  if (place == 0) { return(vec) }\n  c(vec[-1:(-place)], rep(NA, place))\n}\n\nlapply(0:13, function(x) {\n  get_vec(dt, x)\n}) |>\n  data.frame() |>\n  `colnames<-`(paste0(\"X\", 1:14)) %>%\n  apply(1, function(x) {\n    paste0(x, collapse = \"\")\n  }) |>\n  sapply(function(x) {\n    max(table(strsplit(x, \"\")))\n  }) -> tmp\n(which(tmp == 1) + 13)[1]\n```\n\n::: {.cell-output .cell-output-stdout}\n\n```\nmdcbnwqgshpvfj \n          2178 \n```\n\n\n:::\n:::\n\n\n\n\n:::\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}
