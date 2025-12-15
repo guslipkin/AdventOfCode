@@ -1,6 +1,7 @@
 ---
-title: "2022-14: Extended Polymerization"
+title: "Extended Polymerization"
 format: html
+date: "2021-12-14"
 ---
 
 ```{r}

@@ -5,6 +5,20 @@ execute:
   enabled: true
   cache: false
   freeze: false
+listing:
+  id: solution-listing
+  contents: # Make sure to update the rendered folders in _quarto.yml
+    - '2025/*/*.qmd'
+    - '2024/*/*.qmd'
+    - '2023/*/*.qmd'
+    - '2022/*/*.qmd'
+    - '2021/*/*.qmd'
+  date-format: 'YYYY-DD'
+  sort: "date desc"
+  type: table
+  table-striped: true
+  table-hover: true
+  fields: [date, title]
 ---
 
 Welcome to my Advent of Code ~~blog~~ book! All of my solutions are in R with varying degrees of complexity and documentation.
@@ -16,8 +30,6 @@ Welcome to my Advent of Code ~~blog~~ book! All of my solutions are in R with va
 I'm currently trying to convert this from a Quarto Book to a Quarto Blog. There ended up being too much for the Book format to handle so I'm hoping a Blog is easier to maintain.
 
 :::
-
-## [CLICK HERE FOR MY SOLUTIONS](solutions.html)
 
 ## Star Chart
 
@@ -109,3 +121,9 @@ cat("adventofcode.guslipkin.me", file = "docs/CNAME")
 - [2021-09](2021/09/2021-09.html): I used the `dbscan` clustering method to solve a path finding issue. 
 - [2022-04](2022/04/2022-04.html): While not my fastest part 1, part 2 took me just 38 seconds!
 - [2022-11](2022/11/2022-11.html): I used [S3 Classes](https://adv-r.hadley.nz/s3.html#s3) and [function factories](https://adv-r.hadley.nz/function-factories.html?q=function%20fac#function-factories) for the first time, and got just a little bit better at recursion.
+- [2025-09](2025/09/2025-09.html): I used `geos` to make polygons and check for overlap rather than trying to figure it all out myself.
+
+## All of My Solutions
+
+::: {#solution-listings}
+:::

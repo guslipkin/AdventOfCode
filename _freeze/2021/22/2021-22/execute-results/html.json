@@ -1,0 +1,15 @@
+{
+  "hash": "89c02fdf647f8a4d24ce9a7e742252e9",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\ntitle: \"Reactor Reboot\"\nformat: html\ndate: \"2021-12-22\"\ndraft: true\neval: false\n---\n\n::: {.cell}\n\n```{.r .cell-code}\nlibrary(tidyverse)\nlibrary(data.table)\n```\n:::\n\n::: {.cell}\n\n```{.r .cell-code}\ndt <-\n  readLines(\"input.txt\") |>\n  str_split(\" |,|\\\\.\\\\.\") |>\n  lapply(\\(x) str_remove_all(x, \"x=|y=|z=\")) %>%\n  do.call(rbind, .) |>\n  data.frame() |>\n  `colnames<-`(c(\"op\", \"x1\", \"x2\", \"y1\", \"y2\", \"z1\", \"z2\")) |>\n  mutate_at(vars(matches(\"\\\\w\\\\d\")), as.integer)\n\ndt\n```\n:::\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

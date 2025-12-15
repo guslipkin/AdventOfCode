@@ -1,6 +1,7 @@
 ---
-title: "2021-04: Giant Squid"
+title: "Giant Squid"
 format: html
+date: "2021-12-04"
 ---
 
 ```{r}

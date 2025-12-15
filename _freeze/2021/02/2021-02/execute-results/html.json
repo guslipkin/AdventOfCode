@@ -1,0 +1,15 @@
+{
+  "hash": "2527ec7b96296e21e8a438fcc9d5d969",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\ntitle: \"Dive!\"\nformat: html\ndate: \"2021-12-02\"\n---\n\n::: {.cell}\n\n```{.r .cell-code}\nlibrary(tidyr)\nlibrary(data.table)\n```\n:::\n\n\n\n## Part 1\n\n\n\n::: {.cell}\n\n```{.r .cell-code}\ndt <- data.table(read.table(\"input.txt\", sep = \"\\n\"))\ndt <- separate(dt, \"V1\", c(\"d\", \"n\"), sep = \" \", convert = TRUE)\ndt$n <- ifelse(dt$d == \"down\", dt$n * -1, dt$n)\n\nabs(\n  sum(dt$n[dt$d == 'forward']) \n  * as.numeric(sum(dt$n[dt$d != 'forward']))\n)\n```\n\n::: {.cell-output .cell-output-stdout}\n\n```\n[1] 1635930\n```\n\n\n:::\n:::\n\n\n\n## Part 2\n\n\n\n::: {.cell}\n\n```{.r .cell-code}\ndt <- data.table(read.table(\"input.txt\", sep = \"\\n\"))\ndt <- separate(dt, \"V1\", c(\"d\", \"n\"), sep = \" \", convert = TRUE)\n\ndt$aim <- ifelse(dt$d == \"up\" & dt$d != \"forward\", dt$n * -1, dt$n)\ndt$aim <- ifelse(dt$d == \"forward\", 0, dt$aim)\ndt$aim <- cumsum(dt$aim)\n\ndt$h <- ifelse(dt$d == \"forward\", dt$n, 0)\ndt$depth <- ifelse(dt$d == \"forward\", dt$aim * dt$n, 0)\n\nsum(dt$h, na.rm = TRUE) * sum(dt$depth, na.rm = TRUE)\n```\n\n::: {.cell-output .cell-output-stdout}\n\n```\n[1] 1781819478\n```\n\n\n:::\n:::\n\n\n\n## Speed Edition\n\nBase R once again beats out data.table by just a little bit. The big difference here was moving from `colSums` to `sum`, although `readLines` instead of `fread` does play a part.\n\n### Fastest solution\n\n\n\n::: {.cell}\n\n```{.r .cell-code}\ndtM <- data.frame(\"V1\" = readLines(\"input.txt\"))\ndtM <- tidyr::separate(dtM, \"V1\", c(\"d\", \"n\"), sep = \" \", convert = TRUE)\n\n# part 1\ndt <- dtM\ndt$n <- ifelse(dt$d == \"down\", dt$n * -1, dt$n)\nabs(sum(dt$n[dt$d == \"forward\"]) * sum(dt$n[dt$d != \"forward\"]))\n```\n\n::: {.cell-output .cell-output-stdout}\n\n```\n[1] 1635930\n```\n\n\n:::\n\n```{.r .cell-code}\n# part 2\ndt <- dtM\ndt$aim <- cumsum(ifelse(dt$d == \"up\", dt$n * -1, \n                        ifelse(dt$d == \"forward\", 0, dt$n)))\nsum(ifelse(dt$d == \"forward\", dt$n, 0), na.rm = TRUE) *\n  sum(ifelse(dt$d == \"forward\", dt$aim * dt$n, 0), na.rm = TRUE)\n```\n\n::: {.cell-output .cell-output-stdout}\n\n```\n[1] 1781819478\n```\n\n\n:::\n:::\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

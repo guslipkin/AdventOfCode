@@ -1,6 +1,7 @@
 ---
-title: "2021-08: Seven Segment Search"
+title: "Seven Segment Search"
 format: html
+date: "2021-12-08"
 ---
 
 ```{r}

@@ -1,0 +1,15 @@
+{
+  "hash": "5c75d55a4f351f79024c267e4732e383",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\ntitle: \"Transparent Origami\"\nformat: html\ndate: \"2021-12-13\"\n---\n\n::: {.cell}\n\n```{.r .cell-code}\nlibrary(stringr)\nlibrary(data.table)\nlibrary(tidyverse)\n\ndt <- readLines(\"input.txt\")\n\ncoords <- dt[grepl(\"[0-9]{1,4},[0-9]{1,4}\", dt)]\ncoords <- data.frame(str_split(coords, \",\", simplify = TRUE))\ncoords <- data.frame(sapply(coords, as.numeric))\ncoords <- coords + 1\n\nfolds <- str_remove_all(dt[grepl(\"fold along\", dt)], \"fold along \")\nfolds <- data.frame(str_split(folds, \"=\", simplify = TRUE))\nfolds$X2 <- as.numeric(folds$X2)\n\npaper <- matrix(data = FALSE,\n                nrow = (max(folds$X2[folds$X1 == \"y\"]) * 2) + 1,\n                ncol = (max(folds$X2[folds$X1 == \"x\"]) * 2) + 1)\nfor(r in 1:nrow(coords)) { paper[coords$X2[r], coords$X1[r]] <- TRUE }\n```\n:::\n\n\n\n\n## Part 1\n\n\n\n\n::: {.cell}\n\n```{.r .cell-code}\nfold <- function(dir, n, paper) {\n  if (dir == \"x\") {\n    paper1 <- paper[,1:(n)]\n    paper2 <- paper[,(n+2):ncol(paper)]\n    paper2 <- t(apply(paper2, 1, rev))\n  } else if (dir == \"y\") {\n    paper1 <- paper[1:(n),]\n    paper2 <- paper[(n+2):nrow(paper), ]\n    paper2 <- apply(paper2, 2, rev)\n  }\n\n  return(ifelse(paper1 | paper2, TRUE, FALSE))\n}\n\nfolded <- fold(folds$X1[1], folds$X2[1], paper)\nlength(which(folded))\n```\n\n::: {.cell-output .cell-output-stdout}\n\n```\n[1] 684\n```\n\n\n:::\n:::\n\n\n\n\n## Part 2\n\n\n\n\n::: {.cell}\n\n```{.r .cell-code}\nfold <- function(dir, n, paper) {\n  if (dir == \"x\") {\n    paper1 <- paper[,1:(n)]\n    paper2 <- paper[,(n+2):ncol(paper)]\n    paper2 <- t(apply(paper2, 1, rev))\n  } else if (dir == \"y\") {\n    paper1 <- paper[1:(n),]\n    paper2 <- paper[(n+2):nrow(paper), ]\n    paper2 <- apply(paper2, 2, rev)\n  }\n  \n  return(ifelse(paper1 | paper2, TRUE, FALSE))\n}\n\nfor(i in 1:nrow(folds)) {\n  paper <- fold(folds$X1[i], folds$X2[i], paper)\n  \n  coordX <- c()\n  coordY <- c()\n  for(r in 1:nrow(paper)) {\n    for(c in 1:ncol(paper)) {\n      if(paper[r,c]) {\n        coordX <- append(coordX, r)\n        coordY <- append(coordY, c)\n      }\n    }\n  }\n  \n  points <- data.frame(cbind(coordX, coordY)) %>%\n    ggplot() +\n    geom_point(aes(x = coordY, y = -coordX)) +\n    xlim(0, max(c(coordX, coordY))) +\n    ylim(-max(c(coordX, coordY)), 0)\n  if(i == nrow(folds))\n    print(points)\n}\n```\n\n::: {.cell-output-display}\n![](2021-13_files/figure-html/unnamed-chunk-3-1.png){width=672}\n:::\n:::\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

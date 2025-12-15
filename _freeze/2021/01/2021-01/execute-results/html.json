@@ -1,0 +1,15 @@
+{
+  "hash": "9084a4f4d4ee8d089441d5ff6cfd3d66",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\ntitle: \"Sonar Sweep\"\nformat: html\ndate: \"2021-12-01\"\n---\n\n::: {.cell}\n\n```{.r .cell-code}\nlibrary(tidyverse)\nlibrary(data.table)\n```\n:::\n\n::: {.cell}\n\n```{.r .cell-code}\ndt <- data.table(read.table(\"input.txt\", sep = \"\\n\"))\nhead(dt)\n```\n\n::: {.cell-output .cell-output-stdout}\n\n```\n      V1\n   <int>\n1:   191\n2:   192\n3:   201\n4:   205\n5:   206\n6:   203\n```\n\n\n:::\n:::\n\n\n\n\n## Part 1\n\n\n\n\n::: {.cell}\n\n```{.r .cell-code}\ndt$diff <- c(0, diff(dt$V1))\ndt %>%\n  filter(diff > 0) %>%\n  nrow()\n```\n\n::: {.cell-output .cell-output-stdout}\n\n```\n[1] 1374\n```\n\n\n:::\n:::\n\n\n\n\n## Part 2\n\n\n\n\n::: {.cell}\n\n```{.r .cell-code}\ndt$diff <- c(0, 0, 0, diff(dt$V1, lag = 3))\ndt %>%\n  filter(diff > 0) %>%\n  nrow()\n```\n\n::: {.cell-output .cell-output-stdout}\n\n```\n[1] 1418\n```\n\n\n:::\n:::\n\n\n\n\n## Speed Edition\n\n### Fastest Solution\n\n\n\n\n::: {.cell}\n\n```{.r .cell-code}\n# fastest solution\n# data.table was faster until I turned on warn=FALSE in readLines for Base R\ndt <- as.numeric(readLines(\"input.txt\", warn = FALSE))\n# part 1\nsum(diff(dt, lag = 1) > 0)\n```\n\n::: {.cell-output .cell-output-stdout}\n\n```\n[1] 1374\n```\n\n\n:::\n\n```{.r .cell-code}\n# part 2\nsum(diff(dt, lag = 3) > 0)\n```\n\n::: {.cell-output .cell-output-stdout}\n\n```\n[1] 1418\n```\n\n\n:::\n:::\n\n\n\n\n### Benchmarks\n\n\n\n\n::: {.cell}\n\n```{.r .cell-code}\nrbenchmark::benchmark(\n  \"First try\" = {\n    library(tidyverse)\n    library(data.table)\n    dt <- data.table(read.table(\"input.txt\", sep = \"\\n\"))\n    # part 1\n    dt$diff <- c(0, diff(dt$V1))\n    dt %>% filter(diff > 0) %>% nrow()\n    # part 2\n    dt$diff <- c(0, 0, 0, diff(dt$V1, lag = 3))\n    dt %>% filter(diff > 0) %>% nrow()\n    },\n  \"Base R\" = {\n    dt <- as.numeric(readLines(\"input.txt\", warn = FALSE))\n    # part 1\n    sum(diff(dt, lag = 1) > 0)\n    # part 2\n    sum(diff(dt, lag = 3) > 0)\n    },\n  \"data.table\" = {\n    # part 1 and 2\n    data.table::fread(\"input.txt\", \n                      sep = \"\\n\")[, .(diff1 = sum(diff(V1, lag = 1) > 0),\n                                      diff3 = sum(diff(V1, lag = 3) > 0))]\n  },\n  replications = 100, columns = c(1:5), order = \"user.self\")\n```\n\n::: {.cell-output .cell-output-stdout}\n\n```\n        test replications user.self sys.self elapsed\n2     Base R          100     0.046    0.008   0.057\n3 data.table          100     0.149    0.011   0.187\n1  First try          100     0.592    0.031   0.866\n```\n\n\n:::\n:::\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "hash": "04014047ff6909ddc0689e3e6715b081",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\ntitle: \"Arithmetic Logic Unit\"\nformat: html\ndate: \"2021-12-24\"\ndraft: true\neval: false\n---\n\n::: {.cell}\n\n```{.r .cell-code}\nlibrary(mistlecode)\ndt <- readLines(\"input.txt\")\n```\n:::\n\n\n\n## Part 1\n\n\n\n::: {.cell}\n\n```{.r .cell-code}\nregisters <- list(\"w\" = 0, \"x\" = 0, \"y\" = 0, \"z\" = 0)\nfunctions <- \n  get_premade(c(\n    \"inp\" = \"set\", \n    \"add\",\n    \"mul\" = \"multiply\", \n    \"div\" = \"divide\", \n    \"mod\" = \"modulo\"\n  ))\nfunctions$eql <- \\(x, y) {\n  self[[x]] <- if (sef[[x]] == self[[y]]) 1 else 0\n}\na <- create_assembly2(registers, functions)\na$run(dt[1])\n```\n:::\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

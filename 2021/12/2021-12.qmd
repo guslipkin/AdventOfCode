@@ -1,6 +1,9 @@
 ---
-title: "2021-12: Passage Pathing"
+title: "Passage Pathing"
 format: html
+date: "2021-12-12"
+draft: true
+eval: false
 ---
 
 ```{r}

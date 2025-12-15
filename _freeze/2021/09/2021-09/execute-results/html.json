@@ -1,0 +1,15 @@
+{
+  "hash": "c63521032dcb6b5358d42fa657ef2a79",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\ntitle: \"Smoke Basin\"\nformat: html\ndate: \"2021-12-09\"\n---\n\n::: {.cell}\n\n```{.r .cell-code}\nlibrary(stringr)\nlibrary(tidyverse)\nlibrary(data.table)\nlibrary(dbscan)\nlibrary(factoextra)\n\ndt <- fread(\"input.txt\", header = FALSE, colClasses = \"character\")\ndt <- data.frame(str_split(dt$V1, \"\", simplify = TRUE))\ndtPadTop <- dt[1,]\ndtPadTop[!is.na(dtPadTop)] <- 10\ndt <- rbind(rbind(dtPadTop, dt), dtPadTop)\ndtPadSides <- dt[,1]\ndtPadSides[!is.na(dtPadSides)] <- 10\ndt <- cbind(cbind(dtPadSides, dt), dtPadSides)\ndt <- data.frame(apply(dt, 2, as.numeric))\n```\n:::\n\n\n\n\n## Part 1\n\n\n\n\n::: {.cell}\n\n```{.r .cell-code}\ndt2 <- dt\n\ncoordX <- c()\ncoordY <- c()\nrLow <- c()\nfor(r in 2:(nrow(dt2) - 1)) {\n  for(c in 2:(ncol(dt2) - 1)) {\n    if(dt2[r,c] == min(dt[(r-1):(r+1),(c-1):(c+1)])) {\n      rLow <- append(rLow, dt2[r,c])\n      coordX <- append(coordX, c)\n      coordY <- append(coordY, r)\n    }\n  }\n}\n\ns <- 0\nfor(n in 1:length(rLow)) {\n  s <- s + (rLow[n] + 1)\n}\ns\n```\n\n::: {.cell-output .cell-output-stdout}\n\n```\n[1] 575\n```\n\n\n:::\n:::\n\n\n\n\n## Part 2\n\n\n\n\n::: {.cell}\n\n```{.r .cell-code}\ndt2 <- dt\ndt2[dt2 == 9 | dt2 == 10] <- NA\n\ncoordX <- c()\ncoordY <- c()\nrLow <- c()\nfor(r in 2:(nrow(dt2) - 1)) {\n  for(c in 2:(ncol(dt2) - 1)) {\n    if(!is.na(dt2[r,c])) {\n      rLow <- append(rLow, dt2[r,c])\n      coordX <- append(coordX, c)\n      coordY <- append(coordY, r)\n    }\n  }\n}\n\ndt3 <- data.frame(\"x\" = coordX, \"y\" = coordY, \"d\" = rLow)\ndt3 <- dt3[dt3$d <= 8,]\ndb <- dbscan(dt3[,1:2], eps = 1, minPts = 0)\ndt3$cluster <- db$cluster\ndt <- dt3 %>%\n  group_by(cluster) %>%\n  count() %>%\n  filter(cluster != 0) %>%\n  arrange(desc(n)) %>%\n  head(3)\nprod(dt$n)\n```\n\n::: {.cell-output .cell-output-stdout}\n\n```\n[1] 1019700\n```\n\n\n:::\n\n```{.r .cell-code}\ndt3$cluster <- ifelse(dt3$cluster %in% dt$cluster, dt3$cluster, 0)\ndt3 %>%\n  mutate(cluster = as.factor(cluster)) %>%\n  ggplot() +\n  geom_point(aes(x = x, y = y, color = cluster))\n```\n\n::: {.cell-output-display}\n![](2021-09_files/figure-html/unnamed-chunk-3-1.png){width=672}\n:::\n\n```{.r .cell-code}\nggsave(\"cluster.png\")\n```\n\n::: {.cell-output .cell-output-stderr}\n\n```\nSaving 7 x 5 in image\n```\n\n\n:::\n:::\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

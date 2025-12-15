@@ -1,0 +1,15 @@
+{
+  "hash": "c6f4eedfd1f9dad89fd1a7e47aeed413",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\ntitle: \"Passage Pathing\"\nformat: html\ndate: \"2021-12-12\"\ndraft: true\neval: false\n---\n\n::: {.cell}\n\n```{.r .cell-code}\nlibrary(stringr)\nlibrary(unglue)\nlibrary(tidyverse)\nlibrary(data.table)\n\ndt <- readLines(\"input2.txt\")\n```\n:::\n\n\n\n\n## Part 1\n\n\n\n\n::: {.cell}\n\n```{.r .cell-code}\npaste0(c(\"graph LR\", dt), collapse = \"\\n\") |>\n  str_replace_all(\"-\", \"-->\") |>\n  str_replace_all(\"end\", \"finish\") |>\n  DiagrammeR::mermaid()\n\nstr_split(dt, \"-\", simplify = TRUE) |>\n  data.frame() |>\n  `colnames<-`(c(\"start\", \"finish\")) |>\n  mutate(finish = ifelse(finish == \"end\", \"finish\", finish))\n\ncombn(dt, m = 2) |>\n  t() |>\n  data.frame() |>\n  separate(X1, c(\"xStart\", \"xFinish\")) |>\n  separate(X2, c(\"yFinish\", \"yStart\")) |>\n  filter(xStart == yFinish | yStart == xFinish) |>\n  unique() |>\n  pivot_longer(cols = c(ends_with(\"Start\"), ends_with(\"Finish\"))) |>\n  unique()\n```\n:::\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

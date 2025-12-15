@@ -1,0 +1,15 @@
+{
+  "hash": "8ce69ea1ba2c053ae2d7e1831510e29e",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\ntitle: \"Syntax Scoring\"\nformat: html\ndate: \"2021-12-10\"\n---\n\n::: {.cell}\n\n```{.r .cell-code}\nlibrary(tidyverse)\n\ndt <- data.table::fread(\"input.txt\", header = FALSE, colClasses = \"character\")\n```\n:::\n\n\n\n\n## Part 1\n\n\n\n\n::: {.cell}\n\n```{.r .cell-code}\ndt2 <- dt\n\nmonkeyBall <- function(x, n) {\n  x <- str_replace_all(x, \"\\\\(\\\\)|\\\\[\\\\]|\\\\{\\\\}|\\\\<\\\\>\", \"\")\n  if(nchar(x) == n) {\n    t <- as.character(str_split(str_replace_all(x, \"[\\\\(\\\\[\\\\{\\\\<]\", \"\"),\n                   \"\",\n                   simplify = TRUE)[1,])\n    t <- t[1]\n    return(t)\n  }\n  return(monkeyBall(x, nchar(x)))\n}\n\nt <- c()\nfor(r in 1:nrow(dt2)) {\n  x <- dt2[r,1]\n  n <- nchar(x)\n  t <- append(t, monkeyBall(x, n))\n}\nt <- table(t)\nif (is.na(t[\")\"]))\n  t[\")\"] <- 0\nif (is.na(t[\"]\"]))\n  t[\"]\"] <- 0\nif (is.na(t[\"}\"]))\n  t[\"}\"] <- 0\nif (is.na(t[\">\"]))\n  t[\">\"] <- 0\n(3 * t[\")\"]) + (57 * t[\"]\"]) + (1197 * t[\"}\"]) + (25137 * t[\">\"])\n```\n\n::: {.cell-output .cell-output-stdout}\n\n```\n     ) \n311949 \n```\n\n\n:::\n:::\n\n\n\n\n## Part 2\n\n\n\n\n::: {.cell}\n\n```{.r .cell-code}\ndt2 <- dt\n\nmonkeyBall <- function(x, n) {\n  x <- str_replace_all(x, \"\\\\(\\\\)|\\\\[\\\\]|\\\\{\\\\}|\\\\<\\\\>\", \"\")\n  if(nchar(x) == n) {\n    if(!grepl(\"\\\\)|\\\\]|\\\\}|\\\\>\", x, perl = TRUE))\n      return(x)\n    return(\"\")\n  }\n  return(monkeyBall(x, nchar(x)))\n}\n\nt <- c()\nfor(r in 1:nrow(dt2)) {\n  x <- dt2[r,1]\n  n <- nchar(x)\n  t <- append(t, monkeyBall(x, n))\n}\nt <- t[nchar(t) > 0]\ns <- c()\nfor(i in t) {\n  miniS <- 0\n  miniT <- rev(str_split(i, \"\", simplify = TRUE)[1,])\n  for(l in miniT) {\n    miniS <- (5 * miniS) + case_when(l == \"(\" ~ 1,\n                                     l == \"[\" ~ 2,\n                                     l == \"{\" ~ 3,\n                                     l == \"<\" ~ 4)\n  }\n  s <- append(s, miniS)\n}\ns <- s[!is.na(s)]\nmedian(s)\n```\n\n::: {.cell-output .cell-output-stdout}\n\n```\n[1] 3042730309\n```\n\n\n:::\n:::\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

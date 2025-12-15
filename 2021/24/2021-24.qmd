@@ -1,5 +1,9 @@
 ---
-title: "24: Arithmetic Logic Unit"
+title: "Arithmetic Logic Unit"
+format: html
+date: "2021-12-24"
+draft: true
+eval: false
 ---
 
 ```{r}

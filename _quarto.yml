@@ -2,20 +2,18 @@ project:
   type: website
   output-dir: docs
   render:
-    - "index.qmd"
-    - "solutions.qmd"
-    - "2025/*/*.qmd"
-    - "2024/*/*.qmd"
-    - "2023/*/*.qmd"
-    - "2022/*/*.qmd"
+    - 'index.qmd'
+    - '2025/*/*.qmd'
+    - '2024/*/*.qmd'
+    - '2023/*/*.qmd'
+    - '2022/*/*.qmd'
+    - '2021/*/*.qmd'
 
 website:
   title: "Gus Lipkin's Awesome Code"
   navbar:
     background: primary
     left:
-      - href: solutions.qmd
-        text: My Solutions
       - href: https://guslipkin.github.io/
         text: Main Site
       - href: https://adventofcode.com/about
