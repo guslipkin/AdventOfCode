@@ -1,0 +1,15 @@
+{
+  "hash": "6b1f8b64c99ee6c67b65277c7fea6f4b",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\ntitle: \"Report Repair\"\nformat: html\ndate: \"2020-12-01\"\n---\n\n::: {.cell}\n\n```{.r .cell-code}\nlibrary(tidyverse)\n\ndf <- read.csv(\"Input.csv\")\nhead(df)\n```\n\n::: {.cell-output .cell-output-stdout}\n\n```\n  values\n1   1768\n2   1847\n3   1905\n4   1713\n5   1826\n6   1846\n```\n\n\n:::\n:::\n\n\n\n## Part 1\n\n\n\n::: {.cell}\n\n```{.r .cell-code}\nkey <- NA\n\nfor(x in 1:200) {\n  for(y in 1:200) {\n    if((df$values[x] + df$values[y]) == 2020) {\n      print(paste(df$values[x], df$values[y]))\n      key <- df$values[x] * df$values[y]\n      print(key)\n    }\n    if(!is.na(key))\n      break\n  }\n}\n```\n\n::: {.cell-output .cell-output-stdout}\n\n```\n[1] \"1825 195\"\n[1] 355875\n```\n\n\n:::\n:::\n\n\n\n## Part 2\n\n\n\n::: {.cell}\n\n```{.r .cell-code}\nkey <- NA\n\nfor(x in 1:200) {\n  for(y in 1:200) {\n    for(z in 1:200) {\n      if((df$values[x] + df$values[y]) + df$values[z] == 2020) {\n        print(paste(df$values[x], df$values[y], df$values[z]))\n        key <- df$values[x] * df$values[y] * df$values[z]\n        print(key)\n      }\n      if(!is.na(key))\n        break\n    }\n  }\n}\n```\n\n::: {.cell-output .cell-output-stdout}\n\n```\n[1] \"346 1380 294\"\n[1] 140379120\n```\n\n\n:::\n:::\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

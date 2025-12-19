@@ -1,0 +1,15 @@
+{
+  "hash": "bdf69ff561c928c978d4b24e5e05ff04",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\ntitle: \"Password Philosophy\"\nformat: html\ndate: \"2020-12-02\"\n---\n\n::: {.cell}\n\n```{.r .cell-code}\nlibrary(tidyverse)\n\ndf <- read.csv(\"input.csv\")\nhead(df)\n```\n\n::: {.cell-output .cell-output-stdout}\n\n```\n  min max letter             password\n1   1  14      b  bbbbbbbbbbbbbbbbbbb\n2   3  14      v      vvpvvvmvvvvvvvv\n3   2   5      m              mfvxmmm\n4  15  20      z zdzzzrjzzzdpzzdzzzzz\n5   6   8      g           tggjggggrg\n6   2   3      l                nlllw\n```\n\n\n:::\n:::\n\n\n\n## Part 1\n\n\n\n::: {.cell}\n\n```{.r .cell-code}\ncount <- 0\n\nfor(i in 1:nrow(df)) {\n  if(str_count(df$password[i], as.character(df$letter[i])) >= df$min[i] & \n     str_count(df$password[i], as.character(df$letter[i])) <= df$max[i])\n    count <- count + 1\n}\n\ncount\n```\n\n::: {.cell-output .cell-output-stdout}\n\n```\n[1] 548\n```\n\n\n:::\n:::\n\n\n\n## Part 2\n\n\n\n::: {.cell}\n\n```{.r .cell-code}\ncount <- 0\n\nfor(i in 1:nrow(df)) {\n  sub <- paste(substr(df$password[i], df$min[i], df$min[i]), \n               substr(df$password[i], df$max[i], df$max[i]))\n  if(str_count(sub, as.character(df$letter[i])) == 1)\n    count <- count + 1\n}\n\ncount\n```\n\n::: {.cell-output .cell-output-stdout}\n\n```\n[1] 502\n```\n\n\n:::\n:::\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

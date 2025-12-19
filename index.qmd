@@ -6,19 +6,21 @@ execute:
   cache: false
   freeze: false
 listing:
-  id: solution-listing
+  id: solutions
   contents: # Make sure to update the rendered folders in _quarto.yml
     - '2025/*/*.qmd'
     - '2024/*/*.qmd'
     - '2023/*/*.qmd'
     - '2022/*/*.qmd'
     - '2021/*/*.qmd'
+    - '2020/*/*.qmd'
   date-format: 'YYYY-DD'
   sort: "date desc"
   type: table
   table-striped: true
   table-hover: true
   fields: [date, title]
+  sort-ui: [date]
 ---
 
 Welcome to my Advent of Code ~~blog~~ book! All of my solutions are in R with varying degrees of complexity and documentation.
@@ -125,5 +127,5 @@ cat("adventofcode.guslipkin.me", file = "docs/CNAME")
 
 ## All of My Solutions
 
-::: {#solution-listings}
+::: {#solutions}
 :::

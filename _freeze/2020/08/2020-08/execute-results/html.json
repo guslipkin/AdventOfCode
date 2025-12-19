@@ -1,0 +1,15 @@
+{
+  "hash": "64187fef26bf4107ec9221ae710475ee",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\ntitle: \"Handheld Halting\"\nformat: html\ndate: \"2020-12-08\"\n---\n\n::: {.cell}\n\n```{.r .cell-code}\nmasterDF <- read.csv(\"input.csv\")\n```\n:::\n\n\n\n## Part 1\n\n\n\n::: {.cell}\n\n```{.r .cell-code}\ndf <- masterDF\ndf$ipa <- NA\ndf$ipa[1] <- 0\nacc <- 0\nr <- 1\nflag <- TRUE\n\nwhile(flag == TRUE) {\n  if(as.character(df$ope[r]) == \"acc\" & r <= 626 & r >= 1) {\n    acc <- acc + df$arg[r]\n    flag <- is.na(df$ipa[r + 1])\n    df$ipa[r + 1] <- r\n    r <- r + 1\n    }\n  else if(as.character(df$ope[r]) == \"jmp\" & r + df$arg[r] <= 626 & r + df$arg[r] >= 1) {\n    flag <- is.na(df$ipa[r + df$arg[r]])\n    df$ipa[r + df$arg[r]] <- r\n    r <- r + df$arg[r]\n    }\n  else if(as.character(df$ope[r]) == \"nop\" & r <= 626 & r >= 1) {\n    flag <- is.na(df$ipa[r + 1])\n    df$ipa[r + 1] <- r\n    r <- r + 1\n    }\n}\n\nacc\n```\n\n::: {.cell-output .cell-output-stdout}\n\n```\n[1] 1317\n```\n\n\n:::\n:::\n\n\n\n## Part 2\n\n\n\n::: {.cell}\n\n```{.r .cell-code}\nfor(i in 1:626) {\n  df <- masterDF\n  \n  df$ipa <- NA\n  df$ipa[1] <- 0\n  \n  acc <- 0\n  r <- 1\n  \n  flag <- TRUE\n  breakFlag <- FALSE\n  \n  if(as.character(df$ope[i]) == \"nop\")\n    df$ope[i] <- \"jmp\"\n  else if(as.character(df$ope[i]) == \"jmp\")\n    df$ope[i] <- \"nop\"\n  \n  if(as.character(df$ope[i]) != \"acc\") {\n    while(flag) {\n      if(as.character(df$ope[r]) == \"acc\" & r <= 626 & r >= 1) {\n        acc <- acc + df$arg[r]\n        flag <- is.na(df$ipa[r + 1])\n        df$ipa[r + 1] <- r\n        r <- r + 1\n        }\n      else if(as.character(df$ope[r]) == \"jmp\" & r + df$arg[r] <= 626 & r + df$arg[r] >= 1) {\n        flag <- is.na(df$ipa[r + df$arg[r]])\n        df$ipa[r + df$arg[r]] <- r\n        r <- r + df$arg[r]\n        }\n      else if(as.character(df$ope[r]) == \"nop\" & r <= 626 & r >= 1) {\n        flag <- is.na(df$ipa[r + 1])\n        df$ipa[r + 1] <- r\n        r <- r + 1\n      }\n    \n      if(r == 626) {\n        breakFlag <- TRUE\n        break\n        }\n    }\n  }\n  if(breakFlag)\n    break\n}\n\nacc\n```\n\n::: {.cell-output .cell-output-stdout}\n\n```\n[1] 1033\n```\n\n\n:::\n:::\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

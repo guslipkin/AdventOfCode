@@ -8,6 +8,7 @@ project:
     - '2023/*/*.qmd'
     - '2022/*/*.qmd'
     - '2021/*/*.qmd'
+    - '2020/*/*.qmd'
 
 website:
   title: "Gus Lipkin's Awesome Code"

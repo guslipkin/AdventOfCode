@@ -1,0 +1,15 @@
+{
+  "hash": "d09f4033ffe80d64166b627a26adcaf8",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\ntitle: \"Rain Risk\"\nformat: html\ndate: \"2020-12-12\"\ndraft: true\neval: false\n---\n\n::: {.cell}\n\n```{.r .cell-code}\nlibrary(mistlecode)\n\noptions(scipen = 999)\n```\n:::\n\n::: {.cell}\n\n```{.r .cell-code}\ndt <- readLines(\"input2.txt\")\n```\n:::\n\n\n\n\n## Part 1\n\n\"Turn right to go left, turn right to go left\"\n\n\n\n\n::: {.cell}\n\n```{.r .cell-code}\ncompass = c('N' = 270, 'E' = 0, 'S' = 90, 'W' = 180)\nregisters <- list(\n  x = 0L, \n  y = 0L, \n  dir = 'E'\n  )\nfunctions <- list(\n  'N' = \\(n) { self$y <- self$y + n },\n  'S' = \\(n) { self$y <- self$y - n },\n  'E' = \\(n) { self$x <- self$x + n },\n  'W' = \\(n) { self$x <- self$x - n },\n  'L' = \\(n) {\n    self$R(-n)\n  },\n  'R' = \\(n) {\n    self$dir <- self$get_dir((compass[self$dir] + n) %% 360)\n  },\n  'F' = \\(n) {\n    self[[self$dir]](n)\n  },\n  'get_dir' = \\(deg) {\n    deg <- if (deg == 360) 0 else deg\n    names(which(compass == deg))\n  }\n)\n\na <- mistlecode::create_assembly2(registers, functions, regex = '[NSEWLRF]|[0-9]+')\na <- a$run(dt)\nabs(a$x) + abs(a$y)\n```\n:::\n\n\n\n\n## Part 2\n\n\n\n\n::: {.cell}\n\n```{.r .cell-code}\ncompass = c('N' = 270, 'E' = 0, 'S' = 90, 'W' = 180)\nregisters <- list(\n  x = 0L, \n  y = 0L, \n  w_x = 10L, \n  w_y = 1L,\n  dir = 'E'\n  )\nfunctions <- list(\n  'N' = \\(n) { self$w_y <- self$w_y + n },\n  'S' = \\(n) { self$w_y <- self$w_y - n },\n  'E' = \\(n) { self$w_x <- self$w_x + n },\n  'W' = \\(n) { self$w_x <- self$w_x - n },\n  'L' = \\(n) {\n    self$R(360 - n)\n  },\n  'R' = \\(n) {\n    if (n == 0) return()\n    # 90\n    old_x <- self$w_x; old_y <- self$w_y;\n    if (self$w_x >= 0 & self$w_y >= 0) {\n      self$w_y <- -old_x; self$w_x <- old_y;\n    } else if (self$w_x >= 0 & self$w_y < 0) {\n      self$w_y <- -old_x; self$w_x <- old_y;\n    } else if (self$w_x < 0 & self$w_y < 0) {\n      self$w_y <- old_x; self$w_x <- -old_y;\n    } else if (self$w_x < 0 & self$w_y >= 0) {\n      self$w_y <- -old_x; self$w_x <- old_y;\n    } else {\n      print('help!')\n    }\n  },\n  'F' = \\(n) {\n    print('MOVE')\n    print(glue::glue('x: {self$x}\\ty: {self$y}\\t\\t    w_x: {self$w_x}\\tw_y: {self$w_y}'))\n    w_x <- self$w_x - self$x\n    w_y <- self$w_y - self$y\n    self$x <- ((self$w_x - self$x) * n) + self$x\n    self$y <- ((self$w_y - self$y)* n) + self$y\n    self$w_x <- self$x + w_x\n    self$w_y <- self$y + w_y\n    print(glue::glue('x: {self$x}\\ty: {self$y}\\t\\t    w_x: {self$w_x}\\tw_y: {self$w_y}'))\n  },\n  'get_dir' = \\(deg) {\n    deg <- if (deg == 360) 0 else deg\n    names(which(compass == deg))\n  }\n)\n\na <- mistlecode::create_assembly2(registers, functions, regex = '[NSEWLRF]|[0-9]+')\na <- a$run(dt)\nabs(a$x) + abs(a$y)\n```\n:::\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

@@ -1,6 +1,7 @@
 ---
-title: "07: Handy Haversacks"
+title: "Handy Haversacks"
 format: html
+date: "2020-12-07"
 ---
 
 ```{r}
