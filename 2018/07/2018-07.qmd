@@ -1,23 +1,60 @@
 ---
-title: "2018-07: The Sum of Its Parts"
+title: "The Sum of Its Parts"
 format: html
+date: "2018-12-07"
+draft: true
+eval: false
 ---
 
 ```{r}
-library(tidyverse)
-library(data.table)
+edge_pairs <-
+  'test.txt' |>
+  readLines() |>
+  stringr::str_extract_all('( [A-Z] )') |>
+  purrr::map(stringr::str_trim)
 ```
 
-```{r}
-dt <- fread("test.txt", header = FALSE) |>
-  select(V2, V8) |>
-  rename("predecessor" = V2, "task" = V8)
-t <- dt$task
-p <- dt$predecessor
-head(dt)
-```
 
 ## Part 1
+
+```{r}
+# graph <-
+graph <- igraph::make_empty_graph() |>
+  edge_pairs |>
+  purrr::map(\(x) {
+    igraph::edge(
+      c(x[1], x[2], weight = which(LETTERS == x[2]) - which(LETTERS == x[1]))
+    )
+  }) |>
+  unlist(recursive = FALSE) |>
+  igraph::make_graph() |>
+  igraph::`edge.attributes<-`()
+
+graph |>
+  igraph::all_shortest_paths(from = 'C', )
+
+
+add_edge <- function(graph = NULL, edges) {
+  if (length(edges) == 0) return(graph)
+  if (is.null(graph)) {
+    graph <-
+      edges |>
+      unlist() |>
+      unique() |>
+      length() |>
+      igraph::make_empty_graph()
+    igraph::V(graph)$name <- edges |> unlist() |> unique()
+  }
+  graph |>
+    igraph::add_edges(edges[[1]], 'weight' = which(LETTERS == edges[[1]][2]) - which(LETTERS == edges[[1]][1])) |>
+    add_edge(edges[-1])
+}
+
+add_edge(edges = edge_pairs)
+```
+
+
+
 
 ```{r}
 DiagrammeR::mermaid(c("graph LR;",

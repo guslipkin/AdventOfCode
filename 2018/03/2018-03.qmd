@@ -1,6 +1,7 @@
 ---
-title: "2018-03: No Matter How You Slice It"
+title: "No Matter How You Slice It"
 format: html
+date: "2018-12-03"
 ---
 
 ```{r}

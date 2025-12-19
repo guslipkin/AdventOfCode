@@ -1,6 +1,7 @@
 ---
-title: "2018-05: Alchemical Reduction"
+title: "Alchemical Reduction"
 format: html
+date: "2018-12-05"
 ---
 
 ```{r}

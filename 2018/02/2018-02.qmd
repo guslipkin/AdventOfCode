@@ -1,6 +1,7 @@
 ---
-title: "2018-02: Inventory Management System"
+title: "Inventory Management System"
 format: html
+date: "2018-12-02"
 ---
 
 ```{r}

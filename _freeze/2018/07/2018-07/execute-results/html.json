@@ -1,0 +1,15 @@
+{
+  "hash": "71d34b26664efaf4557fe33bde4c9f67",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\ntitle: \"The Sum of Its Parts\"\nformat: html\ndate: \"2018-12-07\"\ndraft: true\neval: false\n---\n\n::: {.cell}\n\n```{.r .cell-code}\nlibrary(tidyverse)\nlibrary(data.table)\n```\n:::\n\n::: {.cell}\n\n```{.r .cell-code}\ndt <- fread(\"test.txt\", header = FALSE) |>\n  select(V2, V8) |>\n  rename(\"predecessor\" = V2, \"task\" = V8)\nt <- dt$task\np <- dt$predecessor\nhead(dt)\n```\n:::\n\n\n\n\n## Part 1\n\n\n\n\n::: {.cell}\n\n```{.r .cell-code}\nDiagrammeR::mermaid(c(\"graph LR;\",\n                      apply(dt[rowSums(is.na(dt)) == 0, ], 1, function(x) {\n                        paste0(x[\"predecessor\"], \" --> \", x[\"task\"], \";\")\n                      })))\n```\n:::\n\n::: {.cell}\n\n```{.r .cell-code}\nstart <- unique(p[!(p %in% t)])\nend <- unique(t[!(t %in% p)])\nvec <- c()\nls <- list()\n\ngetParent <- function(x) {\n  x <- dt$predecessor[dt$task %in% x]\n  if(length(x) > 0) {\n    x <- rev(sort(unique(x)))\n    ls <<- append(ls, paste(rev(x), collapse = \"\"))\n    vec <<- c(vec, x)\n    return(getParent(x))\n  } else { return(x) }\n}\n\ngetParent(end)\nlapply(ls, function(x) {\n  unique(str_split(x, \"\"))\n}) |>\n  rev() |>\n  unlist() |>\n  unique() -> vec\npaste(c(vec, end), collapse = \"\")\n```\n:::\n\n\n\n\nKVCSHBXDQMJGFZYROUAPLIEWTN\nCKVSHBXDQMJGFZYROUAPLIEWTN\nKVCBSHXDJMGQFYRZOAULPIEWTN\nKCVBHSDXFGJMQRYZOAULPIEWTN\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

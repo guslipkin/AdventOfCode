@@ -1,6 +1,7 @@
 ---
-title: "2018-04: Repose Record"
+title: "Repose Record"
 format: html
+date: "2018-12-04"
 ---
 
 ```{r}

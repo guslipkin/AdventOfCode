@@ -1,0 +1,15 @@
+{
+  "hash": "3c6b2391d37ff481133487a4db9708d6",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\ntitle: \"Crossed Wires\"\nformat: html\ndate: \"2019-12-03\"\n---\n\n::: {.cell}\n\n```{.r .cell-code}\nlibrary(mistlecode)\n```\n:::\n\n::: {.cell}\n\n```{.r .cell-code}\ndtMM <-\n  readLines(\"input.txt\") |>\n  lapply(\\(x) {\n    strsplit(x, \",\")[[1]] |>\n      data.frame() |>\n      `colnames<-`(c(\"col\")) |>\n      separate(col = \"col\", into = c(\"dir\", \"mag\"), sep = 1) |>\n      mutate(mag = as.integer(mag))\n  })\n```\n:::\n\n\n\n\n## Part 1\n\n\n\n\n::: {.cell}\n\n```{.r .cell-code}\ndtM <- lapply(dtMM, expand_directions, preserve_data = TRUE)\n\ndtM[[1]] <- follow_directions(dtM[[1]], 0, 0, preserve_data = TRUE)\ndtM[[2]] <- follow_directions(dtM[[2]], 0, 0, preserve_data = TRUE)\n\ninner_join(dtM[[1]], dtM[[2]], by = c(\"row\", \"col\")) |>\n  mutate(dist = abs(row) + abs(col)) |>\n  arrange(dist) |>\n  head(1) |>\n  pull(dist)\n```\n\n::: {.cell-output .cell-output-stdout}\n\n```\n[1] 1264\n```\n\n\n:::\n:::\n\n\n\n\n## Part 2\n\n\n\n\n::: {.cell}\n\n```{.r .cell-code}\ndtM[[1]] <- \n  dtM[[1]] |>\n  mutate(step = row_number())\ndtM[[2]] <- \n  dtM[[2]] |>\n  mutate(step = row_number())\n\ninner_join(dtM[[1]], dtM[[2]], by = c(\"row\", \"col\")) |>\n  mutate(steps = step.x + step.y) |>\n  arrange(steps) |>\n  head(1) |>\n  pull(steps)\n```\n\n::: {.cell-output .cell-output-stdout}\n\n```\n[1] 37390\n```\n\n\n:::\n:::\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

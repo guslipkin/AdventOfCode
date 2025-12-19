@@ -1,0 +1,15 @@
+{
+  "hash": "30002a37c61ef8897a78a30154b309c6",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\ntitle: \"Alchemical Reduction\"\nformat: html\ndate: \"2018-12-05\"\n---\n\n::: {.cell}\n\n```{.r .cell-code}\nlibrary(stringi)\nlibrary(tidyverse)\nlibrary(data.table)\n```\n:::\n\n::: {.cell}\n\n```{.r .cell-code}\ndt <- readLines(\"input.txt\")\ndt <- unlist(strsplit(dt, \"\"))\n```\n:::\n\n\n\n\n## Part 1\n\n\n\n\n::: {.cell}\n\n```{.r .cell-code}\nreduced <- TRUE\nwhile(reduced) {\n  old <- length(dt)\n  for (x in 1:(old - 1)) {\n    if (dt[x] != dt[x + 1] & toupper(dt[x]) == toupper(dt[x + 1])) {\n      dt[c(x, x + 1)] <- \"\"\n      reduced <- TRUE\n    }\n  }\n  dt <- dt[dt != \"\"]\n  if(old == length(dt)) {\n    reduced <- FALSE\n  }\n}\nlength(dt)\n```\n\n::: {.cell-output .cell-output-stdout}\n\n```\n[1] 10598\n```\n\n\n:::\n:::\n\n\n\n\n## Part 2\n\n\n\n\n::: {.cell}\n\n```{.r .cell-code}\nsapply(1:26, function(l) {\n  tmp <- stri_replace_all_regex(dt, paste0(letters[l], \"|\", LETTERS[l]), \"\")\n  reduced <- TRUE\n  while (reduced) {\n    old <- length(tmp)\n    for (x in 1:(old - 1)) {\n      if (tmp[x] != tmp[x + 1] & toupper(tmp[x]) == toupper(tmp[x + 1])) {\n        tmp[c(x, x + 1)] <- \"\"\n        reduced <- TRUE\n      }\n    }\n    tmp <- tmp[tmp != \"\"]\n    if (old == length(tmp)) {\n      reduced <- FALSE\n    }\n  }\n  length(tmp)\n}) |>\n  min()\n```\n\n::: {.cell-output .cell-output-stdout}\n\n```\n[1] 5312\n```\n\n\n:::\n:::\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}
